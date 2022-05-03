@@ -1,6 +1,6 @@
 import { Box, Toolbar, Typography } from "@mui/material";
 import { FC, ReactNode } from "react";
-const drawerWidth =210;
+const drawerWidth = 210;
 interface Props {
   children: ReactNode;
 }

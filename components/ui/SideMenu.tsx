@@ -1,21 +1,21 @@
-import {
-  Box,
-  Drawer,
-} from "@mui/material";
-import { FC} from "react";
+import { Box, Drawer } from "@mui/material";
+import { FC } from "react";
 import { DrawerList } from "./DrawerList";
 
 const drawerWidth = 210;
 interface Props {
   window?: () => Window;
-  mobileOpen: boolean,
-  handleDrawerToggle:()=>void
+  mobileOpen: boolean;
+  handleDrawerToggle: () => void;
 }
-export const SideMenu: FC<Props> = ({ window,mobileOpen, handleDrawerToggle }) => {
-  
+export const SideMenu: FC<Props> = ({
+  window,
+  mobileOpen,
+  handleDrawerToggle,
+}) => {
   const container =
     window !== undefined ? () => window().document.body : undefined;
-   
+
   return (
     <Box
       component="nav"
@@ -36,7 +36,7 @@ export const SideMenu: FC<Props> = ({ window,mobileOpen, handleDrawerToggle }) =
           "& .MuiDrawer-paper": { boxSizing: "border-box", width: drawerWidth },
         }}
       >
-        <DrawerList/>
+        <DrawerList />
       </Drawer>
       <Drawer
         variant="permanent"
@@ -46,7 +46,7 @@ export const SideMenu: FC<Props> = ({ window,mobileOpen, handleDrawerToggle }) =
         }}
         open
       >
-        <DrawerList/>
+        <DrawerList />
       </Drawer>
     </Box>
   );

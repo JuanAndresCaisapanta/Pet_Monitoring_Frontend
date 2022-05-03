@@ -12,9 +12,7 @@ import {
   Tooltip,
   Typography,
 } from "@mui/material";
-import {
-  Notifications,
-} from "@mui/icons-material";
+import { Notifications } from "@mui/icons-material";
 
 import MenuIcon from "@mui/icons-material/Menu";
 import { FC, useState } from "react";
