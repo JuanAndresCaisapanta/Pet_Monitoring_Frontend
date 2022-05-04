@@ -17,7 +17,7 @@ import {
 export const DrawerList = () => {
   return (
     <div>
-      <Toolbar sx={{ justifyContent: "center" }}>
+      <Toolbar sx={{ justifyContent: "center", backgroundColor:'#F4F5FA' }}>
         <Image src="/logo.png" alt="Logo" height="50%" width="50%" />
       </Toolbar>
       <Divider />

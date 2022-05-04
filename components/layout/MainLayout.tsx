@@ -23,7 +23,7 @@ export const MainLayout: FC<Props> = ({
     setMobileOpen(!mobileOpen);
   };
   return (
-    <>
+     <Box sx={{ display: "flex" }}>
       <Head>
         <title>{title}</title>
         <meta name="description" content={pageDescription} />
@@ -31,20 +31,17 @@ export const MainLayout: FC<Props> = ({
         <meta name="og:description" content={pageDescription} />
         {imageFullUrl && <meta name="og:image" content={imageFullUrl} />}
       </Head>
-      <Box sx={{ display: "flex" }}>
+     
         <Navbar handleDrawerToggle={handleDrawerToggle} />
-        <nav>
-          <SideMenu
-            mobileOpen={mobileOpen}
-            handleDrawerToggle={handleDrawerToggle}
-          />
-        </nav>
-        <main>
-          <MainContent>{children}</MainContent>
-        </main>
-        {/* Footer */}
-        <footer>{/* TODO: mi custom footer */}</footer>
-      </Box>
-    </>
+       
+        <SideMenu
+          mobileOpen={mobileOpen}
+          handleDrawerToggle={handleDrawerToggle}
+        />
+        
+        <MainContent>{children}</MainContent>
+    
+    
+    </Box>
   );
 };

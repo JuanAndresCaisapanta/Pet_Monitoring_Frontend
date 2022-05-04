@@ -19,7 +19,7 @@ export const SideMenu: FC<Props> = ({
   return (
     <Box
       component="nav"
-      sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}
+      sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 }}}
       aria-label="mailbox folders"
     >
       {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
@@ -27,13 +27,14 @@ export const SideMenu: FC<Props> = ({
         container={container}
         variant="temporary"
         open={mobileOpen}
+        anchor='left'
         onClose={handleDrawerToggle}
         ModalProps={{
           keepMounted: true, // Better open performance on mobile.
         }}
         sx={{
           display: { xs: "block", sm: "none" },
-          "& .MuiDrawer-paper": { boxSizing: "border-box", width: drawerWidth },
+          "& .MuiDrawer-paper": { boxSizing: "border-box", width: drawerWidth,backgroundColor: "#F4F5FA", }
         }}
       >
         <DrawerList />
@@ -42,7 +43,7 @@ export const SideMenu: FC<Props> = ({
         variant="permanent"
         sx={{
           display: { xs: "none", sm: "block" },
-          "& .MuiDrawer-paper": { boxSizing: "border-box", width: drawerWidth },
+          "& .MuiDrawer-paper": { boxSizing: "border-box", width: drawerWidth,backgroundColor: "#F4F5FA", },
         }}
         open
       >

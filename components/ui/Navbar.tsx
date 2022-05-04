@@ -5,9 +5,8 @@ import {
   Avatar,
   Badge,
   Box,
+  Container,
   IconButton,
-  Menu,
-  MenuItem,
   Toolbar,
   Tooltip,
   Typography,
@@ -15,54 +14,37 @@ import {
 import { Notifications } from "@mui/icons-material";
 
 import MenuIcon from "@mui/icons-material/Menu";
-import { FC, useState } from "react";
-import MailIcon from "@mui/icons-material/Mail";
+import { FC } from "react";
 const drawerWidth = 210;
 interface Props {
   handleDrawerToggle: () => void;
 }
-const settings = ["Profile", "Account", "Dashboard", "Logout"];
+
 export const Navbar: FC<Props> = ({ handleDrawerToggle }) => {
-  const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
-  const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorElUser(event.currentTarget);
-  };
-  const handleCloseUserMenu = () => {
-    setAnchorElUser(null);
-  };
   return (
-    <AppBar
-      position="fixed"
-      sx={{
-        width: { sm: `calc(100% - ${drawerWidth}px)` },
-        ml: { sm: `${drawerWidth}px` },
-      }}
-    >
-      <Toolbar>
-        <IconButton
-          color="inherit"
-          aria-label="open drawer"
-          edge="start"
-          onClick={handleDrawerToggle}
-          sx={{ mr: 2, display: { sm: "none" } }}
-        >
-          <MenuIcon />
-        </IconButton>
-        <Typography variant="h6" noWrap component="div">
-          Monitoreo
-        </Typography>
-        <Box sx={{ flexGrow: 1 }} />
-        <Box sx={{ display: { xs: "flex", md: "flex" } }}>
+<AppBar
+        sx={{
+          width: { sm: `calc(100% - ${drawerWidth}px)` },
+          ml: { sm: `${drawerWidth}px` },paddingRight:0
+        }}
+      >
+    
+        <Toolbar >
           <IconButton
-            size="large"
-            aria-label="show 4 new mails"
             color="inherit"
-            sx={{ marginRight: 0.5 }}
+            aria-label="open drawer"
+            edge="start"
+            onClick={handleDrawerToggle}
+            sx={{ mr: 2, display: { sm: "none" } }}
           >
-            <Badge badgeContent={4} color="error">
-              <MailIcon />
-            </Badge>
+            <MenuIcon />
           </IconButton>
+          <Box  flexGrow={1}>
+            <Typography variant="h1" noWrap>
+              MonIOpeT
+            </Typography>
+          </Box>
+
           <IconButton
             size="large"
             aria-label="show 17 new notifications"
@@ -73,37 +55,16 @@ export const Navbar: FC<Props> = ({ handleDrawerToggle }) => {
               <Notifications />
             </Badge>
           </IconButton>
-        </Box>
-        <Box sx={{ flexGrow: 0 }}>
-          <Tooltip title="Open settings">
-            <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-              <Avatar alt="Remy Sharp" src="" />
+
+          <Tooltip title="Usuario">
+            <IconButton sx={{ p: 0 }}>
+              <Avatar alt="Usuario" src="" />
             </IconButton>
           </Tooltip>
-          <Menu
-            sx={{ mt: "42.5px" }}
-            id="menu-appbar"
-            anchorEl={anchorElUser}
-            anchorOrigin={{
-              vertical: "top",
-              horizontal: "right",
-            }}
-            keepMounted
-            transformOrigin={{
-              vertical: "top",
-              horizontal: "right",
-            }}
-            open={Boolean(anchorElUser)}
-            onClose={handleCloseUserMenu}
-          >
-            {settings.map((setting) => (
-              <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                <Typography textAlign="center">{setting}</Typography>
-              </MenuItem>
-            ))}
-          </Menu>
-        </Box>
-      </Toolbar>
-    </AppBar>
+        </Toolbar>
+        
+      </AppBar>
+      
+
   );
 };
