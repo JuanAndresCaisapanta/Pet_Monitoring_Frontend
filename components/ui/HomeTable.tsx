@@ -114,7 +114,7 @@ export const HomeTable = () => {
   return (
     <Card>
       <TableContainer>
-        <Table sx={{ minWidth:327 }} size='small' aria-label="table in dashboard">
+        <Table sx={{ minWidth:300 }} size='small' aria-label="table in dashboard">
           <TableHead>
             <TableRow>
               <TableCell >Nombre</TableCell>
