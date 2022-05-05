@@ -14,20 +14,26 @@ import {
   Pets,
   SupervisedUserCircle,
 } from "@mui/icons-material";
+import { useRouter } from "next/router";
 export const DrawerList = () => {
+  const router = useRouter();
+  const navigateTo = (url: string) => {
+    //toggleSideMenu();
+    router.push(url);
+  };
   return (
     <div>
-      <Toolbar sx={{ justifyContent: "center", backgroundColor:'#F4F5FA' }}>
+      <Toolbar sx={{ justifyContent: "center", backgroundColor: "#F4F5FA" }}>
         <Image src="/logo.png" alt="Logo" height="50%" width="50%" />
       </Toolbar>
       <Divider />
-      <ListItem button>
+      <ListItem button onClick={() => navigateTo("/")}>
         <ListItemIcon>
           <Home />
         </ListItemIcon>
         <ListItemText primary={"Inicio"} />
       </ListItem>
-      <ListItem button>
+      <ListItem button onClick={() => navigateTo("/user/profile")}>
         <ListItemIcon>
           <Person />
         </ListItemIcon>
@@ -36,7 +42,7 @@ export const DrawerList = () => {
       <Divider textAlign="left" sx={{ fontSize: 14 }}>
         Secciones
       </Divider>
-      <ListItem button>
+      <ListItem button onClick={() => navigateTo("/pets")}>
         <ListItemIcon>
           <Pets />
         </ListItemIcon>

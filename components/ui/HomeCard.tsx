@@ -28,7 +28,7 @@ interface DataType {
     {
       stats: '12.5k',
       title: 'Dispositivos',
-      color: 'success',
+      color: 'info',
       icon: <OnDeviceTraining sx={{ fontSize: '1.75rem' }} />
     },
   ]
@@ -62,16 +62,16 @@ export const HomeCard = () => {
     <Card>
     <CardHeader
       title='Información'
-      titleTypographyProps={{
-        sx: {
-          mb: 1,
-          lineHeight: '2rem !important',
-          letterSpacing: '0.15px !important'
-        }
-      }}
+      // titleTypographyProps={{
+      //   sx: {
+      //     mb: 1,
+      //     lineHeight: '2rem !important',
+      //     letterSpacing: '0.15px !important'
+      //   }
+      // }}
     />
     <CardContent sx={{ pt: theme => `${theme.spacing(1)} !important` }}>
-      <Grid container spacing={[5,0]}>
+      <Grid container spacing={1}>
         {renderStats()}
       </Grid>
     </CardContent>

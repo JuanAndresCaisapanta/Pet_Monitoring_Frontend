@@ -4,17 +4,13 @@ import { DrawerList } from "./DrawerList";
 
 const drawerWidth = 210;
 interface Props {
-  window?: () => Window;
   mobileOpen: boolean;
   handleDrawerToggle: () => void;
 }
 export const SideMenu: FC<Props> = ({
-  window,
   mobileOpen,
   handleDrawerToggle,
 }) => {
-  const container =
-    window !== undefined ? () => window().document.body : undefined;
 
   return (
     <Box
@@ -22,9 +18,7 @@ export const SideMenu: FC<Props> = ({
       sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 }}}
       aria-label="mailbox folders"
     >
-      {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
       <Drawer
-        container={container}
         variant="temporary"
         open={mobileOpen}
         anchor='left'

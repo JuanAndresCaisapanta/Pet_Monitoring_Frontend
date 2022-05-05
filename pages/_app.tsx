@@ -2,14 +2,22 @@ import "../styles/globals.css";
 import type { AppProps } from "next/app";
 import { Box, CssBaseline, ThemeProvider } from "@mui/material";
 import { lightTheme } from "../themes";
+import { NextPage } from "next";
+import { ReactElement, ReactNode } from "react";
+type NextPageWithLayout = NextPage & {
+  getLayout?: (page: ReactElement) => ReactNode;
+};
 
-function MyApp({ Component, pageProps }: AppProps) {
+type AppPropsWithLayout = AppProps & {
+  Component: NextPageWithLayout;
+};
+
+function MyApp({ Component, pageProps }: AppPropsWithLayout) {
+  const getLayout = Component.getLayout ?? ((page) => page);
   return (
     <ThemeProvider theme={lightTheme}>
-       
-      <CssBaseline/>
-      <Component {...pageProps} />
-
+      <CssBaseline />
+      {getLayout(<Component {...pageProps} />)}
     </ThemeProvider>
   );
 }
