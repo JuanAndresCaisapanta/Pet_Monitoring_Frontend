@@ -4,7 +4,7 @@ import { MainLayout } from '../../components/layout'
 const ProfilePage = () => {
   return (
    
-<h1>holi</h1>
+<h1>Perfil</h1>
   )
 }
 ProfilePage.getLayout = function getLayout(page: ReactElement) {

@@ -1,11 +1,11 @@
 import React, { ReactElement } from "react";
 import { MainLayout } from "../../components/layout";
 
-const PetPage = () => {
-  return <h1>Mascotas</h1>;
+const DevicePage = () => {
+  return <h1>Dispositivos</h1>;
 };
 
-PetPage.getLayout = function getLayout(page: ReactElement) {
+DevicePage.getLayout = function getLayout(page: ReactElement) {
   return (
     <MainLayout
       title={"Monitoreo Mascotas"}
@@ -16,5 +16,4 @@ PetPage.getLayout = function getLayout(page: ReactElement) {
   );
 };
 
-export default PetPage;
-
+export default DevicePage;

@@ -48,13 +48,13 @@ export const DrawerList = () => {
         </ListItemIcon>
         <ListItemText primary={"Mascotas"} />
       </ListItem>
-      <ListItem button>
+      <ListItem button onClick={() => navigateTo("/devices")}>
         <ListItemIcon>
           <OnDeviceTraining />
         </ListItemIcon>
         <ListItemText primary={"Dispositivos"} />
       </ListItem>
-      <Divider textAlign="left" sx={{ fontSize: 14 }}>
+      {/* <Divider textAlign="left" sx={{ fontSize: 14 }}>
         Administración
       </Divider>
       <ListItem button>
@@ -62,7 +62,7 @@ export const DrawerList = () => {
           <SupervisedUserCircle />
         </ListItemIcon>
         <ListItemText primary={"Usuarios"} />
-      </ListItem>
+      </ListItem> */}
       <Divider />
       <ListItem button>
         <ListItemIcon>
