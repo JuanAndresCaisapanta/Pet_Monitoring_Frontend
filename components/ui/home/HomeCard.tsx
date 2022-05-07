@@ -62,13 +62,7 @@ export const HomeCard = () => {
     <Card>
     <CardHeader
       title='Información'
-      // titleTypographyProps={{
-      //   sx: {
-      //     mb: 1,
-      //     lineHeight: '2rem !important',
-      //     letterSpacing: '0.15px !important'
-      //   }
-      // }}
+      titleTypographyProps={{color: 'primary'}}
     />
     <CardContent sx={{ pt: theme => `${theme.spacing(1)} !important` }}>
       <Grid container spacing={1}>

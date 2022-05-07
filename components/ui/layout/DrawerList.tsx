@@ -33,7 +33,7 @@ export const DrawerList = () => {
         </ListItemIcon>
         <ListItemText primary={"Inicio"} />
       </ListItem>
-      <ListItem button onClick={() => navigateTo("/user/profile")}>
+      <ListItem button onClick={() => navigateTo("/user")}>
         <ListItemIcon>
           <Person />
         </ListItemIcon>

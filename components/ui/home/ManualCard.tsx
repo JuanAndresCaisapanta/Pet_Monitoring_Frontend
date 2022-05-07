@@ -7,7 +7,7 @@ import ArticleIcon from "@mui/icons-material/Article";
 export const ManualCard = () => {
   return (
     <Card>
-      <CardHeader title="Manual" />
+      <CardHeader title="Manual" titleTypographyProps={{color: 'primary'}}/>
       <CardContent sx={{ pt: (theme) => `${theme.spacing(1)} !important` }}>
         <Grid sx={{ pt: (theme) => `${theme.spacing(1)} !important` }}>
           <Box sx={{ display: "flex", alignItems: "center" }}>

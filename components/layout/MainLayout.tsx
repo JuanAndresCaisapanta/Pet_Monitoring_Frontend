@@ -2,7 +2,7 @@ import { FC, ReactNode, useState } from "react";
 import Head from "next/head";
 
 import { Navbar, SideMenu } from "../ui";
-import { MainContent } from "../ui/MainContent";
+import { MainContent } from "../ui/layout/MainContent";
 import { Box } from "@mui/material";
 
 interface Props {

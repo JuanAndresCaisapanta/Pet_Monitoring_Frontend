@@ -1,8 +1,9 @@
 import React, { ReactElement } from "react";
 import { MainLayout } from "../../components/layout";
+import { Subtitle } from "../../components/ui";
 
 const PetPage = () => {
-  return <h1>Mascotas</h1>;
+  return <Subtitle subtitle="Mascotas" />;
 };
 
 PetPage.getLayout = function getLayout(page: ReactElement) {
@@ -17,4 +18,3 @@ PetPage.getLayout = function getLayout(page: ReactElement) {
 };
 
 export default PetPage;
-

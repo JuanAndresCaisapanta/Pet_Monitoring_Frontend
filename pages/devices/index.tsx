@@ -1,8 +1,9 @@
 import React, { ReactElement } from "react";
 import { MainLayout } from "../../components/layout";
+import { Subtitle } from "../../components/ui";
 
 const DevicePage = () => {
-  return <h1>Dispositivos</h1>;
+  return <Subtitle subtitle="Dispositivos" />;
 };
 
 DevicePage.getLayout = function getLayout(page: ReactElement) {

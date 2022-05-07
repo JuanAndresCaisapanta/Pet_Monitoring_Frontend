@@ -7,7 +7,7 @@ import ContactPhoneIcon from '@mui/icons-material/ContactPhone';
 export const ContactCard = () => {
   return (
     <Card>
-      <CardHeader title="Contacto" />
+      <CardHeader title="Contacto" titleTypographyProps={{color: 'primary'}}/>
       <CardContent sx={{ pt: (theme) => `${theme.spacing(1)} !important` }}>
         <Grid sx={{ pt: (theme) => `${theme.spacing(1)} !important` }}>
           <Box sx={{ display: "flex", alignItems: "center" }}>
