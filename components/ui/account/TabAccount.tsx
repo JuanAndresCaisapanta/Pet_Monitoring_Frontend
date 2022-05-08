@@ -75,7 +75,7 @@ export const TabAccount = () => {
                   variant="contained"
                   htmlFor="account-settings-upload-image"
                 >
-                  Actualizar Imagen
+                  Cargar Imagen
                   <input
                     hidden
                     type="file"
@@ -195,7 +195,7 @@ export const TabAccount = () => {
 
           <Grid item xs={12}>
             <Button variant="contained" sx={{ marginRight: 3.5 }}>
-              Cuardar Cambios
+              Cuardar
             </Button>
             <Button type="reset" variant="outlined" color="secondary">
               Resetear

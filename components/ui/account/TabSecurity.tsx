@@ -186,7 +186,7 @@ export const TabSecurity = () => {
             xs={12}
             sx={{
               display: "flex",
-              marginTop: [7.5, 2.5],
+              marginTop: [3.5, 2.5],
               alignItems: "center",
               justifyContent: "center",
             }}
