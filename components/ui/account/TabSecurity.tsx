@@ -82,14 +82,14 @@ export const TabSecurity = () => {
       <CardContent sx={{ paddingBottom: 0 }}>
         <Grid container spacing={5}>
           <Grid item xs={12} sm={6}>
-            <Grid container spacing={5}>
+            <Grid container spacing={2}>
               <Grid item xs={12} sx={{ marginTop: 4.75 }}>
                 <FormControl fullWidth>
                   <InputLabel htmlFor="account-settings-current-password">
-                    Current Password
+                    Contraseña Actual
                   </InputLabel>
                   <OutlinedInput
-                    label="Current Password"
+                    label="Contraseña Actual"
                     value={values.currentPassword}
                     id="account-settings-current-password"
                     type={values.showCurrentPassword ? "text" : "password"}
@@ -117,10 +117,10 @@ export const TabSecurity = () => {
               <Grid item xs={12} sx={{ marginTop: 6 }}>
                 <FormControl fullWidth>
                   <InputLabel htmlFor="account-settings-new-password">
-                    New Password
+                    Contraseña Nueva
                   </InputLabel>
                   <OutlinedInput
-                    label="New Password"
+                    label="Contraseña Nueva"
                     value={values.newPassword}
                     id="account-settings-new-password"
                     onChange={handleNewPasswordChange("newPassword")}
@@ -148,10 +148,10 @@ export const TabSecurity = () => {
               <Grid item xs={12}>
                 <FormControl fullWidth>
                   <InputLabel htmlFor="account-settings-confirm-new-password">
-                    Confirm New Password
+                    Confirmar Nueva Contraseña
                   </InputLabel>
                   <OutlinedInput
-                    label="Confirm New Password"
+                    label="Confirmar Nueva Contraseña"
                     value={values.confirmNewPassword}
                     id="account-settings-confirm-new-password"
                     type={values.showConfirmNewPassword ? "text" : "password"}
@@ -192,10 +192,10 @@ export const TabSecurity = () => {
             }}
           >
             <img
-              width={183}
+              width={230}
               alt="avatar"
-              height={256}
-              src="/images/pages/pose-m-1.png"
+              height={260}
+              src="/images/profile/lock.png"
             />
           </Grid>
         </Grid>

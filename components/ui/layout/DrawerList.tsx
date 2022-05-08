@@ -14,6 +14,7 @@ import {
   Pets,
   SupervisedUserCircle,
 } from "@mui/icons-material";
+import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
 import { useRouter } from "next/router";
 export const DrawerList = () => {
   const router = useRouter();
@@ -35,9 +36,9 @@ export const DrawerList = () => {
       </ListItem>
       <ListItem button onClick={() => navigateTo("/user")}>
         <ListItemIcon>
-          <Person />
+          <ManageAccountsIcon/>
         </ListItemIcon>
-        <ListItemText primary={"Perfil"} />
+        <ListItemText primary={"Cuenta"} />
       </ListItem>
       <Divider textAlign="left" sx={{ fontSize: 14 }}>
         Secciones

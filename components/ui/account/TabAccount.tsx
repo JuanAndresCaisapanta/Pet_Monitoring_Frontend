@@ -50,7 +50,7 @@ const ResetButtonStyled = styled(Button)<ButtonProps>(({ theme }) => ({
 export const TabAccount = () => {
   // ** State
   const [openAlert, setOpenAlert] = useState<boolean>(true);
-  const [imgSrc, setImgSrc] = useState<string>("/images/avatars/1.png");
+  const [imgSrc, setImgSrc] = useState<string>("/images/profile/user.png");
 
   const onChange = (file: ChangeEvent) => {
     const reader = new FileReader();
@@ -65,8 +65,8 @@ export const TabAccount = () => {
   return (
     <CardContent>
       <form>
-        <Grid container spacing={7}>
-          <Grid item xs={12} sx={{ marginTop: 4.8, marginBottom: 3 }}>
+        <Grid container spacing={2}>
+          <Grid item xs={12} sx={{ marginTop: 4.75, marginBottom: 3 }}>
             <Box sx={{ display: "flex", alignItems: "center" }}>
               <ImgStyled src={imgSrc} alt="Profile Pic" />
               <Box>
@@ -75,7 +75,7 @@ export const TabAccount = () => {
                   variant="contained"
                   htmlFor="account-settings-upload-image"
                 >
-                  Upload New Photo
+                  Actualizar Imagen
                   <input
                     hidden
                     type="file"
@@ -87,9 +87,9 @@ export const TabAccount = () => {
                 <ResetButtonStyled
                   color="error"
                   variant="outlined"
-                  onClick={() => setImgSrc("/images/avatars/1.png")}
+                  onClick={() => setImgSrc("/images/profile/user.png")}
                 >
-                  Reset
+                  Resetear
                 </ResetButtonStyled>
                 <Typography variant="body2" sx={{ marginTop: 5 }}>
                   Allowed PNG or JPEG. Max size of 800K.
@@ -101,7 +101,7 @@ export const TabAccount = () => {
           <Grid item xs={12} sm={6}>
             <TextField
               fullWidth
-              label="Username"
+              label="Nombre"
               placeholder="johnDoe"
               defaultValue="johnDoe"
             />
@@ -109,7 +109,7 @@ export const TabAccount = () => {
           <Grid item xs={12} sm={6}>
             <TextField
               fullWidth
-              label="Name"
+              label="Apellido"
               placeholder="John Doe"
               defaultValue="John Doe"
             />
@@ -118,12 +118,12 @@ export const TabAccount = () => {
             <TextField
               fullWidth
               type="email"
-              label="Email"
+              label="Correo Electrónico"
               placeholder="johnDoe@example.com"
               defaultValue="johnDoe@example.com"
             />
           </Grid>
-          <Grid item xs={12} sm={6}>
+          {/* <Grid item xs={12} sm={6}>
             <FormControl fullWidth>
               <InputLabel>Role</InputLabel>
               <Select label="Role" defaultValue="admin">
@@ -134,8 +134,8 @@ export const TabAccount = () => {
                 <MenuItem value="subscriber">Subscriber</MenuItem>
               </Select>
             </FormControl>
-          </Grid>
-          <Grid item xs={12} sm={6}>
+          </Grid> */}
+          {/* <Grid item xs={12} sm={6}>
             <FormControl fullWidth>
               <InputLabel>Status</InputLabel>
               <Select label="Status" defaultValue="active">
@@ -144,17 +144,27 @@ export const TabAccount = () => {
                 <MenuItem value="pending">Pending</MenuItem>
               </Select>
             </FormControl>
+          </Grid> */}
+          <Grid item xs={12} sm={6}>
+            <TextField
+              fullWidth
+              label="Dirección"
+              placeholder="ABC Pvt. Ltd."
+              defaultValue="ABC Pvt. Ltd."
+            />
           </Grid>
           <Grid item xs={12} sm={6}>
             <TextField
               fullWidth
-              label="Company"
+              type="text"
+              inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
+              label="Telefono"
               placeholder="ABC Pvt. Ltd."
               defaultValue="ABC Pvt. Ltd."
             />
           </Grid>
 
-          {openAlert ? (
+          {/* {openAlert ? (
             <Grid item xs={12} sx={{ mb: 3 }}>
               <Alert
                 severity="warning"
@@ -181,14 +191,14 @@ export const TabAccount = () => {
                 </Link>
               </Alert>
             </Grid>
-          ) : null}
+          ) : null} */}
 
           <Grid item xs={12}>
             <Button variant="contained" sx={{ marginRight: 3.5 }}>
-              Save Changes
+              Cuardar Cambios
             </Button>
             <Button type="reset" variant="outlined" color="secondary">
-              Reset
+              Resetear
             </Button>
           </Grid>
         </Grid>
