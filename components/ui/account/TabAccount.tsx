@@ -66,7 +66,7 @@ export const TabAccount = () => {
     <CardContent>
       <form>
         <Grid container spacing={2}>
-          <Grid item xs={12} sx={{ marginTop: 4.75, marginBottom: 3 }}>
+          <Grid item xs={12} >
             <Box sx={{ display: "flex", alignItems: "center" }}>
               <ImgStyled src={imgSrc} alt="Profile Pic" />
               <Box>
@@ -158,9 +158,9 @@ export const TabAccount = () => {
               fullWidth
               type="text"
               inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
-              label="Telefono"
-              placeholder="ABC Pvt. Ltd."
-              defaultValue="ABC Pvt. Ltd."
+              label="Teléfono"
+              placeholder="0999999999"
+              defaultValue="0999999999"
             />
           </Grid>
 

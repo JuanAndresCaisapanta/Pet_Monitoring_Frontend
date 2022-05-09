@@ -83,7 +83,7 @@ export const TabSecurity = () => {
         <Grid container spacing={5}>
           <Grid item xs={12} sm={6}>
             <Grid container spacing={2}>
-              <Grid item xs={12} sx={{ marginTop: 4.75 }}>
+              <Grid item xs={12}>
                 <FormControl fullWidth>
                   <InputLabel htmlFor="account-settings-current-password">
                     Contraseña Actual
@@ -192,9 +192,9 @@ export const TabSecurity = () => {
             }}
           >
             <img
-              width={230}
+              width={200}
               alt="avatar"
-              height={260}
+              height={200}
               src="/images/profile/lock.png"
             />
           </Grid>

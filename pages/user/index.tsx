@@ -1,15 +1,6 @@
-import { Grid, Typography } from "@mui/material";
 import React, { ReactElement } from "react";
 import { MainLayout } from "../../components/layout";
-import {
-  ContactCard,
-  HomeCard,
-  HomeTable,
-  ManualCard,
-  TabAccount,
-  TabInfo,
-  TabSecurity,
-} from "../../components/ui";
+import { TabAccount, TabSecurity } from "../../components/ui";
 // ** React Imports
 import { SyntheticEvent, useState } from "react";
 
@@ -25,11 +16,6 @@ import MuiTab, { TabProps } from "@mui/material/Tab";
 // ** Icons Imports
 import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
 import LockOpenOutlinedIcon from "@mui/icons-material/LockOpenOutlined";
-import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
-// ** Demo Tabs Imports
-
-// ** Third Party Styles Imports
-import "react-datepicker/dist/react-datepicker.css";
 
 const Tab = styled(MuiTab)<TabProps>(({ theme }) => ({
   [theme.breakpoints.down("md")]: {
@@ -42,11 +28,8 @@ const Tab = styled(MuiTab)<TabProps>(({ theme }) => ({
 
 const TabName = styled("span")(({ theme }) => ({
   lineHeight: 1.71,
-  fontSize: "0.875rem",
+  fontSize: "0.8rem",
   marginLeft: theme.spacing(2.4),
-  [theme.breakpoints.down("md")]: {
-    display: "none",
-  },
 }));
 const ProfilePage = () => {
   // ** State
@@ -72,15 +55,6 @@ const ProfilePage = () => {
               </Box>
             }
           />
-          {/* <Tab
-            value="info"
-            label={
-              <Box sx={{ display: "flex", alignItems: "center" }}>
-                <InfoOutlinedIcon />
-                <TabName>Info</TabName>
-              </Box>
-            }
-          /> */}
           <Tab
             value="security"
             label={
@@ -91,15 +65,11 @@ const ProfilePage = () => {
             }
           />
         </TabList>
-
         <TabPanel sx={{ p: 0 }} value="account">
           <TabAccount />
         </TabPanel>
         <TabPanel sx={{ p: 0 }} value="security">
           <TabSecurity />
-        </TabPanel>
-        <TabPanel sx={{ p: 0 }} value="info">
-          <TabInfo />
         </TabPanel>
       </TabContext>
     </Card>
