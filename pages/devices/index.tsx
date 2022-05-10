@@ -14,8 +14,8 @@ import { styled } from "@mui/material/styles";
 import MuiTab, { TabProps } from "@mui/material/Tab";
 
 // ** Icons Imports
-import OnDeviceTrainingOutlinedIcon from '@mui/icons-material/OnDeviceTrainingOutlined';
-import AddCircleOutlineOutlinedIcon from '@mui/icons-material/AddCircleOutlineOutlined';
+import OnDeviceTrainingOutlinedIcon from "@mui/icons-material/OnDeviceTrainingOutlined";
+import AddCircleOutlineOutlinedIcon from "@mui/icons-material/AddCircleOutlineOutlined";
 
 const Tab = styled(MuiTab)<TabProps>(({ theme }) => ({
   [theme.breakpoints.down("md")]: {
@@ -37,40 +37,42 @@ const DevicePage = () => {
   const handleChange = (event: SyntheticEvent, newValue: string) => {
     setValue(newValue);
   };
-  return (    <Card>
-    <TabContext value={value}>
-      <TabList
-        onChange={handleChange}
-        aria-label="device-settings tabs"
-        sx={{ borderBottom: (theme) => `1px solid ${theme.palette.divider}` }}
-      >
-        <Tab
-          value="devices"
-          label={
-            <Box sx={{ display: "flex", alignItems: "center" }}>
-              <OnDeviceTrainingOutlinedIcon />
-              <TabName>Dispositivos</TabName>
-            </Box>
-          }
-        />
-        <Tab
-          value="add-devices"
-          label={
-            <Box sx={{ display: "flex", alignItems: "center" }}>
-              <AddCircleOutlineOutlinedIcon />
-              <TabName>Agregar</TabName>
-            </Box>
-          }
-        />
-      </TabList>
-      <TabPanel sx={{ p: 0 }} value="devices">
-        <TabAccount />
-      </TabPanel>
-      <TabPanel sx={{ p: 0 }} value="add-devices">
-        <TabSecurity />
-      </TabPanel>
-    </TabContext>
-  </Card>);
+  return (
+    <Card>
+      <TabContext value={value}>
+        <TabList
+          onChange={handleChange}
+          aria-label="device-settings tabs"
+          sx={{ borderBottom: (theme) => `1px solid ${theme.palette.divider}` }}
+        >
+          <Tab
+            value="devices"
+            label={
+              <Box sx={{ display: "flex", alignItems: "center" }}>
+                <OnDeviceTrainingOutlinedIcon />
+                <TabName>Dispositivos</TabName>
+              </Box>
+            }
+          />
+          <Tab
+            value="add-devices"
+            label={
+              <Box sx={{ display: "flex", alignItems: "center" }}>
+                <AddCircleOutlineOutlinedIcon />
+                <TabName>Agregar</TabName>
+              </Box>
+            }
+          />
+        </TabList>
+        <TabPanel sx={{ p: 0 }} value="devices">
+          <TabAccount />
+        </TabPanel>
+        <TabPanel sx={{ p: 0 }} value="add-devices">
+          <TabSecurity />
+        </TabPanel>
+      </TabContext>
+    </Card>
+  );
 };
 
 DevicePage.getLayout = function getLayout(page: ReactElement) {

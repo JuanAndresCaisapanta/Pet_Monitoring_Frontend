@@ -1,7 +1,7 @@
 import "../styles/globals.css";
 import type { AppProps } from "next/app";
-import { Box, CssBaseline, ThemeProvider } from "@mui/material";
-import { lightTheme } from "../themes";
+import { CssBaseline, ThemeProvider } from "@mui/material";
+import { theme } from "../themes";
 import { NextPage } from "next";
 import { ReactElement, ReactNode } from "react";
 type NextPageWithLayout = NextPage & {
@@ -15,7 +15,7 @@ type AppPropsWithLayout = AppProps & {
 function MyApp({ Component, pageProps }: AppPropsWithLayout) {
   const getLayout = Component.getLayout ?? ((page) => page);
   return (
-    <ThemeProvider theme={lightTheme}>
+    <ThemeProvider theme={theme}>
       <CssBaseline />
       {getLayout(<Component {...pageProps} />)}
     </ThemeProvider>

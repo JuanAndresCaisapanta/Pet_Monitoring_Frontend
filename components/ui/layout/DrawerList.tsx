@@ -65,7 +65,7 @@ export const DrawerList = () => {
         <ListItemText primary={"Usuarios"} />
       </ListItem> */}
       <Divider />
-      <ListItem button>
+      <ListItem button onClick={() => navigateTo("/auth/login")}>
         <ListItemIcon>
           <ExitToApp />
         </ListItemIcon>
