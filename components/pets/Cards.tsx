@@ -75,8 +75,8 @@ export const Cards = () => {
                 width: "100%",
               }}
             >
-              <Button>Monitoreo Tiempo Real</Button>
-              <Button>Monitoreo Datos</Button>
+              <Button variant="contained">Monitorear</Button>
+              <Button variant="contained">Editar</Button>
             </Box>
           </CardActions>
         </Grid>

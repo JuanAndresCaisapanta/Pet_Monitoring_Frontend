@@ -1,6 +1,6 @@
 import React, { ReactElement } from "react";
 import { MainLayout } from "../../components/layout";
-import { TabAccount, TabSecurity } from "../../components/ui";
+import { TabInfoPet, TabListPets } from "../../components/ui";
 // ** React Imports
 import { SyntheticEvent, useState } from "react";
 
@@ -14,9 +14,8 @@ import { styled } from "@mui/material/styles";
 import MuiTab, { TabProps } from "@mui/material/Tab";
 
 // ** Icons Imports
-import PetsOutlinedIcon from '@mui/icons-material/PetsOutlined';
-import AddCircleOutlineOutlinedIcon from '@mui/icons-material/AddCircleOutlineOutlined';
-import { TabPet } from '../../components/pets/TabPet';
+import PetsOutlinedIcon from "@mui/icons-material/PetsOutlined";
+import AddCircleOutlineOutlinedIcon from "@mui/icons-material/AddCircleOutlineOutlined";
 
 const Tab = styled(MuiTab)<TabProps>(({ theme }) => ({
   [theme.breakpoints.down("md")]: {
@@ -66,10 +65,10 @@ const PetPage = () => {
           />
         </TabList>
         <TabPanel sx={{ p: 0 }} value="pets">
-         <TabPet/>
+          <TabListPets />
         </TabPanel>
         <TabPanel sx={{ p: 0 }} value="add-pets">
-          <TabSecurity />
+          <TabInfoPet />
         </TabPanel>
       </TabContext>
     </Card>

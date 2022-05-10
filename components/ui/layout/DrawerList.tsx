@@ -28,7 +28,7 @@ export const DrawerList = () => {
         <Image src="/logo.png" alt="Logo" height="50%" width="50%" />
       </Toolbar>
       <Divider />
-      <ListItem button onClick={() => navigateTo("/")}>
+      <ListItem  button onClick={() => navigateTo("/")}>
         <ListItemIcon>
           <Home />
         </ListItemIcon>

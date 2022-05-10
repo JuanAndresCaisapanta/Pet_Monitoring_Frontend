@@ -51,7 +51,7 @@ const ProfilePage = () => {
             label={
               <Box sx={{ display: "flex", alignItems: "center" }}>
                 <AccountCircleOutlinedIcon />
-                <TabName>Información</TabName>
+                <TabName>Perfil</TabName>
               </Box>
             }
           />
