@@ -42,7 +42,7 @@ const PetsPage = () => {
       <TabContext value={value}>
         <TabList
           onChange={handleChange}
-          aria-label="pet-settings tabs"
+          aria-label="pets-settings tabs"
           sx={{ borderBottom: (theme) => `1px solid ${theme.palette.divider}` }}
         >
           <Tab

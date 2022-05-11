@@ -7,6 +7,7 @@ import Typography from "@mui/material/Typography";
 import CardContent from "@mui/material/CardContent";
 import CardActions from "@mui/material/CardActions";
 import Grid, { GridProps } from "@mui/material/Grid";
+import { useRouter } from "next/router";
 
 // Styled Grid component
 const StyledGrid = styled(Grid)<GridProps>(({ theme }) => ({
@@ -20,8 +21,11 @@ const StyledGrid = styled(Grid)<GridProps>(({ theme }) => ({
     borderRight: `1px solid ${theme.palette.divider}`,
   },
 }));
-export const Cards = () => {
-  
+export const CardPet = () => {
+  const router = useRouter();
+  const navigateTo = (url: string) => {
+    router.push(url);
+  };
   return (
     <Card>
       <Grid container spacing={2}>
@@ -75,7 +79,7 @@ export const Cards = () => {
                 width: "100%",
               }}
             >
-              <Button variant="contained">Monitorear</Button>
+              <Button variant="contained" onClick={() => navigateTo(`/pets/sections`)}>Monitorear</Button>
               <Button variant="contained">Editar</Button>
             </Box>
           </CardActions>

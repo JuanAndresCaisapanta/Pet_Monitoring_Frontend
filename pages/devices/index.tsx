@@ -39,11 +39,11 @@ const DevicePage = () => {
     setValue(newValue);
   };
   return (
-    <Card>
-      <TabContext value={value}>
+    <Card >
+      <TabContext value={value} >
         <TabList
           onChange={handleChange}
-          aria-label="device-settings tabs"
+          aria-label="devices-settings tabs"
           sx={{ borderBottom: (theme) => `1px solid ${theme.palette.divider}` }}
         >
           <Tab
@@ -69,7 +69,7 @@ const DevicePage = () => {
           <TabListDevices />
         </TabPanel>
         <TabPanel sx={{ p: 0 }} value="add-devices">
-          <TabSecurity />
+          
         </TabPanel>
       </TabContext>
     </Card>

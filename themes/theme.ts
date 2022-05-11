@@ -19,11 +19,10 @@ export const theme = createTheme({
         underline: "none",
       },
     },
-
     MuiAppBar: {
       defaultProps: {
         position: "fixed",
-        elevation:0
+        elevation: 0,
       },
       styleOverrides: {
         root: {
@@ -31,13 +30,13 @@ export const theme = createTheme({
         },
       },
     },
-    MuiDivider: {
-      styleOverrides: {
-        root: {
-          backgroundColor: "#F4F5FA",
-        },
-      },
-    },
+    // MuiDivider: {
+    //   styleOverrides: {
+    //     root: {
+    //       backgroundColor: "#F4F5FA",
+    //     },
+    //   },
+    // },
     MuiListItem: {
       styleOverrides: {
         root: {
@@ -45,7 +44,7 @@ export const theme = createTheme({
           "&:hover": {
             backgroundColor: "#9E69FD",
             color: "white",
-          }
+          },
         },
       },
     },

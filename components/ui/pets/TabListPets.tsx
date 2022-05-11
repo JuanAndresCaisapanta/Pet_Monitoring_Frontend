@@ -1,22 +1,20 @@
 // ** MUI Imports
 import Grid from "@mui/material/Grid";
 import CardContent from "@mui/material/CardContent";
-import { Cards } from "./Cards";
+import { CardPet } from "./CardPet";
 // ** Styled Components
 
 export const TabListPets = () => {
   return (
     <CardContent>
-      <form>
         <Grid container spacing={2}>
           <Grid item xs={12} sm={6}>
-            <Cards />
+            <CardPet />
           </Grid>
           <Grid item xs={12} sm={6}>
-            <Cards />
+            <CardPet />
           </Grid>
         </Grid>
-      </form>
     </CardContent>
   );
 };
