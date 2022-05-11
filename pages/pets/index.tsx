@@ -31,7 +31,7 @@ const TabName = styled("span")(({ theme }) => ({
   fontSize: "0.8rem",
   marginLeft: theme.spacing(2.4),
 }));
-const PetPage = () => {
+const PetsPage = () => {
   const [value, setValue] = useState<string>("pets");
 
   const handleChange = (event: SyntheticEvent, newValue: string) => {
@@ -75,7 +75,7 @@ const PetPage = () => {
   );
 };
 
-PetPage.getLayout = function getLayout(page: ReactElement) {
+PetsPage.getLayout = function getLayout(page: ReactElement) {
   return (
     <MainLayout
       title={"Monitoreo Mascotas"}
@@ -86,4 +86,4 @@ PetPage.getLayout = function getLayout(page: ReactElement) {
   );
 };
 
-export default PetPage;
+export default PetsPage;

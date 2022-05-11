@@ -1,7 +1,6 @@
 // ** MUI Imports
 import Grid from "@mui/material/Grid";
 import CardContent from "@mui/material/CardContent";
-import "react-datepicker/dist/react-datepicker.css";
 import { Cards } from "./Cards";
 // ** Styled Components
 

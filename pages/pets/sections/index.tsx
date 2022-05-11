@@ -1,6 +1,4 @@
 import React, { ReactElement } from "react";
-import { MainLayout } from "../../components/layout";
-import { TabAccount, TabSecurity } from "../../components/ui";
 // ** React Imports
 import { SyntheticEvent, useState } from "react";
 
@@ -14,9 +12,10 @@ import { styled } from "@mui/material/styles";
 import MuiTab, { TabProps } from "@mui/material/Tab";
 
 // ** Icons Imports
-import OnDeviceTrainingOutlinedIcon from "@mui/icons-material/OnDeviceTrainingOutlined";
+import PetsOutlinedIcon from "@mui/icons-material/PetsOutlined";
 import AddCircleOutlineOutlinedIcon from "@mui/icons-material/AddCircleOutlineOutlined";
-import { TabListDevices } from '../../components/ui';
+import { TabMonitoring } from "../../../components/ui";
+import { MainLayout } from "../../../components/layout";
 
 const Tab = styled(MuiTab)<TabProps>(({ theme }) => ({
   [theme.breakpoints.down("md")]: {
@@ -32,8 +31,8 @@ const TabName = styled("span")(({ theme }) => ({
   fontSize: "0.8rem",
   marginLeft: theme.spacing(2.4),
 }));
-const DevicePage = () => {
-  const [value, setValue] = useState<string>("devices");
+const SectionsPage = () => {
+  const [value, setValue] = useState<string>("sections");
 
   const handleChange = (event: SyntheticEvent, newValue: string) => {
     setValue(newValue);
@@ -43,40 +42,39 @@ const DevicePage = () => {
       <TabContext value={value}>
         <TabList
           onChange={handleChange}
-          aria-label="device-settings tabs"
+          aria-label="sections-settings tabs"
           sx={{ borderBottom: (theme) => `1px solid ${theme.palette.divider}` }}
         >
           <Tab
-            value="devices"
+            value="sections"
             label={
               <Box sx={{ display: "flex", alignItems: "center" }}>
-                <OnDeviceTrainingOutlinedIcon />
-                <TabName>Dispositivos</TabName>
+                <PetsOutlinedIcon />
+                <TabName>Secciones</TabName>
               </Box>
             }
           />
-          <Tab
-            value="add-devices"
+          {/* <Tab
+            value="add-pets"
             label={
               <Box sx={{ display: "flex", alignItems: "center" }}>
                 <AddCircleOutlineOutlinedIcon />
                 <TabName>Agregar</TabName>
               </Box>
             }
-          />
+          /> */}
         </TabList>
-        <TabPanel sx={{ p: 0 }} value="devices">
-          <TabListDevices />
+        <TabPanel sx={{ p: 0 }} value="sections">
+          <TabMonitoring/>
         </TabPanel>
-        <TabPanel sx={{ p: 0 }} value="add-devices">
-          <TabSecurity />
-        </TabPanel>
+        {/* <TabPanel sx={{ p: 0 }} value="add-pets">
+          <TabInfoPet />
+        </TabPanel> */}
       </TabContext>
     </Card>
-  );
-};
-
-DevicePage.getLayout = function getLayout(page: ReactElement) {
+  )
+}
+SectionsPage.getLayout = function getLayout(page: ReactElement) {
   return (
     <MainLayout
       title={"Monitoreo Mascotas"}
@@ -86,5 +84,4 @@ DevicePage.getLayout = function getLayout(page: ReactElement) {
     </MainLayout>
   );
 };
-
-export default DevicePage;
+export default SectionsPage
