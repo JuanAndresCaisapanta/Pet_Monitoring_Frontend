@@ -4,6 +4,7 @@ import { CssBaseline, ThemeProvider } from "@mui/material";
 import { theme } from "../themes";
 import { NextPage } from "next";
 import { ReactElement, ReactNode } from "react";
+import { UiProvider } from "../context";
 type NextPageWithLayout = NextPage & {
   getLayout?: (page: ReactElement) => ReactNode;
 };
@@ -15,10 +16,12 @@ type AppPropsWithLayout = AppProps & {
 function MyApp({ Component, pageProps }: AppPropsWithLayout) {
   const getLayout = Component.getLayout ?? ((page) => page);
   return (
-    <ThemeProvider theme={theme}>
-      <CssBaseline />
-      {getLayout(<Component {...pageProps} />)}
-    </ThemeProvider>
+    <UiProvider>
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
+        {getLayout(<Component {...pageProps} />)}
+      </ThemeProvider>
+    </UiProvider>
   );
 }
 

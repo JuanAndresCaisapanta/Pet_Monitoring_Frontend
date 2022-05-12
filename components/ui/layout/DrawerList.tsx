@@ -14,12 +14,18 @@ import {
   Pets,
   SupervisedUserCircle,
 } from "@mui/icons-material";
-import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
+import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
 import { useRouter } from "next/router";
-export const DrawerList = () => {
+import { FC } from "react";
+
+interface Props {
+  toggleSideMenu: () => void;
+}
+
+export const DrawerList: FC<Props> = ({ toggleSideMenu }) => {
   const router = useRouter();
   const navigateTo = (url: string) => {
-    //toggleSideMenu();
+    toggleSideMenu();
     router.push(url);
   };
   return (
@@ -28,7 +34,7 @@ export const DrawerList = () => {
         <Image src="/logo.png" alt="Logo" height="50%" width="50%" />
       </Toolbar>
       <Divider />
-      <ListItem  button onClick={() => navigateTo("/")}>
+      <ListItem button onClick={() => navigateTo("/")}>
         <ListItemIcon>
           <Home />
         </ListItemIcon>
@@ -36,7 +42,7 @@ export const DrawerList = () => {
       </ListItem>
       <ListItem button onClick={() => navigateTo("/user")}>
         <ListItemIcon>
-          <ManageAccountsIcon/>
+          <ManageAccountsIcon />
         </ListItemIcon>
         <ListItemText primary={"Cuenta"} />
       </ListItem>

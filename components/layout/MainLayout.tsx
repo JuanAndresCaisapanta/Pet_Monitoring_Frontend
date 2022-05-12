@@ -1,9 +1,10 @@
-import { FC, ReactNode, useState } from "react";
+import { FC, ReactNode, useContext, useState } from "react";
 import Head from "next/head";
 
 import { Navbar, SideMenu } from "../ui";
 import { MainContent } from "../ui/layout/MainContent";
 import { Box } from "@mui/material";
+import { UiContext } from "../../context";
 
 interface Props {
   title: string;
@@ -18,10 +19,13 @@ export const MainLayout: FC<Props> = ({
   pageDescription,
   imageFullUrl,
 }) => {
-  const [mobileOpen, setMobileOpen] = useState(false);
-  const handleDrawerToggle = () => {
-    setMobileOpen(!mobileOpen);
-  };
+  // const [mobileOpen, setMobileOpen] = useState(false);
+  // const handleDrawerToggle = () => {
+  //   setMobileOpen(!mobileOpen);
+  // };
+
+  const {isMenuOpen, toggleSideMenu} = useContext(UiContext);
+
   return (
     <Box sx={{ display: "flex" }}>
       <Head>
@@ -31,10 +35,10 @@ export const MainLayout: FC<Props> = ({
         <meta name="og:description" content={pageDescription} />
         {imageFullUrl && <meta name="og:image" content={imageFullUrl} />}
       </Head>
-      <Navbar handleDrawerToggle={handleDrawerToggle} />
+      <Navbar toggleSideMenu={toggleSideMenu} />
       <SideMenu
-        mobileOpen={mobileOpen}
-        handleDrawerToggle={handleDrawerToggle}
+        isMenuOpen={isMenuOpen}
+        toggleSideMenu={toggleSideMenu}
       />
       <MainContent>{children}</MainContent>
     </Box>

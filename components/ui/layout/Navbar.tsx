@@ -17,10 +17,10 @@ import MenuIcon from "@mui/icons-material/Menu";
 import { FC } from "react";
 const drawerWidth = 210;
 interface Props {
-  handleDrawerToggle: () => void;
+  toggleSideMenu: () => void;
 }
 
-export const Navbar: FC<Props> = ({ handleDrawerToggle }) => {
+export const Navbar: FC<Props> = ({ toggleSideMenu }) => {
   return (
     <AppBar
       sx={{
@@ -34,7 +34,7 @@ export const Navbar: FC<Props> = ({ handleDrawerToggle }) => {
           color="inherit"
           aria-label="open drawer"
           edge="start"
-          onClick={handleDrawerToggle}
+          onClick={toggleSideMenu}
           sx={{ mr: 2, display: { sm: "none" } }}
         >
           <MenuIcon />

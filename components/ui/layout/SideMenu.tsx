@@ -4,12 +4,12 @@ import { DrawerList } from "./DrawerList";
 
 const drawerWidth = 210;
 interface Props {
-  mobileOpen: boolean;
-  handleDrawerToggle: () => void;
+  isMenuOpen: boolean;
+  toggleSideMenu: () => void;
 }
 export const SideMenu: FC<Props> = ({
-  mobileOpen,
-  handleDrawerToggle,
+  isMenuOpen,
+  toggleSideMenu,
 }) => {
 
   return (
@@ -20,9 +20,9 @@ export const SideMenu: FC<Props> = ({
     >
       <Drawer
         variant="temporary"
-        open={mobileOpen}
+        open={isMenuOpen}
         anchor='left'
-        onClose={handleDrawerToggle}
+        onClose={toggleSideMenu}
         ModalProps={{
           keepMounted: true, // Better open performance on mobile.
         }}
@@ -31,7 +31,7 @@ export const SideMenu: FC<Props> = ({
           "& .MuiDrawer-paper": { boxSizing: "border-box", width: drawerWidth,backgroundColor: "#F4F5FA", }
         }}
       >
-        <DrawerList />
+        <DrawerList toggleSideMenu={toggleSideMenu} />
       </Drawer>
       <Drawer
         variant="permanent"
@@ -41,7 +41,7 @@ export const SideMenu: FC<Props> = ({
         }}
         open
       >
-        <DrawerList />
+        <DrawerList toggleSideMenu={toggleSideMenu} />
       </Drawer>
     </Box>
   );
