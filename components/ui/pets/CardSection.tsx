@@ -12,12 +12,14 @@ interface Props {
   section: string;
   description: string;
   link: string;
+  button:string
 }
 
 export const CardSection: FC<Props> = ({
   image,
   section,
   description,
+  button,
   link,
 }) => {
   const router = useRouter();
@@ -26,9 +28,9 @@ export const CardSection: FC<Props> = ({
   };
   return (
     <Card>
-      <CardMedia sx={{ height: "9.375rem" }} image={image} />
+      <CardMedia sx={{ height: "9.5rem" }} image={image} />
       <CardContent
-        sx={{ padding: (theme) => `${theme.spacing(3, 5.25, 4)} !important` }}
+        sx={{ padding: (theme) => `${theme.spacing(2, 4, 2)} !important` }}
       >
         <Typography variant="h6" sx={{ marginBottom: 2 }}>
           {section}
@@ -45,7 +47,7 @@ export const CardSection: FC<Props> = ({
           borderTopRightRadius: 0,
         }}
       >
-        Visitar
+        {button}
       </Button>
     </Card>
   );
