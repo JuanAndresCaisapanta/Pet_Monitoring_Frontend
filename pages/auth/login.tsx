@@ -1,53 +1,78 @@
-// ** React Imports
-import { ChangeEvent, MouseEvent, ReactElement, useState } from "react";
+import { MouseEvent, ReactElement, useContext, useState } from "react";
 
-// ** Next Imports
 import Link from "next/link";
 import { useRouter } from "next/router";
 
-// ** MUI Components
-import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
-import TextField from "@mui/material/TextField";
-import InputLabel from "@mui/material/InputLabel";
-import Typography from "@mui/material/Typography";
-import IconButton from "@mui/material/IconButton";
-import FormControl from "@mui/material/FormControl";
-import OutlinedInput from "@mui/material/OutlinedInput";
 import { styled } from "@mui/material/styles";
-import InputAdornment from "@mui/material/InputAdornment";
+import {
+  Chip,
+  FormHelperText,
+  Box,
+  Button,
+  TextField,
+  InputLabel,
+  Typography,
+  IconButton,
+  FormControl,
+  OutlinedInput,
+  InputAdornment,
+} from "@mui/material";
+import {
+  VisibilityOutlined,
+  VisibilityOffOutlined,
+  ErrorOutline,
+} from "@mui/icons-material";
 
-import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
-import VisibilityOffOutlinedIcon from "@mui/icons-material/VisibilityOffOutlined";
-// ** Configs
+import { useForm } from "react-hook-form";
+
 import { AuthLayout } from "../../components/layout";
+import { validations } from "../../utils";
+import { AuthContext } from "../../context/auth";
 
 interface State {
   password: string;
   showPassword: boolean;
 }
 
-// ** Styled Components
 const LinkStyled = styled("a")(({ theme }) => ({
   fontSize: "0.875rem",
   textDecoration: "none",
   color: theme.palette.primary.main,
 }));
 
+type FormData = {
+  email: string;
+  password: string;
+};
+
 const LoginPage = () => {
-  // ** State
+  const router = useRouter();
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<FormData>();
+
+  const [showError, setShowError] = useState(false);
+
   const [values, setValues] = useState<State>({
     password: "",
     showPassword: false,
   });
 
-  // ** Hook
-  const router = useRouter();
+  const { loginUser } = useContext(AuthContext);
 
-  const handleChange =
-    (prop: keyof State) => (event: ChangeEvent<HTMLInputElement>) => {
-      setValues({ ...values, [prop]: event.target.value });
-    };
+  const onLoginUser = async ({ email, password }: FormData) => {
+    setShowError(false);
+    const isValidLogin = await loginUser(email, password);
+    if (!isValidLogin) {
+      setShowError(true);
+      setTimeout(() => setShowError(false), 3000);
+      return;
+    }
+    router.replace("/");
+  };
 
   const handleClickShowPassword = () => {
     setValues({ ...values, showPassword: !values.showPassword });
@@ -56,24 +81,40 @@ const LoginPage = () => {
   const handleMouseDownPassword = (event: MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
   };
+
   return (
     <>
-      <form noValidate autoComplete="off" onSubmit={(e) => e.preventDefault()}>
+      <form noValidate autoComplete="off" onSubmit={handleSubmit(onLoginUser)}>
+        <Chip
+          label="No reconocemos ese usuario / contraseña"
+          color="error"
+          icon={<ErrorOutline />}
+          className="fadeIn"
+          sx={{ display: showError ? "flex" : "none" }}
+        />
         <TextField
           autoFocus
           fullWidth
-          id="email"
+          type="email"
           label="Correo Electrónico"
           sx={{ marginBottom: 1 }}
+          {...register("email", {
+            required: "Este campo es requerido",
+            validate: validations.isEmail,
+          })}
+          error={!!errors.email}
+          helperText={errors.email?.message}
         />
         <FormControl fullWidth sx={{ marginBottom: 2 }}>
           <InputLabel htmlFor="auth-login-password">Contraseña</InputLabel>
           <OutlinedInput
             label="Contraseña"
-            value={values.password}
-            id="auth-login-password"
-            onChange={handleChange("password")}
             type={values.showPassword ? "text" : "password"}
+            {...register("password", {
+              required: "Este campo es requerido",
+              minLength: { value: 3, message: "Mínimo 6 caracteres" },
+            })}
+            error={!!errors.password}
             endAdornment={
               <InputAdornment position="end">
                 <IconButton
@@ -83,14 +124,19 @@ const LoginPage = () => {
                   aria-label="toggle password visibility"
                 >
                   {values.showPassword ? (
-                    <VisibilityOutlinedIcon />
+                    <VisibilityOutlined />
                   ) : (
-                    <VisibilityOffOutlinedIcon />
+                    <VisibilityOffOutlined />
                   )}
                 </IconButton>
               </InputAdornment>
             }
           />
+          {!!errors.password && (
+            <FormHelperText error id="accountId-error">
+              {errors.password?.message}
+            </FormHelperText>
+          )}
         </FormControl>
         <Box
           sx={{
@@ -112,7 +158,7 @@ const LoginPage = () => {
           size="large"
           variant="contained"
           sx={{ marginBottom: 2 }}
-          onClick={() => router.push("/")}
+          type="submit"
         >
           Ingresar
         </Button>

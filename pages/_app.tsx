@@ -5,6 +5,7 @@ import { theme } from "../themes";
 import { NextPage } from "next";
 import { ReactElement, ReactNode } from "react";
 import { UiProvider } from "../context";
+import { AuthProvider } from "../context/auth";
 type NextPageWithLayout = NextPage & {
   getLayout?: (page: ReactElement) => ReactNode;
 };
@@ -16,12 +17,15 @@ type AppPropsWithLayout = AppProps & {
 function MyApp({ Component, pageProps }: AppPropsWithLayout) {
   const getLayout = Component.getLayout ?? ((page) => page);
   return (
-    <UiProvider>
+    <AuthProvider>
+      <UiProvider>
       <ThemeProvider theme={theme}>
         <CssBaseline />
         {getLayout(<Component {...pageProps} />)}
       </ThemeProvider>
     </UiProvider>
+    </AuthProvider>
+    
   );
 }
 

@@ -1,47 +1,108 @@
-// ** React Imports
-import { ChangeEvent, MouseEvent, ReactElement, useState } from "react";
+import {
+  ChangeEvent,
+  MouseEvent,
+  ReactElement,
+  useContext,
+  useState,
+} from "react";
 
-// ** Next Imports
 import Link from "next/link";
 import { useRouter } from "next/router";
 
-// ** MUI Components
-import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
-import TextField from "@mui/material/TextField";
-import InputLabel from "@mui/material/InputLabel";
-import Typography from "@mui/material/Typography";
-import IconButton from "@mui/material/IconButton";
-import FormControl from "@mui/material/FormControl";
-import OutlinedInput from "@mui/material/OutlinedInput";
+import {
+  OutlinedInput,
+  FormControl,
+  IconButton,
+  Typography,
+  InputLabel,
+  TextField,
+  Button,
+  Box,
+  InputAdornment,
+  Chip,
+  FormHelperText,
+} from "@mui/material";
 import { styled } from "@mui/material/styles";
-import InputAdornment from "@mui/material/InputAdornment";
 
-import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
-import VisibilityOffOutlinedIcon from "@mui/icons-material/VisibilityOffOutlined";
-// ** Configs
+import {
+  VisibilityOutlined,
+  VisibilityOffOutlined,
+  ErrorOutline,
+} from "@mui/icons-material";
+
 import { AuthLayout } from "../../components/layout";
+import { useForm } from "react-hook-form";
+import { AuthContext } from "../../context";
+import { validations } from "../../utils";
 
 interface State {
   password: string;
   showPassword: boolean;
 }
 
-// ** Styled Components
 const LinkStyled = styled("a")(({ theme }) => ({
   fontSize: "0.875rem",
   textDecoration: "none",
   color: theme.palette.primary.main,
 }));
+
+type FormData = {
+  name: string;
+  last_name: string;
+  email: string;
+  password: string;
+};
+
 const RegisterPage = () => {
-  // ** State
+  const router = useRouter();
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<FormData>();
+
+  const [showError, setShowError] = useState(false);
+
+  const [errorMessage, setErrorMessage] = useState("");
+
   const [values, setValues] = useState<State>({
     password: "",
     showPassword: false,
   });
 
-  // ** Hook
-  const router = useRouter();
+  const { registerUser } = useContext(AuthContext);
+
+
+  const current = new Date();
+  const date = `${current.getFullYear()}-${
+    current.getMonth() + 1
+  }-${current.getDate()}`;
+
+  const onRegisterForm = async ({
+    name,
+    last_name,
+    email,
+    password,
+  }: FormData) => {
+    setShowError(false);
+    const { hasError, message } = await registerUser(
+      name,
+      last_name,
+      email,
+      password,
+      date
+    );
+
+    if (hasError) {
+      setShowError(true);
+      setErrorMessage(message!);
+      setTimeout(() => setShowError(false), 3000);
+      return;
+    }
+
+    router.replace("/auth/login");
+  };
 
   const handleChange =
     (prop: keyof State) => (event: ChangeEvent<HTMLInputElement>) => {
@@ -55,36 +116,65 @@ const RegisterPage = () => {
   const handleMouseDownPassword = (event: MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
   };
+
   return (
     <>
-      <form noValidate autoComplete="off" onSubmit={(e) => e.preventDefault()}>
+      <form
+        noValidate
+        autoComplete="off"
+        onSubmit={handleSubmit(onRegisterForm)}
+      >
+        <Chip
+          label="No reconocemos ese usuario / contraseña"
+          color="error"
+          icon={<ErrorOutline />}
+          className="fadeIn"
+          sx={{ display: showError ? "flex" : "none" }}
+        />
         <TextField
           autoFocus
           fullWidth
-          id="name"
           label="Nombre"
           sx={{ marginBottom: 1 }}
+          {...register("name", {
+            required: "Este campo es requerido",
+            minLength: { value: 2, message: "Mínimo 2 caracteres" },
+          })}
+          error={!!errors.name}
+          helperText={errors.name?.message}
         />
         <TextField
           fullWidth
-          id="lastName"
           label="Apellido"
           sx={{ marginBottom: 1 }}
+          {...register("last_name", {
+            required: "Este campo es requerido",
+            minLength: { value: 2, message: "Mínimo 2 caracteres" },
+          })}
+          error={!!errors.name}
+          helperText={errors.name?.message}
         />
         <TextField
           fullWidth
-          type="email"
           label="Correo Electrónico"
           sx={{ marginBottom: 1 }}
+          {...register("email", {
+            required: "Este campo es requerido",
+            validate: validations.isEmail,
+          })}
+          error={!!errors.email}
+          helperText={errors.email?.message}
         />
         <FormControl fullWidth sx={{ marginBottom: 2 }}>
           <InputLabel htmlFor="auth-register-password">Contraseña</InputLabel>
           <OutlinedInput
             label="Contraseña"
-            value={values.password}
-            id="auth-register-password"
-            onChange={handleChange("password")}
             type={values.showPassword ? "text" : "password"}
+            {...register("password", {
+              required: "Este campo es requerido",
+              minLength: { value: 3, message: "Mínimo 6 caracteres" },
+            })}
+            error={!!errors.password}
             endAdornment={
               <InputAdornment position="end">
                 <IconButton
@@ -94,14 +184,19 @@ const RegisterPage = () => {
                   aria-label="toggle password visibility"
                 >
                   {values.showPassword ? (
-                    <VisibilityOutlinedIcon fontSize="small" />
+                    <VisibilityOutlined fontSize="small" />
                   ) : (
-                    <VisibilityOffOutlinedIcon fontSize="small" />
+                    <VisibilityOffOutlined fontSize="small" />
                   )}
                 </IconButton>
               </InputAdornment>
             }
           />
+          {!!errors.password && (
+            <FormHelperText error id="accountId-error">
+              {errors.password?.message}
+            </FormHelperText>
+          )}
         </FormControl>
         <Button
           fullWidth
