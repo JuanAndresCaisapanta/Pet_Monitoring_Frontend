@@ -25,7 +25,8 @@ export const AuthProvider: FC<Props> = ({ children }) => {
   const router = useRouter();
   useEffect(() => {
     checkToken();
-  });
+  }, []);
+
 
   const checkToken = async () => {
     if (!Cookies.get("token")) {
@@ -37,13 +38,16 @@ export const AuthProvider: FC<Props> = ({ children }) => {
         `/auth/validate-token/${token}`
       );
       if (data == true) {
-        const user = jwt.decode(token) as IUser;
-        dispatch({ type: "[Auth] - Login", payload: user });
+        const { sub:email } = jwt.decode(token) as { sub: string };
+        const {data} = await petMonitoringApi.get(`/user/${email}`,{ headers: {"Authorization" : `Bearer ${token}`} });
+        dispatch({ type: "[Auth] - Login", payload: data });
       } else {
         Cookies.remove("token");
       }
     } catch (error) {
       Cookies.remove("token");
+    
+      // Cookies.remove("token");
     }
   };
 

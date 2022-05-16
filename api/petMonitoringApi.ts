@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const petMonitoringApi = axios.create({
-  baseURL: "https://tender-houses-divide-157-100-91-151.loca.lt/",
+  baseURL: "http://localhost:8080/",
 });
 
 export default petMonitoringApi;

@@ -14,13 +14,15 @@ import {
 import { Notifications } from "@mui/icons-material";
 
 import MenuIcon from "@mui/icons-material/Menu";
-import { FC } from "react";
+import { FC, useContext } from "react";
+import { AuthContext } from "../../../context";
 const drawerWidth = 210;
 interface Props {
   toggleSideMenu: () => void;
 }
 
 export const Navbar: FC<Props> = ({ toggleSideMenu }) => {
+  const {user}=useContext(AuthContext);
   return (
     <AppBar
       sx={{
@@ -56,7 +58,7 @@ export const Navbar: FC<Props> = ({ toggleSideMenu }) => {
           </Badge>
         </IconButton>
 
-        <Tooltip title="Usuario">
+        <Tooltip title={user?.name||""}>
           <IconButton sx={{ p: 0 }}>
             <Avatar alt="Usuario" src="" />
           </IconButton>
