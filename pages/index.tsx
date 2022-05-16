@@ -3,7 +3,7 @@ import Router from "next/router";
 
 const IndexPage = () => {
   React.useEffect(() => {
-    Router.push("/users");
+    Router.push("/auth/login");
   });
 
   return <div />;
