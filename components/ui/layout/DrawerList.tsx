@@ -18,6 +18,7 @@ import { useRouter } from "next/router";
 import { FC, useContext } from "react";
 import logo from "../../../assets/images/logo.png";
 import { AuthContext } from "../../../context";
+import Image from "next/image";
 interface Props {
   toggleSideMenu: () => void;
 }
@@ -32,7 +33,7 @@ export const DrawerList: FC<Props> = ({ toggleSideMenu }) => {
   return (
     <div>
       <Toolbar sx={{ justifyContent: "center", backgroundColor: "#F4F5FA" }}>
-        <img src='/images/logo.png' alt="Logo" height="50%" width="50%" />
+        <Image src='/images/logo.png' alt="Logo" height="50%" width="50%" />
       </Toolbar>
       <Divider />
       <ListItem button onClick={() => navigateTo("/users")}>
