@@ -38,7 +38,7 @@ export const AuthLayout: FC<Props> = ({ children, title, detail }) => {
               justifyContent: "center",
             }}
           >
-            <Image src="/logo.png" alt="Logo" height="50%" width="50%" />
+            <img src="/images/logo.png" alt="Logo" height="50%" width="50%" />
             <Typography
               variant="h6"
               sx={{
