@@ -1,21 +1,16 @@
-import React, { ReactElement } from "react";
-import { MainLayout } from "../../components/layout";
-import { TabInfoPet, TabListPets } from "../../components/ui";
 // ** React Imports
-import { SyntheticEvent, useState } from "react";
+import { SyntheticEvent, useState, ReactElement } from "react";
 
 // ** MUI Imports
-import Box from "@mui/material/Box";
-import Card from "@mui/material/Card";
-import TabList from "@mui/lab/TabList";
-import TabPanel from "@mui/lab/TabPanel";
-import TabContext from "@mui/lab/TabContext";
-import { styled } from "@mui/material/styles";
+import { Box, Card, styled } from "@mui/material";
+import { TabList, TabPanel, TabContext } from "@mui/lab";
 import MuiTab, { TabProps } from "@mui/material/Tab";
 
 // ** Icons Imports
-import PetsOutlinedIcon from "@mui/icons-material/PetsOutlined";
+import VaccinesOutlinedIcon from "@mui/icons-material/VaccinesOutlined";
 import AddCircleOutlineOutlinedIcon from "@mui/icons-material/AddCircleOutlineOutlined";
+import { TabLocation, TabMedicine } from "../../../../../components/ui";
+import { MainLayout } from "../../../../../components/layout";
 
 const Tab = styled(MuiTab)<TabProps>(({ theme }) => ({
   [theme.breakpoints.down("md")]: {
@@ -31,8 +26,9 @@ const TabName = styled("span")(({ theme }) => ({
   fontSize: "0.8rem",
   marginLeft: theme.spacing(2.4),
 }));
-const PetsPage = () => {
-  const [value, setValue] = useState<string>("pets");
+
+const MedicinesPage = () => {
+  const [value, setValue] = useState<string>("medicines");
 
   const handleChange = (event: SyntheticEvent, newValue: string) => {
     setValue(newValue);
@@ -42,20 +38,20 @@ const PetsPage = () => {
       <TabContext value={value}>
         <TabList
           onChange={handleChange}
-          aria-label="pets-settings tabs"
+          aria-label="medicines-settings tabs"
           sx={{ borderBottom: (theme) => `1px solid ${theme.palette.divider}` }}
         >
           <Tab
-            value="pets"
+            value="medicines"
             label={
               <Box sx={{ display: "flex", alignItems: "center" }}>
-                <PetsOutlinedIcon />
-                <TabName>Mascotas</TabName>
+                <VaccinesOutlinedIcon />
+                <TabName>Medicinas</TabName>
               </Box>
             }
           />
           <Tab
-            value="add-pets"
+            value="add-medicines"
             label={
               <Box sx={{ display: "flex", alignItems: "center" }}>
                 <AddCircleOutlineOutlinedIcon />
@@ -64,18 +60,16 @@ const PetsPage = () => {
             }
           />
         </TabList>
-        <TabPanel sx={{ p: 0 }} value="pets">
-          <TabListPets />
+        <TabPanel sx={{ p: 0 }} value="medicines">
+          <TabMedicine />
         </TabPanel>
-        <TabPanel sx={{ p: 0 }} value="add-pets">
-          <TabInfoPet />
-        </TabPanel>
+        <TabPanel sx={{ p: 0 }} value="add-medicines"></TabPanel>
       </TabContext>
     </Card>
   );
 };
 
-PetsPage.getLayout = function getLayout(page: ReactElement) {
+MedicinesPage.getLayout = function getLayout(page: ReactElement) {
   return (
     <MainLayout
       title={"Monitoreo Mascotas"}
@@ -86,4 +80,4 @@ PetsPage.getLayout = function getLayout(page: ReactElement) {
   );
 };
 
-export default PetsPage;
+export default MedicinesPage;

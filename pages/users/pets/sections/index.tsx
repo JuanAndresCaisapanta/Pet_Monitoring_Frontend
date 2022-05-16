@@ -1,15 +1,20 @@
+import React, { ReactElement } from "react";
 // ** React Imports
-import { SyntheticEvent, useState, ReactElement } from "react";
+import { SyntheticEvent, useState } from "react";
 
 // ** MUI Imports
-import { Box, Card, styled } from "@mui/material";
-import { TabList, TabPanel, TabContext } from "@mui/lab";
+import Box from "@mui/material/Box";
+import Card from "@mui/material/Card";
+import TabList from "@mui/lab/TabList";
+import TabPanel from "@mui/lab/TabPanel";
+import TabContext from "@mui/lab/TabContext";
+import { styled } from "@mui/material/styles";
 import MuiTab, { TabProps } from "@mui/material/Tab";
 
 // ** Icons Imports
-import HomeWorkOutlinedIcon from "@mui/icons-material/HomeWorkOutlined";
+import PetsOutlinedIcon from "@mui/icons-material/PetsOutlined";
 import AddCircleOutlineOutlinedIcon from "@mui/icons-material/AddCircleOutlineOutlined";
-import { TabEstablishment, TabLocation } from "../../../../components/ui";
+import { TabMonitoring } from "../../../../components/ui";
 import { MainLayout } from "../../../../components/layout";
 
 const Tab = styled(MuiTab)<TabProps>(({ theme }) => ({
@@ -26,9 +31,8 @@ const TabName = styled("span")(({ theme }) => ({
   fontSize: "0.8rem",
   marginLeft: theme.spacing(2.4),
 }));
-
-const EstablishmentsPage = () => {
-  const [value, setValue] = useState<string>("establishments");
+const SectionsPage = () => {
+  const [value, setValue] = useState<string>("sections");
 
   const handleChange = (event: SyntheticEvent, newValue: string) => {
     setValue(newValue);
@@ -38,37 +42,39 @@ const EstablishmentsPage = () => {
       <TabContext value={value}>
         <TabList
           onChange={handleChange}
-          aria-label="establishments-settings tabs"
+          aria-label="sections-settings tabs"
           sx={{ borderBottom: (theme) => `1px solid ${theme.palette.divider}` }}
         >
           <Tab
-            value="establishments"
+            value="sections"
             label={
               <Box sx={{ display: "flex", alignItems: "center" }}>
-                <HomeWorkOutlinedIcon />
-                <TabName>Establecimientos</TabName>
+                <PetsOutlinedIcon />
+                <TabName>Secciones</TabName>
               </Box>
             }
           />
-          <Tab
-            value="add-establishments"
+          {/* <Tab
+            value="add-pets"
             label={
               <Box sx={{ display: "flex", alignItems: "center" }}>
                 <AddCircleOutlineOutlinedIcon />
                 <TabName>Agregar</TabName>
               </Box>
             }
-          />
+          /> */}
         </TabList>
-        <TabPanel sx={{ p: 0 }} value="establishments">
-          <TabEstablishment />
+        <TabPanel sx={{ p: 0 }} value="sections">
+          <TabMonitoring/>
         </TabPanel>
-        <TabPanel sx={{ p: 0 }} value="add-establishments"></TabPanel>
+        {/* <TabPanel sx={{ p: 0 }} value="add-pets">
+          <TabInfoPet />
+        </TabPanel> */}
       </TabContext>
     </Card>
-  );
-};
-EstablishmentsPage.getLayout = function getLayout(page: ReactElement) {
+  )
+}
+SectionsPage.getLayout = function getLayout(page: ReactElement) {
   return (
     <MainLayout
       title={"Monitoreo Mascotas"}
@@ -78,4 +84,4 @@ EstablishmentsPage.getLayout = function getLayout(page: ReactElement) {
     </MainLayout>
   );
 };
-export default EstablishmentsPage;
+export default SectionsPage

@@ -7,10 +7,10 @@ import { TabList, TabPanel, TabContext } from "@mui/lab";
 import MuiTab, { TabProps } from "@mui/material/Tab";
 
 // ** Icons Imports
-import HailOutlinedIcon from "@mui/icons-material/HailOutlined";
+import DeviceThermostatOutlinedIcon from "@mui/icons-material/DeviceThermostatOutlined";
 import AddCircleOutlineOutlinedIcon from "@mui/icons-material/AddCircleOutlineOutlined";
-import { TabLocation, TabProfessional } from "../../../../components/ui";
-import { MainLayout } from "../../../../components/layout";
+import { TabTemperature } from "../../../../../components/ui";
+import { MainLayout } from "../../../../../components/layout";
 
 const Tab = styled(MuiTab)<TabProps>(({ theme }) => ({
   [theme.breakpoints.down("md")]: {
@@ -26,9 +26,8 @@ const TabName = styled("span")(({ theme }) => ({
   fontSize: "0.8rem",
   marginLeft: theme.spacing(2.4),
 }));
-
-const ProfessionalsPage = () => {
-  const [value, setValue] = useState<string>("professionals");
+const TemperaturePage = () => {
+  const [value, setValue] = useState<string>("temperature");
 
   const handleChange = (event: SyntheticEvent, newValue: string) => {
     setValue(newValue);
@@ -38,38 +37,40 @@ const ProfessionalsPage = () => {
       <TabContext value={value}>
         <TabList
           onChange={handleChange}
-          aria-label="professionals-settings tabs"
+          aria-label="temperature-settings tabs"
           sx={{ borderBottom: (theme) => `1px solid ${theme.palette.divider}` }}
         >
           <Tab
-            value="professionals"
+            value="temperature"
             label={
               <Box sx={{ display: "flex", alignItems: "center" }}>
-                <HailOutlinedIcon />
-                <TabName>Establecimientos</TabName>
+                <DeviceThermostatOutlinedIcon />
+                <TabName>Temperatura</TabName>
               </Box>
             }
           />
-          <Tab
-            value="add-professionals"
-            label={
-              <Box sx={{ display: "flex", alignItems: "center" }}>
-                <AddCircleOutlineOutlinedIcon />
-                <TabName>Agregar</TabName>
-              </Box>
-            }
-          />
+          {/* <Tab
+          value="add-pets"
+          label={
+            <Box sx={{ display: "flex", alignItems: "center" }}>
+              <AddCircleOutlineOutlinedIcon />
+              <TabName>Agregar</TabName>
+            </Box>
+          }
+        /> */}
         </TabList>
-        <TabPanel sx={{ p: 0 }} value="professionals">
-          <TabProfessional />
+        <TabPanel sx={{ p: 0 }} value="temperature">
+          <TabTemperature />
         </TabPanel>
-        <TabPanel sx={{ p: 0 }} value="add-professionals"></TabPanel>
+        {/* <TabPanel sx={{ p: 0 }} value="add-pets">
+        <TabInfoPet />
+      </TabPanel> */}
       </TabContext>
     </Card>
   );
 };
 
-ProfessionalsPage.getLayout = function getLayout(page: ReactElement) {
+TemperaturePage.getLayout = function getLayout(page: ReactElement) {
   return (
     <MainLayout
       title={"Monitoreo Mascotas"}
@@ -80,4 +81,4 @@ ProfessionalsPage.getLayout = function getLayout(page: ReactElement) {
   );
 };
 
-export default ProfessionalsPage;
+export default TemperaturePage;

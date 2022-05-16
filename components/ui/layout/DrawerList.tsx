@@ -35,13 +35,13 @@ export const DrawerList: FC<Props> = ({ toggleSideMenu }) => {
         <img src='/images/logo.png' alt="Logo" height="50%" width="50%" />
       </Toolbar>
       <Divider />
-      <ListItem button onClick={() => navigateTo("/")}>
+      <ListItem button onClick={() => navigateTo("/users")}>
         <ListItemIcon>
           <Home />
         </ListItemIcon>
         <ListItemText primary={"Inicio"} />
       </ListItem>
-      <ListItem button onClick={() => navigateTo("/user")}>
+      <ListItem button onClick={() => navigateTo("/users/user")}>
         <ListItemIcon>
           <ManageAccountsIcon />
         </ListItemIcon>
@@ -50,13 +50,13 @@ export const DrawerList: FC<Props> = ({ toggleSideMenu }) => {
       <Divider textAlign="left" sx={{ fontSize: 14 }}>
         Secciones
       </Divider>
-      <ListItem button onClick={() => navigateTo("/pets")}>
+      <ListItem button onClick={() => navigateTo("/users/pets")}>
         <ListItemIcon>
           <Pets />
         </ListItemIcon>
         <ListItemText primary={"Mascotas"} />
       </ListItem>
-      <ListItem button onClick={() => navigateTo("/devices")}>
+      <ListItem button onClick={() => navigateTo("/users/devices")}>
         <ListItemIcon>
           <OnDeviceTraining />
         </ListItemIcon>

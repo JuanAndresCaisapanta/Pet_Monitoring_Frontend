@@ -7,10 +7,10 @@ import { TabList, TabPanel, TabContext } from "@mui/lab";
 import MuiTab, { TabProps } from "@mui/material/Tab";
 
 // ** Icons Imports
-import LocationOnOutlinedIcon from "@mui/icons-material/LocationOnOutlined";
+import HomeWorkOutlinedIcon from "@mui/icons-material/HomeWorkOutlined";
 import AddCircleOutlineOutlinedIcon from "@mui/icons-material/AddCircleOutlineOutlined";
-import { TabLocation } from "../../../../components/ui";
-import { MainLayout } from "../../../../components/layout";
+import { TabEstablishment, TabLocation } from "../../../../../components/ui";
+import { MainLayout } from "../../../../../components/layout";
 
 const Tab = styled(MuiTab)<TabProps>(({ theme }) => ({
   [theme.breakpoints.down("md")]: {
@@ -27,8 +27,8 @@ const TabName = styled("span")(({ theme }) => ({
   marginLeft: theme.spacing(2.4),
 }));
 
-const LocationPage = () => {
-  const [value, setValue] = useState<string>("location");
+const EstablishmentsPage = () => {
+  const [value, setValue] = useState<string>("establishments");
 
   const handleChange = (event: SyntheticEvent, newValue: string) => {
     setValue(newValue);
@@ -38,40 +38,37 @@ const LocationPage = () => {
       <TabContext value={value}>
         <TabList
           onChange={handleChange}
-          aria-label="location-settings tabs"
+          aria-label="establishments-settings tabs"
           sx={{ borderBottom: (theme) => `1px solid ${theme.palette.divider}` }}
         >
           <Tab
-            value="location"
+            value="establishments"
             label={
               <Box sx={{ display: "flex", alignItems: "center" }}>
-                <LocationOnOutlinedIcon />
-                <TabName>Ubicación</TabName>
+                <HomeWorkOutlinedIcon />
+                <TabName>Establecimientos</TabName>
               </Box>
             }
           />
-          {/* <Tab
-          value="add-pets"
-          label={
-            <Box sx={{ display: "flex", alignItems: "center" }}>
-              <AddCircleOutlineOutlinedIcon />
-              <TabName>Agregar</TabName>
-            </Box>
-          }
-        /> */}
+          <Tab
+            value="add-establishments"
+            label={
+              <Box sx={{ display: "flex", alignItems: "center" }}>
+                <AddCircleOutlineOutlinedIcon />
+                <TabName>Agregar</TabName>
+              </Box>
+            }
+          />
         </TabList>
-        <TabPanel sx={{ p: 0 }} value="location">
-          <TabLocation />
+        <TabPanel sx={{ p: 0 }} value="establishments">
+          <TabEstablishment />
         </TabPanel>
-        {/* <TabPanel sx={{ p: 0 }} value="add-pets">
-        <TabInfoPet />
-      </TabPanel> */}
+        <TabPanel sx={{ p: 0 }} value="add-establishments"></TabPanel>
       </TabContext>
     </Card>
   );
 };
-
-LocationPage.getLayout = function getLayout(page: ReactElement) {
+EstablishmentsPage.getLayout = function getLayout(page: ReactElement) {
   return (
     <MainLayout
       title={"Monitoreo Mascotas"}
@@ -81,5 +78,4 @@ LocationPage.getLayout = function getLayout(page: ReactElement) {
     </MainLayout>
   );
 };
-
-export default LocationPage;
+export default EstablishmentsPage;

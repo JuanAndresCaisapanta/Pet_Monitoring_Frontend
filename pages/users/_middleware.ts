@@ -1,5 +1,5 @@
 import { NextFetchEvent, NextRequest, NextResponse } from "next/server";
-import { IUser } from "../interfaces";
+import { IUser } from "../../interfaces";
 export async function middleware(req: NextRequest | any, ev: NextFetchEvent ) {
   const { token = "" } = req.cookies;
 

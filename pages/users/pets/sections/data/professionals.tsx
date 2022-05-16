@@ -7,10 +7,10 @@ import { TabList, TabPanel, TabContext } from "@mui/lab";
 import MuiTab, { TabProps } from "@mui/material/Tab";
 
 // ** Icons Imports
-import VaccinesOutlinedIcon from "@mui/icons-material/VaccinesOutlined";
+import HailOutlinedIcon from "@mui/icons-material/HailOutlined";
 import AddCircleOutlineOutlinedIcon from "@mui/icons-material/AddCircleOutlineOutlined";
-import { TabLocation, TabMedicine } from "../../../../components/ui";
-import { MainLayout } from "../../../../components/layout";
+import { TabLocation, TabProfessional } from "../../../../../components/ui";
+import { MainLayout } from "../../../../../components/layout";
 
 const Tab = styled(MuiTab)<TabProps>(({ theme }) => ({
   [theme.breakpoints.down("md")]: {
@@ -27,8 +27,8 @@ const TabName = styled("span")(({ theme }) => ({
   marginLeft: theme.spacing(2.4),
 }));
 
-const MedicinesPage = () => {
-  const [value, setValue] = useState<string>("medicines");
+const ProfessionalsPage = () => {
+  const [value, setValue] = useState<string>("professionals");
 
   const handleChange = (event: SyntheticEvent, newValue: string) => {
     setValue(newValue);
@@ -38,20 +38,20 @@ const MedicinesPage = () => {
       <TabContext value={value}>
         <TabList
           onChange={handleChange}
-          aria-label="medicines-settings tabs"
+          aria-label="professionals-settings tabs"
           sx={{ borderBottom: (theme) => `1px solid ${theme.palette.divider}` }}
         >
           <Tab
-            value="medicines"
+            value="professionals"
             label={
               <Box sx={{ display: "flex", alignItems: "center" }}>
-                <VaccinesOutlinedIcon />
-                <TabName>Medicinas</TabName>
+                <HailOutlinedIcon />
+                <TabName>Establecimientos</TabName>
               </Box>
             }
           />
           <Tab
-            value="add-medicines"
+            value="add-professionals"
             label={
               <Box sx={{ display: "flex", alignItems: "center" }}>
                 <AddCircleOutlineOutlinedIcon />
@@ -60,16 +60,16 @@ const MedicinesPage = () => {
             }
           />
         </TabList>
-        <TabPanel sx={{ p: 0 }} value="medicines">
-          <TabMedicine />
+        <TabPanel sx={{ p: 0 }} value="professionals">
+          <TabProfessional />
         </TabPanel>
-        <TabPanel sx={{ p: 0 }} value="add-medicines"></TabPanel>
+        <TabPanel sx={{ p: 0 }} value="add-professionals"></TabPanel>
       </TabContext>
     </Card>
   );
 };
 
-MedicinesPage.getLayout = function getLayout(page: ReactElement) {
+ProfessionalsPage.getLayout = function getLayout(page: ReactElement) {
   return (
     <MainLayout
       title={"Monitoreo Mascotas"}
@@ -80,4 +80,4 @@ MedicinesPage.getLayout = function getLayout(page: ReactElement) {
   );
 };
 
-export default MedicinesPage;
+export default ProfessionalsPage;

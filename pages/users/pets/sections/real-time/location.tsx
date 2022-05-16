@@ -7,10 +7,10 @@ import { TabList, TabPanel, TabContext } from "@mui/lab";
 import MuiTab, { TabProps } from "@mui/material/Tab";
 
 // ** Icons Imports
-import DeviceThermostatOutlinedIcon from "@mui/icons-material/DeviceThermostatOutlined";
+import LocationOnOutlinedIcon from "@mui/icons-material/LocationOnOutlined";
 import AddCircleOutlineOutlinedIcon from "@mui/icons-material/AddCircleOutlineOutlined";
-import { TabTemperature } from "../../../../components/ui";
-import { MainLayout } from "../../../../components/layout";
+import { TabLocation } from "../../../../../components/ui";
+import { MainLayout } from "../../../../../components/layout";
 
 const Tab = styled(MuiTab)<TabProps>(({ theme }) => ({
   [theme.breakpoints.down("md")]: {
@@ -26,8 +26,9 @@ const TabName = styled("span")(({ theme }) => ({
   fontSize: "0.8rem",
   marginLeft: theme.spacing(2.4),
 }));
-const TemperaturePage = () => {
-  const [value, setValue] = useState<string>("temperature");
+
+const LocationPage = () => {
+  const [value, setValue] = useState<string>("location");
 
   const handleChange = (event: SyntheticEvent, newValue: string) => {
     setValue(newValue);
@@ -37,15 +38,15 @@ const TemperaturePage = () => {
       <TabContext value={value}>
         <TabList
           onChange={handleChange}
-          aria-label="temperature-settings tabs"
+          aria-label="location-settings tabs"
           sx={{ borderBottom: (theme) => `1px solid ${theme.palette.divider}` }}
         >
           <Tab
-            value="temperature"
+            value="location"
             label={
               <Box sx={{ display: "flex", alignItems: "center" }}>
-                <DeviceThermostatOutlinedIcon />
-                <TabName>Temperatura</TabName>
+                <LocationOnOutlinedIcon />
+                <TabName>Ubicación</TabName>
               </Box>
             }
           />
@@ -59,8 +60,8 @@ const TemperaturePage = () => {
           }
         /> */}
         </TabList>
-        <TabPanel sx={{ p: 0 }} value="temperature">
-          <TabTemperature />
+        <TabPanel sx={{ p: 0 }} value="location">
+          <TabLocation />
         </TabPanel>
         {/* <TabPanel sx={{ p: 0 }} value="add-pets">
         <TabInfoPet />
@@ -70,7 +71,7 @@ const TemperaturePage = () => {
   );
 };
 
-TemperaturePage.getLayout = function getLayout(page: ReactElement) {
+LocationPage.getLayout = function getLayout(page: ReactElement) {
   return (
     <MainLayout
       title={"Monitoreo Mascotas"}
@@ -81,4 +82,4 @@ TemperaturePage.getLayout = function getLayout(page: ReactElement) {
   );
 };
 
-export default TemperaturePage;
+export default LocationPage;

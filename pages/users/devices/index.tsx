@@ -1,6 +1,6 @@
 import React, { ReactElement } from "react";
-import { MainLayout } from "../../components/layout";
-import { TabAccount, TabSecurity } from "../../components/ui";
+import { MainLayout } from "../../../components/layout";
+import { TabAccount, TabSecurity } from "../../../components/ui";
 // ** React Imports
 import { SyntheticEvent, useState } from "react";
 
@@ -14,8 +14,9 @@ import { styled } from "@mui/material/styles";
 import MuiTab, { TabProps } from "@mui/material/Tab";
 
 // ** Icons Imports
-import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
-import LockOpenOutlinedIcon from "@mui/icons-material/LockOpenOutlined";
+import OnDeviceTrainingOutlinedIcon from "@mui/icons-material/OnDeviceTrainingOutlined";
+import AddCircleOutlineOutlinedIcon from "@mui/icons-material/AddCircleOutlineOutlined";
+import { TabListDevices } from '../../../components/ui';
 
 const Tab = styled(MuiTab)<TabProps>(({ theme }) => ({
   [theme.breakpoints.down("md")]: {
@@ -31,51 +32,51 @@ const TabName = styled("span")(({ theme }) => ({
   fontSize: "0.8rem",
   marginLeft: theme.spacing(2.4),
 }));
-const ProfilePage = () => {
-  // ** State
-  const [value, setValue] = useState<string>("account");
+const DevicePage = () => {
+  const [value, setValue] = useState<string>("devices");
 
   const handleChange = (event: SyntheticEvent, newValue: string) => {
     setValue(newValue);
   };
   return (
-    <Card>
-      <TabContext value={value}>
+    <Card >
+      <TabContext value={value} >
         <TabList
           onChange={handleChange}
-          aria-label="account-settings tabs"
+          aria-label="devices-settings tabs"
           sx={{ borderBottom: (theme) => `1px solid ${theme.palette.divider}` }}
         >
           <Tab
-            value="account"
+            value="devices"
             label={
               <Box sx={{ display: "flex", alignItems: "center" }}>
-                <AccountCircleOutlinedIcon />
-                <TabName>Perfil</TabName>
+                <OnDeviceTrainingOutlinedIcon />
+                <TabName>Dispositivos</TabName>
               </Box>
             }
           />
           <Tab
-            value="security"
+            value="add-devices"
             label={
               <Box sx={{ display: "flex", alignItems: "center" }}>
-                <LockOpenOutlinedIcon />
-                <TabName>Seguridad</TabName>
+                <AddCircleOutlineOutlinedIcon />
+                <TabName>Agregar</TabName>
               </Box>
             }
           />
         </TabList>
-        <TabPanel sx={{ p: 0 }} value="account">
-          <TabAccount />
+        <TabPanel sx={{ p: 0 }} value="devices">
+          <TabListDevices />
         </TabPanel>
-        <TabPanel sx={{ p: 0 }} value="security">
-          <TabSecurity />
+        <TabPanel sx={{ p: 0 }} value="add-devices">
+          
         </TabPanel>
       </TabContext>
     </Card>
   );
 };
-ProfilePage.getLayout = function getLayout(page: ReactElement) {
+
+DevicePage.getLayout = function getLayout(page: ReactElement) {
   return (
     <MainLayout
       title={"Monitoreo Mascotas"}
@@ -85,4 +86,5 @@ ProfilePage.getLayout = function getLayout(page: ReactElement) {
     </MainLayout>
   );
 };
-export default ProfilePage;
+
+export default DevicePage;

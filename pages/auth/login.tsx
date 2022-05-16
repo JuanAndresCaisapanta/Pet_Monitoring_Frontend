@@ -72,7 +72,6 @@ const LoginPage = () => {
       return;
     }
     router.replace("/");
-    router.reload()
   };
 
   const handleClickShowPassword = () => {
