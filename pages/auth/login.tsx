@@ -71,7 +71,8 @@ const LoginPage = () => {
       setTimeout(() => setShowError(false), 3000);
       return;
     }
-    router.push("/");
+    router.replace("/");
+    router.reload()
   };
 
   const handleClickShowPassword = () => {
