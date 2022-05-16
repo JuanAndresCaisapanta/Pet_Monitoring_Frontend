@@ -1,10 +1,11 @@
-import { FC, useReducer } from "react";
+import { FC, useEffect, useReducer } from "react";
 import { petMonitoringApi } from "../../api";
 import { IUser } from "../../interfaces";
 import { AuthContext, authReducer } from "./";
 import Cookies from "js-cookie";
 import axios from "axios";
-
+import jwt from "jsonwebtoken";
+import { useRouter } from "next/router";
 export interface AuthState {
   isLoggedIn: boolean;
   user?: IUser;
@@ -21,6 +22,30 @@ interface Props {
 
 export const AuthProvider: FC<Props> = ({ children }) => {
   const [state, dispatch] = useReducer(authReducer, AUTH_INITIAL_STATE);
+  const router = useRouter();
+  useEffect(() => {
+    checkToken();
+  });
+
+  const checkToken = async () => {
+    if (!Cookies.get("token")) {
+      return;
+    }
+    try {
+      const token = Cookies.get("token") || "";
+      const { data } = await petMonitoringApi.get(
+        `/auth/validate-token/${token}`
+      );
+      if (data == true) {
+        const user = jwt.decode(token) as IUser;
+        dispatch({ type: "[Auth] - Login", payload: user });
+      } else {
+        Cookies.remove("token");
+      }
+    } catch (error) {
+      Cookies.remove("token");
+    }
+  };
 
   const loginUser = async (
     email: string,
@@ -75,12 +100,18 @@ export const AuthProvider: FC<Props> = ({ children }) => {
     }
   };
 
+  const logout = () => {
+    router.reload();
+    Cookies.remove("token");
+  };
+
   return (
     <AuthContext.Provider
       value={{
         ...state,
         loginUser,
         registerUser,
+        logout,
       }}
     >
       {children}
