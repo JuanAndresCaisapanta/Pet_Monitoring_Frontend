@@ -11,9 +11,11 @@ interface ContextProps {
     last_name: string,
     email: string,
     password: string,
-    creation_date: string
+    creation_date: string,
+    image:any
   ) => Promise<{ hasError: boolean; message?: string }>;
   logout: () => void;
+  checkToken: () => void;
 }
 
 export const AuthContext = createContext({} as ContextProps);

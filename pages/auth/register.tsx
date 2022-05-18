@@ -1,5 +1,7 @@
+// @ts-ignore: Object is possibly 'null'.
 import {
   ChangeEvent,
+  ElementType,
   MouseEvent,
   ReactElement,
   useContext,
@@ -21,6 +23,7 @@ import {
   InputAdornment,
   Chip,
   FormHelperText,
+  ButtonProps,
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
 
@@ -46,11 +49,37 @@ const LinkStyled = styled("a")(({ theme }) => ({
   color: theme.palette.primary.main,
 }));
 
+const ImgStyled = styled("img")(({ theme }) => ({
+  width: 120,
+  height: 120,
+  marginRight: theme.spacing(6.25),
+  borderRadius: theme.shape.borderRadius,
+}));
+
+const ButtonStyled = styled(Button)<
+  ButtonProps & { component?: ElementType; htmlFor?: string }
+>(({ theme }) => ({
+  [theme.breakpoints.down("sm")]: {
+    width: "100%",
+    textAlign: "center",
+  },
+}));
+const ResetButtonStyled = styled(Button)<ButtonProps>(({ theme }) => ({
+  marginLeft: theme.spacing(4.5),
+  [theme.breakpoints.down("sm")]: {
+    width: "100%",
+    marginLeft: 0,
+    textAlign: "center",
+    marginTop: theme.spacing(4),
+  },
+}));
+
 type FormData = {
   name: string;
   last_name: string;
   email: string;
   password: string;
+  image: any;
 };
 
 const RegisterPage = () => {
@@ -72,18 +101,19 @@ const RegisterPage = () => {
   });
 
   const { registerUser } = useContext(AuthContext);
-
-
+  const [imgSrc, setImgSrc] = useState<string>("/images/profile/user.png");
+  
   const current = new Date();
   const date = `${current.getFullYear()}-${
     current.getMonth() + 1
-  }-${current.getDate()}`;
+  }-${current.getDate()} ${current.getHours()}:${current.getMinutes()}:${current.getSeconds()}`;
 
   const onRegisterForm = async ({
     name,
     last_name,
     email,
     password,
+    image
   }: FormData) => {
     setShowError(false);
     const { hasError, message } = await registerUser(
@@ -91,7 +121,8 @@ const RegisterPage = () => {
       last_name,
       email,
       password,
-      date
+      date,
+      image[0]
     );
 
     if (hasError) {
@@ -104,11 +135,6 @@ const RegisterPage = () => {
     router.replace("/auth/login");
   };
 
-  const handleChange =
-    (prop: keyof State) => (event: ChangeEvent<HTMLInputElement>) => {
-      setValues({ ...values, [prop]: event.target.value });
-    };
-
   const handleClickShowPassword = () => {
     setValues({ ...values, showPassword: !values.showPassword });
   };
@@ -117,12 +143,22 @@ const RegisterPage = () => {
     event.preventDefault();
   };
 
+  const onChange = (file: ChangeEvent) => {
+    const reader = new FileReader();
+    const { files } = file.target as HTMLInputElement;
+    if (files && files.length !== 0) {
+      reader.onload = () => setImgSrc(reader.result as string);
+      reader.readAsDataURL(files[0]);
+    }
+  };
+
   return (
     <>
       <form
         noValidate
         autoComplete="off"
         onSubmit={handleSubmit(onRegisterForm)}
+        encType={`multipart/form-data`}
       >
         <Chip
           label="No reconocemos ese usuario / contraseña"
@@ -131,6 +167,38 @@ const RegisterPage = () => {
           className="fadeIn"
           sx={{ display: showError ? "flex" : "none" }}
         />
+        <Typography color={"primary"} textAlign={"left"} sx={{ ml: "15px" }}>
+          Imagen Perfil
+        </Typography>
+        <Box sx={{ display: "flex", alignItems: "center" }}>
+          <ImgStyled src={imgSrc} alt="Imagen Perfil" />
+          <Box>
+            <ButtonStyled
+              component="label"
+              variant="contained"
+              htmlFor="account-settings-upload-image"
+            >
+              Cargar
+              <input
+                hidden
+                type="file"
+                {...register("image", {onChange:onChange})}
+                accept=".jpg, .jpeg, .png"
+                id="account-settings-upload-image"
+              />
+            </ButtonStyled>
+            <ResetButtonStyled
+              color="error"
+              variant="outlined"
+              onClick={() => setImgSrc("/images/profile/user.png")}
+            >
+              Resetear
+            </ResetButtonStyled>
+            <Typography variant="body2" sx={{ marginTop: 5 }}>
+              Allowed PNG or JPEG. Max size of 800K.
+            </Typography>
+          </Box>
+        </Box>
         <TextField
           autoFocus
           fullWidth

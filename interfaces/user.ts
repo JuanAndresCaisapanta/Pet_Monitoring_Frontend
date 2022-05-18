@@ -1,7 +1,7 @@
 export interface IUser {
   id: string;
   name: string;
-  lats_name: string;
+  last_name: string;
   email: string;
   password?: string;
   role: [{ authority: string },{ authority: string }];
@@ -9,4 +9,5 @@ export interface IUser {
   phone?: string;
   creation_date: Date;
   update_date: Date;
+  image?: string;
 }

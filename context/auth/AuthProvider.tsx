@@ -27,7 +27,6 @@ export const AuthProvider: FC<Props> = ({ children }) => {
     checkToken();
   }, []);
 
-
   const checkToken = async () => {
     if (!Cookies.get("token")) {
       return;
@@ -38,16 +37,16 @@ export const AuthProvider: FC<Props> = ({ children }) => {
         `/auth/validate-token/${token}`
       );
       if (data == true) {
-        const { sub:email } = jwt.decode(token) as { sub: string };
-        const {data} = await petMonitoringApi.get(`/user/${email}`,{ headers: {"Authorization" : `Bearer ${token}`} });
+        const { sub: email } = jwt.decode(token) as { sub: string };
+        const { data } = await petMonitoringApi.get(`/user/${email}`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
         dispatch({ type: "[Auth] - Login", payload: data });
       } else {
         Cookies.remove("token");
       }
     } catch (error) {
       Cookies.remove("token");
-    
-      // Cookies.remove("token");
     }
   };
 
@@ -62,7 +61,8 @@ export const AuthProvider: FC<Props> = ({ children }) => {
       });
       const { token, user } = data;
       Cookies.set("token", token);
-      dispatch({ type: "[Auth] - Login", payload: user });
+      checkToken()
+      //dispatch({ type: "[Auth] - Login", payload: user });
       return true;
     } catch (error) {
       return false;
@@ -74,7 +74,8 @@ export const AuthProvider: FC<Props> = ({ children }) => {
     last_name: string,
     email: string,
     password: string,
-    creation_date: string
+    creation_date: string,
+    image: any
   ): Promise<{ hasError: boolean; message?: string }> => {
     try {
       const { data } = await petMonitoringApi.post("/auth/register", {
@@ -83,7 +84,8 @@ export const AuthProvider: FC<Props> = ({ children }) => {
         email,
         password,
         creation_date,
-      });
+        image,
+      },{headers: {'Content-Type': 'multipart/form-data'}});
       const { token, user } = data;
       Cookies.set("token", token);
       dispatch({ type: "[Auth] - Login", payload: user });
@@ -116,6 +118,7 @@ export const AuthProvider: FC<Props> = ({ children }) => {
         loginUser,
         registerUser,
         logout,
+        checkToken,
       }}
     >
       {children}

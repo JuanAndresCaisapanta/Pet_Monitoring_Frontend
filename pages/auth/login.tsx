@@ -183,6 +183,7 @@ const LoginPage = () => {
     </>
   );
 };
+
 LoginPage.getLayout = function getLayout(page: ReactElement) {
   return (
     <AuthLayout
@@ -193,4 +194,5 @@ LoginPage.getLayout = function getLayout(page: ReactElement) {
     </AuthLayout>
   );
 };
+
 export default LoginPage;

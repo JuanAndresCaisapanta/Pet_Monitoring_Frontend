@@ -1,8 +1,9 @@
-import React from "react";
+
 import Router from "next/router";
+import { useEffect } from "react";
 
 const IndexPage = () => {
-  React.useEffect(() => {
+  useEffect(() => {
     Router.push("/auth/login");
   });
 

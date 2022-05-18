@@ -1,5 +1,5 @@
 // ** React Imports
-import { useState, ElementType, ChangeEvent } from "react";
+import { useState, ElementType, ChangeEvent, useContext, useEffect } from "react";
 
 // ** MUI Imports
 import Box from "@mui/material/Box";
@@ -9,9 +9,10 @@ import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import CardContent from "@mui/material/CardContent";
 import Button, { ButtonProps } from "@mui/material/Button";
+import { AuthContext } from "../../../context";
 
 const ImgStyled = styled("img")(({ theme }) => ({
-  width: 120,
+  width: 142,
   height: 120,
   marginRight: theme.spacing(6.25),
   borderRadius: theme.shape.borderRadius,
@@ -37,8 +38,14 @@ const ResetButtonStyled = styled(Button)<ButtonProps>(({ theme }) => ({
 }));
 
 export const TabAccount = () => {
+  const {user}=useContext(AuthContext);
   const [imgSrc, setImgSrc] = useState<string>("/images/profile/user.png");
-
+ useEffect(() => {
+   if(user?.image){
+    setImgSrc(`data:image/jpeg;base64,${user?.image}`);
+   }
+ }, [setImgSrc,user])
+ 
   const onChange = (file: ChangeEvent) => {
     const reader = new FileReader();
     const { files } = file.target as HTMLInputElement;
@@ -54,14 +61,14 @@ export const TabAccount = () => {
         <Grid container spacing={2}>
           <Grid item xs={12}>
             <Box sx={{ display: "flex", alignItems: "center" }}>
-              <ImgStyled src={imgSrc} alt="Profile Pic" />
+              <ImgStyled src={imgSrc} alt="Imagen Perfil" />
               <Box>
                 <ButtonStyled
                   component="label"
                   variant="contained"
                   htmlFor="account-settings-upload-image"
                 >
-                  Cargar Imagen
+                  Cargar
                   <input
                     hidden
                     type="file"
@@ -77,9 +84,6 @@ export const TabAccount = () => {
                 >
                   Resetear
                 </ResetButtonStyled>
-                <Typography variant="body2" sx={{ marginTop: 5 }}>
-                  Allowed PNG or JPEG. Max size of 800K.
-                </Typography>
               </Box>
             </Box>
           </Grid>
@@ -87,16 +91,16 @@ export const TabAccount = () => {
             <TextField
               fullWidth
               label="Nombre"
-              placeholder="johnDoe"
-              defaultValue="johnDoe"
+              placeholder="Nombre"
+              value={user?.name|| ""}
             />
           </Grid>
           <Grid item xs={12} sm={6}>
             <TextField
               fullWidth
               label="Apellido"
-              placeholder="John Doe"
-              defaultValue="John Doe"
+              placeholder="Apellido"
+              value={user?.last_name|| ""}
             />
           </Grid>
           <Grid item xs={12} sm={6}>
@@ -104,16 +108,16 @@ export const TabAccount = () => {
               fullWidth
               type="email"
               label="Correo Electrónico"
-              placeholder="johnDoe@example.com"
-              defaultValue="johnDoe@example.com"
+              placeholder="Correo Electrónico"
+              value={user?.email|| ""}
             />
           </Grid>
           <Grid item xs={12} sm={6}>
             <TextField
               fullWidth
               label="Dirección"
-              placeholder="ABC Pvt. Ltd."
-              defaultValue="ABC Pvt. Ltd."
+              placeholder="Dirección"
+              value={user?.address|| ""}
             />
           </Grid>
           <Grid item xs={12} sm={6}>
@@ -123,7 +127,7 @@ export const TabAccount = () => {
               inputProps={{ inputMode: "numeric", pattern: "[0-9]*" }}
               label="Teléfono"
               placeholder="0999999999"
-              defaultValue="0999999999"
+              value={user?.phone|| ""}
             />
           </Grid>
           <Grid item xs={12}>
