@@ -14,7 +14,7 @@ import {
 import { Notifications } from "@mui/icons-material";
 
 import MenuIcon from "@mui/icons-material/Menu";
-import { FC, useContext } from "react";
+import { FC, useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../../context";
 const drawerWidth = 210;
 interface Props {
@@ -23,6 +23,13 @@ interface Props {
 
 export const Navbar: FC<Props> = ({ toggleSideMenu }) => {
   const {user}=useContext(AuthContext);
+  const [imgSrc, setImgSrc] = useState<string>("/images/profile/user.png");
+  useEffect(() => {
+    if(user?.image){
+     setImgSrc(`data:image/jpeg;base64,${user?.image}`);
+    }
+  }, [setImgSrc,user])
+
   return (
     <AppBar
       sx={{
@@ -60,7 +67,7 @@ export const Navbar: FC<Props> = ({ toggleSideMenu }) => {
 
         <Tooltip title={user?.name||""}>
           <IconButton sx={{ p: 0 }}>
-            <Avatar alt="Usuario" src="" />
+            <Avatar alt="Usuario" src={imgSrc} />
           </IconButton>
         </Tooltip>
       </Toolbar>
