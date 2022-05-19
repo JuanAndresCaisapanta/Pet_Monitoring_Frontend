@@ -1,11 +1,14 @@
-import { FC, useEffect, useReducer } from "react";
-import { petMonitoringApi } from "../../api";
-import { IUser } from "../../interfaces";
-import { AuthContext, authReducer } from "./";
+import { FC, ReactNode, useEffect, useReducer } from "react";
+import { useRouter } from "next/router";
+
 import Cookies from "js-cookie";
 import axios from "axios";
 import jwt from "jsonwebtoken";
-import { useRouter } from "next/router";
+
+import { petMonitoringApi } from "../../api";
+import { IUser } from "../../interfaces";
+import { AuthContext, authReducer } from "./";
+
 export interface AuthState {
   isLoggedIn: boolean;
   user?: IUser;
@@ -17,12 +20,14 @@ const AUTH_INITIAL_STATE: AuthState = {
 };
 
 interface Props {
-  children: React.ReactNode;
+  children: ReactNode;
 }
 
 export const AuthProvider: FC<Props> = ({ children }) => {
   const [state, dispatch] = useReducer(authReducer, AUTH_INITIAL_STATE);
+
   const router = useRouter();
+
   useEffect(() => {
     checkToken();
   }, []);
@@ -61,8 +66,7 @@ export const AuthProvider: FC<Props> = ({ children }) => {
       });
       const { token, user } = data;
       Cookies.set("token", token);
-      checkToken()
-      //dispatch({ type: "[Auth] - Login", payload: user });
+      checkToken();
       return true;
     } catch (error) {
       return false;
@@ -78,14 +82,18 @@ export const AuthProvider: FC<Props> = ({ children }) => {
     image: any
   ): Promise<{ hasError: boolean; message?: string }> => {
     try {
-      const { data } = await petMonitoringApi.post("/auth/register", {
-        name,
-        last_name,
-        email,
-        password,
-        creation_date,
-        image,
-      },{headers: {'Content-Type': 'multipart/form-data'}});
+      const { data } = await petMonitoringApi.post(
+        "/auth/register",
+        {
+          name,
+          last_name,
+          email,
+          password,
+          creation_date,
+          image,
+        },
+        { headers: { "Content-Type": "multipart/form-data" } }
+      );
       const { token, user } = data;
       Cookies.set("token", token);
       dispatch({ type: "[Auth] - Login", payload: user });

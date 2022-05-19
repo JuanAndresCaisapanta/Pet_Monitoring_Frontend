@@ -10,6 +10,7 @@ import { CssBaseline, ThemeProvider } from "@mui/material";
 import { theme } from "../themes";
 import { UiProvider } from "../context";
 import { AuthProvider } from "../context/auth";
+import { UserProvider } from "../context/user";
 
 type NextPageWithLayout = NextPage & {
   getLayout?: (page: ReactElement) => ReactNode;
@@ -24,12 +25,14 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
 
   return (
     <AuthProvider>
-      <UiProvider>
-        <ThemeProvider theme={theme}>
-          <CssBaseline />
-          {getLayout(<Component {...pageProps} />)}
-        </ThemeProvider>
-      </UiProvider>
+      <UserProvider>
+        <UiProvider>
+          <ThemeProvider theme={theme}>
+            <CssBaseline />
+            {getLayout(<Component {...pageProps} />)}
+          </ThemeProvider>
+        </UiProvider>
+      </UserProvider>
     </AuthProvider>
   );
 }

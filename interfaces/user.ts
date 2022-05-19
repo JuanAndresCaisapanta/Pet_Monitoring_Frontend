@@ -8,6 +8,5 @@ export interface IUser {
   address?: string;
   phone?: string;
   creation_date: Date;
-  update_date: Date;
   image?: string;
 }
