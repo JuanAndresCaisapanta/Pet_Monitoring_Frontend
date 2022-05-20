@@ -8,7 +8,14 @@ import {
   useMemo,
 } from "react";
 
-import { Box, Grid, TextField, CardContent, Typography } from "@mui/material";
+import {
+  Box,
+  Grid,
+  TextField,
+  CardContent,
+  Typography,
+  LinearProgress,
+} from "@mui/material";
 import Button, { ButtonProps } from "@mui/material/Button";
 import { styled } from "@mui/material/styles";
 
@@ -16,32 +23,8 @@ import { AuthContext } from "../../../context";
 import { UserContext } from "../../../context/user/UserContext";
 import { validations } from "../../../utils";
 import { useForm } from "react-hook-form";
-
-const ImgStyled = styled("img")(({ theme }) => ({
-  width: 120,
-  height: 120,
-  marginRight: theme.spacing(6.25),
-  borderRadius: theme.shape.borderRadius,
-}));
-
-const ButtonStyled = styled(Button)<
-  ButtonProps & { component?: ElementType; htmlFor?: string }
->(({ theme }) => ({
-  [theme.breakpoints.down("sm")]: {
-    width: "100%",
-    textAlign: "center",
-  },
-}));
-
-const ResetButtonStyled = styled(Button)<ButtonProps>(({ theme }) => ({
-  marginLeft: theme.spacing(4.5),
-  [theme.breakpoints.down("sm")]: {
-    width: "100%",
-    marginLeft: 0,
-    textAlign: "center",
-    marginTop: theme.spacing(4),
-  },
-}));
+import { useRouter } from "next/router";
+import Image from "next/image";
 
 type FormData = {
   name: string;
@@ -53,11 +36,13 @@ type FormData = {
 };
 
 export const TabAccount = () => {
-  const { user } = useContext(AuthContext);
-  const { updateUser } = useContext(UserContext);
   const [showError, setShowError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [imgSrc, setImgSrc] = useState<string>("/images/profile/user.png");
+  const { user } = useContext(AuthContext);
+  const { updateUser } = useContext(UserContext);
+
+  const route = useRouter();
 
   const {
     register,
@@ -85,8 +70,9 @@ export const TabAccount = () => {
       reader.readAsDataURL(files[0]);
     }
   };
-  const onReset = () => {
-    setImgSrc("/images/profile/user.png");
+
+  const onCancel = () => {
+    route.reload();
   };
   const onUpdateForm = async ({
     name,
@@ -117,6 +103,9 @@ export const TabAccount = () => {
   if (user) {
     return (
       <CardContent>
+        <Box sx={{ width: "100%", mb: 1 }}>
+          <LinearProgress />
+        </Box>
         <form
           noValidate
           autoComplete="off"
@@ -124,33 +113,37 @@ export const TabAccount = () => {
           encType={`multipart/form-data`}
         >
           <Grid container spacing={2}>
-            <Grid item xs={12}>
-              <Box sx={{ display: "flex", alignItems: "center" }}>
-                <ImgStyled src={imgSrc} alt="Imagen Perfil" />
-                <Box>
-                  <ButtonStyled
-                    component="label"
-                    variant="contained"
-                    htmlFor="account-settings-upload-image"
-                  >
-                    Cambiar
-                    <input
-                      hidden
-                      type="file"
-                      {...register("image", { onChange: onChange })}
-                      accept=".jpg, .jpeg, .png"
-                      id="account-settings-upload-image"
-                    />
-                  </ButtonStyled>
-                  {/* <ResetButtonStyled
-                    color="error"
-                    variant="outlined"
-                    onClick={onReset}
-                  >
-                    Defecto
-                  </ResetButtonStyled> */}
-                </Box>
-              </Box>
+            <Grid
+              container
+              item
+              xs={12}
+              sm={12}
+              direction="column"
+              alignItems="start"
+            >
+              <Image
+                style={{ borderRadius: "10px" }}
+                src={imgSrc}
+                width={200}
+                height={190}
+                alt="Imagen Perfil"
+              />
+              <Button
+                component="label"
+                variant="contained"
+                htmlFor="account-settings-upload-image"
+                disableElevation
+                sx={{ mt: 1 }}
+              >
+                Cambiar
+                <input
+                  hidden
+                  type="file"
+                  {...register("image", { onChange: onChange })}
+                  accept=".jpg, .jpeg, .png"
+                  id="account-settings-upload-image"
+                />
+              </Button>
             </Grid>
             <Grid item xs={12} sm={6}>
               <TextField
@@ -215,14 +208,20 @@ export const TabAccount = () => {
             </Grid>
             <Grid item xs={12}>
               <Button
+                disableElevation
                 variant="contained"
                 sx={{ marginRight: 3.5 }}
                 type="submit"
               >
                 Cuardar
               </Button>
-              <Button type="reset" variant="outlined" color="secondary">
-                Resetear
+              <Button
+                disableElevation
+                variant="contained"
+                color="error"
+                onClick={onCancel}
+              >
+                Cancelar
               </Button>
             </Grid>
           </Grid>
@@ -230,6 +229,10 @@ export const TabAccount = () => {
       </CardContent>
     );
   } else {
-    return <CardContent><Typography color={"primary"}>Cargando...</Typography></CardContent>;
+    return (
+      <CardContent>
+        <Typography color={"primary"}>Cargando...</Typography>
+      </CardContent>
+    );
   }
 };

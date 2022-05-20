@@ -64,7 +64,7 @@ export const AuthProvider: FC<Props> = ({ children }) => {
         email,
         password,
       });
-      const { token, user } = data;
+      const { token } = data;
       Cookies.set("token", token);
       checkToken();
       return true;

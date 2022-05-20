@@ -21,6 +21,9 @@ import {
   InputAdornment,
   Chip,
   FormHelperText,
+  Grid,
+  CircularProgress,
+  Stack,
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
 
@@ -30,8 +33,9 @@ import {
   ErrorOutline,
 } from "@mui/icons-material";
 
-import { AuthLayout } from "../../components/layout";
 import { useForm } from "react-hook-form";
+
+import { AuthLayout } from "../../components/layout";
 import { AuthContext } from "../../context";
 import { validations } from "../../utils";
 
@@ -61,6 +65,17 @@ type FormData = {
 };
 
 const RegisterPage = () => {
+  const [showError, setShowError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+  const [imgSrc, setImgSrc] = useState("/images/profile/user.png");
+  const [loading, setLoading] = useState(false);
+  const [values, setValues] = useState<State>({
+    password: "",
+    showPassword: false,
+  });
+
+  const { registerUser } = useContext(AuthContext);
+
   const router = useRouter();
 
   const {
@@ -68,18 +83,6 @@ const RegisterPage = () => {
     handleSubmit,
     formState: { errors },
   } = useForm<FormData>();
-
-  const [showError, setShowError] = useState(false);
-
-  const [errorMessage, setErrorMessage] = useState("");
-
-  const [values, setValues] = useState<State>({
-    password: "",
-    showPassword: false,
-  });
-
-  const { registerUser } = useContext(AuthContext);
-  const [imgSrc, setImgSrc] = useState<string>("/images/profile/user.png");
 
   const current = new Date();
   const date = `${current.getFullYear()}-${
@@ -93,7 +96,6 @@ const RegisterPage = () => {
     password,
     image,
   }: FormData) => {
-    setShowError(false);
     const { hasError, message } = await registerUser(
       name,
       last_name,
@@ -102,14 +104,15 @@ const RegisterPage = () => {
       date,
       image[0]
     );
-
+    setShowError(false);
+    setLoading(true);
     if (hasError) {
       setShowError(true);
+      setLoading(false);
       setErrorMessage(message!);
       setTimeout(() => setShowError(false), 3000);
       return;
     }
-
     router.replace("/auth/login");
   };
 
@@ -130,6 +133,11 @@ const RegisterPage = () => {
     }
   };
 
+  const onCancel = () => {
+    setImgSrc("/images/profile/user.png");
+    router.reload();
+  };
+
   return (
     <>
       <form
@@ -139,12 +147,17 @@ const RegisterPage = () => {
         encType={`multipart/form-data`}
       >
         <Chip
-          label="No reconocemos ese usuario / contraseña"
+          label="Existen problemas con el ingreso de datos"
           color="error"
           icon={<ErrorOutline />}
           className="fadeIn"
           sx={{ display: showError ? "flex" : "none", marginBottom: "1rem" }}
         />
+        {loading && (
+          <Stack alignItems="center">
+            <CircularProgress sx={{ position: "fixed" }} />
+          </Stack>
+        )}
         <Box sx={{ alignItems: "center" }}>
           <Typography color={"primary"}>Imagen Perfil</Typography>
           <ImgStyled src={imgSrc} alt="Imagen Perfil" />
@@ -154,6 +167,8 @@ const RegisterPage = () => {
             component="label"
             variant="contained"
             htmlFor="account-settings-upload-image"
+            disableElevation
+            disabled={loading}
           >
             Cargar
             <input
@@ -163,14 +178,6 @@ const RegisterPage = () => {
               accept=".jpg, .jpeg, .png"
               id="account-settings-upload-image"
             />
-          </Button>
-          <Button
-            color="warning"
-            variant="contained"
-            sx={{ ml: 1 }}
-            onClick={() => setImgSrc("/images/profile/user.png")}
-          >
-            Resetear
           </Button>
         </Box>
         <TextField
@@ -184,6 +191,7 @@ const RegisterPage = () => {
           })}
           error={!!errors.name}
           helperText={errors.name?.message}
+          disabled={loading}
         />
         <TextField
           fullWidth
@@ -195,8 +203,10 @@ const RegisterPage = () => {
           })}
           error={!!errors.name}
           helperText={errors.name?.message}
+          disabled={loading}
         />
         <TextField
+          disabled={loading}
           fullWidth
           label="Correo Electrónico"
           sx={{ marginBottom: 1 }}
@@ -210,6 +220,7 @@ const RegisterPage = () => {
         <FormControl fullWidth sx={{ marginBottom: 2 }}>
           <InputLabel htmlFor="auth-register-password">Contraseña</InputLabel>
           <OutlinedInput
+            disabled={loading}
             label="Contraseña"
             type={values.showPassword ? "text" : "password"}
             {...register("password", {
@@ -240,15 +251,33 @@ const RegisterPage = () => {
             </FormHelperText>
           )}
         </FormControl>
-        <Button
-          fullWidth
-          size="large"
-          type="submit"
-          variant="contained"
-          sx={{ marginBottom: 2 }}
-        >
-          Registrarse
-        </Button>
+        <Grid container>
+          <Grid item xs={12} sm={6}>
+            <Button
+              disableElevation
+              size="large"
+              type="submit"
+              variant="contained"
+              sx={{ marginBottom: 1 }}
+              disabled={loading}
+            >
+              Registrarse
+            </Button>
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <Button
+              disableElevation
+              size="large"
+              color="error"
+              variant="contained"
+              onClick={onCancel}
+              disabled={loading}
+              sx={{ marginBottom: 1 }}
+            >
+              Cancelar
+            </Button>
+          </Grid>
+        </Grid>
       </form>
       <Box
         sx={{
