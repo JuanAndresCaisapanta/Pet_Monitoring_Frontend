@@ -38,6 +38,7 @@ import { useForm } from "react-hook-form";
 import { AuthLayout } from "../../components/layout";
 import { AuthContext } from "../../context";
 import { validations } from "../../utils";
+import imageCompression from 'browser-image-compression';
 
 interface State {
   password: string;
@@ -96,23 +97,49 @@ const RegisterPage = () => {
     password,
     image,
   }: FormData) => {
-    const { hasError, message } = await registerUser(
-      name,
-      last_name,
-      email,
-      password,
-      date,
-      image[0]
-    );
+    const options = {
+      maxSizeMB: 1,
+      maxWidthOrHeight: 1920,
+      useWebWorker: true,
+    };
+
     setShowError(false);
-    setLoading(true);
-    if (hasError) {
-      setShowError(true);
-      setLoading(false);
-      setErrorMessage(message!);
-      setTimeout(() => setShowError(false), 3000);
-      return;
+    if (image[0] != null) {
+      const cImage = await imageCompression(image[0], options);
+      const { hasError, message } = await registerUser(
+        name,
+        last_name,
+        email,
+        password,
+        date,
+        cImage
+      );
+      if (hasError) {
+        setShowError(true);
+        setLoading(false);
+        setErrorMessage(message!);
+        setTimeout(() => setShowError(false), 3000);
+        return;
+      }
+    } else {
+      const { hasError, message } = await registerUser(
+        name,
+        last_name,
+        email,
+        password,
+        date,
+        image[0]
+      );
+      if (hasError) {
+        setShowError(true);
+        setLoading(false);
+        setErrorMessage(message!);
+        setTimeout(() => setShowError(false), 3000);
+        return;
+      }
     }
+    setLoading(true);
+
     router.replace("/auth/login");
   };
 

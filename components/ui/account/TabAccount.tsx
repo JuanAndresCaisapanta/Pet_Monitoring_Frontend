@@ -19,6 +19,8 @@ import {
 import Button, { ButtonProps } from "@mui/material/Button";
 import { styled } from "@mui/material/styles";
 
+import imageCompression from "browser-image-compression";
+
 import { AuthContext } from "../../../context";
 import { UserContext } from "../../../context/user/UserContext";
 import { validations } from "../../../utils";
@@ -82,21 +84,43 @@ export const TabAccount = () => {
     phone,
     image,
   }: FormData) => {
+    const options = {
+      maxSizeMB: 1,
+      maxWidthOrHeight: 1920,
+      useWebWorker: true,
+    };
     setShowError(false);
-    const { hasError, message } = await updateUser(
-      name,
-      last_name,
-      email,
-      address,
-      phone,
-      image[0]
-    );
-
-    if (hasError) {
-      setShowError(true);
-      setErrorMessage(message!);
-      setTimeout(() => setShowError(false), 3000);
-      return;
+    if (image[0] != null) {
+      const cImage = await imageCompression(image[0], options);
+      const { hasError, message } = await updateUser(
+        name,
+        last_name,
+        email,
+        address,
+        phone,
+        cImage
+      );
+      if (hasError) {
+        setShowError(true);
+        setErrorMessage(message!);
+        setTimeout(() => setShowError(false), 3000);
+        return;
+      }
+    } else {
+      const { hasError, message } = await updateUser(
+        name,
+        last_name,
+        email,
+        address,
+        phone,
+        image[0]
+      );
+      if (hasError) {
+        setShowError(true);
+        setErrorMessage(message!);
+        setTimeout(() => setShowError(false), 3000);
+        return;
+      }
     }
   };
 
@@ -140,7 +164,7 @@ export const TabAccount = () => {
                   hidden
                   type="file"
                   {...register("image", { onChange: onChange })}
-                  accept=".jpg, .jpeg, .png"
+                  accept="image/*"
                   id="account-settings-upload-image"
                 />
               </Button>
