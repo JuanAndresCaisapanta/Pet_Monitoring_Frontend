@@ -1,15 +1,17 @@
-// ** MUI Imports
-import Box from "@mui/material/Box";
-import Card from "@mui/material/Card";
-import Button from "@mui/material/Button";
-import { styled } from "@mui/material/styles";
-import Typography from "@mui/material/Typography";
-import CardContent from "@mui/material/CardContent";
-import CardActions from "@mui/material/CardActions";
+import { FC } from "react";
+
+import {
+  Card,
+  Typography,
+  CardContent,
+  CardActions,
+  Button,
+} from "@mui/material";
 import Grid, { GridProps } from "@mui/material/Grid";
+import { styled } from "@mui/material/styles";
+
 import { useRouter } from "next/router";
 
-// Styled Grid component
 const StyledGrid = styled(Grid)<GridProps>(({ theme }) => ({
   display: "flex",
   alignItems: "center",
@@ -21,67 +23,75 @@ const StyledGrid = styled(Grid)<GridProps>(({ theme }) => ({
     borderRight: `1px solid ${theme.palette.divider}`,
   },
 }));
-export const CardPet = () => {
+
+interface Props {
+  name: string;
+  species: string;
+  gender: string;
+  race: string;
+  weight: number;
+}
+
+export const CardPet: FC<Props> = ({ name, species, gender, race, weight }) => {
   const router = useRouter();
   const navigateTo = (url: string) => {
     router.push(url);
   };
+
   return (
     <Card>
       <Grid container spacing={2}>
         <StyledGrid item md={6} xs={12}>
           <CardContent
             sx={{
-              display: "flex",
+              padding: "1",
               alignItems: "center",
               justifyContent: "center",
             }}
           >
             <img
               width={"100%"}
-              height={250}
+              height={214}
               alt="Mascota"
               src="/images/pet/pet-profile.jpg"
             />
           </CardContent>
         </StyledGrid>
-        <Grid
-          item
-          xs={12}
-          md={6}
-          // sx={{
-          //   paddingTop: ['0 !important', '0 !important', '1.5rem !important'],
-          //   paddingLeft: ['1.5rem !important', '1.5rem !important', '0 !important']
-          // }}
-        >
+        <Grid item xs={12} md={6}>
           <CardContent>
-            <Typography variant="h6" sx={{ marginBottom: 2 }}>
-              Nombre: Lucas
-            </Typography>
-            <Typography variant="body2" sx={{ marginBottom: 2 }}>
-              Especie: Perro
-            </Typography>
-            <Typography variant="body2" sx={{ marginBottom: 2 }}>
-              Género: Macho
-            </Typography>
-            <Typography variant="body2" sx={{ marginBottom: 2 }}>
-              Raza: Sharpei
-            </Typography>
-            <Typography variant="body2" sx={{ marginBottom: 0 }}>
-              Peso: 7,6
-            </Typography>
+            <Grid container spacing={2}>
+              <Grid item xs={12} md={12}>
+                <Typography variant="h6">Nombre: {name}</Typography>
+              </Grid>
+              <Grid item xs={12} md={12}>
+                <Typography variant="body2">Especie: {species}</Typography>
+              </Grid>
+              <Grid item xs={12} md={12}>
+                <Typography variant="body2">Género: {gender}</Typography>
+              </Grid>
+              <Grid item xs={12} md={12}>
+                <Typography variant="body2">Raza: {race}</Typography>
+              </Grid>
+              <Grid item xs={12} md={12}>
+                <Typography variant="body2">Peso: {weight}</Typography>
+              </Grid>
+            </Grid>
           </CardContent>
           <CardActions>
-            <Box
-              sx={{
-                display: "flex",
-                justifyContent: "space-between",
-                width: "100%",
-              }}
-            >
-              <Button variant="contained" onClick={() => navigateTo(`/pets/sections`)}>Monitorear</Button>
-              <Button variant="contained">Editar</Button>
-            </Box>
+            <Grid container spacing={2}>
+              <Grid item xs={6} md={6}>
+                <Button
+                  variant="contained"
+                  onClick={() => navigateTo(`/pets/sections`)}
+                  sx={{ mr: 2 }}
+                >
+                  Monitorear
+                </Button>
+              </Grid>
+              <Grid item xs={6} md={6}>
+                <Button variant="contained">Editar</Button>
+              </Grid>
+            </Grid>
           </CardActions>
         </Grid>
       </Grid>

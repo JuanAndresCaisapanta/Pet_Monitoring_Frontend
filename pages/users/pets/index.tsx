@@ -1,21 +1,15 @@
-import React, { ReactElement } from "react";
+import { ReactElement, SyntheticEvent, useState } from "react";
+
+import { Box, Card } from "@mui/material";
+import MuiTab, { TabProps } from "@mui/material/Tab";
+import { styled } from "@mui/material/styles";
+
+import { TabList, TabPanel, TabContext } from "@mui/lab";
+
+import { PetsOutlined, AddCircleOutlineOutlined } from "@mui/icons-material";
+
 import { MainLayout } from "../../../components/layout";
 import { TabInfoPet, TabListPets } from "../../../components/ui";
-// ** React Imports
-import { SyntheticEvent, useState } from "react";
-
-// ** MUI Imports
-import Box from "@mui/material/Box";
-import Card from "@mui/material/Card";
-import TabList from "@mui/lab/TabList";
-import TabPanel from "@mui/lab/TabPanel";
-import TabContext from "@mui/lab/TabContext";
-import { styled } from "@mui/material/styles";
-import MuiTab, { TabProps } from "@mui/material/Tab";
-
-// ** Icons Imports
-import PetsOutlinedIcon from "@mui/icons-material/PetsOutlined";
-import AddCircleOutlineOutlinedIcon from "@mui/icons-material/AddCircleOutlineOutlined";
 
 const Tab = styled(MuiTab)<TabProps>(({ theme }) => ({
   [theme.breakpoints.down("md")]: {
@@ -31,12 +25,14 @@ const TabName = styled("span")(({ theme }) => ({
   fontSize: "0.8rem",
   marginLeft: theme.spacing(2.4),
 }));
+
 const PetsPage = () => {
   const [value, setValue] = useState<string>("pets");
 
   const handleChange = (event: SyntheticEvent, newValue: string) => {
     setValue(newValue);
   };
+
   return (
     <Card>
       <TabContext value={value}>
@@ -49,7 +45,7 @@ const PetsPage = () => {
             value="pets"
             label={
               <Box sx={{ display: "flex", alignItems: "center" }}>
-                <PetsOutlinedIcon />
+                <PetsOutlined />
                 <TabName>Mascotas</TabName>
               </Box>
             }
@@ -58,7 +54,7 @@ const PetsPage = () => {
             value="add-pets"
             label={
               <Box sx={{ display: "flex", alignItems: "center" }}>
-                <AddCircleOutlineOutlinedIcon />
+                <AddCircleOutlineOutlined />
                 <TabName>Agregar</TabName>
               </Box>
             }

@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const petMonitoringApi = axios.create({
-  baseURL: "https://petite-lands-visit-157-100-91-151.loca.lt/",
+  baseURL: "http://192.168.100.84:8080/",
 });
 
 export default petMonitoringApi;

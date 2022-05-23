@@ -8,7 +8,6 @@ export * from "./home/HomeTable";
 export * from "./home/ManualCard";
 export * from "./home/ContactCard";
 export * from "./account/TabAccount";
-export * from "./account/TabInfo";
 export * from "./account/TabSecurity";
 export * from "./pets/TabListPets";
 export * from "./pets/TabInfoPet";

@@ -24,7 +24,7 @@ export const MainLayout: FC<Props> = ({
   //   setMobileOpen(!mobileOpen);
   // };
 
-  const {isMenuOpen, toggleSideMenu} = useContext(UiContext);
+  const { isMenuOpen, toggleSideMenu } = useContext(UiContext);
 
   return (
     <Box sx={{ display: "flex" }}>
@@ -36,10 +36,7 @@ export const MainLayout: FC<Props> = ({
         {imageFullUrl && <meta name="og:image" content={imageFullUrl} />}
       </Head>
       <Navbar toggleSideMenu={toggleSideMenu} />
-      <SideMenu
-        isMenuOpen={isMenuOpen}
-        toggleSideMenu={toggleSideMenu}
-      />
+      <SideMenu isMenuOpen={isMenuOpen} toggleSideMenu={toggleSideMenu} />
       <MainContent>{children}</MainContent>
     </Box>
   );

@@ -1,4 +1,5 @@
-import { AccountBoxOutlined, OnDeviceTraining, Pets, TrendingUp } from "@mui/icons-material";
+import { useContext } from "react";
+
 import {
   Avatar,
   Box,
@@ -6,69 +7,68 @@ import {
   CardContent,
   CardHeader,
   Grid,
-  IconButton,
   Typography,
 } from "@mui/material";
-import { FC, ReactElement, ReactNode } from "react";
+import { Pets } from "@mui/icons-material";
 
-interface DataType {
-    stats: string
-    title: string
-    color: 'primary' | 'secondary' | 'error' | 'warning' | 'info' | 'success'
-    icon: ReactElement
-  }
-  
-  const salesData: DataType[] = [
-    {
-      stats: '245k',
-      title: 'Mascotas',
-      color: 'primary',
-      icon: <Pets sx={{ fontSize: '1.75rem' }} />
-    },
-    {
-      stats: '12.5k',
-      title: 'Dispositivos',
-      color: 'info',
-      icon: <OnDeviceTraining sx={{ fontSize: '1.75rem' }} />
-    },
-  ]
-const renderStats = () => {
-    return salesData.map((item: DataType, index: number) => (
-      <Grid item xs={6} sm={6} key={index}>
-        <Box key={index} sx={{ display: 'flex', alignItems: 'center' }}>
-          <Avatar
-            variant='rounded'
-            sx={{
-              mr: 3,
-              width: 44,
-              height: 44,
-              boxShadow: 3,
-              color: 'common.white',
-              backgroundColor: `${item.color}.main`
-            }}
-          >
-            {item.icon}
-          </Avatar>
-          <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-            <Typography variant='caption'>{item.title}</Typography>
-            <Typography variant='h6'>{item.stats}</Typography>
-          </Box>
-        </Box>
-      </Grid>
-    ))
-  }
+import { AuthContext } from "../../../context";
+
 export const HomeCard = () => {
+  const { user } = useContext(AuthContext);
+  const petNumber = user?.pet?.length || 0;
+  const deviceNumber = user?.device?.length || 0;
   return (
     <Card>
-    <CardHeader
-      title='Información'
-      titleTypographyProps={{color: 'primary'}}
-    />
-    <CardContent sx={{ pt: theme => `${theme.spacing(1)} !important` }}>
-      <Grid container spacing={1}>
-        {renderStats()}
-      </Grid>
-    </CardContent>
-  </Card>
+      <CardHeader
+        title="Información"
+        titleTypographyProps={{ color: "primary" }}
+      />
+      <CardContent sx={{ pt: (theme) => `${theme.spacing(1)} !important` }}>
+        <Grid container spacing={1}>
+          <Grid item xs={6} sm={6}>
+            <Box sx={{ display: "flex", alignItems: "center" }}>
+              <Avatar
+                variant="rounded"
+                sx={{
+                  mr: 3,
+                  width: 44,
+                  height: 44,
+                  boxShadow: 3,
+                  color: "common.white",
+                  backgroundColor: `${"primary"}.main`,
+                }}
+              >
+                <Pets sx={{ fontSize: "1.75rem" }} />
+              </Avatar>
+              <Box sx={{ display: "flex", flexDirection: "column" }}>
+                <Typography variant="caption">Mascotas</Typography>
+                <Typography variant="h6">{petNumber}</Typography>
+              </Box>
+            </Box>
+          </Grid>
+          <Grid item xs={6} sm={6}>
+            <Box sx={{ display: "flex", alignItems: "center" }}>
+              <Avatar
+                variant="rounded"
+                sx={{
+                  mr: 3,
+                  width: 44,
+                  height: 44,
+                  boxShadow: 3,
+                  color: "common.white",
+                  backgroundColor: `${"info"}.main`,
+                }}
+              >
+                <Pets sx={{ fontSize: "1.75rem" }} />
+              </Avatar>
+              <Box sx={{ display: "flex", flexDirection: "column" }}>
+                <Typography variant="caption">Dispisitivos</Typography>
+                <Typography variant="h6">{deviceNumber}</Typography>
+              </Box>
+            </Box>
+          </Grid>
+        </Grid>
+      </CardContent>
+    </Card>
   );
 };

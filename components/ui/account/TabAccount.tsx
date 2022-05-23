@@ -1,32 +1,22 @@
-// ** React Imports
-import {
-  useState,
-  ElementType,
-  ChangeEvent,
-  useContext,
-  useEffect,
-  useMemo,
-} from "react";
+import { useState, ChangeEvent, useContext, useEffect } from "react";
+
+import Image from "next/image";
+import { useRouter } from "next/router";
 
 import {
-  Box,
   Grid,
   TextField,
   CardContent,
   Typography,
-  LinearProgress,
+  Button,
 } from "@mui/material";
-import Button, { ButtonProps } from "@mui/material/Button";
-import { styled } from "@mui/material/styles";
 
 import imageCompression from "browser-image-compression";
+import { useForm } from "react-hook-form";
 
 import { AuthContext } from "../../../context";
 import { UserContext } from "../../../context/user/UserContext";
 import { validations } from "../../../utils";
-import { useForm } from "react-hook-form";
-import { useRouter } from "next/router";
-import Image from "next/image";
 
 type FormData = {
   name: string;
@@ -98,7 +88,7 @@ export const TabAccount = () => {
         email,
         address,
         phone,
-        cImage
+        cImage,
       );
       if (hasError) {
         setShowError(true);
@@ -113,7 +103,7 @@ export const TabAccount = () => {
         email,
         address,
         phone,
-        image[0]
+        image[0],
       );
       if (hasError) {
         setShowError(true);
@@ -127,9 +117,6 @@ export const TabAccount = () => {
   if (user) {
     return (
       <CardContent>
-        <Box sx={{ width: "100%", mb: 1 }}>
-          <LinearProgress />
-        </Box>
         <form
           noValidate
           autoComplete="off"
@@ -137,98 +124,107 @@ export const TabAccount = () => {
           encType={`multipart/form-data`}
         >
           <Grid container spacing={2}>
-            <Grid
-              container
-              item
-              xs={12}
-              sm={12}
-              direction="column"
-              alignItems="start"
-            >
-              <Image
-                style={{ borderRadius: "10px" }}
-                src={imgSrc}
-                width={200}
-                height={190}
-                alt="Imagen Perfil"
-              />
-              <Button
-                component="label"
-                variant="contained"
-                htmlFor="account-settings-upload-image"
-                disableElevation
-                sx={{ mt: 1 }}
+            <Grid item xs={12} sm={6}>
+              <Grid
+                container
+                item
+                xs={12}
+                sm={12}
+                direction="column"
+                alignItems="center"
               >
-                Cambiar
-                <input
-                  hidden
-                  type="file"
-                  {...register("image", { onChange: onChange })}
-                  accept="image/*"
-                  id="account-settings-upload-image"
+                <Typography color="primary" mb={1}>
+                  Imagen Perfil
+                </Typography>
+                <Image
+                  style={{ borderRadius: "10px" }}
+                  src={imgSrc}
+                  width={300}
+                  height={250}
+                  alt="Imagen Perfil"
                 />
-              </Button>
+                <Button
+                  component="label"
+                  variant="contained"
+                  htmlFor="account-settings-upload-image"
+                  disableElevation
+                  sx={{ mt: 1 }}
+                >
+                  Cambiar
+                  <input
+                    hidden
+                    type="file"
+                    {...register("image", { onChange: onChange })}
+                    accept="image/*"
+                    id="account-settings-upload-image"
+                  />
+                </Button>
+              </Grid>
             </Grid>
             <Grid item xs={12} sm={6}>
-              <TextField
-                fullWidth
-                label="Nombre"
-                {...register("name", {
-                  required: "Este campo es requerido",
-                  minLength: { value: 2, message: "Mínimo 2 caracteres" },
-                })}
-                error={!!errors.name}
-                helperText={errors.name?.message}
-              />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                fullWidth
-                label="Apellido"
-                {...register("last_name", {
-                  required: "Este campo es requerido",
-                  minLength: { value: 2, message: "Mínimo 2 caracteres" },
-                })}
-                error={!!errors.name}
-                helperText={errors.name?.message}
-              />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                fullWidth
-                type="email"
-                label="Correo Electrónico"
-                {...register("email", {
-                  required: "Este campo es requerido",
-                  validate: validations.isEmail,
-                })}
-                error={!!errors.email}
-                helperText={errors.email?.message}
-              />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                fullWidth
-                label="Dirección"
-                {...register("address", {
-                  minLength: { value: 2, message: "Mínimo 2 caracteres" },
-                })}
-                error={!!errors.name}
-                helperText={errors.name?.message}
-              />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                fullWidth
-                type="text"
-                inputProps={{ inputMode: "numeric", pattern: "[0-9]*" }}
-                label="Teléfono"
-                {...register("phone", {
-                  minLength: { value: 2, message: "Mínimo 2 caracteres" },
-                })}
-                error={!!errors.name}
-                helperText={errors.name?.message}
-              />
+              <Grid container spacing={2}>
+                <Grid item xs={12} sm={12}>
+                  <TextField
+                    fullWidth
+                    label="Nombre"
+                    {...register("name", {
+                      required: "Este campo es requerido",
+                      minLength: { value: 2, message: "Mínimo 2 caracteres" },
+                    })}
+                    error={!!errors.name}
+                    helperText={errors.name?.message}
+                  />
+                </Grid>
+                <Grid item xs={12} sm={12}>
+                  <TextField
+                    fullWidth
+                    label="Apellido"
+                    {...register("last_name", {
+                      required: "Este campo es requerido",
+                      minLength: { value: 2, message: "Mínimo 2 caracteres" },
+                    })}
+                    error={!!errors.name}
+                    helperText={errors.name?.message}
+                  />
+                </Grid>
+                <Grid item xs={12} sm={12}>
+                  <TextField
+                    fullWidth
+                    type="email"
+                    label="Correo Electrónico"
+                    {...register("email", {
+                      required: "Este campo es requerido",
+                      validate: validations.isEmail,
+                    })}
+                    error={!!errors.email}
+                    helperText={errors.email?.message}
+                  />
+                </Grid>
+                <Grid item xs={12} sm={12}>
+                  <TextField
+                    fullWidth
+                    label="Dirección"
+                    {...register("address", {
+                      minLength: { value: 2, message: "Mínimo 2 caracteres" },
+                    })}
+                    error={!!errors.name}
+                    helperText={errors.name?.message}
+                  />
+                </Grid>
+                <Grid item xs={12} sm={12}>
+                  <TextField
+                    fullWidth
+                    type="text"
+                    inputProps={{ inputMode: "numeric", pattern: "[0-9]*" }}
+                    label="Teléfono"
+                    {...register("phone", {
+                      minLength: { value: 2, message: "Mínimo 2 caracteres" },
+                    })}
+                    error={!!errors.name}
+                    helperText={errors.name?.message}
+                  />
+                </Grid>
+              </Grid>
             </Grid>
             <Grid item xs={12}>
               <Button
@@ -237,11 +233,11 @@ export const TabAccount = () => {
                 sx={{ marginRight: 3.5 }}
                 type="submit"
               >
-                Cuardar
+                Actualizar
               </Button>
               <Button
                 disableElevation
-                variant="contained"
+                variant="outlined"
                 color="error"
                 onClick={onCancel}
               >

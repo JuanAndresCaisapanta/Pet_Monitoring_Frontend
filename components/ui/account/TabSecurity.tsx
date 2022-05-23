@@ -13,6 +13,7 @@ import InputAdornment from "@mui/material/InputAdornment";
 // ** Icons Imports
 import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
 import VisibilityOffOutlinedIcon from "@mui/icons-material/VisibilityOffOutlined";
+import { Button } from "@mui/material";
 
 interface State {
   newPassword: string;
@@ -80,7 +81,7 @@ export const TabSecurity = () => {
   return (
     <form>
       <CardContent sx={{ paddingBottom: 0 }}>
-        <Grid container spacing={5}>
+        <Grid container spacing={2}>
           <Grid item xs={12} sm={6}>
             <Grid container spacing={2}>
               <Grid item xs={12}>
@@ -198,6 +199,23 @@ export const TabSecurity = () => {
               src="/images/profile/lock.png"
             />
           </Grid>
+          <Grid item xs={12}>
+              <Button
+                disableElevation
+                variant="contained"
+                sx={{ marginRight: 3.5 }}
+                type="submit"
+              >
+                Actualizar
+              </Button>
+              <Button
+                disableElevation
+                variant="outlined"
+                color="error"
+              >
+                Cancelar
+              </Button>
+            </Grid>
         </Grid>
       </CardContent>
     </form>

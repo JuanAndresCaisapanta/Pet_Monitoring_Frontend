@@ -1,13 +1,21 @@
-import Card from "@mui/material/Card";
-import Button from "@mui/material/Button";
-import CardContent from "@mui/material/CardContent";
-import { Avatar, Box, CardHeader, Grid } from "@mui/material";
+import {
+  Avatar,
+  Box,
+  CardHeader,
+  Grid,
+  Card,
+  Button,
+  CardContent,
+} from "@mui/material";
 import ArticleIcon from "@mui/icons-material/Article";
 
 export const ManualCard = () => {
   return (
     <Card>
-      <CardHeader title="Manual" titleTypographyProps={{color: 'primary'}}/>
+      <CardHeader
+        title="Manual Usuario"
+        titleTypographyProps={{ color: "primary" }}
+      />
       <CardContent sx={{ pt: (theme) => `${theme.spacing(1)} !important` }}>
         <Grid sx={{ pt: (theme) => `${theme.spacing(1)} !important` }}>
           <Box sx={{ display: "flex", alignItems: "center" }}>

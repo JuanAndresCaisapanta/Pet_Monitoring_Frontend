@@ -2,6 +2,7 @@ import { createContext } from "react";
 import { IUser } from "../../interfaces";
 
 interface ContextProps {
+  pet: any;
   isLoggedIn: boolean;
   user?: IUser;
 

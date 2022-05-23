@@ -35,6 +35,7 @@ const ResetButtonStyled = styled(Button)<ButtonProps>(({ theme }) => ({
     marginTop: theme.spacing(4),
   },
 }));
+
 export const TabInfoPet = () => {
     const [imgSrc, setImgSrc] = useState<string>("/images/pet/pet-profile.jpg");
 

@@ -6,6 +6,8 @@ import Cookies from "js-cookie";
 import { petMonitoringApi } from "../../api";
 import { UserContext, userReducer } from "./";
 import { AuthContext } from "../auth/AuthContext";
+import Swal from "sweetalert2";
+import { green, orange } from "@mui/material/colors";
 
 export interface UserState {}
 
@@ -48,6 +50,14 @@ export const UserProvider: FC<Props> = ({ children }) => {
         }
       );
       checkToken();
+      Swal.fire({
+        background: "#F4F5FA",
+        confirmButtonColor: "#9E69FD",
+        title: "Listo",
+        text: "Perfil Actualizado",
+        icon: "success",
+        confirmButtonText: "Ocultar",
+      });
       return {
         hasError: false,
       };
