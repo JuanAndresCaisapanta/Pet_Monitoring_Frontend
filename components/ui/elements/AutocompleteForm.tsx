@@ -1,5 +1,6 @@
+import { FC } from "react";
+
 import { Autocomplete, TextField } from "@mui/material";
-import React, { FC } from "react";
 
 interface Props {
   label: string;

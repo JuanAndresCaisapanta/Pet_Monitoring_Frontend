@@ -1,16 +1,17 @@
 import { FC, ReactNode, useEffect, useReducer } from "react";
 import { ISpecies } from "../../interfaces";
 
-import { SpeciesContext, petReducer } from ".";
+import { SpeciesContext } from ".";
 import Cookies from "js-cookie";
 import { petMonitoringApi } from "../../api";
+import { speciesReducer } from "./speciesReducer";
 
 export interface SpeciesState {
-    species?: ISpecies;
+  species?: ISpecies;
 }
 
 const SPECIES_INITIAL_STATE: SpeciesState = {
-    species: undefined,
+  species: undefined,
 };
 
 interface Props {
@@ -18,7 +19,7 @@ interface Props {
 }
 
 export const SpeciesProvider: FC<Props> = ({ children }) => {
-  const [state, dispatch] = useReducer(petReducer, SPECIES_INITIAL_STATE);
+  const [state, dispatch] = useReducer(speciesReducer, SPECIES_INITIAL_STATE);
 
   const getSpecies = async () => {
     if (!Cookies.get("token")) {
@@ -41,8 +42,6 @@ export const SpeciesProvider: FC<Props> = ({ children }) => {
       Cookies.remove("token");
     }
   };
-
-
 
   return (
     <SpeciesContext.Provider

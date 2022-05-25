@@ -3,7 +3,7 @@ import { SpeciesState } from ".";
 
 type SpeciesActionType = { type: "[Species] - getSpecies"; payload: ISpecies };
 
-export const petReducer = (
+export const speciesReducer = (
   state: SpeciesState,
   action: SpeciesActionType,
 ): SpeciesState => {

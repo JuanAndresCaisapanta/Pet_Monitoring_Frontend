@@ -5,5 +5,4 @@ export const colorPet = [
     {id:4, name: 'Blanco' },
     {id:5, name: 'Gris' },
     {id:6, name: 'Crema' },
-  
   ];

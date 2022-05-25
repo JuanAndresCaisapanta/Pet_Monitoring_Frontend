@@ -49,16 +49,14 @@ export const TabInfoPet = () => {
   const handleSelectSpecies = (event: SelectChangeEvent) => {
     setSelectSpecies(event.target.value as string);
     getBreed(Number(event.target.value));
-   
-      if (event.target === null) {
-        setVal("");
-        setSubtype(null);
-      } else {
-        setVal(event.target.value as string);
-        setSubtype(null);
-      }
-    
-    
+
+    if (event.target === null) {
+      setVal("");
+      setSubtype(null);
+    } else {
+      setVal(event.target.value as string);
+      setSubtype(null);
+    }
   };
 
   const handleSelectBreed = (event: SelectChangeEvent) => {
@@ -208,9 +206,13 @@ export const TabInfoPet = () => {
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
-                {val&&breed ? (
-                  <AutocompleteForm label="Raza"
-                  object={breed as unknown as IBreed[]}subtype={subtype} setSubtype={(e:any, attr:any) => setSubtype(attr)}/>
+                {val && breed ? (
+                  <AutocompleteForm
+                    label="Raza"
+                    object={breed as unknown as IBreed[]}
+                    subtype={subtype}
+                    setSubtype={(e: any, attr: any) => setSubtype(attr)}
+                  />
                 ) : (
                   <></>
                 )}
