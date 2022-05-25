@@ -8,7 +8,7 @@ import type { AppProps } from "next/app";
 import { CssBaseline, ThemeProvider } from "@mui/material";
 
 import { theme } from "../themes";
-import { UiProvider } from "../context";
+import { BreedProvider, SpeciesProvider, UiProvider } from "../context";
 import { AuthProvider } from "../context/auth";
 import { UserProvider } from "../context/user";
 
@@ -26,12 +26,16 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
   return (
     <AuthProvider>
       <UserProvider>
-        <UiProvider>
-          <ThemeProvider theme={theme}>
-            <CssBaseline />
-            {getLayout(<Component {...pageProps} />)}
-          </ThemeProvider>
-        </UiProvider>
+        <SpeciesProvider>
+          <BreedProvider>
+            <UiProvider>
+              <ThemeProvider theme={theme}>
+                <CssBaseline />
+                {getLayout(<Component {...pageProps} />)}
+              </ThemeProvider>
+            </UiProvider>
+          </BreedProvider>
+        </SpeciesProvider>
       </UserProvider>
     </AuthProvider>
   );

@@ -7,7 +7,7 @@ type AuthActionType =
 
 export const authReducer = (
   state: AuthState,
-  action: AuthActionType
+  action: AuthActionType,
 ): AuthState => {
   switch (action.type) {
     case "[Auth] - Login":

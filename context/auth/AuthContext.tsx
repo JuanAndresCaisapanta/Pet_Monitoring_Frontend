@@ -12,7 +12,7 @@ interface ContextProps {
     email: string,
     password: string,
     creation_date: string,
-    image:any
+    image: any,
   ) => Promise<{ hasError: boolean; message?: string }>;
   logout: () => void;
   checkToken: () => void;

@@ -163,7 +163,7 @@ export const TabAccount = () => {
             </Grid>
             <Grid item xs={12} sm={6}>
               <Grid container spacing={2}>
-                <Grid item xs={12} sm={12}>
+                <Grid item xs={12} sm={6}>
                   <TextField
                     fullWidth
                     label="Nombre"
@@ -175,7 +175,7 @@ export const TabAccount = () => {
                     helperText={errors.name?.message}
                   />
                 </Grid>
-                <Grid item xs={12} sm={12}>
+                <Grid item xs={12} sm={6}>
                   <TextField
                     fullWidth
                     label="Apellido"

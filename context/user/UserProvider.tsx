@@ -2,12 +2,11 @@ import { FC, ReactNode, useContext, useReducer } from "react";
 
 import axios from "axios";
 import Cookies from "js-cookie";
+import Swal from "sweetalert2";
 
 import { petMonitoringApi } from "../../api";
 import { UserContext, userReducer } from "./";
 import { AuthContext } from "../auth/AuthContext";
-import Swal from "sweetalert2";
-import { green, orange } from "@mui/material/colors";
 
 export interface UserState {}
 
@@ -27,7 +26,7 @@ export const UserProvider: FC<Props> = ({ children }) => {
     email: string,
     address: string,
     phone: string,
-    image: any
+    image: any,
   ): Promise<{ hasError: boolean; message?: string }> => {
     try {
       const token = Cookies.get("token") || "";
@@ -45,9 +44,8 @@ export const UserProvider: FC<Props> = ({ children }) => {
           headers: {
             Authorization: `Bearer ${token}`,
             "Content-Type": "multipart/form-data",
-            
           },
-        }
+        },
       );
       checkToken();
       Swal.fire({

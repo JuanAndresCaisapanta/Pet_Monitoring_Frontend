@@ -7,7 +7,7 @@ interface ContextProps {
     email: string,
     address: string,
     phone: string,
-    image: any
+    image: any,
   ) => Promise<{ hasError: boolean; message?: string }>;
 }
 

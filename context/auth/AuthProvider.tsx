@@ -1,4 +1,5 @@
 import { FC, ReactNode, useEffect, useReducer } from "react";
+
 import { useRouter } from "next/router";
 
 import Cookies from "js-cookie";
@@ -39,7 +40,7 @@ export const AuthProvider: FC<Props> = ({ children }) => {
     try {
       const token = Cookies.get("token") || "";
       const { data } = await petMonitoringApi.get(
-        `/auth/validate-token/${token}`
+        `/auth/validate-token/${token}`,
       );
       if (data == true) {
         const { sub: email } = jwt.decode(token) as { sub: string };
@@ -57,7 +58,7 @@ export const AuthProvider: FC<Props> = ({ children }) => {
 
   const loginUser = async (
     email: string,
-    password: string
+    password: string,
   ): Promise<boolean> => {
     try {
       const { data } = await petMonitoringApi.post("/auth/login", {
@@ -79,7 +80,7 @@ export const AuthProvider: FC<Props> = ({ children }) => {
     email: string,
     password: string,
     creation_date: string,
-    image: any
+    image: any,
   ): Promise<{ hasError: boolean; message?: string }> => {
     try {
       const { data } = await petMonitoringApi.post(
@@ -92,7 +93,7 @@ export const AuthProvider: FC<Props> = ({ children }) => {
           creation_date,
           image,
         },
-        { headers: { "Content-Type": "multipart/form-data" } }
+        { headers: { "Content-Type": "multipart/form-data" } },
       );
       const { token, user } = data;
       Cookies.set("token", token);
