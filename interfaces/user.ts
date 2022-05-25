@@ -16,10 +16,14 @@ export interface IUser {
       color: string;
       race: string;
       weight: number;
-      gender: string;
-      species: {
+      sex: string;
+      breed: {
         id: number;
         name: string;
+        species: {
+          id: number;
+          name: string;
+        };
       };
     },
   ];

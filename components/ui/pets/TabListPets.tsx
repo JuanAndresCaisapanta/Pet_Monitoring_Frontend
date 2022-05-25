@@ -52,10 +52,10 @@ export const TabListPets = () => {
               <Grid item xs={12} sm={6} key={pet.id}>
                 <CardPet
                   name={pet.name}
-                  gender={pet.gender}
-                  race={pet.race}
+                  sex={pet.sex}
+                  race={pet.breed.name}
                   weight={pet.weight}
-                  species={pet.species.name}
+                  species={pet.breed.species.name}
                 />
               </Grid>
             ))

@@ -27,12 +27,12 @@ const StyledGrid = styled(Grid)<GridProps>(({ theme }) => ({
 interface Props {
   name: string;
   species: string;
-  gender: string;
+  sex: string;
   race: string;
   weight: number;
 }
 
-export const CardPet: FC<Props> = ({ name, species, gender, race, weight }) => {
+export const CardPet: FC<Props> = ({ name, species, sex, race, weight }) => {
   const router = useRouter();
   const navigateTo = (url: string) => {
     router.push(url);
@@ -67,7 +67,7 @@ export const CardPet: FC<Props> = ({ name, species, gender, race, weight }) => {
                 <Typography variant="body2">Especie: {species}</Typography>
               </Grid>
               <Grid item xs={12} md={12}>
-                <Typography variant="body2">Género: {gender}</Typography>
+                <Typography variant="body2">Género: {sex}</Typography>
               </Grid>
               <Grid item xs={12} md={12}>
                 <Typography variant="body2">Raza: {race}</Typography>
