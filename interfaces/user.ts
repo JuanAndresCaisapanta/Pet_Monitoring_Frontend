@@ -1,5 +1,5 @@
 export interface IUser {
-  id: string;
+  id: number;
   name: string;
   last_name: string;
   email: string;
@@ -17,6 +17,7 @@ export interface IUser {
       race: string;
       weight: number;
       sex: string;
+      image:any,
       breed: {
         id: number;
         name: string;

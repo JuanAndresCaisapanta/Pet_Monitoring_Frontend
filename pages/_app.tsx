@@ -8,9 +8,14 @@ import type { AppProps } from "next/app";
 import { CssBaseline, ThemeProvider } from "@mui/material";
 
 import { theme } from "../themes";
-import { BreedProvider, SpeciesProvider, UiProvider } from "../context";
-import { AuthProvider } from "../context/auth";
-import { UserProvider } from "../context/user";
+import {
+  BreedProvider,
+  PetProvider,
+  SpeciesProvider,
+  UiProvider,
+  AuthProvider,
+  UserProvider,
+} from "../context";
 
 type NextPageWithLayout = NextPage & {
   getLayout?: (page: ReactElement) => ReactNode;
@@ -28,12 +33,14 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
       <UserProvider>
         <SpeciesProvider>
           <BreedProvider>
-            <UiProvider>
-              <ThemeProvider theme={theme}>
-                <CssBaseline />
-                {getLayout(<Component {...pageProps} />)}
-              </ThemeProvider>
-            </UiProvider>
+            <PetProvider>
+              <UiProvider>
+                <ThemeProvider theme={theme}>
+                  <CssBaseline />
+                  {getLayout(<Component {...pageProps} />)}
+                </ThemeProvider>
+              </UiProvider>
+            </PetProvider>
           </BreedProvider>
         </SpeciesProvider>
       </UserProvider>

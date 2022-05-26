@@ -48,17 +48,28 @@ export const TabListPets = () => {
             </Grid>
           </Grid>
           {filteredOptions!.length > 0 ? (
-            filteredOptions!.map((pet) => (
-              <Grid item xs={12} sm={6} key={pet.id}>
-                <CardPet
-                  name={pet.name}
-                  sex={pet.sex}
-                  race={pet.breed.name}
-                  weight={pet.weight}
-                  species={pet.breed.species.name}
-                />
-              </Grid>
-            ))
+            filteredOptions!
+              .sort((a: any, b: any) => {
+                if (a.name < b.name) {
+                  return -1;
+                }
+                if (a.name < b.name) {
+                  return 1;
+                }
+                return 0;
+              })
+              .map((pet) => (
+                <Grid item xs={12} sm={6} key={pet.id}>
+                  <CardPet
+                    image={pet.image}
+                    name={pet.name}
+                    sex={pet.sex}
+                    race={pet.breed.name}
+                    weight={pet.weight}
+                    species={pet.breed.species.name}
+                  />
+                </Grid>
+              ))
           ) : (
             <Grid container direction="column" alignItems={"center"}>
               <Grid item>
@@ -72,6 +83,12 @@ export const TabListPets = () => {
       </CardContent>
     );
   } else {
-    return <Typography color={"primary"}>Cargando...</Typography>;
+    return (
+      <Grid container direction="column" alignItems={"center"}>
+        <Grid item>
+          <Typography color={"primary"} sx={{ mt: 1 }}>Cargando...</Typography>
+        </Grid>
+      </Grid>
+    );
   }
 };

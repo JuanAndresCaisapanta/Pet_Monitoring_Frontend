@@ -30,9 +30,10 @@ interface Props {
   sex: string;
   race: string;
   weight: number;
+  image: any;
 }
 
-export const CardPet: FC<Props> = ({ name, species, sex, race, weight }) => {
+export const CardPet: FC<Props> = ({ name, species, sex, race, weight, image }) => {
   const router = useRouter();
   const navigateTo = (url: string) => {
     router.push(url);
@@ -53,7 +54,7 @@ export const CardPet: FC<Props> = ({ name, species, sex, race, weight }) => {
               width={"100%"}
               height={214}
               alt="Mascota"
-              src="/images/pet/pet-profile.jpg"
+              src={`data:image/jpeg;base64,${image}`}
             />
           </CardContent>
         </StyledGrid>

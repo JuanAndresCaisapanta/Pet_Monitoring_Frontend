@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const petMonitoringApi = axios.create({
-  baseURL: "http://192.168.100.84:8080/",
+  baseURL: "https://cold-camels-relate-157-100-91-151.loca.lt/",
 });
 
 export default petMonitoringApi;

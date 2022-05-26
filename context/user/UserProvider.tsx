@@ -50,11 +50,14 @@ export const UserProvider: FC<Props> = ({ children }) => {
       checkToken();
       Swal.fire({
         background: "#F4F5FA",
-        confirmButtonColor: "#9E69FD",
         title: "Listo",
         text: "Perfil Actualizado",
         icon: "success",
         confirmButtonText: "Ocultar",
+        backdrop: false,
+        timer: 1500,
+  timerProgressBar: true,
+  showConfirmButton: false,
       });
       return {
         hasError: false,

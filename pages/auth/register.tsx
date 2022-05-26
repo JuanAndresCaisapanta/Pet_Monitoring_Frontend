@@ -202,7 +202,7 @@ const RegisterPage = () => {
               hidden
               type="file"
               {...register("image", { onChange: onChange })}
-              accept=".jpg, .jpeg, .png"
+              accept="image/*"
               id="account-settings-upload-image"
             />
           </Button>
