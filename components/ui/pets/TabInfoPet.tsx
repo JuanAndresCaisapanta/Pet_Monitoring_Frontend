@@ -31,7 +31,7 @@ import {
   SpeciesContext,
   PetContext,
 } from "../../../context";
-import { SelectForm, AutocompleteForm } from "../elements";
+import { SelectForm, AutocompleteFormState } from "../elements";
 import { IBreed, ISpecies } from "../../../interfaces";
 import { colorPet, sexPet } from "../../../data";
 
@@ -350,7 +350,7 @@ export const TabInfoPet = () => {
               </Grid>
               <Grid item xs={12} sm={6}>
                 {val && breed ? (
-                  <AutocompleteForm
+                  <AutocompleteFormState
                     label="Raza"
                     name="breed"
                     control={control}

@@ -10,4 +10,12 @@ module.exports = withPWA({
     skipWaiting: true,
     disable: process.env.NODE_ENV === "development",
   },
+  async rewrites() {
+    return [
+      {
+        source: "/v2/:slug*",
+        destination: "https://api.sigfox.com/v2/:slug*",
+      },
+    ];
+  },
 });

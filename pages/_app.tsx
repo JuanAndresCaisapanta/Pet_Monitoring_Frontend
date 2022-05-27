@@ -15,6 +15,7 @@ import {
   UiProvider,
   AuthProvider,
   UserProvider,
+  DeviceProvider,
 } from "../context";
 
 type NextPageWithLayout = NextPage & {
@@ -34,12 +35,14 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
         <SpeciesProvider>
           <BreedProvider>
             <PetProvider>
-              <UiProvider>
-                <ThemeProvider theme={theme}>
-                  <CssBaseline />
-                  {getLayout(<Component {...pageProps} />)}
-                </ThemeProvider>
-              </UiProvider>
+              <DeviceProvider>
+                <UiProvider>
+                  <ThemeProvider theme={theme}>
+                    <CssBaseline />
+                    {getLayout(<Component {...pageProps} />)}
+                  </ThemeProvider>
+                </UiProvider>
+              </DeviceProvider>
             </PetProvider>
           </BreedProvider>
         </SpeciesProvider>

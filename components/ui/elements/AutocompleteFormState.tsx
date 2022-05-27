@@ -1,17 +1,22 @@
-import { Autocomplete, TextField } from "@mui/material";
 import { FC, useState } from "react";
+
+import { Autocomplete, TextField } from "@mui/material";
 import { Controller } from "react-hook-form";
 
 interface Props {
   label: string;
   object?: any;
+  subtype: any;
+  setSubtype: any;
   name: string;
   control: any;
 }
 
-export const AutocompleteForm: FC<Props> = ({
+export const AutocompleteFormState: FC<Props> = ({
   object,
   label,
+  subtype,
+  setSubtype,
   name,
   control,
 }) => {
@@ -28,7 +33,9 @@ export const AutocompleteForm: FC<Props> = ({
           )}
           onChange={(event: any, newValue: any) => {
             onChange(newValue.id);
+            setSubtype(newValue);
           }}
+          value={subtype}
           isOptionEqualToValue={(option, values) =>
             option.value === values.value
           }

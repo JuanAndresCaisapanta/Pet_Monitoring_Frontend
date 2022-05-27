@@ -17,6 +17,7 @@ import MuiTab, { TabProps } from "@mui/material/Tab";
 import OnDeviceTrainingOutlinedIcon from "@mui/icons-material/OnDeviceTrainingOutlined";
 import AddCircleOutlineOutlinedIcon from "@mui/icons-material/AddCircleOutlineOutlined";
 import { TabListDevices } from '../../../components/ui';
+import { TabInfoDevice } from "../../../components/ui/devices/TabInfoDevice";
 
 const Tab = styled(MuiTab)<TabProps>(({ theme }) => ({
   [theme.breakpoints.down("md")]: {
@@ -69,7 +70,7 @@ const DevicePage = () => {
           <TabListDevices />
         </TabPanel>
         <TabPanel sx={{ p: 0 }} value="add-devices">
-          
+          <TabInfoDevice/>
         </TabPanel>
       </TabContext>
     </Card>
