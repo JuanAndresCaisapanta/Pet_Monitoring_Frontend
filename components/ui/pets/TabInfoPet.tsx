@@ -2,7 +2,6 @@ import { useState, ChangeEvent, useContext, useEffect } from "react";
 
 import Image from "next/image";
 
-import Button, { ButtonProps } from "@mui/material/Button";
 import {
   Checkbox,
   FormControl,
@@ -16,21 +15,25 @@ import {
   TextField,
   Typography,
   CardContent,
-  Autocomplete,
+  Button,
 } from "@mui/material";
 
 import { DesktopDatePicker, LocalizationProvider } from "@mui/lab";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 
-import { AuthContext, BreedContext, SpeciesContext } from "../../../context";
-import { ISpecies } from "../../../interfaces/species";
-import { SelectForm } from "../elements";
-import { IBreed } from "../../../interfaces";
-import { colorPet, sexPet } from "../../../data";
-import { AutocompleteForm } from "../elements/AutocompleteForm";
-import { PetContext } from "../../../context/pet/PetContext";
 import imageCompression from "browser-image-compression";
-import { Controller, useForm } from "react-hook-form";
+
+import { useForm } from "react-hook-form";
+
+import {
+  AuthContext,
+  BreedContext,
+  SpeciesContext,
+  PetContext,
+} from "../../../context";
+import { SelectForm, AutocompleteForm } from "../elements";
+import { IBreed, ISpecies } from "../../../interfaces";
+import { colorPet, sexPet } from "../../../data";
 
 type FormData = {
   name: string;
@@ -50,7 +53,6 @@ export const TabInfoPet = () => {
   const [errorMessage, setErrorMessage] = useState("");
   const [date, setDate] = useState<Date | null>(new Date());
   const [selectSpecies, setSelectSpecies] = useState("");
-  const [selectBreed, setSelectBreed] = useState("");
   const [selectSex, setSelectSex] = useState("");
   const [selectColorPetMain, setSelectColorPetMain] = useState("");
   const [selectColorPetSecondary, setSelectColorPetSecondary] = useState("");
@@ -60,20 +62,17 @@ export const TabInfoPet = () => {
   const { getSpecies, species } = useContext(SpeciesContext);
   const { getBreed, breed } = useContext(BreedContext);
   const { addPet } = useContext(PetContext);
+  const { user } = useContext(AuthContext);
 
   const {
     register,
     handleSubmit,
-    setValue,
     control,
     formState: { errors },
   } = useForm<FormData>();
 
   useEffect(() => {
     getSpecies();
-    // register("breed", {
-    //   validate: (value: any) => value.length || "This is required.",
-    // });
   }, []);
 
   const handleSelectSpecies = (event: SelectChangeEvent) => {
@@ -87,10 +86,6 @@ export const TabInfoPet = () => {
       setVal(event.target.value as string);
       setSubtype([]);
     }
-  };
-
-  const handleSelectBreed = (event: SelectChangeEvent) => {
-    setSelectBreed(event.target.value as string);
   };
 
   const handleSelectSex = (event: SelectChangeEvent) => {
@@ -109,10 +104,6 @@ export const TabInfoPet = () => {
     setDate(newValue);
   };
 
-  // const onChangeBreed = (attr: any) => {
-  //   setSubtype(attr);
-  // };
-
   const onChange = (file: ChangeEvent) => {
     const reader = new FileReader();
     const { files } = file.target as HTMLInputElement;
@@ -121,8 +112,6 @@ export const TabInfoPet = () => {
       reader.readAsDataURL(files[0]);
     }
   };
-  const { user } = useContext(AuthContext);
-  const onSubmit = handleSubmit((data) => console.log(data));
 
   const onAddPetForm = async ({
     name,
@@ -361,19 +350,14 @@ export const TabInfoPet = () => {
               </Grid>
               <Grid item xs={12} sm={6}>
                 {val && breed ? (
-                  // <Controller
-                  //   render={({ field: { onChange, value } }) => (
-                      <AutocompleteForm
-                        name="breed"
-                        control={control}
-                        object={breed as unknown as IBreed[]}
-                         subtype={subtype}
-                         setSubtype={setSubtype}
-                      />
-                    // )}
-                    // name="breed"
-                    // control={control}
-                  // />
+                  <AutocompleteForm
+                    label="Raza"
+                    name="breed"
+                    control={control}
+                    object={breed as unknown as IBreed[]}
+                    subtype={subtype}
+                    setSubtype={setSubtype}
+                  />
                 ) : (
                   <></>
                 )}

@@ -4,7 +4,7 @@ import { Autocomplete, TextField } from "@mui/material";
 import { Controller } from "react-hook-form";
 
 interface Props {
-  // label: string;
+  label: string;
   object?: any;
   subtype: any;
   setSubtype: any;
@@ -14,45 +14,34 @@ interface Props {
 
 export const AutocompleteForm: FC<Props> = ({
   object,
-  // label,
-    subtype,
+  label,
+  subtype,
   setSubtype,
-  name,control
+  name,
+  control,
 }) => {
-
-  const [inputValue, setInputValue] = useState('')
-const [search, setSearch] = useState("");
+  const [inputValue, setInputValue] = useState("");
   return (
-
-
-<Controller
-      render={({field: { onChange, value }}) => (
+    <Controller
+      render={({ field: { onChange, value } }) => (
         <Autocomplete
-        disableClearable={true}
+          disableClearable={true}
           options={object}
-          getOptionLabel={(option:any) => option.name||""}
-          // renderOption={(option) => (
-          //   <span>
-          //     {countryToFlag(option.code)}
-          //     {option.label}
-          //   </span>
-          // )}
+          getOptionLabel={(option: any) => option.name || ""}
           renderInput={(params) => (
-            <TextField
-              {...params}
-              label="Choose a country"
-              variant="outlined"
-            />
+            <TextField {...params} label={label} variant="outlined" />
           )}
-          onChange={(event:any, newValue:any) => {
+          onChange={(event: any, newValue: any) => {
             onChange(newValue.id);
             setSubtype(newValue);
           }}
-           value={subtype}
-          isOptionEqualToValue={(option, values) => option.value === values.value}
+          value={subtype}
+          isOptionEqualToValue={(option, values) =>
+            option.value === values.value
+          }
           inputValue={inputValue}
           onInputChange={(_, newInputValue) => {
-            setInputValue(newInputValue)
+            setInputValue(newInputValue);
           }}
         />
       )}

@@ -17,7 +17,7 @@ export interface IUser {
       race: string;
       weight: number;
       sex: string;
-      image:any,
+      image: any;
       breed: {
         id: number;
         name: string;
@@ -28,5 +28,26 @@ export interface IUser {
       };
     },
   ];
-  device: [];
+  device: [
+    {
+      id: number;
+      code: string;
+      creation_date: string;
+      update_date: string;
+      deviceData: [
+        {
+          id: number;
+          latitude: number;
+          longitude: number;
+          temperature: number;
+          battery: number;
+          creation_date: string;
+          pet: {
+            id: number;
+            name: string;
+          };
+        },
+      ];
+    },
+  ];
 }
