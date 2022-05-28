@@ -24,7 +24,7 @@ export const DeviceProvider: FC<Props> = ({ children }) => {
   ): Promise<{ hasError: boolean; message?: string }> => {
     try {
       const token = Cookies.get("token") || "";
-      const {data} = await petMonitoringApi.post(
+      const device_id = await petMonitoringApi.post(
         `/device`,
         {
           code,
@@ -36,6 +36,21 @@ export const DeviceProvider: FC<Props> = ({ children }) => {
           },
         },
       );
+
+      const master_id = await petMonitoringApi.post(
+        `/master-detail-data/master`,
+        {
+          device: { id: device_id.data },
+          users: { id: user?.id },
+          pet: { id: pet },
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
+
       await fetch(`/v2/device-types/${code}/callbacks`, {
         method: "POST",
         headers: {
@@ -49,17 +64,15 @@ export const DeviceProvider: FC<Props> = ({ children }) => {
           payloadConfig:
             "lat::float:32 long::float:32 temp::int:16 bat::uint:16",
           enabled: true,
-          url: "https://spotty-suns-run-157-100-91-151.loca.lt/deviceData",
+          url: "https://early-dryers-heal-157-100-91-151.loca.lt/master-detail-data/detail",
           httpMethod: "POST",
           headers: {
             Authorization: `Bearer ${token}`,
           },
           sendSni: false,
           bodyTemplate:
-            '{\n"latitude":{customData#lat},\n"longitude":{customData#long},\n"temperature":{customData#temp},\n"battery":{customData#bat},\n"device":{"id":' +
-            data +
-            '},\n"pet":{"id":' +
-            pet +
+            '{\n"latitude":{customData#lat},\n"longitude":{customData#long},\n"temperature":{customData#temp},\n"battery":{customData#bat},\n"masterData":{"id":' +
+            master_id.data +
             "}\n}",
 
           contentType: "application/json",

@@ -45,18 +45,15 @@ export const CardDevice: FC<Props> = ({ code, name, state }) => {
               </Typography>
             </Grid>
           </Grid>
-          <Grid item xs={12} md={12}>
+          <Grid container direction="column" alignItems={"center"}>
+            <Grid item xs={12} md={12}>
             <Typography  component={'span'} color={"primary"} variant="body1">
               Mascota: 
               <Typography component={'span'} sx={{ml:1}} display={"inline"} color={"#010000DE"}>
                 {name}
               </Typography>
             </Typography>
-          </Grid>
-          <Grid item xs={12} md={12}>
-            <Typography component={'span'} color={"primary"} variant="body1">
-              Estado: <Chip label={state} color="success" />
-            </Typography>
+            </Grid>
           </Grid>
           <Grid container direction="column" alignItems={"center"}>
             <Grid item xs={12} md={12}>

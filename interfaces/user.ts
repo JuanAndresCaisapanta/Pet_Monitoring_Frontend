@@ -34,14 +34,9 @@ export interface IUser {
       code: string;
       creation_date: string;
       update_date: string;
-      deviceData: [
+      masterData: [
         {
           id: number;
-          latitude: number;
-          longitude: number;
-          temperature: number;
-          battery: number;
-          creation_date: string;
           pet: {
             id: number;
             name: string;
