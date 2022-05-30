@@ -1,14 +1,13 @@
 import axios from "axios";
 
 const sigfoxCallbackApi = axios.create({
-  baseURL: "/device-types/",
+  baseURL: `/v2/`,
   auth: {
-    username: "6267947d7a36e32515ad0d72",
-    password: "57d5d416531dac4083ac0f61c4f226f5",
+    username: process.env.NEXT_PUBLIC_API_SIGFOX_USERNAME!,
+    password: process.env.NEXT_PUBLIC_API_SIGFOX_PASSWORD!,
   },
- 
+
   headers: {
-    'Access-Control-Allow-Origin': '*',
     "Content-Type": "application/json",
   },
 });

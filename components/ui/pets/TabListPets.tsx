@@ -61,6 +61,7 @@ export const TabListPets = () => {
               .map((pet) => (
                 <Grid item xs={12} sm={6} key={pet.id}>
                   <CardPet
+                    id={pet.id}
                     image={pet.image}
                     name={pet.name}
                     sex={pet.sex}

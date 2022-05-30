@@ -1,8 +1,13 @@
 import { CardContent, Divider, Grid, Typography } from "@mui/material";
 import React from "react";
 import { CardSection } from "./CardSection";
+import { FC } from 'react';
 
-export const TabMonitoring = () => {
+interface Props{
+  id:any
+}
+
+export const TabMonitoring:FC<Props> = ({id}) => {
   return (
     <CardContent>
       <Divider textAlign="center" sx={{ marginBottom: "10px" }}>
@@ -16,7 +21,7 @@ export const TabMonitoring = () => {
             section="Ubicación"
             description="Revise la ubicación de su mascota."
             image="/images/pet/location.jpg"
-            link="/pets/sections/real-time/location"
+            link={`real-time/location/${id}`}
             button="Revisar"
           />
         </Grid>

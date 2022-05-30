@@ -14,7 +14,7 @@ module.exports = withPWA({
     return [
       {
         source: "/v2/:slug*",
-        destination: "https://api.sigfox.com/v2/:slug*",
+        destination: `${process.env.API_SIGFOX}/v2/:slug*`,
       },
     ];
   },

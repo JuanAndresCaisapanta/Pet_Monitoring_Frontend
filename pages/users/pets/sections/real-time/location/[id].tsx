@@ -1,16 +1,13 @@
-// ** React Imports
 import { SyntheticEvent, useState, ReactElement } from "react";
 
-// ** MUI Imports
 import { Box, Card, styled } from "@mui/material";
 import { TabList, TabPanel, TabContext } from "@mui/lab";
 import MuiTab, { TabProps } from "@mui/material/Tab";
-
-// ** Icons Imports
 import LocationOnOutlinedIcon from "@mui/icons-material/LocationOnOutlined";
-import AddCircleOutlineOutlinedIcon from "@mui/icons-material/AddCircleOutlineOutlined";
-import { TabLocation } from "../../../../../components/ui";
-import { MainLayout } from "../../../../../components/layout";
+
+import { TabLocation } from "../../../../../../components/ui";
+import { MainLayout } from "../../../../../../components/layout";
+import { useRouter } from "next/router";
 
 const Tab = styled(MuiTab)<TabProps>(({ theme }) => ({
   [theme.breakpoints.down("md")]: {
@@ -28,6 +25,8 @@ const TabName = styled("span")(({ theme }) => ({
 }));
 
 const LocationPage = () => {
+  const router = useRouter();
+  const{id} = router.query;
   const [value, setValue] = useState<string>("location");
 
   const handleChange = (event: SyntheticEvent, newValue: string) => {
@@ -50,22 +49,10 @@ const LocationPage = () => {
               </Box>
             }
           />
-          {/* <Tab
-          value="add-pets"
-          label={
-            <Box sx={{ display: "flex", alignItems: "center" }}>
-              <AddCircleOutlineOutlinedIcon />
-              <TabName>Agregar</TabName>
-            </Box>
-          }
-        /> */}
         </TabList>
         <TabPanel sx={{ p: 0 }} value="location">
-          <TabLocation />
+          <TabLocation id={id}/>
         </TabPanel>
-        {/* <TabPanel sx={{ p: 0 }} value="add-pets">
-        <TabInfoPet />
-      </TabPanel> */}
       </TabContext>
     </Card>
   );
@@ -74,8 +61,8 @@ const LocationPage = () => {
 LocationPage.getLayout = function getLayout(page: ReactElement) {
   return (
     <MainLayout
-      title={"Monitoreo Mascotas"}
-      pageDescription={"Una PWA donde se puede monitorear a tu mascota"}
+      title={"Ubicación de tu mascota"}
+      pageDescription={"Aqui podras ver la ubicacion de tu mascota"}
     >
       {page}
     </MainLayout>

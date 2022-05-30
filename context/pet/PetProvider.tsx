@@ -1,14 +1,24 @@
+import { FC, ReactNode, useContext, useEffect, useReducer } from "react";
+
 import axios from "axios";
 import Cookies from "js-cookie";
-import { FC, ReactNode, useContext, useReducer } from "react";
 import Swal from "sweetalert2";
+import jwt from "jsonwebtoken";
+
 import { petMonitoringApi } from "../../api";
+import { IPet } from "../../interfaces";
 import { AuthContext } from "../auth";
 import { PetContext, petReducer } from "./";
 
-export interface PetState {}
+export interface PetState {
+  isLoading: boolean;
+  pet?: IPet;
+}
 
-const PET_INITIAL_STATE: PetState = {};
+const PET_INITIAL_STATE: PetState = {
+  isLoading: false,
+  pet: undefined,
+};
 
 interface Props {
   children: ReactNode;
@@ -16,6 +26,29 @@ interface Props {
 export const PetProvider: FC<Props> = ({ children }) => {
   const [state, dispatch] = useReducer(petReducer, PET_INITIAL_STATE);
   const { user, checkToken } = useContext(AuthContext);
+
+  const getPet = async (id: any) => {
+    if (!Cookies.get("token")) {
+      return;
+    }
+    try {
+      const token = Cookies.get("token") || "";
+      const { data } = await petMonitoringApi.get(
+        `/auth/validate-token/${token}`,
+      );
+      if (data == true) {
+        const { data } = await petMonitoringApi.get(`/pet/${id}`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        dispatch({ type: "[Pet] - getPet", payload: data });
+      } else {
+        Cookies.remove("token");
+      }
+    } catch (error) {
+      Cookies.remove("token");
+    }
+  };
+
   const addPet = async (
     name: string,
     color_main: string,
@@ -86,6 +119,7 @@ export const PetProvider: FC<Props> = ({ children }) => {
       value={{
         ...state,
         addPet,
+        getPet,
       }}
     >
       {children}

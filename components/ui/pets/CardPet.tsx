@@ -25,6 +25,7 @@ const StyledGrid = styled(Grid)<GridProps>(({ theme }) => ({
 }));
 
 interface Props {
+  id: number;
   name: string;
   species: string;
   sex: string;
@@ -33,7 +34,15 @@ interface Props {
   image: any;
 }
 
-export const CardPet: FC<Props> = ({ name, species, sex, race, weight, image }) => {
+export const CardPet: FC<Props> = ({
+  id,
+  name,
+  species,
+  sex,
+  race,
+  weight,
+  image,
+}) => {
   const router = useRouter();
   const navigateTo = (url: string) => {
     router.push(url);
@@ -83,7 +92,7 @@ export const CardPet: FC<Props> = ({ name, species, sex, race, weight, image }) 
               <Grid item xs={6} md={6}>
                 <Button
                   variant="contained"
-                  onClick={() => navigateTo(`/pets/sections`)}
+                  onClick={() => navigateTo(`pets/sections/${id}`)}
                   sx={{ mr: 2 }}
                 >
                   Monitorear

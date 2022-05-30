@@ -51,33 +51,28 @@ export const DeviceProvider: FC<Props> = ({ children }) => {
         },
       );
 
-      await fetch(`/v2/device-types/${code}/callbacks`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Basic NjI2Nzk0N2Q3YTM2ZTMyNTE1YWQwZDcyOjU3ZDVkNDE2NTMxZGFjNDA4M2FjMGY2MWM0ZjIyNmY1`,
-        },
-        body: JSON.stringify({
-          channel: "URL",
-          callbackType: 0,
-          callbackSubtype: 2,
-          payloadConfig:
-            "lat::float:32 long::float:32 temp::int:16 bat::uint:16",
-          enabled: true,
-          url: "https://early-dryers-heal-157-100-91-151.loca.lt/master-detail-data/detail",
-          httpMethod: "POST",
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-          sendSni: false,
-          bodyTemplate:
-            '{\n"latitude":{customData#lat},\n"longitude":{customData#long},\n"temperature":{customData#temp},\n"battery":{customData#bat},\n"masterData":{"id":' +
-            master_id.data +
-            "}\n}",
-
-          contentType: "application/json",
-        }),
-      });
+      await sigfoxCallbackApi.post(
+        `/device-types/${code}/callbacks`,
+        {
+            channel: "URL",
+            callbackType: 0,
+            callbackSubtype: 2,
+            payloadConfig:
+              "lat::float:32 long::float:32 temp::int:16 bat::uint:16",
+            enabled: true,
+            url:`${process.env.NEXT_PUBLIC_API_PET_MONITORING}/master-detail-data/detail`,
+            httpMethod: "POST",
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+            sendSni: false,
+            bodyTemplate:
+              '{\n"latitude":{customData#lat},\n"longitude":{customData#long},\n"temperature":{customData#temp},\n"battery":{customData#bat},\n"masterData":{"id":' +
+              master_id.data +
+              "}\n}",
+            contentType: "application/json",
+        }
+      );
 
       checkToken();
       Swal.fire({
