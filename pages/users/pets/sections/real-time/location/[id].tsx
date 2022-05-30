@@ -8,6 +8,7 @@ import LocationOnOutlinedIcon from "@mui/icons-material/LocationOnOutlined";
 import { TabLocation } from "../../../../../../components/ui";
 import { MainLayout } from "../../../../../../components/layout";
 import { useRouter } from "next/router";
+import { MapView } from "../../../../../../components/ui/pets/sections/location/MapView";
 
 const Tab = styled(MuiTab)<TabProps>(({ theme }) => ({
   [theme.breakpoints.down("md")]: {
@@ -52,6 +53,7 @@ const LocationPage = () => {
         </TabList>
         <TabPanel sx={{ p: 0 }} value="location">
           <TabLocation id={id}/>
+        
         </TabPanel>
       </TabContext>
     </Card>
