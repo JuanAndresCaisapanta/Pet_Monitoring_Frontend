@@ -6,11 +6,13 @@ import {
   CardContent,
   CardActions,
   Button,
+  IconButton,
 } from "@mui/material";
 import Grid, { GridProps } from "@mui/material/Grid";
 import { styled } from "@mui/material/styles";
 
 import { useRouter } from "next/router";
+import { EditOutlined } from "@mui/icons-material";
 
 const StyledGrid = styled(Grid)<GridProps>(({ theme }) => ({
   display: "flex",
@@ -50,7 +52,7 @@ export const CardPet: FC<Props> = ({
 
   return (
     <Card>
-      <Grid container spacing={2}>
+      <Grid container spacing={1}>
         <StyledGrid item md={6} xs={12}>
           <CardContent
             sx={{
@@ -61,7 +63,7 @@ export const CardPet: FC<Props> = ({
           >
             <img
               width={"100%"}
-              height={214}
+              height={182}
               alt="Mascota"
               src={`data:image/jpeg;base64,${image}`}
             />
@@ -69,9 +71,9 @@ export const CardPet: FC<Props> = ({
         </StyledGrid>
         <Grid item xs={12} md={6}>
           <CardContent>
-            <Grid container spacing={2}>
+            <Grid container spacing={1}>
               <Grid item xs={12} md={12}>
-                <Typography variant="h6">Nombre: {name}</Typography>
+                <Typography variant="h6">{name}</Typography>
               </Grid>
               <Grid item xs={12} md={12}>
                 <Typography variant="body2">Especie: {species}</Typography>
@@ -88,18 +90,23 @@ export const CardPet: FC<Props> = ({
             </Grid>
           </CardContent>
           <CardActions>
-            <Grid container spacing={2}>
+            <Grid container spacing={6}>
               <Grid item xs={6} md={6}>
                 <Button
-                  variant="contained"
+                  variant="text"
                   onClick={() => navigateTo(`pets/sections/${id}`)}
-                  sx={{ mr: 2 }}
                 >
                   Monitorear
                 </Button>
               </Grid>
               <Grid item xs={6} md={6}>
-                <Button variant="contained">Editar</Button>
+                <Button
+                  variant="outlined"
+                  color="secondary"
+                  startIcon={<EditOutlined />}
+                >
+                  Editar
+                </Button>
               </Grid>
             </Grid>
           </CardActions>

@@ -28,11 +28,11 @@ export const CardSection: FC<Props> = ({
   };
   return (
     <Card>
-      <CardMedia sx={{ height: "9.5rem" }} image={image} />
+      <CardMedia sx={{ height: "10rem" }} image={image} />
       <CardContent
-        sx={{ padding: (theme) => `${theme.spacing(2, 4, 2)} !important` }}
+        sx={{ padding: (theme) => `${theme.spacing(1, 2, 1)} !important` }}
       >
-        <Typography variant="h6" sx={{ marginBottom: 2 }}>
+        <Typography variant="h6" sx={{ marginBottom: 1 }}>
           {section}
         </Typography>
         <Typography variant="body2">{description}</Typography>
