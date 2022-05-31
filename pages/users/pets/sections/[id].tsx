@@ -1,4 +1,10 @@
-import { ReactElement, SyntheticEvent, useState } from "react";
+import {
+  ReactElement,
+  SyntheticEvent,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 
 import { useRouter } from "next/router";
 
@@ -10,6 +16,8 @@ import PetsOutlinedIcon from "@mui/icons-material/PetsOutlined";
 
 import { TabMonitoring } from "../../../../components/ui";
 import { MainLayout } from "../../../../components/layout";
+import Cookies from "js-cookie";
+import { PetContext } from "../../../../context";
 
 const Tab = styled(MuiTab)<TabProps>(({ theme }) => ({
   [theme.breakpoints.down("md")]: {
@@ -28,6 +36,7 @@ const TabName = styled("span")(({ theme }) => ({
 const SectionsPage = () => {
   const router = useRouter();
   const { id } = router.query;
+  Cookies.set("pet_id", id as string);
   const [value, setValue] = useState<string>("sections");
 
   const handleChange = (event: SyntheticEvent, newValue: string) => {
@@ -52,7 +61,7 @@ const SectionsPage = () => {
           />
         </TabList>
         <TabPanel sx={{ p: 0 }} value="sections">
-          <TabMonitoring id={id} />
+          <TabMonitoring id={Cookies.get("pet_id")} />
         </TabPanel>
       </TabContext>
     </Card>
@@ -61,8 +70,10 @@ const SectionsPage = () => {
 SectionsPage.getLayout = function getLayout(page: ReactElement) {
   return (
     <MainLayout
-      title={"Secciones de tu mascota"}
-      pageDescription={"En esta sección podras ver las opciones para monitorear a tu mascota"}
+      title={"Secciones mascota"}
+      pageDescription={
+        "En esta sección podras ver las opciones para monitorear a tu mascota"
+      }
     >
       {page}
     </MainLayout>

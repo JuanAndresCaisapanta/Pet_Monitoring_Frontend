@@ -50,9 +50,11 @@ export const AuthProvider: FC<Props> = ({ children }) => {
         dispatch({ type: "[Auth] - Login", payload: data });
       } else {
         Cookies.remove("token");
+        Cookies.remove("pet_id");
       }
     } catch (error) {
       Cookies.remove("token");
+      Cookies.remove("pet_id");
     }
   };
 
@@ -118,6 +120,7 @@ export const AuthProvider: FC<Props> = ({ children }) => {
   const logout = () => {
     router.reload();
     Cookies.remove("token");
+    Cookies.remove("pet_id");
   };
 
   return (

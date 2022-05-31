@@ -31,6 +31,9 @@ export const PetProvider: FC<Props> = ({ children }) => {
     if (!Cookies.get("token")) {
       return;
     }
+    if (id == undefined) {
+      return;
+    }
     try {
       const token = Cookies.get("token") || "";
       const { data } = await petMonitoringApi.get(
@@ -43,9 +46,11 @@ export const PetProvider: FC<Props> = ({ children }) => {
         dispatch({ type: "[Pet] - getPet", payload: data });
       } else {
         Cookies.remove("token");
+        Cookies.remove("pet_id");
       }
     } catch (error) {
       Cookies.remove("token");
+      Cookies.remove("pet_id");
     }
   };
 
