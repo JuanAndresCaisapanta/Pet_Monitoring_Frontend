@@ -22,7 +22,8 @@ export const MapView: FC<Props> = ({ image, latitude, longitude }) => {
               bearing: 0,
               pitch: 0,
             }}
-            style={{ width: "100%", height: 400 }}
+            
+            style={{ width: "100%", height: 485 }}
             mapStyle="mapbox://styles/mapbox/streets-v11"
             mapboxAccessToken="pk.eyJ1IjoianVhbmNhaXNhcGFudGEiLCJhIjoiY2wzczQyajB5MW45eDNpb2Vsd3FnemxxcCJ9.Goc9SFssphx808eCRVIBSg"
           >
