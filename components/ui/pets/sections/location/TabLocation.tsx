@@ -1,39 +1,48 @@
 import { useContext, useEffect } from "react";
 
+import { useRouter } from "next/router";
+
 import {
   Avatar,
-  Box,
   Button,
   CardContent,
   Divider,
   Grid,
-  Slider,
   Typography,
 } from "@mui/material";
-import Cookies from "js-cookie";
 
-import { PetContext } from "../../../../../context";
-import { MapView } from "./MapView";
+import {
+  Battery0BarOutlined,
+  Battery2BarOutlined,
+  Battery4BarOutlined,
+  BatteryStdOutlined,
+} from "@mui/icons-material";
+
 import {
   EmailIcon,
   EmailShareButton,
-  FacebookMessengerIcon,
-  FacebookMessengerShareButton,
-  MailruShareButton,
-  TwitterIcon,
   WhatsappIcon,
   WhatsappShareButton,
 } from "react-share";
-import { Battery20Outlined, Battery90Outlined } from "@mui/icons-material";
-import BatteryChargingFullIcon from '@mui/icons-material/BatteryChargingFull';
+
+import { PetContext } from "../../../../../context";
+import { MapView } from "./MapView";
 
 export const TabLocation = () => {
   const { isLoading, getPet, pet } = useContext(PetContext);
+
+  const router = useRouter();
+
+  const { id } = router.query;
+
   useEffect(() => {
-    setInterval(function () {
-      getPet(Cookies.get("pet_id"));
-    }, 15000);
-  }, []);
+    const interval = setInterval(() => {
+      getPet(id);
+    }, 5000);
+    return () => {
+      clearInterval(interval);
+    };
+  }, [id]);
 
   const detail = pet?.masterData
     .map((masterData) =>
@@ -58,6 +67,17 @@ export const TabLocation = () => {
   const openMap = () => {
     window.open(url_map);
   };
+  const battery = (() => {
+    if (detail!.battery > 3300) {
+      return <BatteryStdOutlined color="success" />;
+    } else if (detail!.battery > 2500 && detail!.battery <= 3300) {
+      return <Battery4BarOutlined color="warning" />;
+    } else if (detail!.battery > 1500 && detail!.battery <= 2500) {
+      return <Battery2BarOutlined color="warning" />;
+    } else if (detail!.battery == 0 && detail!.battery <= 1500) {
+      return <Battery0BarOutlined color="error" />;
+    }
+  })();
 
   if (!isLoading) {
     return <CardContent>Loading...</CardContent>;
@@ -66,24 +86,7 @@ export const TabLocation = () => {
       <CardContent>
         <Grid container spacing={2}>
           <Grid item xs={12} md={8}>
-            {pet?.masterData
-              .map((masterData) =>
-                masterData.detailData
-                  .map((detailData, i, { length }) => {
-                    if (i + 1 === length) {
-                      return (
-                        <MapView
-                          key={i}
-                          image={pet?.image}
-                          latitude={detailData?.latitude as number}
-                          longitude={detailData?.longitude as number}
-                        />
-                      );
-                    }
-                  })
-                  .splice(-1, 1),
-              )[0]
-              .shift()}
+            <MapView pet={pet!} />
           </Grid>
           <Grid item xs={12} sm={4}>
             <Grid container spacing={2}>
@@ -104,54 +107,13 @@ export const TabLocation = () => {
                   <Grid item>
                     <Typography variant="h6">{pet?.name}</Typography>
                   </Grid>
-                </Grid>
-              </Grid>
-              <Grid item xs={12} sm={12}>
-                <Grid
-                  container
-                  spacing={2}
-                  direction="row"
-                  alignItems="center"
-                  justifyContent="center"
-                >
-                  <Grid item>
-                    <BatteryChargingFullIcon/>
-                  </Grid>
-                  <Grid item>
-                    <Box sx={{ width: 100 }}>
-                      <Slider
-                        value={detail?.battery}
-                        min={0}
-                        step={1}
-                        max={3345}
-                        onChange={(e, value) => {}}
-                        sx={{ color: detail?.battery as any > 3345/4 ? '#52af77' : "#e91e63",
-                        height: 5,
-                        '& .MuiSlider-track': {
-                          border: 'none',
-                        },
-                        '& .MuiSlider-thumb': {
-                          height: 15,
-                          width: 15,
-                          backgroundColor:  detail?.battery as any > 3345/4 ? '#52af77' : "#e91e63",
-                          border: '2px solid currentColor',
-                          '&:focus, &:hover, &.Mui-active, &.Mui-focusVisible': {
-                            boxShadow: 'inherit',
-                          },
-                          '&:before': {
-                            display: 'none',
-                          },
-                        },}}
-                        size="small"
-                      />
-                    </Box>
-                  </Grid>
+                  <Grid item>{battery}</Grid>
                 </Grid>
               </Grid>
               <Grid item xs={12} sm={12}>
                 <Divider />
               </Grid>
-              <Grid item xs={12} sm={12} textAlign="center">
+              <Grid item xs={12} sm={12} textAlign="justify">
                 <Typography variant="body2">
                   La ubicación de {pet?.name} se actualizara cada 10 minutos
                   despues de encender el dispositivo espere por favor.

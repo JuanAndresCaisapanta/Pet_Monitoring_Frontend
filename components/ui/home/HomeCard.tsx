@@ -9,7 +9,7 @@ import {
   Grid,
   Typography,
 } from "@mui/material";
-import { Pets } from "@mui/icons-material";
+import { Devices, OnDeviceTrainingOutlined, Pets } from "@mui/icons-material";
 
 import { AuthContext } from "../../../context";
 
@@ -59,10 +59,10 @@ export const HomeCard = () => {
                   backgroundColor: `${"info"}.main`,
                 }}
               >
-                <Pets sx={{ fontSize: "1.75rem" }} />
+                <OnDeviceTrainingOutlined sx={{ fontSize: "1.75rem" }} />
               </Avatar>
               <Box sx={{ display: "flex", flexDirection: "column" }}>
-                <Typography variant="caption">Dispisitivos</Typography>
+                <Typography variant="caption">Dispositivos</Typography>
                 <Typography variant="h6">{deviceNumber}</Typography>
               </Box>
             </Box>

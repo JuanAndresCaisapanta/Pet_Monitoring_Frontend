@@ -1,13 +1,14 @@
 import { CardContent, Divider, Grid, Typography } from "@mui/material";
-import React from "react";
+import React, { useContext, useEffect } from "react";
 import { CardSection } from "./CardSection";
 import { FC } from 'react';
+import { PetContext } from "../../../context";
+import Cookies from "js-cookie";
+import { useRouter } from "next/router";
 
-interface Props{
-  id:any
-}
-
-export const TabMonitoring:FC<Props> = ({id}) => {
+export const TabMonitoring = () => {
+  const router = useRouter();
+  const { id } = router.query;
   return (
     <CardContent>
       <Divider textAlign="center" sx={{ marginBottom: "10px" }}>

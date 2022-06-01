@@ -30,14 +30,6 @@ export const theme = createTheme({
         },
       },
     },
-    // MuiDivider: {
-    //   styleOverrides: {
-    //     root: {
-    //       backgroundColor: "#F4F5FA",
-    //     },
-    //   },
-    // },
-  
     MuiListItem: {
       styleOverrides: {
         root: {
@@ -65,36 +57,5 @@ export const theme = createTheme({
         },
       },
     },
-
-    // MuiButton: {
-    //   defaultProps: {
-    //     variant: "contained",
-    //     size: "small",
-    //     disableElevation: true,
-    //   },
-    //   styleOverrides: {
-    //     root: {
-    //       textTransform: "none",
-    //       boxShadow: "none",
-    //       borderRadius: 10,
-    //       ":hover": {
-    //         backgroundColor: "rgba(0,0,0,0.05)",
-    //         transition: "all 0.3s ease-in-out",
-    //       },
-    //     },
-    //   },
-    // },
-
-    // MuiCard: {
-    //   defaultProps: {
-    //     elevation: 0,
-    //   },
-    //   styleOverrides: {
-    //     root: {
-    //       boxShadow: "0px 5px 5px rgba(0,0,0,0.05)",
-    //       borderRadius: "10px",
-    //     },
-    //   },
-    // },
   },
 });

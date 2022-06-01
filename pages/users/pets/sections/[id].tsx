@@ -1,12 +1,4 @@
-import {
-  ReactElement,
-  SyntheticEvent,
-  useContext,
-  useEffect,
-  useState,
-} from "react";
-
-import { useRouter } from "next/router";
+import { ReactElement, SyntheticEvent, useState } from "react";
 
 import { Box, Card } from "@mui/material";
 import { TabList, TabPanel, TabContext } from "@mui/lab";
@@ -14,10 +6,7 @@ import { styled } from "@mui/material/styles";
 import MuiTab, { TabProps } from "@mui/material/Tab";
 import PetsOutlinedIcon from "@mui/icons-material/PetsOutlined";
 
-import { TabMonitoring } from "../../../../components/ui";
-import { MainLayout } from "../../../../components/layout";
-import Cookies from "js-cookie";
-import { PetContext } from "../../../../context";
+import { MainLayout, TabMonitoring } from "../../../../components";
 
 const Tab = styled(MuiTab)<TabProps>(({ theme }) => ({
   [theme.breakpoints.down("md")]: {
@@ -33,12 +22,9 @@ const TabName = styled("span")(({ theme }) => ({
   fontSize: "0.8rem",
   marginLeft: theme.spacing(2.4),
 }));
-const SectionsPage = () => {
-  const router = useRouter();
-  const { id } = router.query;
-  Cookies.set("pet_id", id as string);
-  const [value, setValue] = useState<string>("sections");
 
+const SectionsPage = () => {
+  const [value, setValue] = useState<string>("sections");
   const handleChange = (event: SyntheticEvent, newValue: string) => {
     setValue(newValue);
   };
@@ -61,7 +47,7 @@ const SectionsPage = () => {
           />
         </TabList>
         <TabPanel sx={{ p: 0 }} value="sections">
-          <TabMonitoring id={Cookies.get("pet_id")} />
+          <TabMonitoring />
         </TabPanel>
       </TabContext>
     </Card>

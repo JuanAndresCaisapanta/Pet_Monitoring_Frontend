@@ -1,39 +1,60 @@
 import { FC } from "react";
 
 import { Card, Grid } from "@mui/material";
+
 import Map, { Marker } from "react-map-gl";
 
+import { IPet } from "../../../../../interfaces";
+
 interface Props {
-  image: string;
-  latitude: number;
-  longitude: number;
+  pet: IPet;
 }
 
-export const MapView: FC<Props> = ({ image, latitude, longitude }) => {
+export const MapView: FC<Props> = ({ pet }) => {
   return (
     <Card>
       <Grid container spacing={2}>
         <Grid item xs={12} md={12}>
-          <Map
-            initialViewState={{
-              longitude: longitude,
-              latitude: latitude,
-              zoom: 16.5,
-              bearing: 0,
-              pitch: 0,
-            }}
-            
-            style={{ width: "100%", height: 450 }}
-            mapStyle="mapbox://styles/mapbox/streets-v11"
-            mapboxAccessToken="pk.eyJ1IjoianVhbmNhaXNhcGFudGEiLCJhIjoiY2wzczQyajB5MW45eDNpb2Vsd3FnemxxcCJ9.Goc9SFssphx808eCRVIBSg"
-          >
-            <Marker longitude={longitude} latitude={latitude} anchor="bottom">
-              <img
-                src={`data:image/jpeg;base64,${image}`}
-                style={{ width: 35, height: 35, borderRadius: '50%' }}
-              />
-            </Marker>
-          </Map>
+          {pet?.masterData
+            .map((masterData) =>
+              masterData.detailData
+                .map((detailData, i, { length }) => {
+                  if (i + 1 === length) {
+                    return (
+                      <Map
+                        key={i}
+                        initialViewState={{
+                          longitude: detailData?.longitude as number,
+                          latitude: detailData?.latitude as number,
+                          zoom: 16.5,
+                          bearing: 0,
+                          pitch: 0,
+                        }}
+                        style={{ width: "100%", height: 450 }}
+                        mapStyle="mapbox://styles/mapbox/streets-v11"
+                        mapboxAccessToken="pk.eyJ1IjoianVhbmNhaXNhcGFudGEiLCJhIjoiY2wzczQyajB5MW45eDNpb2Vsd3FnemxxcCJ9.Goc9SFssphx808eCRVIBSg"
+                      >
+                        <Marker
+                          longitude={detailData?.longitude as number}
+                          latitude={detailData?.latitude as number}
+                          anchor="bottom"
+                        >
+                          <img
+                            src={`data:image/jpeg;base64,${pet?.image}`}
+                            style={{
+                              width: 35,
+                              height: 35,
+                              borderRadius: "50%",
+                            }}
+                          />
+                        </Marker>
+                      </Map>
+                    );
+                  }
+                })
+                .splice(-1, 1),
+            )[0]
+            .shift()}
         </Grid>
       </Grid>
     </Card>

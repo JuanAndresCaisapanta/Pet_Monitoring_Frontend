@@ -1,16 +1,11 @@
-import { SyntheticEvent, useState, ReactElement, useContext, useEffect } from "react";
+import { SyntheticEvent, useState, ReactElement } from "react";
 
 import { Box, Card, styled } from "@mui/material";
 import { TabList, TabPanel, TabContext } from "@mui/lab";
 import MuiTab, { TabProps } from "@mui/material/Tab";
 import LocationOnOutlinedIcon from "@mui/icons-material/LocationOnOutlined";
 
-import { TabLocation } from "../../../../../../components/ui";
-import { MainLayout } from "../../../../../../components/layout";
-import { useRouter } from "next/router";
-import { MapView } from "../../../../../../components/ui/pets/sections/location/MapView";
-import { PetContext } from "../../../../../../context";
-import Cookies from "js-cookie";
+import { MainLayout, TabLocation } from "../../../../../../components";
 
 const Tab = styled(MuiTab)<TabProps>(({ theme }) => ({
   [theme.breakpoints.down("md")]: {
@@ -29,10 +24,6 @@ const TabName = styled("span")(({ theme }) => ({
 
 const LocationPage = () => {
   const [value, setValue] = useState<string>("location");
-  const router = useRouter();
-  const { id } = router.query;
-  Cookies.set("pet_id", id as string);
-  
   const handleChange = (event: SyntheticEvent, newValue: string) => {
     setValue(newValue);
   };
@@ -55,7 +46,7 @@ const LocationPage = () => {
           />
         </TabList>
         <TabPanel sx={{ p: 0 }} value="location">
-          <TabLocation/>
+          <TabLocation />
         </TabPanel>
       </TabContext>
     </Card>

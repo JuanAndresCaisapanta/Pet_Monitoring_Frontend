@@ -1,8 +1,14 @@
-import { Grid, Typography } from "@mui/material";
-import type { NextPage } from "next";
 import { ReactElement } from "react";
-import { MainLayout } from "../../components/layout";
-import { ContactCard, HomeCard, HomeTable, ManualCard } from "../../components/ui";
+
+import { Grid } from "@mui/material";
+
+import {
+  ContactCard,
+  HomeCard,
+  HomeTable,
+  MainLayout,
+  ManualCard,
+} from "../../components";
 
 const HomePage = () => {
   return (
@@ -11,10 +17,10 @@ const HomePage = () => {
         <HomeCard />
       </Grid>
       <Grid item xs={12} sm={3}>
-        <ManualCard/>
+        <ManualCard />
       </Grid>
       <Grid item xs={12} sm={3}>
-      <ContactCard />
+        <ContactCard />
       </Grid>
       <Grid item xs={12} sm={12}>
         <HomeTable />

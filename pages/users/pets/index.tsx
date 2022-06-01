@@ -8,8 +8,7 @@ import { TabList, TabPanel, TabContext } from "@mui/lab";
 
 import { PetsOutlined, AddCircleOutlineOutlined } from "@mui/icons-material";
 
-import { MainLayout } from "../../../components/layout";
-import { TabInfoPet, TabListPets } from "../../../components/ui";
+import { MainLayout, TabInfoPet, TabListPets } from "../../../components";
 
 const Tab = styled(MuiTab)<TabProps>(({ theme }) => ({
   [theme.breakpoints.down("md")]: {

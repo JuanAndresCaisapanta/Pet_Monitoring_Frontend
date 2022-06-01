@@ -31,7 +31,7 @@ export const PetProvider: FC<Props> = ({ children }) => {
     if (!Cookies.get("token")) {
       return;
     }
-    if (id == undefined) {
+    if (id === undefined) {
       return;
     }
     try {

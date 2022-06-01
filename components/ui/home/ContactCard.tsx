@@ -13,7 +13,7 @@ export const ContactCard = () => {
   return (
     <Card>
       <CardHeader
-        title="Servicio Tecnico"
+        title="Servicio Técnico"
         titleTypographyProps={{ color: "primary" }}
       />
       <CardContent sx={{ pt: (theme) => `${theme.spacing(1)} !important` }}>
@@ -33,8 +33,10 @@ export const ContactCard = () => {
               <ContactPhoneIcon />
             </Avatar>
             <Box sx={{ display: "flex", flexDirection: "column" }}>
-              <Typography variant="caption">099999999</Typography>
-              <Typography variant="caption">ejemplo@tt.com</Typography>
+              <Typography variant="caption">0999288791</Typography>
+              <Typography variant="caption">
+                juancaisapanta@hotmail.com
+              </Typography>
             </Box>
           </Box>
         </Grid>
