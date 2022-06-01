@@ -36,6 +36,10 @@ export const TabLocation = () => {
   const { id } = router.query;
 
   useEffect(() => {
+    getPet(id);
+  }, [id]);
+
+  useEffect(() => {
     const interval = setInterval(() => {
       getPet(id);
     }, 5000);
@@ -68,13 +72,13 @@ export const TabLocation = () => {
     window.open(url_map);
   };
   const battery = (() => {
-    if (detail!.battery > 3300) {
+    if (detail?.battery! > 3300) {
       return <BatteryStdOutlined color="success" />;
-    } else if (detail!.battery > 2500 && detail!.battery <= 3300) {
+    } else if (detail?.battery! > 2500 && detail?.battery! <= 3300) {
       return <Battery4BarOutlined color="warning" />;
-    } else if (detail!.battery > 1500 && detail!.battery <= 2500) {
+    } else if (detail?.battery! > 1500 && detail?.battery! <= 2500) {
       return <Battery2BarOutlined color="warning" />;
-    } else if (detail!.battery == 0 && detail!.battery <= 1500) {
+    } else if (detail?.battery == 0 && detail?.battery <= 1500) {
       return <Battery0BarOutlined color="error" />;
     }
   })();
