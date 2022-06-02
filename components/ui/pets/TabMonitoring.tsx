@@ -31,7 +31,7 @@ export const TabMonitoring = () => {
             section="Temperatura"
             description="Revise la temperatura de su mascota."
             image="/images/pet/temperature.jpg"
-            link="/pets/sections/real-time/temperature"
+            link={`real-time/temperature/${id}`}
             button="Revisar"
           />
         </Grid>
