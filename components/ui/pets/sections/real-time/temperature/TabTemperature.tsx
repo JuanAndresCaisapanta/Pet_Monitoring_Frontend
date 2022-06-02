@@ -2,21 +2,7 @@ import { useContext, useEffect } from "react";
 
 import { useRouter } from "next/router";
 
-import {
-  Avatar,
-  Button,
-  CardContent,
-  Divider,
-  Grid,
-  Typography,
-} from "@mui/material";
-
-import {
-  Battery0BarOutlined,
-  Battery2BarOutlined,
-  Battery4BarOutlined,
-  BatteryStdOutlined,
-} from "@mui/icons-material";
+import { Avatar, CardContent, Divider, Grid, Typography } from "@mui/material";
 
 import {
   EmailIcon,
@@ -25,10 +11,16 @@ import {
   WhatsappShareButton,
 } from "react-share";
 
-import { PetContext } from "../../../../../context";
-import { MapView } from "./MapView";
+import {
+  CircularInput,
+  CircularTrack,
+  CircularProgress,
+} from "react-circular-input";
 
-export const TabLocation = () => {
+import { PetContext } from "../../../../../../context";
+import { Battery } from "../Battery";
+
+export const TabTemperature = () => {
   const { isLoading, getPet, pet } = useContext(PetContext);
 
   const router = useRouter();
@@ -55,8 +47,7 @@ export const TabLocation = () => {
           if (i + 1 === length) {
             return {
               detail: {
-                latitude: detailData.latitude,
-                longitude: detailData.longitude,
+                temperature: detailData.temperature,
                 battery: detailData.battery,
               },
             };
@@ -66,22 +57,9 @@ export const TabLocation = () => {
     )[0]
     .shift()?.detail;
 
-  const url_map = `https://www.google.com/maps/search/?api=1&query=${detail?.latitude},${detail?.longitude}`;
+  const url_temp = `La temperatura de ${pet?.name} es ${detail?.temperature} `;
 
-  const openMap = () => {
-    window.open(url_map);
-  };
-  const battery = (() => {
-    if (detail?.battery! > 3300) {
-      return <BatteryStdOutlined color="success" />;
-    } else if (detail?.battery! > 2500 && detail?.battery! <= 3300) {
-      return <Battery4BarOutlined color="warning" />;
-    } else if (detail?.battery! > 1500 && detail?.battery! <= 2500) {
-      return <Battery2BarOutlined color="warning" />;
-    } else if (detail?.battery == 0 && detail?.battery <= 1500) {
-      return <Battery0BarOutlined color="error" />;
-    }
-  })();
+  const conversion = (detail?.temperature! * 1) / 50;
 
   if (!isLoading) {
     return <CardContent>Loading...</CardContent>;
@@ -89,8 +67,31 @@ export const TabLocation = () => {
     return (
       <CardContent>
         <Grid container spacing={2}>
-          <Grid item xs={12} md={8}>
-            <MapView pet={pet!} />
+          <Grid item xs={12} sm={8}>
+            <Grid
+              container
+              item
+              xs={12}
+              sm={12}
+              direction="column"
+              alignItems="center"
+            >
+              <CircularInput value={conversion} style={{ marginTop: 10 }}>
+                <CircularTrack strokeWidth={5} stroke="#9C9FA4" />
+                <CircularProgress
+                  stroke={`hsl(${conversion * 100}, 100%, 50%)`}
+                />
+                <text
+                  x={100}
+                  y={100}
+                  textAnchor="middle"
+                  dy="0.3em"
+                  fontWeight="bold"
+                >
+                  {`${detail?.temperature!}°`}
+                </text>
+              </CircularInput>
+            </Grid>
           </Grid>
           <Grid item xs={12} sm={4}>
             <Grid container spacing={2}>
@@ -111,7 +112,10 @@ export const TabLocation = () => {
                   <Grid item>
                     <Typography variant="h6">{pet?.name}</Typography>
                   </Grid>
-                  <Grid item>{battery}</Grid>
+                  <Grid item>
+                    {" "}
+                    <Battery value={detail?.battery!} />
+                  </Grid>
                 </Grid>
               </Grid>
               <Grid item xs={12} sm={12}>
@@ -119,38 +123,24 @@ export const TabLocation = () => {
               </Grid>
               <Grid item xs={12} sm={12} textAlign="justify">
                 <Typography variant="body2">
-                  La ubicación de {pet?.name} se actualizara cada 10 minutos
+                  La temperatura de {pet?.name} se actualizara cada 10 minutos
                   despues de encender el dispositivo espere por favor.
                 </Typography>
               </Grid>
               <Grid item xs={12} sm={12}>
                 <Divider />
               </Grid>
-              <Grid item xs={12} sm={12}>
-                <Button
-                  disableElevation
-                  fullWidth
-                  variant="contained"
-                  onClick={openMap}
-                >
-                  Ubicar en Mapa
-                </Button>
-              </Grid>
-              <Grid item xs={12} sm={12}>
-                <Divider />
-              </Grid>
-
               <Grid item xs={12} sm={12} textAlign="center">
                 <Typography variant="body1" color={"secondary"}>
-                  Compartir Ubicación
+                  Compartir temperatura
                 </Typography>
               </Grid>
               <Grid item xs={12} sm={12} textAlign="center">
-                <WhatsappShareButton url={url_map}>
+                <WhatsappShareButton url={url_temp}>
                   <WhatsappIcon size={32} round={true} />
                 </WhatsappShareButton>
                 <EmailShareButton
-                  url={url_map}
+                  url={url_temp}
                   subject={`Ubicación de ${pet?.name}`}
                 >
                   <EmailIcon size={32} round={true} />

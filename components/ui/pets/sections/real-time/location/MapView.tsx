@@ -4,7 +4,7 @@ import { Card, Grid } from "@mui/material";
 
 import Map, { Marker } from "react-map-gl";
 
-import { IPet } from "../../../../../interfaces";
+import { IPet } from "../../../../../../interfaces";
 
 interface Props {
   pet: IPet;

@@ -1,5 +1,2 @@
-export * from './establishment'
-export * from './location'
-export * from './medicine'
-export * from './professional'
-export * from './temperature'
+export * from './data'
+export * from './real-time'
