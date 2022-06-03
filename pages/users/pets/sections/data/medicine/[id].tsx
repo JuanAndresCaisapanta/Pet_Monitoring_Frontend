@@ -7,10 +7,10 @@ import { TabList, TabPanel, TabContext } from "@mui/lab";
 import MuiTab, { TabProps } from "@mui/material/Tab";
 
 // ** Icons Imports
-import HomeWorkOutlinedIcon from "@mui/icons-material/HomeWorkOutlined";
+import VaccinesOutlinedIcon from "@mui/icons-material/VaccinesOutlined";
 import AddCircleOutlineOutlinedIcon from "@mui/icons-material/AddCircleOutlineOutlined";
-import { TabEstablishment, TabLocation } from "../../../../../components/ui";
-import { MainLayout } from "../../../../../components/layout";
+import { TabLocation, TabMedicine } from "../../../../../../components/ui";
+import { MainLayout } from "../../../../../../components/layout";
 
 const Tab = styled(MuiTab)<TabProps>(({ theme }) => ({
   [theme.breakpoints.down("md")]: {
@@ -27,8 +27,8 @@ const TabName = styled("span")(({ theme }) => ({
   marginLeft: theme.spacing(2.4),
 }));
 
-const EstablishmentsPage = () => {
-  const [value, setValue] = useState<string>("establishments");
+const MedicinePage = () => {
+  const [value, setValue] = useState<string>("medicines");
 
   const handleChange = (event: SyntheticEvent, newValue: string) => {
     setValue(newValue);
@@ -38,20 +38,20 @@ const EstablishmentsPage = () => {
       <TabContext value={value}>
         <TabList
           onChange={handleChange}
-          aria-label="establishments-settings tabs"
+          aria-label="medicines-settings tabs"
           sx={{ borderBottom: (theme) => `1px solid ${theme.palette.divider}` }}
         >
           <Tab
-            value="establishments"
+            value="medicines"
             label={
               <Box sx={{ display: "flex", alignItems: "center" }}>
-                <HomeWorkOutlinedIcon />
-                <TabName>Establecimientos</TabName>
+                <VaccinesOutlinedIcon />
+                <TabName>Medicinas</TabName>
               </Box>
             }
           />
           <Tab
-            value="add-establishments"
+            value="add-medicines"
             label={
               <Box sx={{ display: "flex", alignItems: "center" }}>
                 <AddCircleOutlineOutlinedIcon />
@@ -60,15 +60,16 @@ const EstablishmentsPage = () => {
             }
           />
         </TabList>
-        <TabPanel sx={{ p: 0 }} value="establishments">
-          <TabEstablishment />
+        <TabPanel sx={{ p: 0 }} value="medicines">
+          <TabMedicine />
         </TabPanel>
-        <TabPanel sx={{ p: 0 }} value="add-establishments"></TabPanel>
+        <TabPanel sx={{ p: 0 }} value="add-medicines"></TabPanel>
       </TabContext>
     </Card>
   );
 };
-EstablishmentsPage.getLayout = function getLayout(page: ReactElement) {
+
+MedicinePage.getLayout = function getLayout(page: ReactElement) {
   return (
     <MainLayout
       title={"Monitoreo Mascotas"}
@@ -78,4 +79,5 @@ EstablishmentsPage.getLayout = function getLayout(page: ReactElement) {
     </MainLayout>
   );
 };
-export default EstablishmentsPage;
+
+export default MedicinePage;

@@ -46,11 +46,9 @@ export const PetProvider: FC<Props> = ({ children }) => {
         dispatch({ type: "[Pet] - getPet", payload: data });
       } else {
         Cookies.remove("token");
-        Cookies.remove("pet_id");
       }
     } catch (error) {
       Cookies.remove("token");
-      Cookies.remove("pet_id");
     }
   };
 

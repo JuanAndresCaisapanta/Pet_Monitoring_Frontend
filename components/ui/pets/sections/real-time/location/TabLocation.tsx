@@ -1,4 +1,4 @@
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 
 import { useRouter } from "next/router";
 
@@ -24,13 +24,14 @@ import { Battery } from "../Battery";
 
 export const TabLocation = () => {
   const { isLoading, getPet, pet } = useContext(PetContext);
-
+  const [petId, setPetId] = useState(pet?.id);
   const router = useRouter();
 
   const { id } = router.query;
 
   useEffect(() => {
     getPet(id);
+    setPetId(pet?.id);
   }, [id]);
 
   useEffect(() => {
@@ -66,9 +67,7 @@ export const TabLocation = () => {
     window.open(url_map);
   };
 
-  if (!isLoading) {
-    return <CardContent>Loading...</CardContent>;
-  } else {
+  if (petId !== pet?.id) {
     return (
       <CardContent>
         <Grid container spacing={2}>
@@ -144,6 +143,16 @@ export const TabLocation = () => {
           </Grid>
         </Grid>
       </CardContent>
+    );
+  } else {
+    return (
+      <Grid container direction="column" alignItems={"center"}>
+        <Grid item>
+          <Typography color={"primary"} sx={{ mt: 1 }}>
+            Cargando...
+          </Typography>
+        </Grid>
+      </Grid>
     );
   }
 };

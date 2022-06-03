@@ -1,1 +1,2 @@
-export * from './TabMedicine'
+export * from './TabListMedicine'
+export * from './CardMedicine'

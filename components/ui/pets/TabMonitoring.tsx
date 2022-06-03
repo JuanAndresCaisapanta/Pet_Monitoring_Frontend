@@ -50,7 +50,7 @@ export const TabMonitoring = () => {
             section="Medicamentos"
             description="Administre las medicamentos de su mascota."
             image="/images/pet/medicine.jpg"
-            link="/pets/sections/data/medicines"
+            link={`data/medicine/${id}`}
             button="Administrar"
           />
         </Grid>

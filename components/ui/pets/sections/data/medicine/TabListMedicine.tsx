@@ -1,27 +1,36 @@
-import { useContext, useState } from "react";
-
 import {
-  Grid,
   CardContent,
-  TextField,
+  Grid,
   InputAdornment,
+  TextField,
   Typography,
 } from "@mui/material";
+import { useContext, useEffect, useState } from "react";
+import { PetContext } from "../../../../../../context/pet/PetContext";
 import SearchIcon from "@mui/icons-material/Search";
+import { CardMedicine } from "./CardMedicine";
+import { useRouter } from "next/router";
 
-import { CardPet } from "./CardPet";
-import { AuthContext } from "../../../context";
-
-export const TabListPets = () => {
+export const TabMedicine = () => {
   const [searchWord, setSearchWord] = useState("");
-  const { user } = useContext(AuthContext);
+  const { pet, getPet } = useContext(PetContext);
+  const [petId, setPetId] = useState(pet?.id);
+  const router = useRouter();
 
-  const filteredOptions = user?.pet!.filter(
-    (pet) =>
-      pet.name.toLowerCase().includes(searchWord.toLowerCase()) || !searchWord,
+  const { id } = router.query;
+
+  useEffect(() => {
+    getPet(id);
+    setPetId(pet?.id);
+  }, [id]);
+
+  const filteredOptions = pet?.medicine!.filter(
+    (medicine) =>
+      medicine.name.toLowerCase().includes(searchWord.toLowerCase()) ||
+      !searchWord,
   );
 
-  if (user?.pet) {
+  if (petId !== pet?.id) {
     return (
       <CardContent>
         <Grid container spacing={2}>
@@ -58,16 +67,18 @@ export const TabListPets = () => {
                 }
                 return 0;
               })
-              .map((pet) => (
-                <Grid item xs={12} sm={6} key={pet.id}>
-                  <CardPet
-                    id={pet.id}
-                    image={pet.image}
-                    name={pet.name}
-                    sex={pet.sex}
-                    race={pet.breed.name}
-                    weight={pet.weight}
-                    species={pet.breed.species.name}
+              .map((medicine) => (
+                <Grid item xs={12} sm={6} key={medicine.id}>
+                  <CardMedicine
+                    id={medicine.id}
+                    name={medicine.name}
+                    image={medicine.image}
+                    manufacturer={medicine.manufacturer}
+                    application_date={medicine.application_date}
+                    production_date={medicine.production_date}
+                    expiration_date={medicine.expiration_date}
+                    applicator={medicine.applicator}
+                    typeMedicine={medicine.typeMedicine.name}
                   />
                 </Grid>
               ))
@@ -87,7 +98,9 @@ export const TabListPets = () => {
     return (
       <Grid container direction="column" alignItems={"center"}>
         <Grid item>
-          <Typography color={"primary"} sx={{ mt: 1 }}>Cargando...</Typography>
+          <Typography color={"primary"} sx={{ mt: 1 }}>
+            Cargando...
+          </Typography>
         </Grid>
       </Grid>
     );
