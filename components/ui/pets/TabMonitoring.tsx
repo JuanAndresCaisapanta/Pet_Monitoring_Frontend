@@ -11,8 +11,8 @@ export const TabMonitoring = () => {
   const { id } = router.query;
   return (
     <CardContent>
-      <Divider textAlign="center" sx={{ marginBottom: "10px" }}>
-        <Typography variant="h6" component="h6">
+      <Divider textAlign="center">
+        <Typography variant="h6" >
           Tiempo real
         </Typography>
       </Divider>
@@ -38,9 +38,8 @@ export const TabMonitoring = () => {
       </Grid>
       <Divider
         textAlign="center"
-        sx={{ marginBottom: "10px", marginTop: "10px" }}
       >
-        <Typography variant="h6" component="h6">
+        <Typography variant="h6">
           Datos
         </Typography>
       </Divider>
