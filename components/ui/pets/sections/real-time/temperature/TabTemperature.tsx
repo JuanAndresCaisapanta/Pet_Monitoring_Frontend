@@ -1,4 +1,4 @@
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 
 import { useRouter } from "next/router";
 
@@ -21,14 +21,15 @@ import { PetContext } from "../../../../../../context";
 import { Battery } from "../Battery";
 
 export const TabTemperature = () => {
-  const { isLoading, getPet, pet } = useContext(PetContext);
-
+  const { getPet, pet } = useContext(PetContext);
+  const [petId, setPetId] = useState(pet?.id);
   const router = useRouter();
 
   const { id } = router.query;
 
   useEffect(() => {
     getPet(id);
+    setPetId(pet?.id);
   }, [id]);
 
   useEffect(() => {
@@ -61,9 +62,7 @@ export const TabTemperature = () => {
 
   const conversion = (detail?.temperature! * 1) / 50;
 
-  if (!isLoading) {
-    return <CardContent>Loading...</CardContent>;
-  } else {
+  if (petId !== pet?.id) {
     return (
       <CardContent>
         <Grid container spacing={2}>
@@ -113,7 +112,6 @@ export const TabTemperature = () => {
                     <Typography variant="h6">{pet?.name}</Typography>
                   </Grid>
                   <Grid item>
-                    {" "}
                     <Battery value={detail?.battery!} />
                   </Grid>
                 </Grid>
@@ -150,6 +148,16 @@ export const TabTemperature = () => {
           </Grid>
         </Grid>
       </CardContent>
+    );
+  } else {
+    return (
+      <Grid container direction="column" alignItems={"center"}>
+        <Grid item>
+          <Typography color={"primary"} sx={{ mt: 1 }}>
+            Cargando...
+          </Typography>
+        </Grid>
+      </Grid>
     );
   }
 };
