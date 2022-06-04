@@ -77,7 +77,7 @@ export const CardMedicine: FC<Props> = ({
           <CardContent>
             <Grid container spacing={1}>
               <Grid item xs={12} md={12}>
-                <Typography variant="h6" color={"primary"}>
+                <Typography variant="h6" color={"primary"} noWrap>
                   {name}
                 </Typography>
               </Grid>
@@ -87,12 +87,12 @@ export const CardMedicine: FC<Props> = ({
                 </Typography>
               </Grid>
               <Grid item xs={12} md={12}>
-                <Typography variant="body1">
+                <Typography variant="body1" noWrap>
                   <b>Aplicador: </b> {applicator}
                 </Typography>
               </Grid>
               <Grid item xs={12} md={12}>
-                <Typography variant="body2">
+                <Typography variant="body2" noWrap>
                   <b>Fabricante: </b> {manufacturer}
                 </Typography>
               </Grid>

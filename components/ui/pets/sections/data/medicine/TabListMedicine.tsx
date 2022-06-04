@@ -1,3 +1,7 @@
+import { useContext, useEffect, useState } from "react";
+
+import { useRouter } from "next/router";
+
 import {
   CardContent,
   Grid,
@@ -5,15 +9,14 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { useContext, useEffect, useState } from "react";
-import { PetContext } from "../../../../../../context/pet/PetContext";
 import SearchIcon from "@mui/icons-material/Search";
+
+import { PetContext } from "../../../../../../context/pet/PetContext";
 import { CardMedicine } from "./CardMedicine";
-import { useRouter } from "next/router";
 
 export const TabMedicine = () => {
   const [searchWord, setSearchWord] = useState("");
-  const { pet, getPet, isLoaded,petChange } = useContext(PetContext);
+  const { pet, getPet, isLoaded, petChange } = useContext(PetContext);
   const router = useRouter();
 
   const { id } = router.query;
@@ -21,8 +24,8 @@ export const TabMedicine = () => {
   useEffect(() => {
     getPet(id);
     return () => {
-      petChange()
-    }
+      petChange();
+    };
   }, [id]);
 
   const filteredOptions = pet?.medicine!.filter(
