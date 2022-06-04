@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect} from "react";
 
 import { useRouter } from "next/router";
 
@@ -21,15 +21,16 @@ import { PetContext } from "../../../../../../context";
 import { Battery } from "../Battery";
 
 export const TabTemperature = () => {
-  const { getPet, pet } = useContext(PetContext);
-  const [petId, setPetId] = useState(pet?.id);
+  const { isLoaded, getPet, pet, petChange } = useContext(PetContext);
   const router = useRouter();
 
   const { id } = router.query;
 
   useEffect(() => {
     getPet(id);
-    setPetId(pet?.id);
+    return () => {
+      petChange();
+    };
   }, [id]);
 
   useEffect(() => {
@@ -57,14 +58,13 @@ export const TabTemperature = () => {
         .splice(-1, 1),
     )[0]
     .shift()?.detail;
-
   const url_temp = `La temperatura de ${pet?.name} es ${detail?.temperature} `;
 
   const conversion = (detail?.temperature! * 1) / 50;
 
-  if (petId !== pet?.id) {
+  if (isLoaded) {
     return (
-      <CardContent>
+      <CardContent key={id as any}>
         <Grid container spacing={2}>
           <Grid item xs={12} sm={8}>
             <Grid
@@ -75,21 +75,37 @@ export const TabTemperature = () => {
               direction="column"
               alignItems="center"
             >
-              <CircularInput value={conversion} style={{ marginTop: 10 }}>
-                <CircularTrack strokeWidth={5} stroke="#9C9FA4" />
-                <CircularProgress
-                  stroke={`hsl(${conversion * 100}, 100%, 50%)`}
-                />
-                <text
-                  x={100}
-                  y={100}
-                  textAnchor="middle"
-                  dy="0.3em"
-                  fontWeight="bold"
-                >
-                  {`${detail?.temperature!}°`}
-                </text>
-              </CircularInput>
+              {detail?.temperature ? (
+                <CircularInput value={conversion} style={{ marginTop: 10 }}>
+                  <CircularTrack strokeWidth={5} stroke="#9C9FA4" />
+                  <CircularProgress
+                    stroke={`hsl(${conversion * 100}, 100%, 50%)`}
+                  />
+                  <text
+                    x={100}
+                    y={100}
+                    textAnchor="middle"
+                    dy="0.3em"
+                    fontWeight="bold"
+                  >
+                    {`${detail?.temperature!}°`}
+                  </text>
+                </CircularInput>
+              ) : (
+                <CircularInput value={0} style={{ marginTop: 10 }}>
+                  <CircularTrack strokeWidth={5} stroke="#9C9FA4" />
+                  <CircularProgress stroke={`hsl(${0 * 100}, 100%, 50%)`} />
+                  <text
+                    x={100}
+                    y={100}
+                    textAnchor="middle"
+                    dy="0.3em"
+                    fontWeight="bold"
+                  >
+                    {`0°`}
+                  </text>
+                </CircularInput>
+              )}
             </Grid>
           </Grid>
           <Grid item xs={12} sm={4}>

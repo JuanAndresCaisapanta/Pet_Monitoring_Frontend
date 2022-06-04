@@ -13,15 +13,16 @@ import { useRouter } from "next/router";
 
 export const TabMedicine = () => {
   const [searchWord, setSearchWord] = useState("");
-  const { pet, getPet } = useContext(PetContext);
-  const [petId, setPetId] = useState(pet?.id);
+  const { pet, getPet, isLoaded,petChange } = useContext(PetContext);
   const router = useRouter();
 
   const { id } = router.query;
 
   useEffect(() => {
     getPet(id);
-    setPetId(pet?.id);
+    return () => {
+      petChange()
+    }
   }, [id]);
 
   const filteredOptions = pet?.medicine!.filter(
@@ -30,7 +31,7 @@ export const TabMedicine = () => {
       !searchWord,
   );
 
-  if (petId !== pet?.id) {
+  if (isLoaded) {
     return (
       <CardContent>
         <Grid container spacing={2}>

@@ -2,9 +2,10 @@ import { createContext } from "react";
 import { IPet } from "../../interfaces";
 
 interface ContextProps {
-  isLoading: boolean;
+  isLoaded: boolean;
   pet?: IPet;
   getPet: (id: any) => void;
+  petChange: () => void;
   addPet: (
     name: string,
     color_main: string,

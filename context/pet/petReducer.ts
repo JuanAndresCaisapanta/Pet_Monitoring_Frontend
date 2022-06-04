@@ -1,7 +1,9 @@
 import { PetState } from "./";
-import { IPet } from '../../interfaces/pet';
+import { IPet } from "../../interfaces/pet";
 
-type PetActionType = { type: "[Pet] - getPet"; payload: IPet };
+type PetActionType =
+  | { type: "[Pet] - getPet"; payload: IPet }
+  | { type: "[Pet] - petChange" };
 
 export const petReducer = (
   state: PetState,
@@ -11,8 +13,14 @@ export const petReducer = (
     case "[Pet] - getPet":
       return {
         ...state,
-        isLoading: true,
+        isLoaded: true,
         pet: action.payload,
+      };
+    case "[Pet] - petChange":
+      return {
+        ...state,
+        isLoaded: false,
+        pet: undefined,
       };
 
     default:

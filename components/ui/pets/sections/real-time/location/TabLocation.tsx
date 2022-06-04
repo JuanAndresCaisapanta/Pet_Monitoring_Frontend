@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect } from "react";
 
 import { useRouter } from "next/router";
 
@@ -23,15 +23,15 @@ import { MapView } from "./MapView";
 import { Battery } from "../Battery";
 
 export const TabLocation = () => {
-  const { isLoading, getPet, pet } = useContext(PetContext);
-  const [petId, setPetId] = useState(pet?.id);
+  const { isLoaded, getPet, pet, petChange } = useContext(PetContext);
   const router = useRouter();
-
   const { id } = router.query;
 
   useEffect(() => {
     getPet(id);
-    setPetId(pet?.id);
+    return () => {
+      petChange();
+    };
   }, [id]);
 
   useEffect(() => {
@@ -67,9 +67,9 @@ export const TabLocation = () => {
     window.open(url_map);
   };
 
-  if (petId !== pet?.id) {
+  if (isLoaded) {
     return (
-      <CardContent>
+      <CardContent key={id as any}>
         <Grid container spacing={2}>
           <Grid item xs={12} md={8}>
             <MapView pet={pet!} />

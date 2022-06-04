@@ -11,12 +11,12 @@ import { AuthContext } from "../auth";
 import { PetContext, petReducer } from "./";
 
 export interface PetState {
-  isLoading: boolean;
+  isLoaded: boolean;
   pet?: IPet;
 }
 
 const PET_INITIAL_STATE: PetState = {
-  isLoading: false,
+  isLoaded: false,
   pet: undefined,
 };
 
@@ -40,10 +40,10 @@ export const PetProvider: FC<Props> = ({ children }) => {
         `/auth/validate-token/${token}`,
       );
       if (data == true) {
-        const { data } = await petMonitoringApi.get(`/pet/${id}`, {
+        const pet = await petMonitoringApi.get(`/pet/${id}`, {
           headers: { Authorization: `Bearer ${token}` },
         });
-        dispatch({ type: "[Pet] - getPet", payload: data });
+        dispatch({ type: "[Pet] - getPet", payload: pet.data });
       } else {
         Cookies.remove("token");
       }
@@ -51,6 +51,10 @@ export const PetProvider: FC<Props> = ({ children }) => {
       Cookies.remove("token");
     }
   };
+
+  const petChange=()=>{
+    dispatch({ type: "[Pet] - petChange" });
+  }
 
   const addPet = async (
     name: string,
@@ -123,6 +127,7 @@ export const PetProvider: FC<Props> = ({ children }) => {
         ...state,
         addPet,
         getPet,
+        petChange,
       }}
     >
       {children}
