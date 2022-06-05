@@ -50,7 +50,7 @@ export const TabListDevices = () => {
                 return 0;
               })
               .map((device) => (
-                <Grid item xs={12} sm={6} key={device.id}>
+                <Grid item xs={12} sm={3} key={device.id}>
                  <CardDevice code={device.code} name={device.masterData.map((data)=>(data.pet?.name)).filter((v:any, i:any, a:any) => a.indexOf(v) === i)} state={"activo"}/></Grid>
               ))
           ) : (

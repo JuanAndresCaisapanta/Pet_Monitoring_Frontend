@@ -6,13 +6,12 @@ import {
   CardContent,
   CardActions,
   Button,
-  IconButton,
 } from "@mui/material";
 import Grid, { GridProps } from "@mui/material/Grid";
 import { styled } from "@mui/material/styles";
 
 import { useRouter } from "next/router";
-import { EditOutlined } from "@mui/icons-material";
+import { Visibility } from "@mui/icons-material";
 import Image from "next/image";
 
 const StyledGrid = styled(Grid)<GridProps>(({ theme }) => ({
@@ -63,8 +62,8 @@ export const CardPet: FC<Props> = ({
             }}
           >
             <Image
-              width="180rem"
-              height="180rem"
+              width="300rem"
+              height="200rem"
               alt="Mascota"
               src={`data:image/jpeg;base64,${image}`}
               style={{ borderRadius: "15px" }}
@@ -75,24 +74,26 @@ export const CardPet: FC<Props> = ({
           <CardContent>
             <Grid container spacing={1}>
               <Grid item xs={12} md={12}>
-                <Typography variant="h6">{name}</Typography>
+                <Typography variant="h6" color={"primary"}>
+                  {name}
+                </Typography>
               </Grid>
               <Grid item xs={12} md={12}>
-                <Typography variant="body2">Especie: {species}</Typography>
+                <Typography variant="body2"><b>Especie: </b>{species}</Typography>
               </Grid>
               <Grid item xs={12} md={12}>
-                <Typography variant="body2">Género: {sex}</Typography>
+                <Typography variant="body2"><b>Sexo: </b>{sex}</Typography>
               </Grid>
               <Grid item xs={12} md={12}>
-                <Typography variant="body2">Raza: {race}</Typography>
+                <Typography variant="body2"><b>Raza: </b>{race}</Typography>
               </Grid>
               <Grid item xs={12} md={12}>
-                <Typography variant="body2">Peso: {weight}</Typography>
+                <Typography variant="body2"><b>Peso: </b>{`${weight} Kg`}</Typography>
               </Grid>
             </Grid>
           </CardContent>
           <CardActions>
-            <Grid container spacing={6}>
+            <Grid container spacing={10}>
               <Grid item xs={6} md={6}>
                 <Button
                   variant="contained"
@@ -106,9 +107,9 @@ export const CardPet: FC<Props> = ({
                 <Button
                   variant="outlined"
                   color="secondary"
-                  startIcon={<EditOutlined />}
+                  startIcon={<Visibility />}
                 >
-                  Editar
+                  ver
                 </Button>
               </Grid>
             </Grid>

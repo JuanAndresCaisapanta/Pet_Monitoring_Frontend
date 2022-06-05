@@ -67,11 +67,11 @@ export const CardMedicine: FC<Props> = ({
             }}
           >
             <Image
-               width="180rem"
-               height="180rem"
-               alt="Medicina"
-               src={`data:image/jpeg;base64,${image}`}
-               style={{ borderRadius: "15px" }}
+              width="300rem"
+              height="200rem"
+              alt="Medicina"
+              src={`data:image/jpeg;base64,${image}`}
+              style={{ borderRadius: "15px" }}
             />
           </CardContent>
         </StyledGrid>

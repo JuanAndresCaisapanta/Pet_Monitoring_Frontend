@@ -50,7 +50,7 @@ export const CardDevice: FC<Props> = ({ code, name, state }) => {
             </Grid>
 
             <Grid item xs={12} md={12}>
-              <Typography variant="body2">
+              <Typography variant="body2" noWrap>
                 <b>Mascota: </b>
                 {name}
               </Typography>
