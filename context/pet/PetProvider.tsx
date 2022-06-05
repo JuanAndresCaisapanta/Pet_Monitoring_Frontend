@@ -25,7 +25,7 @@ interface Props {
 }
 export const PetProvider: FC<Props> = ({ children }) => {
   const [state, dispatch] = useReducer(petReducer, PET_INITIAL_STATE);
-  const { user, checkToken } = useContext(AuthContext);
+  const { checkToken } = useContext(AuthContext);
 
   const getPet = async (id: any) => {
     if (!Cookies.get("token")) {

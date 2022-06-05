@@ -1,2 +1,2 @@
-export * from './data'
+export * from './management'
 export * from './real-time'

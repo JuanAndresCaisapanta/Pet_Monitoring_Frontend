@@ -11,7 +11,7 @@ import {
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 
-import { PetContext } from "../../../../../../context/pet/PetContext";
+import { PetContext } from "../../../../../../context";
 import { CardMedicine } from "./CardMedicine";
 
 export const TabMedicine = () => {
