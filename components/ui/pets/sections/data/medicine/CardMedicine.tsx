@@ -13,6 +13,7 @@ import {
   styled,
   Typography,
 } from "@mui/material";
+import Image from "next/image";
 
 const StyledGrid = styled(Grid)<GridProps>(({ theme }) => ({
   display: "flex",
@@ -65,11 +66,12 @@ export const CardMedicine: FC<Props> = ({
               justifyContent: "center",
             }}
           >
-            <img
-              width={"100%"}
-              height={182}
-              alt="Mascota"
-              src={`data:image/jpeg;base64,${image}`}
+            <Image
+               width="180rem"
+               height="180rem"
+               alt="Medicina"
+               src={`data:image/jpeg;base64,${image}`}
+               style={{ borderRadius: "15px" }}
             />
           </CardContent>
         </StyledGrid>

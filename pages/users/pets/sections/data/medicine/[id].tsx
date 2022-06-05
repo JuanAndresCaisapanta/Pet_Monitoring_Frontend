@@ -1,16 +1,15 @@
-// ** React Imports
 import { SyntheticEvent, useState, ReactElement } from "react";
 
-// ** MUI Imports
 import { Box, Card, styled } from "@mui/material";
 import { TabList, TabPanel, TabContext } from "@mui/lab";
 import MuiTab, { TabProps } from "@mui/material/Tab";
 
-// ** Icons Imports
-import VaccinesOutlinedIcon from "@mui/icons-material/VaccinesOutlined";
-import AddCircleOutlineOutlinedIcon from "@mui/icons-material/AddCircleOutlineOutlined";
-import { TabLocation, TabMedicine } from "../../../../../../components/ui";
-import { MainLayout } from "../../../../../../components/layout";
+import {
+  VaccinesOutlined,
+  AddCircleOutlineOutlined,
+} from "@mui/icons-material";
+
+import { TabMedicine, MainLayout } from "../../../../../../components";
 
 const Tab = styled(MuiTab)<TabProps>(({ theme }) => ({
   [theme.breakpoints.down("md")]: {
@@ -45,7 +44,7 @@ const MedicinePage = () => {
             value="medicines"
             label={
               <Box sx={{ display: "flex", alignItems: "center" }}>
-                <VaccinesOutlinedIcon />
+                <VaccinesOutlined />
                 <TabName>Medicinas</TabName>
               </Box>
             }
@@ -54,7 +53,7 @@ const MedicinePage = () => {
             value="add-medicines"
             label={
               <Box sx={{ display: "flex", alignItems: "center" }}>
-                <AddCircleOutlineOutlinedIcon />
+                <AddCircleOutlineOutlined />
                 <TabName>Agregar</TabName>
               </Box>
             }
@@ -72,8 +71,8 @@ const MedicinePage = () => {
 MedicinePage.getLayout = function getLayout(page: ReactElement) {
   return (
     <MainLayout
-      title={"Monitoreo Mascotas"}
-      pageDescription={"Una PWA donde se puede monitorear a tu mascota"}
+      title={"Medicinas"}
+      pageDescription={"Aqui se puede revisar los medicamentos de tu mascota"}
     >
       {page}
     </MainLayout>

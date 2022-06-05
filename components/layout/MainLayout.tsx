@@ -1,9 +1,9 @@
-import { FC, ReactNode, useContext, useState } from "react";
+import { FC, ReactNode, useContext } from "react";
 import Head from "next/head";
 
-import { Navbar, SideMenu } from "../ui";
-import { MainContent } from "../ui/layout/MainContent";
 import { Box } from "@mui/material";
+
+import { MainContent, Navbar, SideMenu } from "../ui";
 import { UiContext } from "../../context";
 
 interface Props {
@@ -19,11 +19,6 @@ export const MainLayout: FC<Props> = ({
   pageDescription,
   imageFullUrl,
 }) => {
-  // const [mobileOpen, setMobileOpen] = useState(false);
-  // const handleDrawerToggle = () => {
-  //   setMobileOpen(!mobileOpen);
-  // };
-
   const { isMenuOpen, toggleSideMenu } = useContext(UiContext);
 
   return (

@@ -1,16 +1,12 @@
-// ** React Imports
 import { SyntheticEvent, useState, ReactElement } from "react";
 
-// ** MUI Imports
 import { Box, Card, styled } from "@mui/material";
 import { TabList, TabPanel, TabContext } from "@mui/lab";
 import MuiTab, { TabProps } from "@mui/material/Tab";
 
-// ** Icons Imports
-import HailOutlinedIcon from "@mui/icons-material/HailOutlined";
-import AddCircleOutlineOutlinedIcon from "@mui/icons-material/AddCircleOutlineOutlined";
-import { TabLocation, TabProfessional } from "../../../../../components/ui";
-import { MainLayout } from "../../../../../components/layout";
+import { HailOutlined, AddCircleOutlineOutlined } from "@mui/icons-material";
+
+import { TabProfessional, MainLayout } from "../../../../../../components";
 
 const Tab = styled(MuiTab)<TabProps>(({ theme }) => ({
   [theme.breakpoints.down("md")]: {
@@ -45,7 +41,7 @@ const ProfessionalsPage = () => {
             value="professionals"
             label={
               <Box sx={{ display: "flex", alignItems: "center" }}>
-                <HailOutlinedIcon />
+                <HailOutlined />
                 <TabName>Establecimientos</TabName>
               </Box>
             }
@@ -54,7 +50,7 @@ const ProfessionalsPage = () => {
             value="add-professionals"
             label={
               <Box sx={{ display: "flex", alignItems: "center" }}>
-                <AddCircleOutlineOutlinedIcon />
+                <AddCircleOutlineOutlined />
                 <TabName>Agregar</TabName>
               </Box>
             }
@@ -72,8 +68,8 @@ const ProfessionalsPage = () => {
 ProfessionalsPage.getLayout = function getLayout(page: ReactElement) {
   return (
     <MainLayout
-      title={"Monitoreo Mascotas"}
-      pageDescription={"Una PWA donde se puede monitorear a tu mascota"}
+      title={"Profesionales"}
+      pageDescription={"Aqui se puede revisar los profesionales de tu mascota"}
     >
       {page}
     </MainLayout>

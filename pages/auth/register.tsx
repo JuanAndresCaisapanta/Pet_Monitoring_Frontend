@@ -35,10 +35,10 @@ import {
 
 import { useForm } from "react-hook-form";
 
-import { AuthLayout } from "../../components/layout";
+import { AuthLayout } from "../../components";
 import { AuthContext } from "../../context";
 import { validations } from "../../utils";
-import imageCompression from 'browser-image-compression';
+import imageCompression from "browser-image-compression";
 
 interface State {
   password: string;
@@ -112,7 +112,7 @@ const RegisterPage = () => {
         email,
         password,
         date,
-        cImage
+        cImage,
       );
       if (hasError) {
         setShowError(true);
@@ -128,7 +128,7 @@ const RegisterPage = () => {
         email,
         password,
         date,
-        image[0]
+        image[0],
       );
       if (hasError) {
         setShowError(true);

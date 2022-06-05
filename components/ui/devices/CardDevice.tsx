@@ -7,7 +7,6 @@ import {
   Typography,
   CardContent,
   Grid,
-  Chip,
 } from "@mui/material";
 
 import OnDeviceTrainingOutlinedIcon from "@mui/icons-material/OnDeviceTrainingOutlined";
@@ -23,8 +22,8 @@ export const CardDevice: FC<Props> = ({ code, name, state }) => {
     <Card>
       <CardContent>
         <Grid container spacing={1}>
-          <Grid container direction="column" alignItems={"center"}>
-            <Grid item xs={12} md={12}>
+          <Grid container direction="row" textAlign="center" spacing={1}>
+            <Grid item container xs={12} md={12} justifyContent="center">
               <Avatar
                 sx={{
                   width: 50,
@@ -37,25 +36,26 @@ export const CardDevice: FC<Props> = ({ code, name, state }) => {
                 <OnDeviceTrainingOutlinedIcon sx={{ fontSize: "2rem" }} />
               </Avatar>
             </Grid>
-          </Grid>
-          <Grid container direction="column" alignItems={"center"}>
+
             <Grid item xs={12} md={12}>
-              <Typography color={"primary"} variant="h6" sx={{ mt: 1 }}>
-                Código: {code}
+              <Typography variant="body1">
+                <b>Código: </b>
               </Typography>
             </Grid>
-          </Grid>
-          <Grid container direction="column" alignItems={"center"}>
+
             <Grid item xs={12} md={12}>
-            <Typography  component={'span'} color={"primary"} variant="body1">
-              Mascota: 
-              <Typography component={'span'} sx={{ml:1}} display={"inline"} color={"#010000DE"}>
+              <Typography variant="body1" color={"primary"}>
+                {code}
+              </Typography>
+            </Grid>
+
+            <Grid item xs={12} md={12}>
+              <Typography variant="body2">
+                <b>Mascota: </b>
                 {name}
               </Typography>
-            </Typography>
             </Grid>
-          </Grid>
-          <Grid container direction="column" alignItems={"center"}>
+
             <Grid item xs={12} md={12}>
               <Button variant="outlined" color={"error"} sx={{ mt: 1 }}>
                 Eliminar

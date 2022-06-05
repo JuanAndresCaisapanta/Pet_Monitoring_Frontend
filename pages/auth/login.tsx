@@ -17,6 +17,7 @@ import {
   OutlinedInput,
   InputAdornment,
 } from "@mui/material";
+
 import {
   VisibilityOutlined,
   VisibilityOffOutlined,
@@ -25,9 +26,9 @@ import {
 
 import { useForm } from "react-hook-form";
 
-import { AuthLayout } from "../../components/layout";
 import { validations } from "../../utils";
-import { AuthContext } from "../../context/auth";
+import { AuthLayout } from "../../components";
+import { AuthContext } from "../../context";
 
 interface State {
   password: string;

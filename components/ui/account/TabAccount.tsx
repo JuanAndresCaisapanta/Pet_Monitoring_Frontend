@@ -133,19 +133,19 @@ export const TabAccount = () => {
                 direction="column"
                 alignItems="center"
               >
-                <Typography color="primary" mb={1}>
+                <Typography color="primary">
                   Imagen Perfil
                 </Typography>
                 <Image
-                  style={{ borderRadius: "10px" }}
+                  style={{ borderRadius: "15px" }}
                   src={imgSrc}
-                  width={300}
-                  height={250}
+                  width="250rem"
+                  height="250rem"
                   alt="Imagen Perfil"
                 />
                 <Button
                   component="label"
-                  variant="contained"
+                  variant="text"
                   htmlFor="account-settings-upload-image"
                   disableElevation
                   sx={{ mt: 1 }}

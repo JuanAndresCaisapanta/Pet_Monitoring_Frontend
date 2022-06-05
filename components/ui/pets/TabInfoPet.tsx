@@ -196,20 +196,20 @@ export const TabInfoPet = () => {
               direction="column"
               alignItems="center"
             >
-              <Typography color="primary" mb={1}>
+              <Typography color="primary">
                 Imagen Mascota
               </Typography>
               <Image
-                style={{ borderRadius: "10px" }}
+                style={{ borderRadius: "15px" }}
                 src={imgSrc}
-                width={300}
-                height={250}
+                width="250rem"
+                height="250rem"
                 alt="Imagen Mascota"
               />
 
               <Button
                 component="label"
-                variant="contained"
+                variant="text"
                 htmlFor="account-settings-upload-image"
                 disableElevation
                 sx={{ mt: 1 }}
@@ -365,7 +365,7 @@ export const TabInfoPet = () => {
             </Grid>
           </Grid>
           <Grid item xs={12}>
-            <Button variant="contained" sx={{ marginRight: 3.5 }} type="submit">
+            <Button variant="contained" disableElevation sx={{ marginRight: 3.5 }} type="submit">
               Cuardar
             </Button>
             <Button type="reset" variant="outlined" color="error">

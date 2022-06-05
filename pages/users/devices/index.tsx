@@ -1,23 +1,16 @@
-import React, { ReactElement } from "react";
-import { MainLayout } from "../../../components/layout";
-import { TabAccount, TabSecurity } from "../../../components/ui";
-// ** React Imports
-import { SyntheticEvent, useState } from "react";
+import { ReactElement, SyntheticEvent, useState } from "react";
 
-// ** MUI Imports
-import Box from "@mui/material/Box";
-import Card from "@mui/material/Card";
-import TabList from "@mui/lab/TabList";
-import TabPanel from "@mui/lab/TabPanel";
-import TabContext from "@mui/lab/TabContext";
+import { Box, Card } from "@mui/material";
+import { TabList, TabPanel, TabContext } from "@mui/lab";
 import { styled } from "@mui/material/styles";
 import MuiTab, { TabProps } from "@mui/material/Tab";
 
-// ** Icons Imports
-import OnDeviceTrainingOutlinedIcon from "@mui/icons-material/OnDeviceTrainingOutlined";
-import AddCircleOutlineOutlinedIcon from "@mui/icons-material/AddCircleOutlineOutlined";
-import { TabListDevices } from '../../../components/ui';
-import { TabInfoDevice } from "../../../components/ui/devices/TabInfoDevice";
+import {
+  OnDeviceTrainingOutlined,
+  AddCircleOutlineOutlined,
+} from "@mui/icons-material";
+
+import { MainLayout, TabListDevices, TabInfoDevice } from "../../../components";
 
 const Tab = styled(MuiTab)<TabProps>(({ theme }) => ({
   [theme.breakpoints.down("md")]: {
@@ -40,8 +33,8 @@ const DevicePage = () => {
     setValue(newValue);
   };
   return (
-    <Card >
-      <TabContext value={value} >
+    <Card>
+      <TabContext value={value}>
         <TabList
           onChange={handleChange}
           aria-label="devices-settings tabs"
@@ -51,7 +44,7 @@ const DevicePage = () => {
             value="devices"
             label={
               <Box sx={{ display: "flex", alignItems: "center" }}>
-                <OnDeviceTrainingOutlinedIcon />
+                <OnDeviceTrainingOutlined />
                 <TabName>Dispositivos</TabName>
               </Box>
             }
@@ -60,7 +53,7 @@ const DevicePage = () => {
             value="add-devices"
             label={
               <Box sx={{ display: "flex", alignItems: "center" }}>
-                <AddCircleOutlineOutlinedIcon />
+                <AddCircleOutlineOutlined />
                 <TabName>Agregar</TabName>
               </Box>
             }
@@ -70,7 +63,7 @@ const DevicePage = () => {
           <TabListDevices />
         </TabPanel>
         <TabPanel sx={{ p: 0 }} value="add-devices">
-          <TabInfoDevice/>
+          <TabInfoDevice />
         </TabPanel>
       </TabContext>
     </Card>

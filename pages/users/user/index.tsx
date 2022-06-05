@@ -1,21 +1,13 @@
-import React, { ReactElement } from "react";
-import { MainLayout } from "../../../components/layout";
-import { TabAccount, TabSecurity } from "../../../components/ui";
-// ** React Imports
-import { SyntheticEvent, useState } from "react";
+import { ReactElement, SyntheticEvent, useState } from "react";
 
-// ** MUI Imports
-import Box from "@mui/material/Box";
-import Card from "@mui/material/Card";
-import TabList from "@mui/lab/TabList";
-import TabPanel from "@mui/lab/TabPanel";
-import TabContext from "@mui/lab/TabContext";
-import { styled } from "@mui/material/styles";
+import { Box, Card } from "@mui/material";
 import MuiTab, { TabProps } from "@mui/material/Tab";
+import { styled } from "@mui/material/styles";
+import { TabList, TabPanel, TabContext } from "@mui/lab";
 
-// ** Icons Imports
-import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
-import LockOpenOutlinedIcon from "@mui/icons-material/LockOpenOutlined";
+import { AccountCircleOutlined, LockOpenOutlined } from "@mui/icons-material";
+
+import { MainLayout, TabAccount, TabSecurity } from "../../../components";
 
 const Tab = styled(MuiTab)<TabProps>(({ theme }) => ({
   [theme.breakpoints.down("md")]: {
@@ -32,7 +24,6 @@ const TabName = styled("span")(({ theme }) => ({
   marginLeft: theme.spacing(2.4),
 }));
 const ProfilePage = () => {
-  // ** State
   const [value, setValue] = useState<string>("account");
 
   const handleChange = (event: SyntheticEvent, newValue: string) => {
@@ -50,7 +41,7 @@ const ProfilePage = () => {
             value="account"
             label={
               <Box sx={{ display: "flex", alignItems: "center" }}>
-                <AccountCircleOutlinedIcon />
+                <AccountCircleOutlined />
                 <TabName>Perfil</TabName>
               </Box>
             }
@@ -59,7 +50,7 @@ const ProfilePage = () => {
             value="security"
             label={
               <Box sx={{ display: "flex", alignItems: "center" }}>
-                <LockOpenOutlinedIcon />
+                <LockOpenOutlined />
                 <TabName>Seguridad</TabName>
               </Box>
             }

@@ -1,3 +1,8 @@
+import { FC, useContext } from "react";
+
+import { useRouter } from "next/router";
+import Image from "next/image";
+
 import {
   Divider,
   ListItem,
@@ -5,20 +10,17 @@ import {
   ListItemText,
   Toolbar,
 } from "@mui/material";
+
 import {
   ExitToApp,
   Home,
   OnDeviceTraining,
-  Person,
   Pets,
-  SupervisedUserCircle,
+  ManageAccounts,
 } from "@mui/icons-material";
-import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
-import { useRouter } from "next/router";
-import { FC, useContext } from "react";
-import logo from "../../../assets/images/logo.png";
+
 import { AuthContext } from "../../../context";
-import Image from "next/image";
+
 interface Props {
   toggleSideMenu: () => void;
 }
@@ -33,7 +35,7 @@ export const DrawerList: FC<Props> = ({ toggleSideMenu }) => {
   return (
     <div>
       <Toolbar sx={{ justifyContent: "center", backgroundColor: "#F4F5FA" }}>
-        <Image src='/images/logo.png' alt="Logo" height="50%" width="50%" />
+        <Image src="/images/logo.png" alt="Logo" height="50%" width="50%" />
       </Toolbar>
       <Divider />
       <ListItem button onClick={() => navigateTo("/users")}>
@@ -44,7 +46,7 @@ export const DrawerList: FC<Props> = ({ toggleSideMenu }) => {
       </ListItem>
       <ListItem button onClick={() => navigateTo("/users/user")}>
         <ListItemIcon>
-          <ManageAccountsIcon />
+          <ManageAccounts />
         </ListItemIcon>
         <ListItemText primary={"Cuenta"} />
       </ListItem>
@@ -73,7 +75,7 @@ export const DrawerList: FC<Props> = ({ toggleSideMenu }) => {
         <ListItemText primary={"Usuarios"} />
       </ListItem> */}
       <Divider />
-      <ListItem button onClick={logout }>
+      <ListItem button onClick={logout}>
         <ListItemIcon>
           <ExitToApp />
         </ListItemIcon>

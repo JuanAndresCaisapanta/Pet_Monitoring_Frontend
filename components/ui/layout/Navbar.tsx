@@ -1,34 +1,32 @@
-import NextLink from "next/link";
+import { FC, useContext, useEffect, useState } from "react";
 
 import {
   AppBar,
   Avatar,
-  Badge,
   Box,
-  Container,
   IconButton,
   Toolbar,
   Tooltip,
   Typography,
 } from "@mui/material";
-import { Notifications } from "@mui/icons-material";
 
 import MenuIcon from "@mui/icons-material/Menu";
-import { FC, useContext, useEffect, useState } from "react";
+
 import { AuthContext } from "../../../context";
+
 const drawerWidth = 210;
 interface Props {
   toggleSideMenu: () => void;
 }
 
 export const Navbar: FC<Props> = ({ toggleSideMenu }) => {
-  const {user}=useContext(AuthContext);
+  const { user } = useContext(AuthContext);
   const [imgSrc, setImgSrc] = useState<string>("/images/profile/user.png");
   useEffect(() => {
-    if(user?.image){
-     setImgSrc(`data:image/jpeg;base64,${user?.image}`);
+    if (user?.image) {
+      setImgSrc(`data:image/jpeg;base64,${user?.image}`);
     }
-  }, [setImgSrc,user])
+  }, [setImgSrc, user]);
 
   return (
     <AppBar
@@ -38,7 +36,7 @@ export const Navbar: FC<Props> = ({ toggleSideMenu }) => {
         paddingRight: 0,
       }}
     >
-      <Toolbar> 
+      <Toolbar>
         <IconButton
           color="inherit"
           aria-label="open drawer"
@@ -54,7 +52,7 @@ export const Navbar: FC<Props> = ({ toggleSideMenu }) => {
           </Typography>
         </Box>
 
-        <IconButton
+        {/* <IconButton
           size="large"
           aria-label="show 17 new notifications"
           color="inherit"
@@ -63,9 +61,9 @@ export const Navbar: FC<Props> = ({ toggleSideMenu }) => {
           <Badge badgeContent={17} color="error">
             <Notifications />
           </Badge>
-        </IconButton>
+        </IconButton> */}
 
-        <Tooltip title={user?.name||""}>
+        <Tooltip title={user?.name || ""}>
           <IconButton sx={{ p: 0 }}>
             <Avatar alt="Usuario" src={imgSrc} />
           </IconButton>

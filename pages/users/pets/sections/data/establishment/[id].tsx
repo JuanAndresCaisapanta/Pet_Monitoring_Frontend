@@ -1,16 +1,15 @@
-// ** React Imports
 import { SyntheticEvent, useState, ReactElement } from "react";
 
-// ** MUI Imports
 import { Box, Card, styled } from "@mui/material";
 import { TabList, TabPanel, TabContext } from "@mui/lab";
 import MuiTab, { TabProps } from "@mui/material/Tab";
 
-// ** Icons Imports
-import HomeWorkOutlinedIcon from "@mui/icons-material/HomeWorkOutlined";
-import AddCircleOutlineOutlinedIcon from "@mui/icons-material/AddCircleOutlineOutlined";
-import { TabEstablishment, TabLocation } from "../../../../../../components/ui";
-import { MainLayout } from "../../../../../../components/layout";
+import {
+  HomeWorkOutlined,
+  AddCircleOutlineOutlined,
+} from "@mui/icons-material";
+
+import { TabEstablishment, MainLayout } from "../../../../../../components";
 
 const Tab = styled(MuiTab)<TabProps>(({ theme }) => ({
   [theme.breakpoints.down("md")]: {
@@ -45,7 +44,7 @@ const EstablishmentPage = () => {
             value="establishments"
             label={
               <Box sx={{ display: "flex", alignItems: "center" }}>
-                <HomeWorkOutlinedIcon />
+                <HomeWorkOutlined />
                 <TabName>Establecimientos</TabName>
               </Box>
             }
@@ -54,7 +53,7 @@ const EstablishmentPage = () => {
             value="add-establishments"
             label={
               <Box sx={{ display: "flex", alignItems: "center" }}>
-                <AddCircleOutlineOutlinedIcon />
+                <AddCircleOutlineOutlined />
                 <TabName>Agregar</TabName>
               </Box>
             }
@@ -71,8 +70,10 @@ const EstablishmentPage = () => {
 EstablishmentPage.getLayout = function getLayout(page: ReactElement) {
   return (
     <MainLayout
-      title={"Monitoreo Mascotas"}
-      pageDescription={"Una PWA donde se puede monitorear a tu mascota"}
+      title={"Esblecimientos"}
+      pageDescription={
+        "Aqui se puede revisar los establecimientos de tu mascota"
+      }
     >
       {page}
     </MainLayout>

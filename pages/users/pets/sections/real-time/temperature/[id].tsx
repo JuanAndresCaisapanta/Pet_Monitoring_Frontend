@@ -1,16 +1,13 @@
-// ** React Imports
 import { SyntheticEvent, useState, ReactElement } from "react";
 
-// ** MUI Imports
 import { Box, Card, styled } from "@mui/material";
 import { TabList, TabPanel, TabContext } from "@mui/lab";
 import MuiTab, { TabProps } from "@mui/material/Tab";
 
-// ** Icons Imports
-import DeviceThermostatOutlinedIcon from "@mui/icons-material/DeviceThermostatOutlined";
+import { DeviceThermostatOutlined } from "@mui/icons-material";
 import AddCircleOutlineOutlinedIcon from "@mui/icons-material/AddCircleOutlineOutlined";
-import { TabTemperature } from "../../../../../../components/ui";
-import { MainLayout } from "../../../../../../components/layout";
+
+import { TabTemperature, MainLayout } from "../../../../../../components";
 
 const Tab = styled(MuiTab)<TabProps>(({ theme }) => ({
   [theme.breakpoints.down("md")]: {
@@ -44,7 +41,7 @@ const TemperaturePage = () => {
             value="temperature"
             label={
               <Box sx={{ display: "flex", alignItems: "center" }}>
-                <DeviceThermostatOutlinedIcon />
+                <DeviceThermostatOutlined />
                 <TabName>Temperatura</TabName>
               </Box>
             }
