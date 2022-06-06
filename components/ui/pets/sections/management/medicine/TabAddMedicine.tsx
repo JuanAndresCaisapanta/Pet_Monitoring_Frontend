@@ -1,6 +1,7 @@
 import { ChangeEvent, useContext, useState } from "react";
 
 import Image from "next/image";
+import { useRouter } from "next/router";
 
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { DesktopDatePicker, LocalizationProvider } from "@mui/lab";
@@ -14,14 +15,14 @@ import {
 } from "@mui/material";
 
 import { useForm } from "react-hook-form";
-import { SelectFormName } from "../../../../elements";
+
+import imageCompression from "browser-image-compression";
+
 import {
   MedicineContext,
   TypeMedicineContext,
 } from "../../../../../../context";
-import imageCompression from "browser-image-compression";
-import { useRouter } from "next/router";
-import { SelectFormId } from "../../../../elements/SelectFormId";
+import { SelectFormId } from "../../../../elements";
 
 type FormData = {
   name: string;
@@ -38,8 +39,12 @@ type FormData = {
 };
 
 export const TabAddMedicine = () => {
-  const [date, setDate] = useState<Date | null>(new Date());
-  const [imgSrc, setImgSrc] = useState<string>("/images/medicine/medicine-profile.png");
+  const [productionDate, setProductionDate] = useState<Date | null>(new Date());
+  const [applicationDate, setApplicationDate] = useState<Date | null>(new Date());
+  const [expirationDate, setExpirationDate] = useState<Date | null>(new Date());
+  const [imgSrc, setImgSrc] = useState<string>(
+    "/images/medicine/medicine-profile.png",
+  );
   const { typeMedicine } = useContext(TypeMedicineContext);
   const { addMedicine } = useContext(MedicineContext);
   const [selectTypeMedicine, setSelectTypeMedicine] = useState("");
@@ -51,12 +56,16 @@ export const TabAddMedicine = () => {
     formState: { errors },
   } = useForm<FormData>();
 
-  const handleChangeDate = (newValue: Date | null) => {
-    setDate(newValue);
+  const handleChangeProductionDate = (newValue: Date | null) => {
+    setProductionDate(newValue);
   };
 
-  const handleSelectTypeMedicine = (event: SelectChangeEvent) => {
-    setSelectTypeMedicine(event.target.value as string);
+  const handleChangeApplicationDate = (newValue: Date | null) => {
+    setApplicationDate(newValue);
+  };
+
+  const handleChangeExpirationDate = (newValue: Date | null) => {
+    setExpirationDate(newValue);
   };
 
   const onChangeImage = (file: ChangeEvent) => {
@@ -201,8 +210,8 @@ export const TabAddMedicine = () => {
                     required: "Este campo es requerido",
                     minLength: { value: 2, message: "Mínimo 2 caracteres" },
                   })}
-                  error={!!errors.name}
-                  helperText={errors.name?.message}
+                  error={!!errors.manufacturer}
+                  helperText={errors.manufacturer?.message}
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
@@ -215,8 +224,8 @@ export const TabAddMedicine = () => {
                     required: "Este campo es requerido",
                     minLength: { value: 2, message: "Mínimo 2 caracteres" },
                   })}
-                  error={!!errors.name}
-                  helperText={errors.name?.message}
+                  error={!!errors.batch}
+                  helperText={errors.batch?.message}
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
@@ -229,8 +238,8 @@ export const TabAddMedicine = () => {
                     required: "Este campo es requerido",
                     minLength: { value: 2, message: "Mínimo 2 caracteres" },
                   })}
-                  error={!!errors.name}
-                  helperText={errors.name?.message}
+                  error={!!errors.applicator}
+                  helperText={errors.applicator?.message}
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
@@ -238,9 +247,9 @@ export const TabAddMedicine = () => {
                   label="Tipo"
                   name="typeMedicine"
                   object={typeMedicine}
-                  value={selectTypeMedicine}
-                  onChange={handleSelectTypeMedicine}
                   register={register}
+                  error={!!errors.typeMedicine}
+                  helperText={errors.typeMedicine?.message}
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
@@ -248,8 +257,8 @@ export const TabAddMedicine = () => {
                   <DesktopDatePicker
                     label="Fecha Aplicación"
                     inputFormat="MM/dd/yyyy"
-                    value={date}
-                    onChange={handleChangeDate}
+                    value={applicationDate}
+                    onChange={handleChangeApplicationDate}
                     maxDate={new Date()}
                     renderInput={(params) => (
                       <TextField
@@ -258,8 +267,8 @@ export const TabAddMedicine = () => {
                         {...register("application_date", {
                           required: "Este campo es requerido",
                         })}
-                        error={!!errors.name}
-                        helperText={errors.name?.message}
+                        error={!!errors.application_date}
+                        helperText={errors.application_date?.message}
                       />
                     )}
                   />
@@ -270,8 +279,8 @@ export const TabAddMedicine = () => {
                   <DesktopDatePicker
                     label="Fecha Producción"
                     inputFormat="MM/dd/yyyy"
-                    value={date}
-                    onChange={handleChangeDate}
+                    value={productionDate}
+                    onChange={handleChangeProductionDate}
                     maxDate={new Date()}
                     renderInput={(params) => (
                       <TextField
@@ -280,8 +289,8 @@ export const TabAddMedicine = () => {
                         {...register("production_date", {
                           required: "Este campo es requerido",
                         })}
-                        error={!!errors.name}
-                        helperText={errors.name?.message}
+                        error={!!errors.production_date}
+                        helperText={errors.production_date?.message}
                       />
                     )}
                   />
@@ -292,8 +301,8 @@ export const TabAddMedicine = () => {
                   <DesktopDatePicker
                     label="Fecha Expiración"
                     inputFormat="MM/dd/yyyy"
-                    value={date}
-                    onChange={handleChangeDate}
+                    value={expirationDate}
+                    onChange={handleChangeExpirationDate}
                     maxDate={new Date()}
                     renderInput={(params) => (
                       <TextField
@@ -302,8 +311,8 @@ export const TabAddMedicine = () => {
                         {...register("expiration_date", {
                           required: "Este campo es requerido",
                         })}
-                        error={!!errors.name}
-                        helperText={errors.name?.message}
+                        error={!!errors.expiration_date}
+                        helperText={errors.expiration_date?.message}
                       />
                     )}
                   />
@@ -321,8 +330,8 @@ export const TabAddMedicine = () => {
                     required: "Este campo es requerido",
                     minLength: { value: 2, message: "Mínimo 2 caracteres" },
                   })}
-                  error={!!errors.name}
-                  helperText={errors.name?.message}
+                  error={!!errors.description}
+                  helperText={errors.description?.message}
                 />
               </Grid>
             </Grid>
