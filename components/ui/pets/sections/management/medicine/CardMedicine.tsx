@@ -122,7 +122,7 @@ export const CardMedicine: FC<Props> = ({
                   variant="outlined"
                   color="secondary"
                   startIcon={<Visibility />}
-                  onClick={() => {}}
+                  onClick={()=>navigateTo(`profile/${id}`)}
                 >
                   Ver
                 </Button>

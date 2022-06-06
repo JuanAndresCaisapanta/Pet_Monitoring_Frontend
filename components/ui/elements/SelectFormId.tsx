@@ -11,7 +11,7 @@ interface Props {
   name: string;
 }
 
-export const SelectForm: FC<Props> = ({
+export const SelectFormId: FC<Props> = ({
   object,
   label,
   name,
@@ -43,7 +43,7 @@ export const SelectForm: FC<Props> = ({
             return 0;
           })
           .map(({ id, name }: any) => (
-            <MenuItem key={id} value={name}>
+            <MenuItem key={id} value={id}>
               {name}
             </MenuItem>
           ))}

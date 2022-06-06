@@ -37,7 +37,7 @@ type FormData = {
   pet: number;
 };
 
-export const TabAddMedicine = () => {
+export const TabProfileMedicine = () => {
   const [date, setDate] = useState<Date | null>(new Date());
   const [imgSrc, setImgSrc] = useState<string>("/images/medicine/medicine-profile.png");
   const { typeMedicine } = useContext(TypeMedicineContext);

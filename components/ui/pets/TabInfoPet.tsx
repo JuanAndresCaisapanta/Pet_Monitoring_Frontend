@@ -31,7 +31,7 @@ import {
   SpeciesContext,
   PetContext,
 } from "../../../context";
-import { SelectForm, AutocompleteFormState } from "../elements";
+import { SelectFormName, AutocompleteFormState } from "../elements";
 import { IBreed, ISpecies } from "../../../interfaces";
 import { colorPet, sexPet } from "../../../data";
 
@@ -263,7 +263,7 @@ export const TabInfoPet = () => {
                 </LocalizationProvider>
               </Grid>
               <Grid item xs={12} sm={6}>
-                <SelectForm
+                <SelectFormName
                   label="Sexo"
                   name="sex"
                   object={sexPet}
@@ -273,7 +273,7 @@ export const TabInfoPet = () => {
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
-                <SelectForm
+                <SelectFormName
                   label="Color Pelaje Principal"
                   name="color_main"
                   object={colorPet}
@@ -283,7 +283,7 @@ export const TabInfoPet = () => {
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
-                <SelectForm
+                <SelectFormName
                   label="Color Pelaje Secundario"
                   name="color_secondary"
                   object={colorPet}

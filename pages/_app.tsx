@@ -17,6 +17,7 @@ import {
   UserProvider,
   DeviceProvider,
   MedicineProvider,
+  TypeMedicineProvider,
 } from "../context";
 
 type NextPageWithLayout = NextPage & {
@@ -33,22 +34,24 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
   return (
     <AuthProvider>
       <UserProvider>
-        <SpeciesProvider>
-          <BreedProvider>
-            <PetProvider>
-              <DeviceProvider>
-                <MedicineProvider>
-                  <UiProvider>
-                    <ThemeProvider theme={theme}>
-                      <CssBaseline />
-                      {getLayout(<Component {...pageProps} />)}
-                    </ThemeProvider>
-                  </UiProvider>
-                </MedicineProvider>
-              </DeviceProvider>
-            </PetProvider>
-          </BreedProvider>
-        </SpeciesProvider>
+        <TypeMedicineProvider>
+          <SpeciesProvider>
+            <BreedProvider>
+              <PetProvider>
+                <DeviceProvider>
+                  <MedicineProvider>
+                    <UiProvider>
+                      <ThemeProvider theme={theme}>
+                        <CssBaseline />
+                        {getLayout(<Component {...pageProps} />)}
+                      </ThemeProvider>
+                    </UiProvider>
+                  </MedicineProvider>
+                </DeviceProvider>
+              </PetProvider>
+            </BreedProvider>
+          </SpeciesProvider>
+        </TypeMedicineProvider>
       </UserProvider>
     </AuthProvider>
   );

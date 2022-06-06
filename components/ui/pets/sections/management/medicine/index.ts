@@ -1,3 +1,5 @@
 export * from './TabListMedicine'
 export * from './CardMedicine'
 export * from './TabAddMedicine'
+export * from './TabAddMedicine'
+export * from './TabProfileMedicine'
