@@ -42,7 +42,7 @@ export const TabProfileMedicine = () => {
   const [imgSrc, setImgSrc] = useState<string>("/images/medicine/medicine-profile.png");
   const { typeMedicine } = useContext(TypeMedicineContext);
   const { addMedicine } = useContext(MedicineContext);
-  const [selectTypeMedicine, setSelectTypeMedicine] = useState("");
+  const [selectTypeMedicine, setSelectTypeMedicine] = useState(` `);
   const router = useRouter();
   const { id } = router.query;
   const {
@@ -53,10 +53,6 @@ export const TabProfileMedicine = () => {
 
   const handleChangeDate = (newValue: Date | null) => {
     setDate(newValue);
-  };
-
-  const handleSelectTypeMedicine = (event: SelectChangeEvent) => {
-    setSelectTypeMedicine(event.target.value as string);
   };
 
   const onChangeImage = (file: ChangeEvent) => {
@@ -237,10 +233,14 @@ export const TabProfileMedicine = () => {
                 <SelectFormId
                   label="Tipo"
                   name="typeMedicine"
-                  object={typeMedicine}
                   value={selectTypeMedicine}
-                  onChange={handleSelectTypeMedicine}
+                  onChange={(e: SelectChangeEvent) =>
+                    setSelectTypeMedicine(e.target.value)
+                  }
+                  object={typeMedicine}
                   register={register}
+                  error={!!errors.typeMedicine}
+                  helperText={errors.typeMedicine?.message}
                 />
               </Grid>
               <Grid item xs={12} sm={6}>

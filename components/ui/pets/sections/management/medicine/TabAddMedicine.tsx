@@ -37,17 +37,20 @@ type FormData = {
   typeMedicine: number;
   pet: number;
 };
-
+const min = 1;
 export const TabAddMedicine = () => {
   const [productionDate, setProductionDate] = useState<Date | null>(new Date());
-  const [applicationDate, setApplicationDate] = useState<Date | null>(new Date());
+  const [applicationDate, setApplicationDate] = useState<Date | null>(
+    new Date(),
+  );
   const [expirationDate, setExpirationDate] = useState<Date | null>(new Date());
   const [imgSrc, setImgSrc] = useState<string>(
     "/images/medicine/medicine-profile.png",
   );
+  const [values, setValues] = useState("");
   const { typeMedicine } = useContext(TypeMedicineContext);
   const { addMedicine } = useContext(MedicineContext);
-  const [selectTypeMedicine, setSelectTypeMedicine] = useState("");
+  const [selectTypeMedicine, setSelectTypeMedicine] = useState(``);
   const router = useRouter();
   const { id } = router.query;
   const {
@@ -139,6 +142,13 @@ export const TabAddMedicine = () => {
     }
   };
 
+  const handleChange = (e: any) => {
+    const re = /^[0-9\b]+$/;
+    if (e.target.value === "" || re.test(e.target.value)) {
+      setValues(e.target.value);
+    }
+  };
+
   return (
     <CardContent>
       <form
@@ -224,6 +234,17 @@ export const TabAddMedicine = () => {
                     required: "Este campo es requerido",
                     minLength: { value: 2, message: "Mínimo 2 caracteres" },
                   })}
+                  onKeyPress={(event) => {
+                    if (
+                      event?.key === "-" ||
+                      event?.key === "+" ||
+                      event?.key === "." ||
+                      event?.key === "e" ||
+                      event?.key === ","
+                    ) {
+                      event.preventDefault();
+                    }
+                  }}
                   error={!!errors.batch}
                   helperText={errors.batch?.message}
                 />
@@ -246,6 +267,10 @@ export const TabAddMedicine = () => {
                 <SelectFormId
                   label="Tipo"
                   name="typeMedicine"
+                  value={selectTypeMedicine}
+                  onChange={(e: SelectChangeEvent) =>
+                    setSelectTypeMedicine(e.target.value)
+                  }
                   object={typeMedicine}
                   register={register}
                   error={!!errors.typeMedicine}
