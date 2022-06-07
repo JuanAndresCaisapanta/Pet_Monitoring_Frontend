@@ -11,12 +11,14 @@ import {
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 
-import { PetContext } from "../../../../../../context";
+import { MedicineContext, PetContext } from "../../../../../../context";
 import { CardMedicine } from "./CardMedicine";
+import Swal from "sweetalert2";
 
 export const TabMedicine = () => {
   const [searchWord, setSearchWord] = useState("");
   const { pet, getPet, isLoaded, petChange } = useContext(PetContext);
+  const { deleteMedicine } = useContext(MedicineContext);
   const router = useRouter();
 
   const { id } = router.query;
@@ -83,6 +85,36 @@ export const TabMedicine = () => {
                     expiration_date={medicine.expiration_date}
                     applicator={medicine.applicator}
                     typeMedicine={medicine.typeMedicine.name}
+                    onDelete={() =>
+                      Swal.fire({
+                        background: "#F4F5FA",
+                        title: "¿Está seguro de borrar la Medicina?",
+                        text: "No podrá revertir esta acción",
+                        icon: "warning",
+                        showCancelButton: true,
+                        backdrop: false,
+                        confirmButtonColor: "#3085d6",
+                        cancelButtonColor: "#d33",
+                        confirmButtonText: "Si, Borrar",
+                      }).then((result) => {
+                        if (result.isConfirmed) {
+                          deleteMedicine(medicine.id).then(() => {
+                            Swal.fire({
+                              background: "#F4F5FA",
+                              title: "Listo",
+                              text: "Medicina Borrada",
+                              icon: "success",
+                              confirmButtonText: "Ocultar",
+                              backdrop: false,
+                              timer: 1500,
+                              timerProgressBar: true,
+                              showConfirmButton: false,
+                            });
+                            getPet(id);
+                          });
+                        }
+                      })
+                    }
                   />
                 </Grid>
               ))

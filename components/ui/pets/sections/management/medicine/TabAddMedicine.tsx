@@ -1,4 +1,4 @@
-import { ChangeEvent, useContext, useState } from "react";
+import { ChangeEvent, useContext, useEffect, useState } from "react";
 
 import Image from "next/image";
 import { useRouter } from "next/router";
@@ -37,7 +37,7 @@ type FormData = {
   typeMedicine: number;
   pet: number;
 };
-const min = 1;
+
 export const TabAddMedicine = () => {
   const [productionDate, setProductionDate] = useState<Date | null>(new Date());
   const [applicationDate, setApplicationDate] = useState<Date | null>(
@@ -47,8 +47,7 @@ export const TabAddMedicine = () => {
   const [imgSrc, setImgSrc] = useState<string>(
     "/images/medicine/medicine-profile.png",
   );
-  const [values, setValues] = useState("");
-  const { typeMedicine } = useContext(TypeMedicineContext);
+  const { typeMedicine, getTypeMedicine } = useContext(TypeMedicineContext);
   const { addMedicine } = useContext(MedicineContext);
   const [selectTypeMedicine, setSelectTypeMedicine] = useState(``);
   const router = useRouter();
@@ -58,6 +57,10 @@ export const TabAddMedicine = () => {
     handleSubmit,
     formState: { errors },
   } = useForm<FormData>();
+
+  useEffect(() => {
+    getTypeMedicine();
+  }, []);
 
   const handleChangeProductionDate = (newValue: Date | null) => {
     setProductionDate(newValue);
@@ -139,13 +142,6 @@ export const TabAddMedicine = () => {
         // setTimeout(() => setShowError(false), 3000);
         return;
       }
-    }
-  };
-
-  const handleChange = (e: any) => {
-    const re = /^[0-9\b]+$/;
-    if (e.target.value === "" || re.test(e.target.value)) {
-      setValues(e.target.value);
     }
   };
 

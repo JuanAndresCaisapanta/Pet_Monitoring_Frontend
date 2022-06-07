@@ -21,10 +21,6 @@ export const TypeMedicineProvider: FC<Props> = ({ children }) => {
     TYPE_MEDICINE_INITIAL_STATE,
   );
 
-  useEffect(() => {
-    getTypeMedicine();
-  }, []);
-
   const getTypeMedicine = async () => {
     if (!Cookies.get("token")) {
       return;
@@ -54,6 +50,7 @@ export const TypeMedicineProvider: FC<Props> = ({ children }) => {
     <TypeMedicineContext.Provider
       value={{
         ...state,
+        getTypeMedicine,
       }}
     >
       {children}

@@ -2,7 +2,7 @@ import { FC } from "react";
 
 import { useRouter } from "next/router";
 
-import { Visibility } from "@mui/icons-material";
+import { Delete, Visibility } from "@mui/icons-material";
 import {
   Button,
   Card,
@@ -37,6 +37,7 @@ interface Props {
   applicator: string;
   typeMedicine: string;
   image: any;
+  onDelete: any;
 }
 
 export const CardMedicine: FC<Props> = ({
@@ -49,6 +50,7 @@ export const CardMedicine: FC<Props> = ({
   applicator,
   typeMedicine,
   image,
+  onDelete,
 }) => {
   const router = useRouter();
   const navigateTo = (url: string) => {
@@ -68,7 +70,7 @@ export const CardMedicine: FC<Props> = ({
           >
             <Image
               width="300rem"
-              height="200rem"
+              height="300rem"
               alt="Medicina"
               src={`data:image/jpeg;base64,${image}`}
               style={{ borderRadius: "15px" }}
@@ -117,14 +119,25 @@ export const CardMedicine: FC<Props> = ({
           </CardContent>
           <CardActions>
             <Grid container spacing={1}>
-              <Grid item xs={12} md={12} textAlign="center">
+              <Grid item xs={12} md={6} textAlign="center">
                 <Button
-                  variant="outlined"
-                  color="secondary"
+                  variant="contained"
+                  color="primary"
                   startIcon={<Visibility />}
                   onClick={()=>navigateTo(`profile/${id}`)}
                 >
                   Ver
+                </Button>
+              </Grid>
+              <Grid item xs={12} md={6} textAlign="center">
+                <Button
+                  variant="outlined"
+                  color="secondary"
+                  disableElevation
+                  startIcon={<Delete />}
+                  onClick={onDelete}
+                >
+                  Eliminar
                 </Button>
               </Grid>
             </Grid>

@@ -1,6 +1,12 @@
 import { FC } from "react";
 
-import { FormControl, MenuItem, InputLabel, Select, FormHelperText } from "@mui/material";
+import {
+  FormControl,
+  MenuItem,
+  InputLabel,
+  Select,
+  FormHelperText,
+} from "@mui/material";
 
 interface Props {
   object?: any;
@@ -9,8 +15,8 @@ interface Props {
   onChange: any;
   label: string;
   name: string;
-  error:any;
-  helperText:any;
+  error: any;
+  helperText: any;
 }
 
 export const SelectFormId: FC<Props> = ({
@@ -21,12 +27,11 @@ export const SelectFormId: FC<Props> = ({
   onChange,
   register,
   error,
-  helperText
+  helperText,
 }) => {
   return (
     <FormControl fullWidth>
       <InputLabel id="demo-simple-select-label">{label}</InputLabel>
-
       <Select
         labelId="demo-simple-select-label"
         id="demo-simple-select"
@@ -35,12 +40,10 @@ export const SelectFormId: FC<Props> = ({
         {...register(name, {
           onChange: onChange,
           required: "Este campo es requerido",
-         
         })}
         error={error}
         defaultValue={label}
       >
-         
         {object
           ?.sort((a: any, b: any) => {
             if (a.name < b.name) {

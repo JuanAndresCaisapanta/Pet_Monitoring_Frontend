@@ -1,16 +1,19 @@
+import { IMedicine } from '../../interfaces';
 import { MedicineState } from './';
 
 
 type MedicineActionType = 
-   | { type: '' } 
+   | { type: '[Medicine] - getMedicine'; payload: IMedicine  } 
 
 
 export const medicineReducer = ( state: MedicineState, action: MedicineActionType ): MedicineState => {
 
    switch (action.type) {
-      case '':
+      case '[Medicine] - getMedicine':
          return {
             ...state,
+            medicine: action.payload,
+            loaded: true
           }
 
        default:
