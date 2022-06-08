@@ -5,20 +5,7 @@ import { ReactElement, ReactNode } from "react";
 import { NextPage } from "next";
 import type { AppProps } from "next/app";
 
-import { CssBaseline, ThemeProvider } from "@mui/material";
-
-import { theme } from "../themes";
-import {
-  BreedProvider,
-  PetProvider,
-  SpeciesProvider,
-  UiProvider,
-  AuthProvider,
-  UserProvider,
-  DeviceProvider,
-  MedicineProvider,
-  TypeMedicineProvider,
-} from "../context";
+import { Providers } from "../provider";
 
 type NextPageWithLayout = NextPage & {
   getLayout?: (page: ReactElement) => ReactNode;
@@ -31,30 +18,7 @@ type AppPropsWithLayout = AppProps & {
 function MyApp({ Component, pageProps }: AppPropsWithLayout) {
   const getLayout = Component.getLayout ?? ((page) => page);
 
-  return (
-    <AuthProvider>
-      <UserProvider>
-        <TypeMedicineProvider>
-          <SpeciesProvider>
-            <BreedProvider>
-              <PetProvider>
-                <DeviceProvider>
-                  <MedicineProvider>
-                    <UiProvider>
-                      <ThemeProvider theme={theme}>
-                        <CssBaseline />
-                        {getLayout(<Component {...pageProps} />)}
-                      </ThemeProvider>
-                    </UiProvider>
-                  </MedicineProvider>
-                </DeviceProvider>
-              </PetProvider>
-            </BreedProvider>
-          </SpeciesProvider>
-        </TypeMedicineProvider>
-      </UserProvider>
-    </AuthProvider>
-  );
+  return <Providers>{getLayout(<Component {...pageProps} />)}</Providers>;
 }
 
 export default MyApp;

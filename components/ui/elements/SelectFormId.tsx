@@ -60,7 +60,7 @@ export const SelectFormId: FC<Props> = ({
             </MenuItem>
           ))}
       </Select>
-      <FormHelperText color="red">{helperText}</FormHelperText>
+      <FormHelperText error>{helperText}</FormHelperText>
     </FormControl>
   );
 };

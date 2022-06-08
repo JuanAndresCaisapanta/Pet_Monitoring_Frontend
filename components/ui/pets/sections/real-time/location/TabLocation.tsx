@@ -132,7 +132,7 @@ export const TabLocation = () => {
                     </Typography>
                   </Grid>
                   <Grid item xs={12} sm={12} textAlign="center">
-                    <WhatsappShareButton url={url_map}>
+                    <WhatsappShareButton url={url_map} >
                       <WhatsappIcon size={32} round={true} />
                     </WhatsappShareButton>
                     <EmailShareButton

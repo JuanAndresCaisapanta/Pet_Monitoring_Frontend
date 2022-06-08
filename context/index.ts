@@ -7,3 +7,5 @@ export * from "./user";
 export * from "./device"
 export * from "./medicine"
 export * from "./typeMedicine"
+export * from "./professional"
+export * from "./profession"

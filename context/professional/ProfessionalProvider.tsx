@@ -2,29 +2,33 @@ import axios from "axios";
 import Cookies from "js-cookie";
 import { FC, ReactNode, useContext, useReducer } from "react";
 import Swal from "sweetalert2";
+import { ProfessionalContext, professionalReducer } from ".";
 import { petMonitoringApi } from "../../api";
+import { IProfessional } from "../../interfaces";
 import { AuthContext } from "../auth";
-import { MedicineContext, medicineReducer } from "./";
-import { IMedicine } from "../../interfaces";
 
-export interface MedicineState {
-  medicine?: IMedicine;
+export interface ProfessionalState {
+  professional?: IProfessional;
   loaded: boolean;
 }
 
-const MEDICINE_INITIAL_STATE: MedicineState = {
-  medicine: undefined,
+const PROFESSIONAL_INITIAL_STATE: ProfessionalState = {
+  professional: undefined,
   loaded: false,
 };
 
 interface Props {
   children: ReactNode;
 }
-export const MedicineProvider: FC<Props> = ({ children }) => {
-  const [state, dispatch] = useReducer(medicineReducer, MEDICINE_INITIAL_STATE);
+export const ProfessionalProvider: FC<Props> = ({ children }) => {
+  const [state, dispatch] = useReducer(
+    professionalReducer,
+    PROFESSIONAL_INITIAL_STATE,
+  );
+
   const { checkToken } = useContext(AuthContext);
 
-  const getMedicine = async (id: any) => {
+  const getProfessional = async (id: number) => {
     if (!Cookies.get("token")) {
       return;
     }
@@ -37,12 +41,12 @@ export const MedicineProvider: FC<Props> = ({ children }) => {
         `/auth/validate-token/${token}`,
       );
       if (data == true) {
-        const medicine = await petMonitoringApi.get(`/medicine/${id}`, {
+        const professional = await petMonitoringApi.get(`/professional/${id}`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         dispatch({
-          type: "[Medicine] - getMedicine",
-          payload: medicine.data,
+          type: "[Professional] - getProfessional",
+          payload: professional.data,
         });
       } else {
         Cookies.remove("token");
@@ -52,40 +56,31 @@ export const MedicineProvider: FC<Props> = ({ children }) => {
     }
   };
 
-  const addMedicine = async (
+  const addProfessional = async (
     name: string,
-    image: any,
-    manufacturer: string,
-    batch: number,
-    applicator: string,
-    description: string,
-    production_date: string,
-    expiration_date: string,
-    application_date: string,
-    typeMedicine: number,
+    last_name: string,
+    address: string,
+    email: string,
+    cell_phone: string,
+    profession: number,
     pet: number,
   ): Promise<{ hasError: boolean; message?: string }> => {
     try {
       const token = Cookies.get("token") || "";
       await petMonitoringApi.post(
-        `/medicine`,
+        `/professional`,
         {
           name,
-          image,
-          manufacturer,
-          batch,
-          applicator,
-          description,
-          production_date,
-          expiration_date,
-          application_date,
-          typeMedicine,
-          pet,
+          last_name,
+          address,
+          email,
+          cell_phone,
+          profession:{id:profession},
+          pet:{id:pet},
         },
         {
           headers: {
             Authorization: `Bearer ${token}`,
-            "Content-Type": "multipart/form-data",
           },
         },
       );
@@ -93,7 +88,7 @@ export const MedicineProvider: FC<Props> = ({ children }) => {
       Swal.fire({
         background: "#F4F5FA",
         title: "Listo",
-        text: "Mascota Agregada",
+        text: "Profesional Agregado",
         icon: "success",
         backdrop: false,
         timer: 1500,
@@ -112,23 +107,19 @@ export const MedicineProvider: FC<Props> = ({ children }) => {
       }
       return {
         hasError: true,
-        message: "No se pudo agregar la medicina - intente de nuevo",
+        message: "No se pudo agregar al profesional - intente de nuevo",
       };
     }
   };
 
-  const updateMedicine = async (
-    id: any,
+  const updateProfessional = async (
+    id: number,
     name: string,
-    image: any,
-    manufacturer: string,
-    batch: number,
-    applicator: string,
-    description: string,
-    production_date: string,
-    expiration_date: string,
-    application_date: string,
-    typeMedicine: number,
+    last_name: string,
+    address: string,
+    email: string,
+    cell_phone: string,
+    profession: number,
   ): Promise<{ hasError: boolean; message?: string }> => {
     try {
       const token = Cookies.get("token") || "";
@@ -136,20 +127,15 @@ export const MedicineProvider: FC<Props> = ({ children }) => {
         `/medicine/${id}`,
         {
           name,
-          image,
-          manufacturer,
-          batch,
-          applicator,
-          description,
-          production_date,
-          expiration_date,
-          application_date,
-          typeMedicine,
+          last_name,
+          address,
+          email,
+          cell_phone,
+          profession,
         },
         {
           headers: {
             Authorization: `Bearer ${token}`,
-            "Content-Type": "multipart/form-data",
           },
         },
       );
@@ -157,7 +143,7 @@ export const MedicineProvider: FC<Props> = ({ children }) => {
       Swal.fire({
         background: "#F4F5FA",
         title: "Listo",
-        text: "Medicina Actualizada",
+        text: "Professional Actualizado",
         icon: "success",
         confirmButtonText: "Ocultar",
         backdrop: false,
@@ -177,17 +163,17 @@ export const MedicineProvider: FC<Props> = ({ children }) => {
       }
       return {
         hasError: true,
-        message: "No se pudo actualizar la medicina - intente de nuevo",
+        message: "No se pudo actualizar al profesional - intente de nuevo",
       };
     }
   };
 
-  const deleteMedicine = async (
-    id: any,
+  const deleteProfessional = async (
+    id: number,
   ): Promise<{ hasError: boolean; message?: string }> => {
     try {
       const token = Cookies.get("token") || "";
-      await petMonitoringApi.delete(`/medicine/${id}`, {
+      await petMonitoringApi.delete(`/professional/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       checkToken();
@@ -204,22 +190,22 @@ export const MedicineProvider: FC<Props> = ({ children }) => {
       }
       return {
         hasError: true,
-        message: "No se pudo eliminar la medicina - intente de nuevo",
+        message: "No se pudo eliminar al profesional - intente de nuevo",
       };
     }
   };
 
   return (
-    <MedicineContext.Provider
+    <ProfessionalContext.Provider
       value={{
         ...state,
-        getMedicine,
-        addMedicine,
-        updateMedicine,
-        deleteMedicine,
+        getProfessional,
+        addProfessional,
+        updateProfessional,
+        deleteProfessional,
       }}
     >
       {children}
-    </MedicineContext.Provider>
+    </ProfessionalContext.Provider>
   );
 };

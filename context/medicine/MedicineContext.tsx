@@ -19,7 +19,7 @@ interface ContextProps {
     pet: number,
   ) => Promise<{ hasError: boolean; message?: string }>;
   updateMedicine: (
-    id:any,
+    id: any,
     name: string,
     image: any,
     manufacturer: string,

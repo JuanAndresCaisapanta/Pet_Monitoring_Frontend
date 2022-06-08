@@ -6,7 +6,7 @@ import MuiTab, { TabProps } from "@mui/material/Tab";
 
 import { HailOutlined, AddCircleOutlineOutlined } from "@mui/icons-material";
 
-import { TabProfessional, MainLayout } from "../../../../../../components";
+import { TabListProfessionals, MainLayout, TabAddProfessional } from "../../../../../../components";
 
 const Tab = styled(MuiTab)<TabProps>(({ theme }) => ({
   [theme.breakpoints.down("md")]: {
@@ -42,7 +42,7 @@ const ProfessionalsPage = () => {
             label={
               <Box sx={{ display: "flex", alignItems: "center" }}>
                 <HailOutlined />
-                <TabName>Establecimientos</TabName>
+                <TabName>Profesionales</TabName>
               </Box>
             }
           />
@@ -57,9 +57,11 @@ const ProfessionalsPage = () => {
           />
         </TabList>
         <TabPanel sx={{ p: 0 }} value="professionals">
-          <TabProfessional />
+          <TabListProfessionals />
         </TabPanel>
-        <TabPanel sx={{ p: 0 }} value="add-professionals"></TabPanel>
+        <TabPanel sx={{ p: 0 }} value="add-professionals">
+          <TabAddProfessional/>
+        </TabPanel>
       </TabContext>
     </Card>
   );
