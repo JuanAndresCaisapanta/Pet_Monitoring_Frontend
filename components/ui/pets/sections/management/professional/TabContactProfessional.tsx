@@ -135,7 +135,7 @@ export const TabContactProfessional = () => {
                         professional?.pet.breed.name
                       } ${professional?.pet.name},\n Mi número de celular es: ${
                         user?.phone
-                      }\n Espero su respuesta exelente día.\n\n Mensaje enviado através de MonIOpeT.`}
+                      }\n Espero su respuesta excelente día.\n\n Mensaje enviado através de MonIOpeT.`}
                       rows={8}
                       type="text"
                       label="Mensaje"
