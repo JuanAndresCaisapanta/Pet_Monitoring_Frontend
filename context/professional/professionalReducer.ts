@@ -1,10 +1,12 @@
 import { IProfessional } from "../../interfaces";
 import { ProfessionalState } from "./";
 
-type ProfessionalActionType = {
-  type: "[Professional] - getProfessional";
-  payload: IProfessional;
-};
+type ProfessionalActionType =
+  | {
+      type: "[Professional] - getProfessional";
+      payload: IProfessional;
+    }
+  | { type: "[Professional] - clearProfessional" };
 
 export const professionalReducer = (
   state: ProfessionalState,
@@ -15,9 +17,14 @@ export const professionalReducer = (
       return {
         ...state,
         professional: action.payload,
-        loaded: true,
+        isLoaded: true,
       };
-
+    case "[Professional] - clearProfessional":
+      return {
+        ...state,
+        professional: undefined,
+        isLoaded: false,
+      };
     default:
       return state;
   }

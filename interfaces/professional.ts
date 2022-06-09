@@ -9,4 +9,13 @@ export interface IProfessional {
     id: number;
     name: string;
   };
+  pet: {
+    name: string;
+    breed: {
+      name: string;
+      species: {
+        name: string;
+      };
+    };
+  };
 }

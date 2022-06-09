@@ -4,7 +4,7 @@ import { IProfessional } from "../../interfaces";
 interface ContextProps {
   professional?: IProfessional;
 
-  loaded: boolean;
+  isLoaded: boolean;
 
   getProfessional: (id: number) => void;
 
@@ -30,6 +30,15 @@ interface ContextProps {
 
   deleteProfessional: (
     id: number,
+  ) => Promise<{ hasError: boolean; message?: string }>;
+
+  clearProfessional: () => void;
+
+  sendEmail: (
+    toEmail: string,
+    fromEmail: string,
+    subject: string,
+    body: string,
   ) => Promise<{ hasError: boolean; message?: string }>;
 }
 

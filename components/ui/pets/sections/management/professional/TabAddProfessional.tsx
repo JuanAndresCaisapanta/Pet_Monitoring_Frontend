@@ -1,4 +1,7 @@
-import { Button, CardHeader, Divider, SelectChangeEvent } from "@mui/material";
+import { useContext, useEffect, useState } from "react";
+
+import { useRouter } from "next/router";
+
 import {
   CardContent,
   Grid,
@@ -6,9 +9,15 @@ import {
   TextField,
   CardActions,
   Card,
+  Button,
+  CardHeader,
+  Divider,
+  SelectChangeEvent,
 } from "@mui/material";
-import { ChangeEvent, useContext, useEffect, useState } from "react";
+import { Save } from "@mui/icons-material";
+
 import { Controller, useForm } from "react-hook-form";
+
 import MuiPhoneNumber from "material-ui-phone-number";
 
 import {
@@ -16,8 +25,6 @@ import {
   ProfessionContext,
 } from "../../../../../../context";
 import { SelectFormId } from "../../../../elements";
-import { Save } from "@mui/icons-material";
-import { useRouter } from "next/router";
 
 type FormData = {
   name: string;
@@ -30,7 +37,6 @@ type FormData = {
 
 export const TabAddProfessional = () => {
   const [selectProfession, setSelectProfession] = useState(``);
-  const [cellPhone, setCellPhone] = useState("");
   const { professions, getProfessions, isLoaded, clearProfessions } =
     useContext(ProfessionContext);
   const { addProfessional } = useContext(ProfessionalContext);
@@ -48,10 +54,6 @@ export const TabAddProfessional = () => {
       clearProfessions();
     };
   }, []);
-
-  const onChangeCellPhone = (event: ChangeEvent<HTMLInputElement>) => {
-    setCellPhone(event.target.value);
-  };
 
   const onAddMedicine = async ({
     name,
@@ -146,7 +148,10 @@ export const TabAddProfessional = () => {
                         required: "Este campo es requerido",
                         minLength: { value: 2, message: "Mínimo 2 caracteres" },
                       }}
-                      render={({ field: { onChange, value }, fieldState: { error } }) => (
+                      render={({
+                        field: { onChange, value },
+                        fieldState: { error },
+                      }) => (
                         <MuiPhoneNumber
                           fullWidth
                           countryCodeEditable={false}

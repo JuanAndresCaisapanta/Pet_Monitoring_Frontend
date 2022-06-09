@@ -79,6 +79,7 @@ export const TabListProfessionals = () => {
               .map((professional) => (
                 <Grid item xs={12} sm={4} key={professional.id}>
                   <CardProfessional
+                    id={professional.id}
                     name={professional.name}
                     last_name={professional.last_name}
                     profession={professional.profession.name}

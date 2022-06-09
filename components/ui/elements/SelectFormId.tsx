@@ -31,7 +31,7 @@ export const SelectFormId: FC<Props> = ({
 }) => {
   return (
     <FormControl fullWidth>
-      <InputLabel id="demo-simple-select-label">{label}</InputLabel>
+      <InputLabel error={error} id="demo-simple-select-label">{label}</InputLabel>
       <Select
         labelId="demo-simple-select-label"
         id="demo-simple-select"
@@ -60,7 +60,7 @@ export const SelectFormId: FC<Props> = ({
             </MenuItem>
           ))}
       </Select>
-      <FormHelperText error>{helperText}</FormHelperText>
+      <FormHelperText error={error}>{helperText}</FormHelperText>
     </FormControl>
   );
 };

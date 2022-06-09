@@ -1,7 +1,9 @@
+import { FC, ReactNode, useContext, useReducer } from "react";
+
 import axios from "axios";
 import Cookies from "js-cookie";
-import { FC, ReactNode, useContext, useReducer } from "react";
 import Swal from "sweetalert2";
+
 import { ProfessionalContext, professionalReducer } from ".";
 import { petMonitoringApi } from "../../api";
 import { IProfessional } from "../../interfaces";
@@ -9,12 +11,12 @@ import { AuthContext } from "../auth";
 
 export interface ProfessionalState {
   professional?: IProfessional;
-  loaded: boolean;
+  isLoaded: boolean;
 }
 
 const PROFESSIONAL_INITIAL_STATE: ProfessionalState = {
   professional: undefined,
-  loaded: false,
+  isLoaded: false,
 };
 
 interface Props {
@@ -75,8 +77,8 @@ export const ProfessionalProvider: FC<Props> = ({ children }) => {
           address,
           email,
           cell_phone,
-          profession:{id:profession},
-          pet:{id:pet},
+          profession: { id: profession },
+          pet: { id: pet },
         },
         {
           headers: {
@@ -124,14 +126,14 @@ export const ProfessionalProvider: FC<Props> = ({ children }) => {
     try {
       const token = Cookies.get("token") || "";
       await petMonitoringApi.put(
-        `/medicine/${id}`,
+        `/professional/${id}`,
         {
           name,
           last_name,
           address,
           email,
           cell_phone,
-          profession,
+          profession: { id: profession },
         },
         {
           headers: {
@@ -195,6 +197,62 @@ export const ProfessionalProvider: FC<Props> = ({ children }) => {
     }
   };
 
+  const clearProfessional = () => {
+    dispatch({
+      type: "[Professional] - clearProfessional",
+    });
+  };
+
+  const sendEmail = async (
+    toEmail: string,
+    fromEmail: string,
+    subject: string,
+    body: string,
+  ): Promise<{ hasError: boolean; message?: string }> => {
+    try {
+      const token = Cookies.get("token") || "";
+      await petMonitoringApi.post(
+        `/professional/email`,
+        {
+          toEmail,
+          fromEmail,
+          subject,
+          body,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
+      checkToken();
+      Swal.fire({
+        background: "#F4F5FA",
+        title: "Listo",
+        text: "Correo Electrónico Enviado",
+        icon: "success",
+        backdrop: false,
+        timer: 1500,
+        timerProgressBar: true,
+        showConfirmButton: false,
+      });
+      return {
+        hasError: false,
+      };
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        return {
+          hasError: true,
+          message: error.message,
+        };
+      }
+      return {
+        hasError: true,
+        message: "No se pudo enviar el correo electrónico - intente de nuevo",
+      };
+    }
+  };
+
   return (
     <ProfessionalContext.Provider
       value={{
@@ -203,6 +261,8 @@ export const ProfessionalProvider: FC<Props> = ({ children }) => {
         addProfessional,
         updateProfessional,
         deleteProfessional,
+        clearProfessional,
+        sendEmail,
       }}
     >
       {children}

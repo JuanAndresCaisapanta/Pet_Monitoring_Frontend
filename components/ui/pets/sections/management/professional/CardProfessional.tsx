@@ -10,18 +10,26 @@ import {
 } from "@mui/material";
 
 import { Delete, HailOutlined, Visibility } from "@mui/icons-material";
+import { useRouter } from "next/router";
 
 interface Props {
+  id: number;
   name: string;
   last_name: string;
   profession: string;
 }
 
 export const CardProfessional: FC<Props> = ({
+  id,
   name,
   last_name,
   profession,
 }) => {
+  const router = useRouter();
+  const navigateTo = (url: string) => {
+    router.push(url);
+  };
+
   return (
     <Card>
       <CardContent>
@@ -66,7 +74,7 @@ export const CardProfessional: FC<Props> = ({
                 color="primary"
                 disableElevation
                 startIcon={<Visibility />}
-                // onClick={() => navigateTo(`profile/${id}`)}
+                onClick={() => navigateTo(`profile/${id}`)}
                 sx={{ marginRight: 2 }}
               >
                 Ver
