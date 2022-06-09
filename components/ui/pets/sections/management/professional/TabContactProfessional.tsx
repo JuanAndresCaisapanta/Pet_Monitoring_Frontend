@@ -78,7 +78,7 @@ export const TabContactProfessional = () => {
 
   const onSendWhatsapp = async ({ message }: FormData) => {
     window.open(
-      `https://web.whatsapp.com/send?phone=${professional?.cell_phone}&text=${message}&app_absent=0%E2%80%9D`,
+      `https://wa.me/${professional?.cell_phone}/?text=${message}`,
     );
   };
 
