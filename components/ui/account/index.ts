@@ -1,2 +1,2 @@
-export * from './TabAccount'
+export * from './TabProfileUser'
 export * from './TabSecurity'

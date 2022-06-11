@@ -34,19 +34,33 @@ export interface IPet {
       };
     },
   ];
-  "professional": [
+  professional: [
     {
-        "id": number,
-        "name": string,
-        "last_name": string,
-        "address": string,
-        "phone": string,
-        "profession": {
-            "id": number,
-            "name": string
-        }
-    }
-],
+      id: number;
+      name: string;
+      last_name: string;
+      address: string;
+      phone: string;
+      profession: {
+        id: number;
+        name: string;
+      };
+    },
+  ];
+  establishment: [
+    {
+      id: number;
+      name: string;
+      address: string;
+      email: string;
+      cell_phone: string;
+      phone: string;
+      typeEstablishment: {
+        id: number;
+        name: string;
+      };
+    },
+  ];
   masterData: [
     {
       id: number;

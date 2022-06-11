@@ -9,3 +9,5 @@ export * from "./medicine"
 export * from "./typeMedicine"
 export * from "./professional"
 export * from "./profession"
+export * from './establishment'
+export * from './typeEstablishment'

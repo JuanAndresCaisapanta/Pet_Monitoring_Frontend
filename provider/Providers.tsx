@@ -11,11 +11,13 @@ import {
   ProfessionalProvider,
   ProfessionProvider,
   SpeciesProvider,
+  TypeEstablishmentProvider,
   TypeMedicineProvider,
   UiProvider,
   UserProvider,
 } from "../context";
 import { theme } from "../themes";
+import { EstablishmentProvider } from "../context/establishment/EstablishmentProvider";
 
 interface Props {
   children: ReactNode;
@@ -27,24 +29,28 @@ export const Providers: FC<Props> = ({ children }) => {
       <UserProvider>
         <TypeMedicineProvider>
           <ProfessionProvider>
-            <SpeciesProvider>
-              <BreedProvider>
-                <PetProvider>
-                  <DeviceProvider>
-                    <MedicineProvider>
-                      <ProfessionalProvider>
-                        <UiProvider>
-                          <ThemeProvider theme={theme}>
-                            <CssBaseline />
-                            {children}
-                          </ThemeProvider>
-                        </UiProvider>
-                      </ProfessionalProvider>
-                    </MedicineProvider>
-                  </DeviceProvider>
-                </PetProvider>
-              </BreedProvider>
-            </SpeciesProvider>
+            <TypeEstablishmentProvider>
+              <SpeciesProvider>
+                <BreedProvider>
+                  <PetProvider>
+                    <DeviceProvider>
+                      <MedicineProvider>
+                        <ProfessionalProvider>
+                          <EstablishmentProvider>
+                            <UiProvider>
+                              <ThemeProvider theme={theme}>
+                                <CssBaseline />
+                                {children}
+                              </ThemeProvider>
+                            </UiProvider>
+                          </EstablishmentProvider>
+                        </ProfessionalProvider>
+                      </MedicineProvider>
+                    </DeviceProvider>
+                  </PetProvider>
+                </BreedProvider>
+              </SpeciesProvider>
+            </TypeEstablishmentProvider>
           </ProfessionProvider>
         </TypeMedicineProvider>
       </UserProvider>

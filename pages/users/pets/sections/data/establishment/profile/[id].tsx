@@ -3,13 +3,13 @@ import { SyntheticEvent, useState, ReactElement } from "react";
 import { Box, Card, styled } from "@mui/material";
 import { TabList, TabPanel, TabContext } from "@mui/lab";
 import MuiTab, { TabProps } from "@mui/material/Tab";
-import { AddCircleOutlineOutlined, Store } from "@mui/icons-material";
+import { Email, Store } from "@mui/icons-material";
 
 import {
-  TabListEstablishments,
   MainLayout,
-  TabAddEstablishment,
-} from "../../../../../../components";
+  TabContactEstablishment,
+  TabProfileEstablishment,
+} from "../../../../../../../components";
 
 const Tab = styled(MuiTab)<TabProps>(({ theme }) => ({
   [theme.breakpoints.down("md")]: {
@@ -26,8 +26,8 @@ const TabName = styled("span")(({ theme }) => ({
   marginLeft: theme.spacing(2.4),
 }));
 
-const EstablishmentsPage = () => {
-  const [value, setValue] = useState<string>("establishments");
+const ProfileEstablishmentPage = () => {
+  const [value, setValue] = useState<string>("establishment");
 
   const handleChange = (event: SyntheticEvent, newValue: string) => {
     setValue(newValue);
@@ -37,46 +37,48 @@ const EstablishmentsPage = () => {
       <TabContext value={value}>
         <TabList
           onChange={handleChange}
-          aria-label="establishments-settings tabs"
+          aria-label="medicine-settings tabs"
           sx={{ borderBottom: (theme) => `1px solid ${theme.palette.divider}` }}
         >
           <Tab
-            value="establishments"
+            value="establishment"
             label={
               <Box sx={{ display: "flex", alignItems: "center" }}>
                 <Store />
-                <TabName>Establecimientos</TabName>
+                <TabName>Establecimiento</TabName>
               </Box>
             }
           />
           <Tab
-            value="add-establishments"
+            value="contact"
             label={
               <Box sx={{ display: "flex", alignItems: "center" }}>
-                <AddCircleOutlineOutlined />
-                <TabName>Agregar</TabName>
+                <Email />
+                <TabName>Contacto</TabName>
               </Box>
             }
           />
         </TabList>
-        <TabPanel sx={{ p: 0 }} value="establishments">
-          <TabListEstablishments />
+        <TabPanel sx={{ p: 0 }} value="establishment">
+          <TabProfileEstablishment />
         </TabPanel>
-        <TabPanel sx={{ p: 0 }} value="add-establishments">
-          <TabAddEstablishment />
+        <TabPanel sx={{ p: 0 }} value="contact">
+          <TabContactEstablishment />
         </TabPanel>
       </TabContext>
     </Card>
   );
 };
-EstablishmentsPage.getLayout = function getLayout(page: ReactElement) {
+
+ProfileEstablishmentPage.getLayout = function getLayout(page: ReactElement) {
   return (
     <MainLayout
-      title={"Esblecimientos"}
-      pageDescription={"Lista de Establecimientos"}
+      title={"Establecimiento"}
+      pageDescription={"Información del establecimiento"}
     >
       {page}
     </MainLayout>
   );
 };
-export default EstablishmentsPage;
+
+export default ProfileEstablishmentPage;

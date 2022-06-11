@@ -9,22 +9,16 @@ import {
   Grid,
 } from "@mui/material";
 
-import { Delete, HailOutlined, Visibility } from "@mui/icons-material";
+import { Delete, Store, Visibility } from "@mui/icons-material";
 import { useRouter } from "next/router";
 
 interface Props {
   id: number;
   name: string;
-  last_name: string;
-  profession: string;
+  type: string;
 }
 
-export const CardProfessional: FC<Props> = ({
-  id,
-  name,
-  last_name,
-  profession,
-}) => {
+export const CardEstablishment: FC<Props> = ({ id, name, type }) => {
   const router = useRouter();
   const navigateTo = (url: string) => {
     router.push(url);
@@ -45,10 +39,10 @@ export const CardProfessional: FC<Props> = ({
                   backgroundColor: "primary.main",
                 }}
               >
-                <HailOutlined sx={{ fontSize: "2rem" }} />
+                <Store sx={{ fontSize: "2rem" }} />
               </Avatar>
             </Grid>
-            <Grid container spacing={1} marginLeft={1} marginRight={1}  marginTop={1}>
+            <Grid container spacing={1} marginLeft={1} marginRight={1} marginTop={1}>
               <Grid item xs={12} md={12}>
                 <Typography variant="body1" noWrap>
                   <b>Nombre: </b>
@@ -57,14 +51,8 @@ export const CardProfessional: FC<Props> = ({
               </Grid>
               <Grid item xs={12} md={12}>
                 <Typography variant="body1" noWrap>
-                  <b>Apellido: </b>
-                  {last_name}
-                </Typography>
-              </Grid>
-              <Grid item xs={12} md={12}>
-                <Typography variant="body1" noWrap>
-                  <b>Profesión: </b>
-                  {profession}
+                  <b>Tipo: </b>
+                  {type}
                 </Typography>
               </Grid>
             </Grid>

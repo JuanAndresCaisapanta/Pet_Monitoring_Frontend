@@ -19,39 +19,39 @@ import { Controller, useForm } from "react-hook-form";
 import MuiPhoneNumber from "material-ui-phone-number";
 
 import {
-  ProfessionalContext,
-  ProfessionContext,
+  EstablishmentContext,
+  TypeEstablishmentContext,
 } from "../../../../../../context";
 import { SelectFormId } from "../../../../elements";
 
 type FormData = {
   name: string;
-  last_name: string;
   address: string;
   email: string;
   cell_phone: string;
-  profession: number;
+  phone: string;
+  typeEstablishment: number;
 };
 
-export const TabProfileProfessional = () => {
+export const TabProfileEstablishment = () => {
   const router = useRouter();
   const { id } = router.query;
-  const [selectProfession, setSelectProfession] = useState(``);
+  const [selectTypeEstablishment, setSelectTypeEstablishment] = useState(``);
 
   const {
-    professions,
-    getProfessions,
-    isLoaded: isProfessionsLoaded,
-    clearProfessions,
-  } = useContext(ProfessionContext);
+    typeEstablishments,
+    getTypeEstablishments,
+    isLoaded: isTypeEstablishmentsLoaded,
+    clearTypeEstablishments,
+  } = useContext(TypeEstablishmentContext);
 
   const {
-    professional,
-    getProfessional,
-    clearProfessional,
-    updateProfessional,
-    isLoaded: isProfessionalLoaded,
-  } = useContext(ProfessionalContext);
+    establishment,
+    getEstablishment,
+    clearEstablishment,
+    updateEstablishment,
+    isLoaded: isEstablishmentLoaded,
+  } = useContext(EstablishmentContext);
 
   const {
     register,
@@ -62,49 +62,49 @@ export const TabProfileProfessional = () => {
   } = useForm<FormData>();
 
   useEffect(() => {
-    getProfessions();
+    getTypeEstablishments();
     return () => {
-      clearProfessions();
+      clearTypeEstablishments();
     };
   }, []);
 
   useEffect(() => {
     if (id !== undefined) {
-      getProfessional(Number(id));
+      getEstablishment(Number(id));
     }
     return () => {
-      clearProfessional();
+      clearEstablishment();
     };
   }, [id]);
 
   useEffect(() => {
-    if (professional) {
-      setValue("name", professional?.name);
-      setValue("last_name", professional?.last_name);
-      setValue("address", professional?.address);
-      setValue("email", professional?.email);
-      setValue("cell_phone", professional?.cell_phone);
-      setValue("profession", professional?.profession.id);
-      setSelectProfession(professional.profession.id.toString());
+    if (establishment) {
+      setValue("name", establishment?.name);
+      setValue("address", establishment?.address);
+      setValue("email", establishment?.email);
+      setValue("cell_phone", establishment?.cell_phone);
+      setValue("phone", establishment?.phone);
+      setValue("typeEstablishment", establishment?.typeEstablishment.id);
+      setSelectTypeEstablishment(establishment.typeEstablishment.id.toString());
     }
-  }, [professional]);
+  }, [establishment]);
 
-  const onAddMedicine = async ({
+  const onUpdateEstablishment = async ({
     name,
-    last_name,
     address,
     email,
     cell_phone,
-    profession,
+    phone,
+    typeEstablishment,
   }: FormData) => {
-    const { hasError, message } = await updateProfessional(
+    const { hasError, message } = await updateEstablishment(
       Number(id),
       name,
-      last_name,
       address,
       email,
       cell_phone,
-      profession,
+      phone,
+      typeEstablishment,
     );
     if (hasError) {
       // setShowError(true);
@@ -114,18 +114,18 @@ export const TabProfileProfessional = () => {
     }
   };
 
-  if (isProfessionsLoaded && isProfessionalLoaded) {
+  if (isEstablishmentLoaded && isTypeEstablishmentsLoaded) {
     return (
       <Card>
         <CardHeader
-          title={`Información de ${professional?.name} ${professional?.last_name}`}
+          title={`Información de ${establishment?.name}`}
           titleTypographyProps={{ variant: "body1", color: "#3A3541DE" }}
         />
         <Divider sx={{ margin: 0 }} />
         <form
           noValidate
           autoComplete="off"
-          onSubmit={handleSubmit(onAddMedicine)}
+          onSubmit={handleSubmit(onUpdateEstablishment)}
         >
           <CardContent>
             <Grid container spacing={2}>
@@ -146,31 +146,31 @@ export const TabProfileProfessional = () => {
                     />
                   </Grid>
                   <Grid item xs={12} sm={6}>
-                    <TextField
-                      fullWidth
-                      type="text"
-                      label="Apellido"
-                      placeholder="Apellido"
-                      {...register("last_name", {
-                        required: "Este campo es requerido",
-                        minLength: { value: 2, message: "Mínimo 2 caracteres" },
-                      })}
-                      error={!!errors.last_name}
-                      helperText={errors.last_name?.message}
+                    <SelectFormId
+                      label="Tipo de Establecimiento"
+                      name="typeEstablishment"
+                      value={selectTypeEstablishment}
+                      onChange={(event: SelectChangeEvent) =>
+                        setSelectTypeEstablishment(event.target.value)
+                      }
+                      object={typeEstablishments}
+                      register={register}
+                      error={!!errors.typeEstablishment}
+                      helperText={errors.typeEstablishment?.message}
                     />
                   </Grid>
                   <Grid item xs={12} sm={6}>
-                    <SelectFormId
-                      label="Profesión"
-                      name="profession"
-                      value={selectProfession}
-                      onChange={(event: SelectChangeEvent) =>
-                        setSelectProfession(event.target.value)
-                      }
-                      object={professions}
-                      register={register}
-                      error={!!errors.profession}
-                      helperText={errors.profession?.message}
+                    <TextField
+                      fullWidth
+                      type="tel"
+                      label="Teléfono"
+                      placeholder="Teléfono"
+                      {...register("phone", {
+                        required: "Este campo es requerido",
+                        minLength: { value: 2, message: "Mínimo 2 caracteres" },
+                      })}
+                      error={!!errors.phone}
+                      helperText={errors.phone?.message}
                     />
                   </Grid>
                   <Grid item xs={12} sm={6}>
@@ -187,6 +187,8 @@ export const TabProfileProfessional = () => {
                         fieldState: { error },
                       }) => (
                         <MuiPhoneNumber
+                          label="Celular"
+                          placeholder="Celular"
                           fullWidth
                           countryCodeEditable={false}
                           variant="outlined"
@@ -233,7 +235,6 @@ export const TabProfileProfessional = () => {
                       helperText={errors.address?.message}
                     />
                   </Grid>
-                  <Grid item xs={12} sm={12} textAlign="center"></Grid>
                 </Grid>
               </Grid>
             </Grid>

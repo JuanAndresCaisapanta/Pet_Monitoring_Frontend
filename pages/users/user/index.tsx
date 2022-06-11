@@ -7,7 +7,7 @@ import { TabList, TabPanel, TabContext } from "@mui/lab";
 
 import { AccountCircleOutlined, LockOpenOutlined } from "@mui/icons-material";
 
-import { MainLayout, TabAccount, TabSecurity } from "../../../components";
+import { MainLayout, TabProfileUser, TabSecurity } from "../../../components";
 
 const Tab = styled(MuiTab)<TabProps>(({ theme }) => ({
   [theme.breakpoints.down("md")]: {
@@ -57,7 +57,7 @@ const ProfilePage = () => {
           />
         </TabList>
         <TabPanel sx={{ p: 0 }} value="account">
-          <TabAccount />
+          <TabProfileUser />
         </TabPanel>
         <TabPanel sx={{ p: 0 }} value="security">
           <TabSecurity />

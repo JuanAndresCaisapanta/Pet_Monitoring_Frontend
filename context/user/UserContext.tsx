@@ -8,7 +8,7 @@ interface ContextProps {
     address: string,
     phone: string,
     image: any,
-  ) => Promise<{ hasError: boolean; message?: string }>;
+  ) => Promise<{ isComplete: boolean }>;
 }
 
 export const UserContext = createContext({} as ContextProps);

@@ -4,7 +4,7 @@ import { Box, Card, styled } from "@mui/material";
 import { TabList, TabPanel, TabContext } from "@mui/lab";
 import MuiTab, { TabProps } from "@mui/material/Tab";
 
-import { ConnectWithoutContactOutlined, Contactless, ContactPage, ContactsOutlined, HailOutlined } from "@mui/icons-material";
+import { Email, HailOutlined } from "@mui/icons-material";
 
 import {
   MainLayout,
@@ -50,11 +50,11 @@ const ProfileProfessionalPage = () => {
               </Box>
             }
           />
-           <Tab
+          <Tab
             value="contact"
             label={
               <Box sx={{ display: "flex", alignItems: "center" }}>
-                <ConnectWithoutContactOutlined />
+                <Email />
                 <TabName>Contacto</TabName>
               </Box>
             }

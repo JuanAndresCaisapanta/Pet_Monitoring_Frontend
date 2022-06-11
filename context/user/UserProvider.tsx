@@ -7,6 +7,7 @@ import Swal from "sweetalert2";
 import { petMonitoringApi } from "../../api";
 import { UserContext, userReducer } from "./";
 import { AuthContext } from "../auth/AuthContext";
+import { swalMessage } from "../../components/ui/utils/swalMessage";
 
 export interface UserState {}
 
@@ -17,9 +18,10 @@ interface Props {
 }
 
 export const UserProvider: FC<Props> = ({ children }) => {
+  const [state, dispatch] = useReducer(userReducer, USER_INITIAL_STATE);
+
   const { user, checkToken } = useContext(AuthContext);
 
-  const [state, dispatch] = useReducer(userReducer, USER_INITIAL_STATE);
   const updateUser = async (
     name: string,
     last_name: string,
@@ -27,10 +29,10 @@ export const UserProvider: FC<Props> = ({ children }) => {
     address: string,
     phone: string,
     image: any,
-  ): Promise<{ hasError: boolean; message?: string }> => {
-    try {
-      const token = Cookies.get("token") || "";
-      await petMonitoringApi.put(
+  ): Promise<{isComplete:boolean;}> => {
+    const token = Cookies.get("token") || "";
+    return await petMonitoringApi
+      .put(
         `/user/${user?.id}`,
         {
           name,
@@ -46,34 +48,16 @@ export const UserProvider: FC<Props> = ({ children }) => {
             "Content-Type": "multipart/form-data",
           },
         },
-      );
-      checkToken();
-      Swal.fire({
-        background: "#F4F5FA",
-        title: "Listo",
-        text: "Perfil Actualizado",
-        icon: "success",
-        confirmButtonText: "Ocultar",
-        backdrop: false,
-        timer: 1500,
-  timerProgressBar: true,
-  showConfirmButton: false,
+      )
+      .then(() => {
+        checkToken();
+        swalMessage("Listo", "Perfil Actualizado", "success");
+        return {isComplete: true};
+      })
+      .catch(() => {
+        swalMessage("Error", "No se pudo actualizar el perfil", "error");
+        return {isComplete: true};
       });
-      return {
-        hasError: false,
-      };
-    } catch (error) {
-      if (axios.isAxiosError(error)) {
-        return {
-          hasError: true,
-          message: error.message,
-        };
-      }
-      return {
-        hasError: true,
-        message: "No se pudo actualizar el usuario - intente de nuevo",
-      };
-    }
   };
   return (
     <UserContext.Provider

@@ -20,25 +20,26 @@ import { useForm } from "react-hook-form";
 import { ProfessionalContext, AuthContext } from "../../../../../../context";
 import { SelectFormId } from "../../../../elements";
 import { contactProfessional } from "../../../../../../data";
+import { EstablishmentContext } from '../../../../../../context/establishment/EstablishmentContext';
 
 type FormData = {
   contact: number;
   message: string;
 };
 
-export const TabContactProfessional = () => {
+export const TabContactEstablishment = () => {
   const router = useRouter();
   const { id } = router.query;
   const [selectContact, setSelectContact] = useState(``);
   const { user } = useContext(AuthContext);
 
   const {
-    professional,
-    getProfessional,
-    clearProfessional,
+    establishment,
+    getEstablishment,
+    clearEstablishment,
     sendEmail,
-    isLoaded: isProfessionalLoaded,
-  } = useContext(ProfessionalContext);
+    isLoaded: isEstablishmentLoaded,
+  } = useContext(EstablishmentContext);
 
   const {
     register,
@@ -48,31 +49,31 @@ export const TabContactProfessional = () => {
 
   useEffect(() => {
     if (id !== undefined) {
-      getProfessional(Number(id));
+      getEstablishment(Number(id));
     }
     return () => {
-      clearProfessional();
+      clearEstablishment();
     };
   }, [id]);
 
   const onSendEmail = async ({ message }: FormData) => {
     const { hasError, message: errorMessage } = await sendEmail(
-      professional?.email!,
+      establishment?.email!,
       user?.email!,
-      `Mensaje para ${professional?.name} ${professional?.last_name}`,
+      `Mensaje para ${establishment?.name}`,
       message,
     );
   };
 
   const onSendWhatsapp = async ({ message }: FormData) => {
-    window.open(`https://wa.me/${professional?.cell_phone}/?text=${message}`);
+    window.open(`https://wa.me/${establishment?.cell_phone}/?text=${message}`);
   };
 
-  if (isProfessionalLoaded) {
+  if (isEstablishmentLoaded) {
     return (
       <Card>
         <CardHeader
-          title={`Contactar a ${professional?.name} ${professional?.last_name}`}
+          title={`Contactar a ${establishment?.name}`}
           titleTypographyProps={{ variant: "body1", color: "#3A3541DE" }}
         />
         <Divider sx={{ margin: 0 }} />
@@ -113,13 +114,11 @@ export const TabContactProfessional = () => {
                     <TextField
                       fullWidth
                       multiline
-                      defaultValue={` Saludos ${professional?.name} ${
-                        professional?.last_name
-                      },\n Soy ${user?.name} ${
+                      defaultValue={` Saludos ${establishment?.name}\n Soy ${user?.name} ${
                         user?.last_name
-                      } quisiera separar una cita para mi ${professional?.pet.breed.species.name.toLowerCase()} ${
-                        professional?.pet.breed.name
-                      } ${professional?.pet.name},\n Mi número de celular es: ${
+                      } quisiera separar una cita para mi ${establishment?.pet.breed.species.name.toLowerCase()} ${
+                        establishment?.pet.breed.name
+                      } ${establishment?.pet.name},\n Mi número de celular es: ${
                         user?.phone
                       }\n Espero su respuesta excelente día.\n\n Mensaje enviado através de MonIOpeT.`}
                       rows={8}

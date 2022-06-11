@@ -4,5 +4,7 @@ export * from "./breed";
 export * from "./pet";
 export * from "./typeMedicine";
 export * from "./medicine";
-export * from "./professional"
-export * from "./profession"
+export * from "./professional";
+export * from "./profession";
+export * from "./typeEstablishment";
+export * from "./establishment";
