@@ -1,13 +1,6 @@
-import {
-  useState,
-  ChangeEvent,
-  useContext,
-  useEffect,
-  useCallback,
-} from "react";
+import { useState, ChangeEvent, useContext, useEffect } from "react";
 
 import Image from "next/image";
-import { useRouter } from "next/router";
 
 import {
   Grid,
@@ -20,15 +13,14 @@ import {
   Card,
   CardActions,
 } from "@mui/material";
-
+import { Update } from "@mui/icons-material";
+import { LoadingButton } from "@mui/lab";
 import imageCompression from "browser-image-compression";
 import { useForm } from "react-hook-form";
 
 import { AuthContext } from "../../../context";
 import { UserContext } from "../../../context/user/UserContext";
 import { validations } from "../../../utils";
-import { Update } from "@mui/icons-material";
-import { LoadingButton } from "@mui/lab";
 
 type FormData = {
   name: string;
@@ -46,6 +38,13 @@ export const TabProfileUser = () => {
   const [isLoading, setIsLoading] = useState(false);
   const { user } = useContext(AuthContext);
   const { updateUser } = useContext(UserContext);
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    formState: { errors },
+  } = useForm<FormData>();
+
   useEffect(() => {
     if (user?.name) {
       setUserName(user?.name);
@@ -54,13 +53,6 @@ export const TabProfileUser = () => {
       setUserLastName(user?.last_name);
     }
   }, [user]);
-
-  const {
-    register,
-    handleSubmit,
-    setValue,
-    formState: { errors },
-  } = useForm<FormData>();
 
   useEffect(() => {
     if (user?.image) {
@@ -106,14 +98,27 @@ export const TabProfileUser = () => {
     };
     if (image[0] != null) {
       const compressedImage = await imageCompression(image[0], options);
-      const {isComplete} =await updateUser(name, last_name, email, address, phone, compressedImage);
-      if(isComplete){
+      const { isComplete } = await updateUser(
+        name,
+        last_name,
+        email,
+        address,
+        phone,
+        compressedImage,
+      );
+      if (isComplete) {
         setIsLoading(false);
       }
-
     } else {
-      const {isComplete} =await updateUser(name, last_name, email, address, phone, image[0]);
-      if(isComplete){
+      const { isComplete } = await updateUser(
+        name,
+        last_name,
+        email,
+        address,
+        phone,
+        image[0],
+      );
+      if (isComplete) {
         setIsLoading(false);
       }
     }
@@ -255,7 +260,7 @@ export const TabProfileUser = () => {
                   type="submit"
                   startIcon={<Update />}
                   loading={isLoading}
-        loadingPosition="start"
+                  loadingPosition="start"
                 >
                   Actualizar
                 </LoadingButton>

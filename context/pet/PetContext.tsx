@@ -15,10 +15,9 @@ interface ContextProps {
     sterilization: boolean,
     image: any,
     birth_date: string,
-    creation_date: string,
     breed: number,
     users: number,
-  ) => Promise<{ hasError: boolean; message?: string }>;
+  ) => Promise<{ isComplete: boolean }>;
 }
 
 export const PetContext = createContext({} as ContextProps);

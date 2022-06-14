@@ -31,7 +31,7 @@ export const CardSection: FC<Props> = ({
   };
   return (
     <Card>
-      <CardMedia sx={{ height: "10rem" }} image={image} />
+      <CardMedia sx={{ height: "11rem" }} image={image} />
       <CardContent
         sx={{ padding: (theme) => `${theme.spacing(1, 2, 1)} !important` }}
       >

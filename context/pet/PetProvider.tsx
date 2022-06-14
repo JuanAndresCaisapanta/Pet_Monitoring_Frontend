@@ -1,14 +1,12 @@
-import { FC, ReactNode, useContext, useEffect, useReducer } from "react";
+import { FC, ReactNode, useContext, useReducer } from "react";
 
-import axios from "axios";
 import Cookies from "js-cookie";
-import Swal from "sweetalert2";
-import jwt from "jsonwebtoken";
 
 import { petMonitoringApi } from "../../api";
 import { IPet } from "../../interfaces";
 import { AuthContext } from "../auth";
 import { PetContext, petReducer } from "./";
+import { swalMessage } from "../../components";
 
 export interface PetState {
   isLoaded: boolean;
@@ -52,9 +50,9 @@ export const PetProvider: FC<Props> = ({ children }) => {
     }
   };
 
-  const petChange=()=>{
+  const petChange = () => {
     dispatch({ type: "[Pet] - petChange" });
-  }
+  };
 
   const addPet = async (
     name: string,
@@ -65,13 +63,12 @@ export const PetProvider: FC<Props> = ({ children }) => {
     sterilization: boolean,
     image: any,
     birth_date: string,
-    creation_date: string,
     breed: number,
     users: number,
-  ): Promise<{ hasError: boolean; message?: string }> => {
-    try {
-      const token = Cookies.get("token") || "";
-      await petMonitoringApi.post(
+  ): Promise<{ isComplete: boolean }> => {
+    const token = Cookies.get("token") || "";
+    return await petMonitoringApi
+      .post(
         `/pet`,
         {
           name,
@@ -82,7 +79,6 @@ export const PetProvider: FC<Props> = ({ children }) => {
           sterilization,
           image,
           birth_date,
-          creation_date,
           breed,
           users,
         },
@@ -92,33 +88,16 @@ export const PetProvider: FC<Props> = ({ children }) => {
             "Content-Type": "multipart/form-data",
           },
         },
-      );
-      checkToken();
-      Swal.fire({
-        background: "#F4F5FA",
-        title: "Listo",
-        text: "Mascota Agregada",
-        icon: "success",
-        backdrop: false,
-        timer: 1500,
-        timerProgressBar: true,
-        showConfirmButton: false,
+      )
+      .then(() => {
+        checkToken();
+        swalMessage("Listo", "Mascota Agregada", "success");
+        return { isComplete: true };
+      })
+      .catch(() => {
+        swalMessage("Error", "No se pudo agregar la mascota", "error");
+        return { isComplete: true };
       });
-      return {
-        hasError: false,
-      };
-    } catch (error) {
-      if (axios.isAxiosError(error)) {
-        return {
-          hasError: true,
-          message: error.message,
-        };
-      }
-      return {
-        hasError: true,
-        message: "No se pudo agregar su mascota - intente de nuevo",
-      };
-    }
   };
 
   return (

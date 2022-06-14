@@ -10,6 +10,7 @@ interface Props {
   setSubtype: any;
   name: string;
   control: any;
+  disabled?: boolean;
 }
 
 export const AutocompleteFormState: FC<Props> = ({
@@ -19,6 +20,7 @@ export const AutocompleteFormState: FC<Props> = ({
   setSubtype,
   name,
   control,
+  disabled,
 }) => {
   const [inputValue, setInputValue] = useState("");
   return (
@@ -26,6 +28,7 @@ export const AutocompleteFormState: FC<Props> = ({
       render={({ field: { onChange, value } }) => (
         <Autocomplete
           disableClearable={true}
+          disabled={disabled}
           options={object}
           getOptionLabel={(option: any) => option.name || ""}
           renderInput={(params) => (

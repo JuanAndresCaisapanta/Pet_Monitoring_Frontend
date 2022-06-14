@@ -8,10 +8,12 @@ import { speciesReducer } from "./speciesReducer";
 
 export interface SpeciesState {
   species?: ISpecies;
+  isLoaded?: boolean;
 }
 
 const SPECIES_INITIAL_STATE: SpeciesState = {
   species: undefined,
+  isLoaded: false,
 };
 
 interface Props {
@@ -43,11 +45,16 @@ export const SpeciesProvider: FC<Props> = ({ children }) => {
     }
   };
 
+  const clearSpecies = () => {
+    dispatch({ type: "[Species] - clearSpecies" });
+  };
+
   return (
     <SpeciesContext.Provider
       value={{
         ...state,
         getSpecies,
+        clearSpecies,
       }}
     >
       {children}

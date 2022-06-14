@@ -1,15 +1,19 @@
-import Cookies from "js-cookie";
 import { FC, ReactNode, useReducer } from "react";
+
+import Cookies from "js-cookie";
+
 import { petMonitoringApi } from "../../api";
 import { IBreed } from "../../interfaces";
 import { BreedContext, breedReducer } from "./";
 
 export interface BreedState {
-  breed?: IBreed;
+  breeds?: IBreed;
+  isLoaded?: boolean;
 }
 
 const BREED_INITIAL_STATE: BreedState = {
-  breed: undefined,
+  breeds: undefined,
+  isLoaded: false,
 };
 
 interface Props {
@@ -19,7 +23,7 @@ interface Props {
 export const BreedProvider: FC<Props> = ({ children }) => {
   const [state, dispatch] = useReducer(breedReducer, BREED_INITIAL_STATE);
 
-  const getBreed = async (id: number) => {
+  const getBreeds = async (id: number) => {
     if (!Cookies.get("token")) {
       return;
     }
@@ -32,7 +36,7 @@ export const BreedProvider: FC<Props> = ({ children }) => {
         const { data } = await petMonitoringApi.get(`breed/species/${id}`, {
           headers: { Authorization: `Bearer ${token}` },
         });
-        dispatch({ type: "[Breed] - getBreed", payload: data });
+        dispatch({ type: "[Breed] - getBreeds", payload: data });
       } else {
         Cookies.remove("token");
       }
@@ -41,10 +45,16 @@ export const BreedProvider: FC<Props> = ({ children }) => {
     }
   };
 
+  const clearBreeds = () => {
+    dispatch({ type: "[Breed] - clearBreeds" });
+  };
+
   return (
     <BreedContext.Provider
       value={{
-        ...state,getBreed,
+        ...state,
+        getBreeds,
+        clearBreeds,
       }}
     >
       {children}

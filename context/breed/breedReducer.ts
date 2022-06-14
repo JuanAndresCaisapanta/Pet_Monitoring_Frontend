@@ -1,22 +1,28 @@
-import { BreedState } from '.';
-import { IBreed } from '../../interfaces';
+import { BreedState } from ".";
+import { IBreed } from "../../interfaces";
 
+type BreedActionType =
+  | { type: "[Breed] - getBreeds"; payload: IBreed }
+  | { type: "[Breed] - clearBreeds" };
 
-type BreedActionType = 
-   | { type: '[Breed] - getBreed', payload: IBreed} 
-
-
-export const breedReducer = ( state: BreedState, action: BreedActionType ): BreedState => {
-
-   switch (action.type) {
-      case '[Breed] - getBreed':
-         return {
-            ...state,
-            breed: action.payload,
-          }
-
-       default:
-          return state;
-   }
-
-}
+export const breedReducer = (
+  state: BreedState,
+  action: BreedActionType,
+): BreedState => {
+  switch (action.type) {
+    case "[Breed] - getBreeds":
+      return {
+        ...state,
+        breeds: action.payload,
+        isLoaded: true,
+      };
+    case "[Breed] - clearBreeds":
+      return {
+        ...state,
+        breeds: undefined,
+        isLoaded: false,
+      };
+    default:
+      return state;
+  }
+};

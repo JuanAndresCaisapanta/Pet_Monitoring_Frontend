@@ -9,8 +9,8 @@ export const TabRealTime = () => {
   const { id } = router.query;
   return (
     <CardContent>
-      <Grid container spacing={2}>
-        <Grid item xs={12} sm={6}>
+      <Grid container spacing={2} justifyContent={"center"}>
+        <Grid item xs={12} sm={4}>
           <CardSection
             section="Ubicación"
             description="Revise la ubicación de su mascota."
@@ -19,7 +19,7 @@ export const TabRealTime = () => {
             button="Revisar"
           />
         </Grid>
-        <Grid item xs={12} sm={6}>
+        <Grid item xs={12} sm={4}>
           <CardSection
             section="Temperatura"
             description="Revise la temperatura de su mascota."

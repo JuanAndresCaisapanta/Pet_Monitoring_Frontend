@@ -1,6 +1,6 @@
 export * from './CardPet'
 export * from './CardSection'
-export * from './TabInfoPet'
+export * from './TabAddPet'
 export * from './TabListPets'
 export * from './TabRealTime'
 export * from './TabManagement'
