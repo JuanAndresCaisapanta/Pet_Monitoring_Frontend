@@ -50,6 +50,7 @@ export const AuthLayout: FC<Props> = ({ children, title, detail }) => {
                       fontWeight: 600,
                       fontSize: "1.5rem !important",
                     }}
+                    color="primary"
                   >
                     MonIOpeT
                   </Typography>

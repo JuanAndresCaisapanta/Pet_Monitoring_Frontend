@@ -160,6 +160,7 @@ const LoginPage = () => {
           variant="contained"
           sx={{ marginBottom: 2 }}
           type="submit"
+          disableElevation
         >
           Ingresar
         </Button>

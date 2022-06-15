@@ -9,7 +9,7 @@ import {
   Grid,
   Typography,
 } from "@mui/material";
-import { Devices, OnDeviceTrainingOutlined, Pets } from "@mui/icons-material";
+import { OnDeviceTrainingOutlined, Pets } from "@mui/icons-material";
 
 import { AuthContext } from "../../../context";
 
@@ -33,7 +33,6 @@ export const HomeCard = () => {
                   mr: 3,
                   width: 44,
                   height: 44,
-                  boxShadow: 3,
                   color: "common.white",
                   backgroundColor: `${"primary"}.main`,
                 }}
@@ -54,7 +53,6 @@ export const HomeCard = () => {
                   mr: 3,
                   width: 44,
                   height: 44,
-                  boxShadow: 3,
                   color: "common.white",
                   backgroundColor: `${"info"}.main`,
                 }}

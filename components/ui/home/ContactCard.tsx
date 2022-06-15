@@ -25,7 +25,6 @@ export const ContactCard = () => {
                 mr: 3,
                 width: 44,
                 height: 44,
-                boxShadow: 3,
                 color: "common.white",
                 backgroundColor: "green",
               }}

@@ -149,23 +149,22 @@ export const TabProfileUser = () => {
                   direction="column"
                   alignItems="center"
                 >
-                  <Typography color="primary">Imagen Perfil</Typography>
                   <Image
                     style={{ borderRadius: "15px" }}
                     src={imgSrc}
-                    width="300"
-                    height="200rem"
+                    width="250rem"
+                    height="177rem"
                     alt="Imagen Perfil"
+                    quality={100}
                   />
                   <Button
                     component="label"
                     variant="text"
                     htmlFor="account-settings-upload-image"
                     disableElevation
-                    sx={{ mt: 1 }}
                     disabled={isLoading}
                   >
-                    Cambiar
+                    Cambiar Imagen
                     <input
                       hidden
                       type="file"
@@ -175,9 +174,7 @@ export const TabProfileUser = () => {
                     />
                   </Button>
                 </Grid>
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <Grid container spacing={2}>
+                <Grid item container spacing={2}>
                   <Grid item xs={12} sm={6}>
                     <TextField
                       fullWidth
@@ -204,6 +201,10 @@ export const TabProfileUser = () => {
                       disabled={isLoading}
                     />
                   </Grid>
+                </Grid>
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <Grid container spacing={2}>
                   <Grid item xs={12} sm={12}>
                     <TextField
                       fullWidth
@@ -221,18 +222,6 @@ export const TabProfileUser = () => {
                   <Grid item xs={12} sm={12}>
                     <TextField
                       fullWidth
-                      label="Dirección"
-                      {...register("address", {
-                        minLength: { value: 2, message: "Mínimo 2 caracteres" },
-                      })}
-                      error={!!errors.address}
-                      helperText={errors.address?.message}
-                      disabled={isLoading}
-                    />
-                  </Grid>
-                  <Grid item xs={12} sm={12}>
-                    <TextField
-                      fullWidth
                       type="tel"
                       inputProps={{ inputMode: "numeric", pattern: "[0-9]*" }}
                       label="Teléfono"
@@ -241,6 +230,20 @@ export const TabProfileUser = () => {
                       })}
                       error={!!errors.phone}
                       helperText={errors.phone?.message}
+                      disabled={isLoading}
+                    />
+                  </Grid>
+                  <Grid item xs={12} sm={12}>
+                    <TextField
+                      fullWidth
+                      multiline
+                      rows={4}
+                      label="Dirección"
+                      {...register("address", {
+                        minLength: { value: 2, message: "Mínimo 2 caracteres" },
+                      })}
+                      error={!!errors.address}
+                      helperText={errors.address?.message}
                       disabled={isLoading}
                     />
                   </Grid>

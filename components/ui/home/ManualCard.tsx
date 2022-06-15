@@ -25,7 +25,6 @@ export const ManualCard = () => {
                 mr: 3,
                 width: 44,
                 height: 44,
-                boxShadow: 3,
                 color: "common.white",
                 backgroundColor: "red",
               }}
@@ -33,7 +32,7 @@ export const ManualCard = () => {
               <ArticleIcon />
             </Avatar>
             <Box sx={{ display: "flex", flexDirection: "column" }}>
-              <Button size="small" variant="contained">
+              <Button variant="contained" disableElevation>
                 Descargar
               </Button>
             </Box>

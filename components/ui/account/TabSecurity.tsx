@@ -1,19 +1,30 @@
-// ** React Imports
-import { ChangeEvent, MouseEvent, useState } from "react";
+import {
+  ChangeEvent,
+  MouseEvent,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 
-// ** MUI Imports
-import Grid from "@mui/material/Grid";
-import InputLabel from "@mui/material/InputLabel";
-import IconButton from "@mui/material/IconButton";
-import CardContent from "@mui/material/CardContent";
-import FormControl from "@mui/material/FormControl";
-import OutlinedInput from "@mui/material/OutlinedInput";
-import InputAdornment from "@mui/material/InputAdornment";
-
-// ** Icons Imports
+import {
+  Grid,
+  InputLabel,
+  IconButton,
+  CardContent,
+  FormControl,
+  OutlinedInput,
+  InputAdornment,
+  Button,
+  Card,
+  CardActions,
+  CardHeader,
+  Divider,
+} from "@mui/material";
+import { Update } from "@mui/icons-material";
 import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
 import VisibilityOffOutlinedIcon from "@mui/icons-material/VisibilityOffOutlined";
-import { Button } from "@mui/material";
+
+import { AuthContext } from "../../../context";
 
 interface State {
   newPassword: string;
@@ -25,7 +36,10 @@ interface State {
 }
 
 export const TabSecurity = () => {
+  const { user } = useContext(AuthContext);
   // ** States
+  const [userName, setUserName] = useState("");
+  const [userLastName, setUserLastName] = useState("");
   const [values, setValues] = useState<State>({
     newPassword: "",
     currentPassword: "",
@@ -34,6 +48,15 @@ export const TabSecurity = () => {
     showCurrentPassword: false,
     showConfirmNewPassword: false,
   });
+
+  useEffect(() => {
+    if (user?.name) {
+      setUserName(user?.name);
+    }
+    if (user?.last_name) {
+      setUserLastName(user?.last_name);
+    }
+  }, [user]);
 
   // Handle Current Password
   const handleCurrentPasswordChange =
@@ -44,7 +67,7 @@ export const TabSecurity = () => {
     setValues({ ...values, showCurrentPassword: !values.showCurrentPassword });
   };
   const handleMouseDownCurrentPassword = (
-    event: MouseEvent<HTMLButtonElement>
+    event: MouseEvent<HTMLButtonElement>,
   ) => {
     event.preventDefault();
   };
@@ -73,151 +96,150 @@ export const TabSecurity = () => {
     });
   };
   const handleMouseDownConfirmNewPassword = (
-    event: MouseEvent<HTMLButtonElement>
+    event: MouseEvent<HTMLButtonElement>,
   ) => {
     event.preventDefault();
   };
 
   return (
-    <form>
-      <CardContent sx={{ paddingBottom: 0 }}>
-        <Grid container spacing={2}>
-          <Grid item xs={12} sm={6}>
-            <Grid container spacing={2}>
-              <Grid item xs={12}>
-                <FormControl fullWidth>
-                  <InputLabel htmlFor="account-settings-current-password">
-                    Contraseña Actual
-                  </InputLabel>
-                  <OutlinedInput
-                    label="Contraseña Actual"
-                    value={values.currentPassword}
-                    id="account-settings-current-password"
-                    type={values.showCurrentPassword ? "text" : "password"}
-                    onChange={handleCurrentPasswordChange("currentPassword")}
-                    endAdornment={
-                      <InputAdornment position="end">
-                        <IconButton
-                          edge="end"
-                          aria-label="toggle password visibility"
-                          onClick={handleClickShowCurrentPassword}
-                          onMouseDown={handleMouseDownCurrentPassword}
-                        >
-                          {values.showCurrentPassword ? (
-                            <VisibilityOutlinedIcon />
-                          ) : (
-                            <VisibilityOffOutlinedIcon />
-                          )}
-                        </IconButton>
-                      </InputAdornment>
-                    }
-                  />
-                </FormControl>
+    <Card>
+      <CardHeader
+        title={`Seguridad de ${userName} ${userLastName}`}
+        titleTypographyProps={{ variant: "body1", color: "#3A3541DE" }}
+      />
+      <Divider sx={{ margin: 0 }} />
+      <form
+        noValidate
+        autoComplete="off"
+        encType="multipart/form-data"
+        //onSubmit={handleSubmit(onUpdateForm)}
+      >
+        <CardContent>
+          <Grid container spacing={2}>
+            <Grid item xs={12} sm={6}>
+              <Grid container spacing={2}>
+                <Grid item xs={12}>
+                  <FormControl fullWidth>
+                    <InputLabel htmlFor="account-settings-current-password">
+                      Contraseña Actual
+                    </InputLabel>
+                    <OutlinedInput
+                      label="Contraseña Actual"
+                      value={values.currentPassword}
+                      id="account-settings-current-password"
+                      type={values.showCurrentPassword ? "text" : "password"}
+                      onChange={handleCurrentPasswordChange("currentPassword")}
+                      endAdornment={
+                        <InputAdornment position="end">
+                          <IconButton
+                            edge="end"
+                            aria-label="toggle password visibility"
+                            onClick={handleClickShowCurrentPassword}
+                            onMouseDown={handleMouseDownCurrentPassword}
+                          >
+                            {values.showCurrentPassword ? (
+                              <VisibilityOutlinedIcon />
+                            ) : (
+                              <VisibilityOffOutlinedIcon />
+                            )}
+                          </IconButton>
+                        </InputAdornment>
+                      }
+                    />
+                  </FormControl>
+                </Grid>
               </Grid>
+            </Grid>
 
-              <Grid item xs={12} sx={{ marginTop: 6 }}>
-                <FormControl fullWidth>
-                  <InputLabel htmlFor="account-settings-new-password">
-                    Contraseña Nueva
-                  </InputLabel>
-                  <OutlinedInput
-                    label="Contraseña Nueva"
-                    value={values.newPassword}
-                    id="account-settings-new-password"
-                    onChange={handleNewPasswordChange("newPassword")}
-                    type={values.showNewPassword ? "text" : "password"}
-                    endAdornment={
-                      <InputAdornment position="end">
-                        <IconButton
-                          edge="end"
-                          onClick={handleClickShowNewPassword}
-                          aria-label="toggle password visibility"
-                          onMouseDown={handleMouseDownNewPassword}
-                        >
-                          {values.showNewPassword ? (
-                            <VisibilityOutlinedIcon />
-                          ) : (
-                            <VisibilityOffOutlinedIcon />
-                          )}
-                        </IconButton>
-                      </InputAdornment>
-                    }
-                  />
-                </FormControl>
-              </Grid>
+            <Grid item xs={12} sm={6}>
+              <Grid container spacing={2}>
+                <Grid item xs={12}>
+                  <FormControl fullWidth>
+                    <InputLabel htmlFor="account-settings-new-password">
+                      Contraseña Nueva
+                    </InputLabel>
+                    <OutlinedInput
+                      label="Contraseña Nueva"
+                      value={values.newPassword}
+                      id="account-settings-new-password"
+                      onChange={handleNewPasswordChange("newPassword")}
+                      type={values.showNewPassword ? "text" : "password"}
+                      endAdornment={
+                        <InputAdornment position="end">
+                          <IconButton
+                            edge="end"
+                            onClick={handleClickShowNewPassword}
+                            aria-label="toggle password visibility"
+                            onMouseDown={handleMouseDownNewPassword}
+                          >
+                            {values.showNewPassword ? (
+                              <VisibilityOutlinedIcon />
+                            ) : (
+                              <VisibilityOffOutlinedIcon />
+                            )}
+                          </IconButton>
+                        </InputAdornment>
+                      }
+                    />
+                  </FormControl>
+                </Grid>
 
-              <Grid item xs={12}>
-                <FormControl fullWidth>
-                  <InputLabel htmlFor="account-settings-confirm-new-password">
-                    Confirmar Nueva Contraseña
-                  </InputLabel>
-                  <OutlinedInput
-                    label="Confirmar Nueva Contraseña"
-                    value={values.confirmNewPassword}
-                    id="account-settings-confirm-new-password"
-                    type={values.showConfirmNewPassword ? "text" : "password"}
-                    onChange={handleConfirmNewPasswordChange(
-                      "confirmNewPassword"
-                    )}
-                    endAdornment={
-                      <InputAdornment position="end">
-                        <IconButton
-                          edge="end"
-                          aria-label="toggle password visibility"
-                          onClick={handleClickShowConfirmNewPassword}
-                          onMouseDown={handleMouseDownConfirmNewPassword}
-                        >
-                          {values.showConfirmNewPassword ? (
-                            <VisibilityOutlinedIcon />
-                          ) : (
-                            <VisibilityOffOutlinedIcon />
-                          )}
-                        </IconButton>
-                      </InputAdornment>
-                    }
-                  />
-                </FormControl>
+                <Grid item xs={12}>
+                  <FormControl fullWidth>
+                    <InputLabel htmlFor="account-settings-confirm-new-password">
+                      Confirmar Nueva Contraseña
+                    </InputLabel>
+                    <OutlinedInput
+                      label="Confirmar Nueva Contraseña"
+                      value={values.confirmNewPassword}
+                      id="account-settings-confirm-new-password"
+                      type={values.showConfirmNewPassword ? "text" : "password"}
+                      onChange={handleConfirmNewPasswordChange(
+                        "confirmNewPassword",
+                      )}
+                      endAdornment={
+                        <InputAdornment position="end">
+                          <IconButton
+                            edge="end"
+                            aria-label="toggle password visibility"
+                            onClick={handleClickShowConfirmNewPassword}
+                            onMouseDown={handleMouseDownConfirmNewPassword}
+                          >
+                            {values.showConfirmNewPassword ? (
+                              <VisibilityOutlinedIcon />
+                            ) : (
+                              <VisibilityOffOutlinedIcon />
+                            )}
+                          </IconButton>
+                        </InputAdornment>
+                      }
+                    />
+                  </FormControl>
+                </Grid>
               </Grid>
             </Grid>
           </Grid>
-
-          <Grid
-            item
-            sm={6}
-            xs={12}
-            sx={{
-              display: "flex",
-              marginTop: [3.5, 2.5],
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
-            <img
-              width={200}
-              alt="avatar"
-              height={200}
-              src="/images/profile/lock.png"
-            />
-          </Grid>
-          <Grid item xs={12}>
+        </CardContent>
+        <Divider sx={{ margin: 0 }} />
+        <CardActions sx={{ padding: "16px" }}>
+          <Grid container spacing={2}>
+            <Grid item xs={12} md={12}>
               <Button
                 disableElevation
                 variant="contained"
-                sx={{ marginRight: 3.5 }}
+                sx={{ marginRight: 2 }}
                 type="submit"
+                startIcon={<Update />}
               >
                 Actualizar
               </Button>
-              <Button
-                disableElevation
-                variant="outlined"
-                color="error"
-              >
+              <Button disableElevation variant="outlined" color="secondary">
                 Cancelar
               </Button>
             </Grid>
-        </Grid>
-      </CardContent>
-    </form>
+          </Grid>
+        </CardActions>
+      </form>
+    </Card>
   );
 };

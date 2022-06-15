@@ -186,18 +186,17 @@ const RegisterPage = () => {
           </Stack>
         )}
         <Box sx={{ alignItems: "center" }}>
-          <Typography color={"primary"}>Imagen Perfil</Typography>
           <ImgStyled src={imgSrc} alt="Imagen Perfil" />
         </Box>
         <Box sx={{ marginBottom: 2, alignItems: "center" }}>
           <Button
             component="label"
-            variant="contained"
+            variant="text"
             htmlFor="account-settings-upload-image"
             disableElevation
             disabled={loading}
           >
-            Cargar
+            Cargar Imagen
             <input
               hidden
               type="file"
@@ -282,7 +281,6 @@ const RegisterPage = () => {
           <Grid item xs={12} sm={6}>
             <Button
               disableElevation
-              size="large"
               type="submit"
               variant="contained"
               sx={{ marginBottom: 1 }}
@@ -294,9 +292,8 @@ const RegisterPage = () => {
           <Grid item xs={12} sm={6}>
             <Button
               disableElevation
-              size="large"
-              color="error"
-              variant="contained"
+              color="secondary"
+              variant="outlined"
               onClick={onCancel}
               disabled={loading}
               sx={{ marginBottom: 1 }}

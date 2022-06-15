@@ -1,6 +1,7 @@
 import { useState, ChangeEvent, useContext, useEffect } from "react";
 
 import Image from "next/image";
+import { useRouter } from "next/router";
 
 import {
   Checkbox,
@@ -26,6 +27,7 @@ import {
   LoadingButton,
   LocalizationProvider,
 } from "@mui/lab";
+import { Save } from "@mui/icons-material";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import imageCompression from "browser-image-compression";
 import { useForm } from "react-hook-form";
@@ -39,8 +41,6 @@ import {
 import { SelectFormName, AutocompleteFormState } from "../elements";
 import { IBreed, ISpecies } from "../../../interfaces";
 import { colorPet, sexPet } from "../../../data";
-import { Save } from "@mui/icons-material";
-import { useRouter } from "next/router";
 
 type FormData = {
   name: string;
@@ -205,7 +205,6 @@ export const TabAddPet = () => {
                   sm={12}
                   direction="column"
                   alignItems="center"
-
                 >
                   <Image
                     style={{ borderRadius: "15px" }}
@@ -222,7 +221,6 @@ export const TabAddPet = () => {
                     htmlFor="account-settings-upload-image"
                     disableElevation
                     disabled={isLoading}
-                    sx={{ mt: 1 }}
                   >
                     Cambiar Imagen
                     <input
@@ -234,25 +232,23 @@ export const TabAddPet = () => {
                     />
                   </Button>
                 </Grid>
-                <Grid item xs={12} sm={12}>
-                    <TextField
-                      fullWidth
-                      label="Nombre"
-                      placeholder="Nombre"
-                      {...register("name", {
-                        required: "Este campo es requerido",
-                        minLength: { value: 2, message: "Mínimo 2 caracteres" },
-                      })}
-                      error={!!errors.name}
-                      helperText={errors.name?.message}
-                      disabled={isLoading}
-                    />
-                  </Grid>
+                <Grid item xs={12} sm={12} sx={{ mt: 1 }}>
+                  <TextField
+                    fullWidth
+                    label="Nombre"
+                    placeholder="Nombre"
+                    {...register("name", {
+                      required: "Este campo es requerido",
+                      minLength: { value: 2, message: "Mínimo 2 caracteres" },
+                    })}
+                    error={!!errors.name}
+                    helperText={errors.name?.message}
+                    disabled={isLoading}
+                  />
+                </Grid>
               </Grid>
-
               <Grid item xs={12} sm={6}>
                 <Grid container spacing={2}>
-                  
                   <Grid item xs={12} sm={6}>
                     <LocalizationProvider dateAdapter={AdapterDateFns}>
                       <DesktopDatePicker
