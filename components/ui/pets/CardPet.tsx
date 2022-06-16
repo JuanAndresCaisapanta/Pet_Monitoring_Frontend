@@ -101,7 +101,7 @@ export const CardPet: FC<Props> = ({
                 variant="outlined"
                 color="secondary"
                 startIcon={<Visibility />}
-                onClick={() => navigateTo(`pets/pet/${id}`)}
+                onClick={() => navigateTo(`pets/pet/profile/${id}`)}
               >
                 ver
               </Button>

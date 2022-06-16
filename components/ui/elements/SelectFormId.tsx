@@ -15,6 +15,7 @@ interface Props {
   onChange: any;
   label: string;
   name: string;
+  disabled?: boolean;
   error: any;
   helperText: any;
 }
@@ -26,6 +27,7 @@ export const SelectFormId: FC<Props> = ({
   value,
   onChange,
   register,
+  disabled,
   error,
   helperText,
 }) => {
@@ -36,13 +38,15 @@ export const SelectFormId: FC<Props> = ({
         labelId="demo-simple-select-label"
         id="demo-simple-select"
         value={value}
+        disabled={disabled}
         label={label}
         {...register(name, {
           onChange: onChange,
           required: "Este campo es requerido",
+          defaultValue: object ? object.id : "",
         })}
+        defaultValue={""}
         error={error}
-        defaultValue={label}
       >
         {object
           ?.sort((a: any, b: any) => {

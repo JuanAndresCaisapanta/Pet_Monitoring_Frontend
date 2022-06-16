@@ -23,6 +23,7 @@ interface Props {
 }
 export const PetProvider: FC<Props> = ({ children }) => {
   const [state, dispatch] = useReducer(petReducer, PET_INITIAL_STATE);
+
   const { checkToken } = useContext(AuthContext);
 
   const getPet = async (id: any) => {
@@ -100,13 +101,77 @@ export const PetProvider: FC<Props> = ({ children }) => {
       });
   };
 
+  const updatePet = async (
+    id: number,
+    name: string,
+    color_main: string,
+    color_secondary: string,
+    weight: number,
+    sex: string,
+    sterilization: boolean,
+    image: any,
+    birth_date: string,
+    breed: number,
+  ): Promise<{ isComplete: boolean }> => {
+    const token = Cookies.get("token") || "";
+    return await petMonitoringApi
+      .put(
+        `/pet/${id}`,
+        {
+          name,
+          color_main,
+          color_secondary,
+          weight,
+          sex,
+          sterilization,
+          image,
+          birth_date,
+          breed: { id: breed },
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "multipart/form-data",
+          },
+        },
+      )
+      .then(() => {
+        checkToken();
+        swalMessage("Listo", "Mascota Actualizada", "success");
+        return { isComplete: true };
+      })
+      .catch(() => {
+        swalMessage("Error", "No se pudo actualizar la mascota", "error");
+        return { isComplete: true };
+      });
+  };
+
+  const deletePet = async (id: number) => {
+    const token = Cookies.get("token") || "";
+    return await petMonitoringApi
+      .delete(`/pet/${id}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      .then(() => {
+        checkToken();
+        swalMessage("Listo", "Mascota Eliminada", "success");
+        return { isComplete: true };
+      })
+      .catch(() => {
+        swalMessage("Error", "No se pudo eliminar la mascota", "error");
+        return { isComplete: true };
+      });
+  };
+
   return (
     <PetContext.Provider
       value={{
         ...state,
         addPet,
+        updatePet,
         getPet,
         petChange,
+        deletePet,
       }}
     >
       {children}

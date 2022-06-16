@@ -44,23 +44,26 @@ export const TabLocation = () => {
     };
   }, [id]);
 
-  const detail = pet?.masterData
-    .map((masterData) =>
-      masterData.detailData
-        .map((detailData, i, { length }) => {
-          if (i + 1 === length) {
-            return {
-              detail: {
-                latitude: detailData.latitude,
-                longitude: detailData.longitude,
-                battery: detailData.battery,
-              },
-            };
-          }
-        })
-        .splice(-1, 1),
-    )[0]
-    .shift()?.detail;
+  const detail =
+    pet?.masterData?.length! > 0
+      ? pet?.masterData
+          ?.map((masterData: any) =>
+            masterData.detailData
+              .map((detailData: any, i: any, { length }: any) => {
+                if (i + 1 === length) {
+                  return {
+                    detail: {
+                      latitude: detailData.latitude,
+                      longitude: detailData.longitude,
+                      battery: detailData.battery,
+                    },
+                  };
+                }
+              })
+              .splice(-1, 1),
+          )[0]
+          .shift()?.detail
+      : undefined;
 
   const url_map = `https://www.google.com/maps/search/?api=1&query=${detail?.latitude},${detail?.longitude}`;
 
@@ -72,7 +75,7 @@ export const TabLocation = () => {
     return (
       <CardContent>
         <Grid container spacing={2}>
-          {detail?.latitude != undefined ? (
+          {detail?.latitude != undefined || detail != undefined ? (
             <>
               <Grid item xs={12} md={8}>
                 <MapView pet={pet!} />
@@ -132,7 +135,7 @@ export const TabLocation = () => {
                     </Typography>
                   </Grid>
                   <Grid item xs={12} sm={12} textAlign="center">
-                    <WhatsappShareButton url={url_map} >
+                    <WhatsappShareButton url={url_map}>
                       <WhatsappIcon size={32} round={true} />
                     </WhatsappShareButton>
                     <EmailShareButton

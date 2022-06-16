@@ -43,31 +43,35 @@ export const TabTemperature = () => {
     };
   }, [id]);
 
-  const detail = pet?.masterData
-    .map((masterData) =>
-      masterData.detailData
-        .map((detailData, i, { length }) => {
-          if (i + 1 === length) {
-            return {
-              detail: {
-                temperature: detailData.temperature,
-                battery: detailData.battery,
-              },
-            };
-          }
-        })
-        .splice(-1, 1),
-    )[0]
-    .shift()?.detail;
+  
+  const detail =
+    pet?.masterData?.length! > 0
+      ? pet?.masterData
+          ?.map((masterData: any) =>
+            masterData.detailData
+              .map((detailData: any, i: any, { length }: any) => {
+                if (i + 1 === length) {
+                  return {
+                    detail: {
+                      temperature: detailData.temperature,
+                      battery: detailData.battery,
+                    },
+                  };
+                }
+              })
+              .splice(-1, 1),
+          )[0]
+          .shift()?.detail
+      : undefined;
   const url_temp = `La temperatura de ${pet?.name} es ${detail?.temperature} `;
 
   const conversion = (detail?.temperature! * 1) / 50;
-
+  
   if (isLoaded) {
     return (
       <CardContent>
         <Grid container spacing={2}>
-          {detail?.temperature != undefined ? (
+          {detail?.temperature != undefined || detail != undefined ? (
             <>
               <Grid item xs={12} sm={8}>
                 <Grid

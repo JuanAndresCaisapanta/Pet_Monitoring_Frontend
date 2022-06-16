@@ -1,46 +1,47 @@
-import { useState, ChangeEvent, useContext, useEffect } from "react";
+import { ChangeEvent, useContext, useState, useEffect } from "react";
 
 import Image from "next/image";
-import { useRouter } from "next/router";
 
-import {
-  Checkbox,
-  FormControl,
-  FormControlLabel,
-  FormGroup,
-  InputLabel,
-  MenuItem,
-  Select,
-  SelectChangeEvent,
-  Grid,
-  TextField,
-  Typography,
-  CardContent,
-  Button,
-  Divider,
-  CardActions,
-  Card,
-  CardHeader,
-} from "@mui/material";
+import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import {
   DesktopDatePicker,
   LoadingButton,
   LocalizationProvider,
 } from "@mui/lab";
-import { Save } from "@mui/icons-material";
-import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
-import imageCompression from "browser-image-compression";
-import { useForm } from "react-hook-form";
+import {
+  Button,
+  Card,
+  CardActions,
+  CardContent,
+  CardHeader,
+  Checkbox,
+  Divider,
+  FormControl,
+  FormControlLabel,
+  FormGroup,
+  Grid,
+  InputLabel,
+  MenuItem,
+  Select,
+  SelectChangeEvent,
+  TextField,
+  Typography,
+} from "@mui/material";
 
+import { useForm } from "react-hook-form";
+import imageCompression from "browser-image-compression";
+import { useRouter } from "next/router";
+import { CheckBox, Update } from "@mui/icons-material";
+import { AutocompleteFormState, SelectFormName } from "../elements";
 import {
   AuthContext,
   BreedContext,
-  SpeciesContext,
   PetContext,
+  SpeciesContext,
 } from "../../../context";
-import { SelectFormName, AutocompleteFormState } from "../elements";
-import { IBreed, ISpecies } from "../../../interfaces";
 import { colorPet, sexPet } from "../../../data";
+import { IBreed, ISpecies } from "../../../interfaces";
+import { SelectFormId } from "../elements/SelectFormId";
 
 type FormData = {
   name: string;
@@ -54,49 +55,82 @@ type FormData = {
   breed: number;
 };
 
-export const TabAddPet = () => {
+export const TabProfilePet = () => {
   const [imgSrc, setImgSrc] = useState<string>("/images/pet/pet-profile.jpg");
   const [date, setDate] = useState<Date | null>(new Date());
   const [selectSpecies, setSelectSpecies] = useState("");
   const [selectSex, setSelectSex] = useState("");
   const [selectColorPetMain, setSelectColorPetMain] = useState("");
   const [selectColorPetSecondary, setSelectColorPetSecondary] = useState("");
-  const [val, setVal] = useState("");
-  const [subtype, setSubtype] = useState<string[]>([]);
+  const [selectBreed, setSelectBreed] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-
+  const [petName, setPetName] = useState("");
   const { getSpecies, species, clearSpecies } = useContext(SpeciesContext);
   const { getBreeds, breeds, clearBreeds } = useContext(BreedContext);
-  const { addPet } = useContext(PetContext);
+  const { updatePet, pet, getPet, petChange } = useContext(PetContext);
   const { user } = useContext(AuthContext);
 
   const router = useRouter();
+  const { id } = router.query;
 
   const {
     register,
     handleSubmit,
     control,
+    setValue,
     formState: { errors },
   } = useForm<FormData>();
+
+  useEffect(() => {
+    getPet(id);
+    return() => {
+        clearBreeds();
+        clearSpecies();
+        petChange();
+    }
+  }, [id]);
 
   useEffect(() => {
     getSpecies();
     return () => {
       clearSpecies();
+     
     };
   }, []);
+
+  useEffect(() => {
+    if (pet?.name) {
+      setPetName(pet?.name);
+    }
+  }, [pet]);
+
+  useEffect(() => {
+    if (pet?.image) {
+      setValue("name", pet?.name!);
+      setValue("birth_date", pet?.birth_date!);
+      setSelectSex(pet?.sex);
+      setValue("sex", pet?.sex);
+      setSelectColorPetMain(pet?.color_main);
+      setValue("color_main", pet?.color_main);
+      setSelectColorPetSecondary(pet?.color_secondary);
+      setValue("color_secondary", pet?.color_secondary);
+      setValue("weight", pet?.weight!);
+      setImgSrc(`data:image/jpeg;base64,${pet?.image}`);
+      setValue("breed", pet?.breed.id!);
+      setSelectSpecies(pet?.breed.species.id.toString());
+      getBreeds(pet?.breed.species.id);
+      setSelectBreed(pet?.breed.id.toString());
+    }
+    return () => {
+        clearBreeds();
+
+    }
+  }, [pet]);
 
   const handleSelectSpecies = (event: SelectChangeEvent) => {
     setSelectSpecies(event.target.value as string);
     getBreeds(Number(event.target.value));
-
-    if (event.target === null) {
-      setVal("");
-      setSubtype([]);
-    } else {
-      setVal(event.target.value as string);
-      setSubtype([]);
-    }
+    setSelectBreed("");
   };
 
   const handleSelectSex = (event: SelectChangeEvent) => {
@@ -111,11 +145,15 @@ export const TabAddPet = () => {
     setSelectColorPetSecondary(event.target.value as string);
   };
 
+  const handleSelectBreed = (event: SelectChangeEvent) => {
+    setSelectBreed(event.target.value as string);
+  };
+
   const handleChangeDate = (newValue: Date | null) => {
     setDate(newValue);
   };
 
-  const onChange = (file: ChangeEvent) => {
+  const onChangeImage = (file: ChangeEvent) => {
     const reader = new FileReader();
     const { files } = file.target as HTMLInputElement;
     if (files && files.length !== 0) {
@@ -124,7 +162,11 @@ export const TabAddPet = () => {
     }
   };
 
-  const onAddPetForm = async ({
+  const onCancel = () => {
+    router.reload();
+  };
+
+  const onUpdatePet = async ({
     name,
     color_main,
     color_secondary,
@@ -142,24 +184,25 @@ export const TabAddPet = () => {
       useWebWorker: true,
     };
     if (image[0] != null) {
-      const compressedImage = await imageCompression(image[0], options);
-      const { isComplete } = await addPet(
+      const compressed_image = await imageCompression(image[0], options);
+      const { isComplete } = await updatePet(
+        Number(id),
         name,
         color_main,
         color_secondary,
         weight,
         sex,
         sterilization,
-        compressedImage,
+        compressed_image,
         birth_date,
         breed,
-        user!.id,
       );
       if (isComplete) {
         setIsLoading(false);
       }
     } else {
-      const { isComplete } = await addPet(
+      const { isComplete } = await updatePet(
+        Number(id),
         name,
         color_main,
         color_secondary,
@@ -169,7 +212,6 @@ export const TabAddPet = () => {
         image[0],
         birth_date,
         breed,
-        user!.id,
       );
       if (isComplete) {
         setIsLoading(false);
@@ -177,15 +219,11 @@ export const TabAddPet = () => {
     }
   };
 
-  const onCancel = () => {
-    router.reload();
-  };
-
-  if (species) {
+  if (pet && breeds ) {
     return (
       <Card>
         <CardHeader
-          title={`Información de su Mascota`}
+          title={`Información de ${petName}`}
           titleTypographyProps={{ variant: "body1", color: "#3A3541DE" }}
         />
         <Divider sx={{ margin: 0 }} />
@@ -193,7 +231,7 @@ export const TabAddPet = () => {
           noValidate
           autoComplete="off"
           encType="multipart/form-data"
-          onSubmit={handleSubmit(onAddPetForm)}
+          onSubmit={handleSubmit(onUpdatePet)}
         >
           <CardContent>
             <Grid container spacing={2}>
@@ -226,7 +264,7 @@ export const TabAddPet = () => {
                     <input
                       hidden
                       type="file"
-                      {...register("image", { onChange: onChange })}
+                      {...register("image", { onChange: onChangeImage })}
                       accept="image/*"
                       id="account-settings-upload-image"
                     />
@@ -265,8 +303,8 @@ export const TabAddPet = () => {
                             {...register("birth_date", {
                               required: "Este campo es requerido",
                             })}
-                            error={!!errors.name}
-                            helperText={errors.name?.message}
+                            error={!!errors.birth_date}
+                            helperText={errors.birth_date?.message}
                           />
                         )}
                       />
@@ -373,15 +411,17 @@ export const TabAddPet = () => {
                     </FormControl>
                   </Grid>
                   <Grid item xs={12} sm={6}>
-                    {val && breeds ? (
-                      <AutocompleteFormState
+                    {breeds ? (
+                      <SelectFormId
                         label="Raza"
                         name="breed"
+                        object={breeds}
+                        value={selectBreed}
+                        onChange={handleSelectBreed}
+                        register={register}
                         disabled={isLoading}
-                        control={control}
-                        object={breeds as unknown as IBreed[]}
-                        subtype={subtype}
-                        setSubtype={setSubtype}
+                        error={!!errors.breed}
+                        helperText={errors.breed?.message}
                       />
                     ) : (
                       <></>
@@ -401,11 +441,11 @@ export const TabAddPet = () => {
                   sx={{ marginRight: 2 }}
                   disableElevation
                   type="submit"
-                  startIcon={<Save />}
+                  startIcon={<Update />}
                   loading={isLoading}
                   loadingPosition="start"
                 >
-                  Guardar
+                  Actualizar
                 </LoadingButton>
                 <Button
                   disableElevation

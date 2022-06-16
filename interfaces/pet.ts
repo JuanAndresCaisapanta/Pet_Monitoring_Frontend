@@ -1,8 +1,8 @@
 export interface IPet {
   id: number;
   name: string;
-  colorMain: string;
-  colorSecondary: string;
+  color_main: string;
+  color_secondary: string;
   weight: number;
   sex: string;
   sterilization: boolean;
@@ -13,7 +13,7 @@ export interface IPet {
     name: string;
     species: {
       id: number;
-      name: number;
+      name: string;
     };
   };
   medicine: [
@@ -61,10 +61,10 @@ export interface IPet {
       };
     },
   ];
-  masterData: [
+  masterData?: [
     {
       id: number;
-      detailData: [
+      detailData?: [
         {
           id: number;
           latitude: number;
