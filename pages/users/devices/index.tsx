@@ -10,7 +10,7 @@ import {
   AddCircleOutlineOutlined,
 } from "@mui/icons-material";
 
-import { MainLayout, TabListDevices, TabInfoDevice } from "../../../components";
+import { MainLayout, TabListDevices, TabAddDevice } from "../../../components";
 
 const Tab = styled(MuiTab)<TabProps>(({ theme }) => ({
   [theme.breakpoints.down("md")]: {
@@ -63,7 +63,7 @@ const DevicePage = () => {
           <TabListDevices />
         </TabPanel>
         <TabPanel sx={{ p: 0 }} value="add-devices">
-          <TabInfoDevice />
+          <TabAddDevice />
         </TabPanel>
       </TabContext>
     </Card>

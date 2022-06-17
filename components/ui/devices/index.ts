@@ -1,4 +1,4 @@
 export * from './TabListDevices';
-export * from "./TabInfoDevice"
+export * from "./TabAddDevice"
 export * from "./TableDevices"
 export * from "./CardDevice"

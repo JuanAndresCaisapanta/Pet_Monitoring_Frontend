@@ -1,20 +1,32 @@
-import { Button, CardContent, Grid, TextField } from "@mui/material";
-import Image from "next/image";
-import { useRouter } from "next/router";
 import { useContext, useState } from "react";
+
+import { useRouter } from "next/router";
+import Image from "next/image";
+
+import {
+  Button,
+  CardContent,
+  Grid,
+  SelectChangeEvent,
+  TextField,
+} from "@mui/material";
 import { useForm } from "react-hook-form";
+
 import { AuthContext, DeviceContext } from "../../../context";
-import { AutocompleteForm } from "../elements";
+import { AutocompleteForm, SelectFormId } from "../elements";
+
 type FormData = {
   code: string;
   pet: number;
 };
-export const TabInfoDevice = () => {
-  const [showError, setShowError] = useState(false);
-  const [errorMessage, setErrorMessage] = useState("");
 
+export const TabAddDevice = () => {
   const { user } = useContext(AuthContext);
-  const { addCallback } = useContext(DeviceContext);
+  const { addDevice } = useContext(DeviceContext);
+
+  const [isLoading, setIsLoading] = useState(false);
+  const [selectPet, setSelectPet] = useState("");
+
   const {
     register,
     handleSubmit,
@@ -22,16 +34,18 @@ export const TabInfoDevice = () => {
     control,
     formState: { errors },
   } = useForm<FormData>();
+
   const route = useRouter();
 
-  const onDeviceForm = async ({ code, pet }: FormData) => {
-    setShowError(false);
-    const { hasError, message } = await addCallback(code, pet);
-    if (hasError) {
-      setShowError(true);
-      setErrorMessage(message!);
-      setTimeout(() => setShowError(false), 3000);
-      return;
+  const onSelectPet = (event: SelectChangeEvent) => {
+    setSelectPet(event.target.value as string);
+  };
+
+  const onAddDevice = async ({ code, pet }: FormData) => {
+    setIsLoading(true);
+    const { isComplete } = await addDevice(code, pet);
+    if (isComplete) {
+      setIsLoading(false);
     }
   };
 
@@ -43,7 +57,7 @@ export const TabInfoDevice = () => {
       <form
         noValidate
         autoComplete="off"
-        onSubmit={handleSubmit(onDeviceForm)}
+        onSubmit={handleSubmit(onAddDevice)}
         encType={`multipart/form-data`}
       >
         <Grid container spacing={2}>
@@ -59,34 +73,22 @@ export const TabInfoDevice = () => {
                   })}
                   error={!!errors.code}
                   helperText={errors.code?.message}
+                  disabled={isLoading}
                 />
               </Grid>
               <Grid item xs={12} sm={12}>
-                <AutocompleteForm
-                  object={user?.pet}
-                  label="Mascotas"
+                <SelectFormId
+                  label="Mascota"
                   name="pet"
-                  control={control}
+                  object={user?.pet}
+                  value={selectPet}
+                  onChange={onSelectPet}
+                  register={register}
+                  error={!!errors.pet}
+                  helperText={errors.pet?.message}
+                  disabled={isLoading}
                 />
               </Grid>
-            </Grid>
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <Grid
-              container
-              item
-              xs={12}
-              sm={12}
-              direction="column"
-              alignItems="center"
-            >
-              <Image
-                style={{ borderRadius: "10px" }}
-                src="/images/device/device-logo.png"
-                width={125}
-                height={125}
-                alt="Imagen Perfil"
-              />
             </Grid>
           </Grid>
           <Grid item xs={12}>
@@ -95,6 +97,7 @@ export const TabInfoDevice = () => {
               variant="contained"
               sx={{ marginRight: 3.5 }}
               type="submit"
+              disabled={isLoading}
             >
               Guardar
             </Button>

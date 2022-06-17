@@ -1,7 +1,10 @@
 import { createContext } from "react";
 
 interface ContextProps {
-    addCallback: (code: string, pet: number) => Promise<{ hasError: boolean; message?: string }>;
+  addDevice: (
+    code: string,
+    pet: number,
+  ) => Promise<{  isComplete: boolean  }>;
 }
 
 export const DeviceContext = createContext({} as ContextProps);
