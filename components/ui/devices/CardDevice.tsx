@@ -1,23 +1,29 @@
-import { FC } from "react";
+import { FC, useContext, useState } from "react";
 
-import {
-  Card,
-  Avatar,
-  Button,
-  Typography,
-  CardContent,
-  Grid,
-} from "@mui/material";
+import { Card, Avatar, Typography, CardContent, Grid } from "@mui/material";
 
 import OnDeviceTrainingOutlinedIcon from "@mui/icons-material/OnDeviceTrainingOutlined";
+import { LoadingButton } from "@mui/lab";
+import { Delete } from "@mui/icons-material";
+import { DeviceContext } from "../../../context";
+import Swal from "sweetalert2";
 
 interface Props {
   code: string;
   name: any;
-  state: string;
+  id: number;
 }
 
-export const CardDevice: FC<Props> = ({ code, name, state }) => {
+export const CardDevice: FC<Props> = ({ code, name, id }) => {
+  const { deleteDevice } = useContext(DeviceContext);
+  const [isLoading, setIsLoading] = useState(false);
+  const onDeleteDevice = async (id: number) => {
+    setIsLoading(true);
+    const { isComplete } = await deleteDevice(id);
+    if (isComplete) {
+      setIsLoading(false);
+    }
+  };
   return (
     <Card>
       <CardContent>
@@ -57,9 +63,18 @@ export const CardDevice: FC<Props> = ({ code, name, state }) => {
             </Grid>
 
             <Grid item xs={12} md={12}>
-              <Button variant="outlined" color={"error"} sx={{ mt: 1 }}>
+              <LoadingButton
+                onClick={() => onDeleteDevice(id)}
+                variant="outlined"
+                color="secondary"
+                sx={{ marginRight: 2 }}
+                disableElevation
+                startIcon={<Delete />}
+                loading={isLoading}
+                loadingPosition="start"
+              >
                 Eliminar
-              </Button>
+              </LoadingButton>
             </Grid>
           </Grid>
         </Grid>

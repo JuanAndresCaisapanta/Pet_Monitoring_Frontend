@@ -5,6 +5,7 @@ interface ContextProps {
     code: string,
     pet: number,
   ) => Promise<{  isComplete: boolean  }>;
+  deleteDevice: (id: number) => Promise<{  isComplete: boolean  }>;
 }
 
 export const DeviceContext = createContext({} as ContextProps);

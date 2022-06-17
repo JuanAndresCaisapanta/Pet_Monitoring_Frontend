@@ -7,6 +7,7 @@ import { AuthContext } from "../auth";
 import { DeviceContext, deviceReducer } from "./";
 import sigfoxCallbackApi from "../../api/sigfoxCallbackApi";
 import { swalMessage } from "../../components";
+import Swal from "sweetalert2";
 
 export interface DeviceState {}
 
@@ -31,6 +32,7 @@ export const DeviceProvider: FC<Props> = ({ children }) => {
         {
           code,
           users: { id: user?.id },
+          callback: "en espera",
         },
         {
           headers: {
@@ -77,9 +79,22 @@ export const DeviceProvider: FC<Props> = ({ children }) => {
                       "}\n}",
                     contentType: "application/json",
                   })
-                  .then(() => {
-                    checkToken();
-                    swalMessage("Success", "Dispositivo agregado", "success");
+                  .then(async (callback) => {
+                    if (callback.data) {
+                      await petMonitoringApi.put(
+                        `/device/${id}`,
+                        {
+                          callback: callback.data.id,
+                        },
+                        {
+                          headers: {
+                            Authorization: `Bearer ${token}`,
+                          },
+                        },
+                      );
+                      checkToken();
+                      swalMessage("Success", "Dispositivo agregado", "success");
+                    }
                   })
                   .catch(async () => {
                     await petMonitoringApi.delete(`/device/${id}`, {
@@ -96,12 +111,85 @@ export const DeviceProvider: FC<Props> = ({ children }) => {
               }
             });
         }
-
         return { isComplete: true };
       })
       .catch((error) => {
-        console.log(error);
         swalMessage("Error", error.response.data.message, "error");
+        return { isComplete: true };
+      });
+  };
+
+  const deleteDevice = async (id: number): Promise<{ isComplete: boolean }> => {
+    const token = Cookies.get("token") || "";
+    let code: any;
+    let callback: any;
+    return Swal.fire({
+      background: "#F4F5FA",
+      title: "¿Está seguro de borrar eL dispositivo?",
+      text: "No podrá revertir esta acción",
+      icon: "warning",
+      showCancelButton: true,
+      backdrop: false,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Si, Borrar",
+    })
+      .then(async (result) => {
+        if (result.isConfirmed) {
+          await petMonitoringApi
+            .get(`/device/${id}`, {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            })
+            .then(async (device) => {
+              if (device.data) {
+                code = device.data.code;
+                callback = device.data.callback;
+                await petMonitoringApi
+                  .delete(`/device/${device.data.id}`, {
+                    headers: {
+                      Authorization: `Bearer ${token}`,
+                    },
+                  })
+                  .then(async (device) => {
+                    if (device.data) {
+                      await sigfoxCallbackApi
+                        .delete(`/device-types/${code}/callbacks/${callback}`)
+                        .then(async () => {
+                            swalMessage(
+                              "Success",
+                              "Dispositivo eliminado",
+                              "success",
+                            );
+                            checkToken();
+                          
+                        })
+                        .catch(async () => {
+                          swalMessage(
+                            "Error",
+                            "Error al eliminar el dispositivo",
+                            "error",
+                          );
+                        });
+                    }
+                  })
+                  .catch(async () => {
+                    swalMessage(
+                      "Error",
+                      "Error al eliminar el dispositivo",
+                      "error",
+                    );
+                  });
+              }
+            })
+            .catch(() => {
+              swalMessage("Error", "Error al eliminar el dispositivo", "error");
+            });
+        }
+        return { isComplete: true };
+      })
+      .catch(() => {
         return { isComplete: true };
       });
   };
@@ -111,6 +199,7 @@ export const DeviceProvider: FC<Props> = ({ children }) => {
       value={{
         ...state,
         addDevice,
+        deleteDevice,
       }}
     >
       {children}

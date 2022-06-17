@@ -5,7 +5,11 @@ import Image from "next/image";
 
 import {
   Button,
+  Card,
+  CardActions,
   CardContent,
+  CardHeader,
+  Divider,
   Grid,
   SelectChangeEvent,
   TextField,
@@ -14,6 +18,8 @@ import { useForm } from "react-hook-form";
 
 import { AuthContext, DeviceContext } from "../../../context";
 import { AutocompleteForm, SelectFormId } from "../elements";
+import { LoadingButton } from "@mui/lab";
+import { Save } from "@mui/icons-material";
 
 type FormData = {
   code: string;
@@ -53,65 +59,81 @@ export const TabAddDevice = () => {
     route.reload();
   };
   return (
-    <CardContent>
+    <Card>
+      <CardHeader
+        title={`Información de su Dispositivo`}
+        titleTypographyProps={{ variant: "body1", color: "#3A3541DE" }}
+      />
+      <Divider sx={{ margin: 0 }} />
       <form
         noValidate
         autoComplete="off"
+        encType="multipart/form-data"
         onSubmit={handleSubmit(onAddDevice)}
-        encType={`multipart/form-data`}
       >
-        <Grid container spacing={2}>
-          <Grid item xs={12} sm={6}>
-            <Grid container spacing={2}>
-              <Grid item xs={12} sm={12}>
-                <TextField
-                  fullWidth
-                  label="Codigo Dispositivo"
-                  {...register("code", {
-                    required: "Este campo es requerido",
-                    minLength: { value: 2, message: "Mínimo 2 caracteres" },
-                  })}
-                  error={!!errors.code}
-                  helperText={errors.code?.message}
-                  disabled={isLoading}
-                />
-              </Grid>
-              <Grid item xs={12} sm={12}>
-                <SelectFormId
-                  label="Mascota"
-                  name="pet"
-                  object={user?.pet}
-                  value={selectPet}
-                  onChange={onSelectPet}
-                  register={register}
-                  error={!!errors.pet}
-                  helperText={errors.pet?.message}
-                  disabled={isLoading}
-                />
+        <CardContent>
+          <Grid container spacing={2}>
+            <Grid item xs={12} sm={6}>
+              <Grid container spacing={2}>
+                <Grid item xs={12} sm={12}>
+                  <TextField
+                    fullWidth
+                    label="Codigo Dispositivo"
+                    {...register("code", {
+                      required: "Este campo es requerido",
+                      minLength: { value: 2, message: "Mínimo 2 caracteres" },
+                    })}
+                    error={!!errors.code}
+                    helperText={errors.code?.message}
+                    disabled={isLoading}
+                  />
+                </Grid>
+                <Grid item xs={12} sm={12}>
+                  <SelectFormId
+                    label="Mascota"
+                    name="pet"
+                    object={user?.pet}
+                    value={selectPet}
+                    onChange={onSelectPet}
+                    register={register}
+                    error={!!errors.pet}
+                    helperText={errors.pet?.message}
+                    disabled={isLoading}
+                  />
+                </Grid>
               </Grid>
             </Grid>
           </Grid>
-          <Grid item xs={12}>
-            <Button
-              disableElevation
-              variant="contained"
-              sx={{ marginRight: 3.5 }}
-              type="submit"
-              disabled={isLoading}
-            >
-              Guardar
-            </Button>
-            <Button
-              disableElevation
-              variant="outlined"
-              color="error"
-              onClick={onCancel}
-            >
-              Cancelar
-            </Button>
+        </CardContent>
+        <Divider sx={{ margin: 0 }} />
+        <CardActions sx={{ padding: "16px" }}>
+          <Grid container spacing={2}>
+            <Grid item xs={12} md={12}>
+              <LoadingButton
+                variant="contained"
+                color="primary"
+                sx={{ marginRight: 2 }}
+                disableElevation
+                type="submit"
+                startIcon={<Save />}
+                loading={isLoading}
+                loadingPosition="start"
+              >
+                Guardar
+              </LoadingButton>
+              <Button
+                disableElevation
+                variant="outlined"
+                color="secondary"
+                onClick={onCancel}
+                disabled={isLoading}
+              >
+                Cancelar
+              </Button>
+            </Grid>
           </Grid>
-        </Grid>
+        </CardActions>
       </form>
-    </CardContent>
+    </Card>
   );
 };
