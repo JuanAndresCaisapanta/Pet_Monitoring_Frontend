@@ -90,20 +90,27 @@ export const CardPet: FC<Props> = ({
             <Grid item xs={12} md={12} textAlign="center">
               <Button
                 variant="contained"
+                color="info"
                 disableElevation
-                startIcon={<Monitor/>}
+                startIcon={<Monitor />}
                 sx={{ marginRight: 2 }}
                 onClick={() => navigateTo(`pets/sections/${id}`)}
               >
                 Monitorear
               </Button>
+            </Grid>
+            <Grid item xs={12} md={12} textAlign="center">
               <Button
-                variant="outlined"
-                color="secondary"
+                variant="contained"
+                disableElevation
                 startIcon={<Visibility />}
+                sx={{ marginRight: 2 }}
                 onClick={() => navigateTo(`pets/pet/profile/${id}`)}
               >
-                ver
+                Ver
+              </Button>
+              <Button variant="outlined" color="secondary">
+                Eliminar
               </Button>
             </Grid>
           </Grid>

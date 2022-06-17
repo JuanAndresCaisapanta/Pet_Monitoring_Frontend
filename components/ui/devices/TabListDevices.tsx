@@ -1,3 +1,5 @@
+import { useContext, useState } from "react";
+
 import {
   CardContent,
   Grid,
@@ -5,10 +7,10 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { useContext, useState } from "react";
+import SearchIcon from "@mui/icons-material/Search";
+
 import { AuthContext } from "../../../context";
 import { CardDevice } from "./CardDevice";
-import SearchIcon from "@mui/icons-material/Search";
 
 export const TabListDevices = () => {
   const [searchWord, setSearchWord] = useState("");
@@ -22,28 +24,21 @@ export const TabListDevices = () => {
   if (user?.device) {
     return (
       <CardContent>
-        <Grid container spacing={2}>
-          <Grid
-            container
-            sx={{ mt: 2 }}
-            direction="column"
-            alignItems={"center"}
-          >
-            <Grid item>
-              <TextField
-                size="small"
-                sx={{ "& .MuiOutlinedInput-root": { borderRadius: 4 } }}
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <SearchIcon fontSize="small" />
-                    </InputAdornment>
-                  ),
-                }}
-                onChange={(e) => setSearchWord(e.target.value)}
-                placeholder={"Buscar"}
-              />
-            </Grid>
+        <Grid container spacing={2} justifyContent={"center"}>
+          <Grid item xs={12} md={12} textAlign="center">
+            <TextField
+              size="small"
+              sx={{ "& .MuiOutlinedInput-root": { borderRadius: 4 } }}
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <SearchIcon fontSize="small" />
+                  </InputAdornment>
+                ),
+              }}
+              onChange={(e) => setSearchWord(e.target.value)}
+              placeholder={"Buscar"}
+            />
           </Grid>
           {filteredOptions!.length > 0 ? (
             filteredOptions!
@@ -68,12 +63,8 @@ export const TabListDevices = () => {
                 </Grid>
               ))
           ) : (
-            <Grid container direction="column" alignItems={"center"}>
-              <Grid item>
-                <Typography color={"primary"} sx={{ mt: 1 }}>
-                  Sin Resultados.
-                </Typography>
-              </Grid>
+            <Grid item>
+              <Typography color={"primary"}>Sin Resultados.</Typography>
             </Grid>
           )}
         </Grid>

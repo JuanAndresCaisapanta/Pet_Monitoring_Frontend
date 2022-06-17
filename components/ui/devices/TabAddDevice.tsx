@@ -13,6 +13,7 @@ import {
   Grid,
   SelectChangeEvent,
   TextField,
+  Typography,
 } from "@mui/material";
 import { useForm } from "react-hook-form";
 
@@ -37,14 +38,13 @@ export const TabAddDevice = () => {
     register,
     handleSubmit,
     setValue,
-    control,
     formState: { errors },
   } = useForm<FormData>();
 
   const route = useRouter();
 
   const onSelectPet = (event: SelectChangeEvent) => {
-    setSelectPet(event.target.value as string);
+    setSelectPet(event.target.value);
   };
 
   const onAddDevice = async ({ code, pet }: FormData) => {
@@ -56,8 +56,11 @@ export const TabAddDevice = () => {
   };
 
   const onCancel = () => {
-    route.reload();
+    setValue("code", "");
+    setSelectPet("");
+    setValue("pet", 0);
   };
+  if(user?.pet){
   return (
     <Card>
       <CardHeader
@@ -78,7 +81,8 @@ export const TabAddDevice = () => {
                 <Grid item xs={12} sm={12}>
                   <TextField
                     fullWidth
-                    label="Codigo Dispositivo"
+                    label="Código Dispositivo"
+                    defaultValue=""
                     {...register("code", {
                       required: "Este campo es requerido",
                       minLength: { value: 2, message: "Mínimo 2 caracteres" },
@@ -135,5 +139,16 @@ export const TabAddDevice = () => {
         </CardActions>
       </form>
     </Card>
+  )
+} else {
+  return (
+    <Grid container direction="column" alignItems={"center"}>
+      <Grid item>
+        <Typography color={"primary"} sx={{ mt: 1 }}>
+          Sin Mascotas Agregadas
+        </Typography>
+      </Grid>
+    </Grid>
   );
+}
 };

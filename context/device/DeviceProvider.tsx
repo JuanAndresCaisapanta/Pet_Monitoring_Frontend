@@ -125,14 +125,14 @@ export const DeviceProvider: FC<Props> = ({ children }) => {
     let callback: any;
     return Swal.fire({
       background: "#F4F5FA",
-      title: "¿Está seguro de borrar eL dispositivo?",
+      title: "¿Está seguro de eliminar el dispositivo?",
       text: "No podrá revertir esta acción",
       icon: "warning",
       showCancelButton: true,
       backdrop: false,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Si, Borrar",
+      confirmButtonColor: "#9E69FD",
+      cancelButtonColor: "#9C9FA4",
+      confirmButtonText: "Si, Eliminar",
     })
       .then(async (result) => {
         if (result.isConfirmed) {
