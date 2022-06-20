@@ -22,6 +22,7 @@ interface ContextProps {
     birth_date: string,
     breed: number,
     users: number,
+    clear: ()=>void
   ) => Promise<{ isComplete: boolean }>;
 
   updatePet: (

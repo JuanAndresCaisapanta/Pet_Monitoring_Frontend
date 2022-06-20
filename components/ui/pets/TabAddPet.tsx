@@ -21,6 +21,7 @@ import {
   CardActions,
   Card,
   CardHeader,
+  FormHelperText,
 } from "@mui/material";
 import {
   DesktopDatePicker,
@@ -38,8 +39,8 @@ import {
   SpeciesContext,
   PetContext,
 } from "../../../context";
-import { SelectFormName, AutocompleteFormState } from "../elements";
-import { IBreed, ISpecies } from "../../../interfaces";
+import { SelectFormName, SelectFormId } from "../elements";
+import { ISpecies } from "../../../interfaces";
 import { colorPet, sexPet } from "../../../data";
 
 type FormData = {
@@ -52,19 +53,20 @@ type FormData = {
   image: any;
   birth_date: string;
   breed: number;
+  species: number;
 };
 
 export const TabAddPet = () => {
   const [imgSrc, setImgSrc] = useState<string>("/images/pet/pet-profile.jpg");
-  const [date, setDate] = useState<Date | null>(new Date());
-  const [selectSpecies, setSelectSpecies] = useState("");
-  const [selectSex, setSelectSex] = useState("");
-  const [selectColorPetMain, setSelectColorPetMain] = useState("");
-  const [selectColorPetSecondary, setSelectColorPetSecondary] = useState("");
-  const [val, setVal] = useState("");
-  const [subtype, setSubtype] = useState<string[]>([]);
+  const [birthDate, setBirthDate] = useState<Date | null>(new Date());
+  const [selectSpecies, setSelectSpecies] = useState<string | null>("");
+  const [selectSex, setSelectSex] = useState<string>("");
+  const [selectColorPetMain, setSelectColorPetMain] = useState<string>("");
+  const [selectColorPetSecondary, setSelectColorPetSecondary] =
+    useState<string>("");
+  const [selectBreed, setSelectBreed] = useState<string>("");
   const [isLoading, setIsLoading] = useState(false);
-
+  const [checkSterilization, setCheckSterilization] = useState(false);
   const { getSpecies, species, clearSpecies } = useContext(SpeciesContext);
   const { getBreeds, breeds, clearBreeds } = useContext(BreedContext);
   const { addPet } = useContext(PetContext);
@@ -75,7 +77,7 @@ export const TabAddPet = () => {
   const {
     register,
     handleSubmit,
-    control,
+    setValue,
     formState: { errors },
   } = useForm<FormData>();
 
@@ -87,16 +89,13 @@ export const TabAddPet = () => {
   }, []);
 
   const handleSelectSpecies = (event: SelectChangeEvent) => {
-    setSelectSpecies(event.target.value as string);
+    setSelectSpecies(event.target.value);
     getBreeds(Number(event.target.value));
+    setSelectBreed("");
+  };
 
-    if (event.target === null) {
-      setVal("");
-      setSubtype([]);
-    } else {
-      setVal(event.target.value as string);
-      setSubtype([]);
-    }
+  const handleSelectBreed = (event: SelectChangeEvent) => {
+    setSelectBreed(event.target.value as string);
   };
 
   const handleSelectSex = (event: SelectChangeEvent) => {
@@ -112,7 +111,7 @@ export const TabAddPet = () => {
   };
 
   const handleChangeDate = (newValue: Date | null) => {
-    setDate(newValue);
+    setBirthDate(newValue);
   };
 
   const onChange = (file: ChangeEvent) => {
@@ -124,7 +123,29 @@ export const TabAddPet = () => {
     }
   };
 
-  const onAddPetForm = async ({
+  const handleClearForm = () => {
+    setSelectSex("");
+    setValue("sex", null);
+    setSelectColorPetMain("");
+    setValue("color_main", null);
+    setSelectColorPetSecondary("");
+    setValue("color_secondary", null);
+    setCheckSterilization(false);
+    setValue("sterilization", false);
+    setValue("name", "");
+    setValue("weight", 1);
+    setBirthDate(new Date());
+    setValue("birth_date", birthDate!.toString());
+    setSelectSpecies("");
+    setValue("species", null);
+    clearBreeds();
+    setSelectBreed("");
+    setValue("breed", null);
+    setImgSrc("/images/pet/pet-profile.jpg");
+    setValue("image", 0);
+  };
+
+  const onAddPet = async ({
     name,
     color_main,
     color_secondary,
@@ -154,6 +175,7 @@ export const TabAddPet = () => {
         birth_date,
         breed,
         user!.id,
+        handleClearForm,
       );
       if (isComplete) {
         setIsLoading(false);
@@ -170,15 +192,12 @@ export const TabAddPet = () => {
         birth_date,
         breed,
         user!.id,
+        handleClearForm,
       );
       if (isComplete) {
         setIsLoading(false);
       }
     }
-  };
-
-  const onCancel = () => {
-    router.reload();
   };
 
   if (species) {
@@ -193,7 +212,7 @@ export const TabAddPet = () => {
           noValidate
           autoComplete="off"
           encType="multipart/form-data"
-          onSubmit={handleSubmit(onAddPetForm)}
+          onSubmit={handleSubmit(onAddPet)}
         >
           <CardContent>
             <Grid container spacing={2}>
@@ -255,7 +274,7 @@ export const TabAddPet = () => {
                         label="Fecha Nacimiento"
                         inputFormat="MM/dd/yyyy"
                         disabled={isLoading}
-                        value={date}
+                        value={birthDate}
                         onChange={handleChangeDate}
                         maxDate={new Date()}
                         renderInput={(params) => (
@@ -265,8 +284,8 @@ export const TabAddPet = () => {
                             {...register("birth_date", {
                               required: "Este campo es requerido",
                             })}
-                            error={!!errors.name}
-                            helperText={errors.name?.message}
+                            error={!!errors.birth_date}
+                            helperText={errors.birth_date?.message}
                           />
                         )}
                       />
@@ -315,11 +334,11 @@ export const TabAddPet = () => {
                     <TextField
                       fullWidth
                       type="number"
-                      label="Peso"
-                      placeholder="Peso"
+                      label="Peso Kg"
+                      placeholder="Peso Kg"
                       disabled={isLoading}
                       InputProps={{
-                        inputProps: { min: 0 },
+                        inputProps: { min: 1 },
                       }}
                       onKeyPress={(event) => {
                         if (
@@ -333,24 +352,46 @@ export const TabAddPet = () => {
                       }}
                       {...register("weight", {
                         required: "Este campo es requerido",
-                        minLength: { value: 2, message: "Mínimo 2 caracteres" },
+                        minLength: { value: 1, message: "Mínimo 1 caracter" },
                       })}
-                      error={!!errors.name}
-                      helperText={errors.name?.message}
+                      error={!!errors.weight}
+                      helperText={errors.weight?.message}
+                      defaultValue={1}
                     />
                   </Grid>
-                  <Grid item xs={12} sm={6}>
-                    <FormGroup sx={{ alignItems: "center" }}>
-                      <FormControlLabel
-                        disabled={isLoading}
-                        control={<Checkbox defaultChecked />}
-                        label="Esteril"
-                      />
-                    </FormGroup>
+                  <Grid item xs={12} sm={6} textAlign="center">
+                    <FormControl
+                      error={!!errors.sterilization}
+                      component="fieldset"
+                      variant="outlined"
+                    >
+                      <FormGroup>
+                        <FormControlLabel
+                          disabled={isLoading}
+                          control={
+                            <Checkbox
+                              {...register("sterilization", {})}
+                              value={checkSterilization}
+                              onChange={(e) => {
+                                setCheckSterilization(e.target.checked);
+                              }}
+                              checked={checkSterilization}
+                            />
+                          }
+                          label="Esterilizado/a"
+                        />
+                      </FormGroup>
+                      <FormHelperText error>
+                        {errors.sterilization?.message}
+                      </FormHelperText>
+                    </FormControl>
                   </Grid>
                   <Grid item xs={12} sm={6}>
                     <FormControl fullWidth>
-                      <InputLabel id="demo-simple-select-label">
+                      <InputLabel
+                        id="demo-simple-select-label"
+                        error={!!errors.species}
+                      >
                         Especie
                       </InputLabel>
                       <Select
@@ -359,8 +400,12 @@ export const TabAddPet = () => {
                         disabled={isLoading}
                         value={selectSpecies}
                         label="Especie"
-                        onChange={handleSelectSpecies}
-                        required
+                        {...register("species", {
+                          onChange: handleSelectSpecies,
+                          required: "Este campo es requerido",
+                        })}
+                        defaultValue={selectSpecies}
+                        error={!!errors.species}
                       >
                         {(species as unknown as ISpecies[])?.map(
                           ({ id, name }: any, i: any) => (
@@ -370,18 +415,23 @@ export const TabAddPet = () => {
                           ),
                         )}
                       </Select>
+                      <FormHelperText error={!!errors.species}>
+                        {errors.species?.message}
+                      </FormHelperText>
                     </FormControl>
                   </Grid>
                   <Grid item xs={12} sm={6}>
-                    {val && breeds ? (
-                      <AutocompleteFormState
+                    {breeds ? (
+                      <SelectFormId
                         label="Raza"
                         name="breed"
+                        object={breeds}
+                        value={selectBreed}
+                        onChange={handleSelectBreed}
+                        register={register}
                         disabled={isLoading}
-                        control={control}
-                        object={breeds as unknown as IBreed[]}
-                        subtype={subtype}
-                        setSubtype={setSubtype}
+                        error={!!errors.breed}
+                        helperText={errors.breed?.message}
                       />
                     ) : (
                       <></>
@@ -411,7 +461,7 @@ export const TabAddPet = () => {
                   disableElevation
                   variant="outlined"
                   color="secondary"
-                  onClick={onCancel}
+                  onClick={handleClearForm}
                   disabled={isLoading}
                 >
                   Cancelar

@@ -20,6 +20,7 @@ import {
   FormControlLabel,
   FormGroup,
   Grid,
+  IconButton,
   InputLabel,
   MenuItem,
   Select,
@@ -31,7 +32,7 @@ import {
 import { useForm } from "react-hook-form";
 import imageCompression from "browser-image-compression";
 import { useRouter } from "next/router";
-import { CheckBox, Update } from "@mui/icons-material";
+import { CheckBox, Close, NavigateBefore, Update } from "@mui/icons-material";
 import { AutocompleteFormState, SelectFormName } from "../elements";
 import {
   AuthContext,
@@ -83,18 +84,17 @@ export const TabProfilePet = () => {
 
   useEffect(() => {
     getPet(id);
-    return() => {
-        clearBreeds();
-        clearSpecies();
-        petChange();
-    }
+    return () => {
+      clearBreeds();
+      clearSpecies();
+      petChange();
+    };
   }, [id]);
 
   useEffect(() => {
     getSpecies();
     return () => {
       clearSpecies();
-     
     };
   }, []);
 
@@ -116,15 +116,15 @@ export const TabProfilePet = () => {
       setValue("color_secondary", pet?.color_secondary);
       setValue("weight", pet?.weight!);
       setImgSrc(`data:image/jpeg;base64,${pet?.image}`);
+      setValue("image", pet?.image);
       setValue("breed", pet?.breed.id!);
       setSelectSpecies(pet?.breed.species.id.toString());
       getBreeds(pet?.breed.species.id);
       setSelectBreed(pet?.breed.id.toString());
     }
     return () => {
-        clearBreeds();
-
-    }
+      clearBreeds();
+    };
   }, [pet]);
 
   const handleSelectSpecies = (event: SelectChangeEvent) => {
@@ -219,12 +219,21 @@ export const TabProfilePet = () => {
     }
   };
 
-  if (pet && breeds ) {
+  if (pet && breeds) {
     return (
       <Card>
         <CardHeader
           title={`Información de ${petName}`}
           titleTypographyProps={{ variant: "body1", color: "#3A3541DE" }}
+          action={
+            <IconButton
+              aria-label="close"
+              onClick={() => router.back()}
+              style={{ color: "#9E69FD" }}
+            >
+              <NavigateBefore />
+            </IconButton>
+          }
         />
         <Divider sx={{ margin: 0 }} />
         <form

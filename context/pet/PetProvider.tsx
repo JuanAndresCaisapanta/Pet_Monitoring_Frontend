@@ -7,6 +7,7 @@ import { IPet } from "../../interfaces";
 import { AuthContext } from "../auth";
 import { PetContext, petReducer } from "./";
 import { swalMessage } from "../../components";
+import Swal from "sweetalert2";
 
 export interface PetState {
   isLoaded: boolean;
@@ -66,6 +67,7 @@ export const PetProvider: FC<Props> = ({ children }) => {
     birth_date: string,
     breed: number,
     users: number,
+    clear: () => void,
   ): Promise<{ isComplete: boolean }> => {
     const token = Cookies.get("token") || "";
     return await petMonitoringApi
@@ -93,6 +95,7 @@ export const PetProvider: FC<Props> = ({ children }) => {
       .then(() => {
         checkToken();
         swalMessage("Listo", "Mascota Agregada", "success");
+        clear();
         return { isComplete: true };
       })
       .catch(() => {
@@ -148,17 +151,34 @@ export const PetProvider: FC<Props> = ({ children }) => {
 
   const deletePet = async (id: number) => {
     const token = Cookies.get("token") || "";
-    return await petMonitoringApi
-      .delete(`/pet/${id}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      })
-      .then(() => {
-        checkToken();
-        swalMessage("Listo", "Mascota Eliminada", "success");
+    return Swal.fire({
+      background: "#F4F5FA",
+      title: "¿Está seguro de eliminar la mascota?",
+      text: "No podrá revertir esta acción",
+      icon: "warning",
+      showCancelButton: true,
+      backdrop: false,
+      confirmButtonColor: "#9E69FD",
+      cancelButtonColor: "#9C9FA4",
+      confirmButtonText: "Si, Eliminar",
+    })
+      .then(async (result) => {
+        if (result.isConfirmed) {
+          await petMonitoringApi
+            .delete(`/pet/${id}`, {
+              headers: { Authorization: `Bearer ${token}` },
+            })
+            .then(() => {
+              checkToken();
+              swalMessage("Listo", "Mascota Eliminada", "success");
+            })
+            .catch(() => {
+              swalMessage("Error", "No se pudo eliminar la mascota", "error");
+            });
+        }
         return { isComplete: true };
       })
       .catch(() => {
-        swalMessage("Error", "No se pudo eliminar la mascota", "error");
         return { isComplete: true };
       });
   };

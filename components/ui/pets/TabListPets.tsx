@@ -24,7 +24,7 @@ export const TabListPets = () => {
   if (user?.pet) {
     return (
       <CardContent>
-        <Grid container spacing={2}>
+        <Grid container spacing={2} justifyContent={"center"}>
           <Grid
             container
             sx={{ mt: 2 }}
@@ -59,14 +59,13 @@ export const TabListPets = () => {
                 return 0;
               })
               .map((pet) => (
-                <Grid item xs={12} sm={6} key={pet.id}>
+                <Grid item xs={12} sm={6} key={pet.id} >
                   <CardPet
                     id={pet.id}
                     image={pet.image}
                     name={pet.name}
                     sex={pet.sex}
                     race={pet.breed.name}
-                    weight={pet.weight}
                     species={pet.breed.species.name}
                   />
                 </Grid>

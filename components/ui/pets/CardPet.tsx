@@ -1,20 +1,13 @@
-import { FC } from "react";
-
-import {
-  Card,
-  Typography,
-  CardContent,
-  CardActions,
-  Button,
-  Divider,
-} from "@mui/material";
-import Grid, { GridProps } from "@mui/material/Grid";
-import { styled, useTheme } from "@mui/material/styles";
+import { FC, useContext, useState } from "react";
 
 import { useRouter } from "next/router";
-import { Monitor, Visibility } from "@mui/icons-material";
 import Image from "next/image";
-import { breakpoints } from "@mui/system";
+
+import { Card, Typography, Button, Grid } from "@mui/material";
+import { Delete, Monitor, Visibility } from "@mui/icons-material";
+import { LoadingButton } from "@mui/lab";
+
+import { PetContext } from "../../../context";
 
 interface Props {
   id: number;
@@ -22,24 +15,26 @@ interface Props {
   species: string;
   sex: string;
   race: string;
-  weight: number;
   image: any;
 }
 
-export const CardPet: FC<Props> = ({
-  id,
-  name,
-  species,
-  sex,
-  race,
-  weight,
-  image,
-}) => {
+export const CardPet: FC<Props> = ({ id, name, species, sex, race, image }) => {
+  const [isLoading, setIsLoading] = useState(false);
+  const { deletePet } = useContext(PetContext);
+
   const router = useRouter();
+
   const navigateTo = (url: string) => {
     router.push(url);
   };
-  const theme = useTheme();
+
+  const onDeletePet = async (id: number) => {
+    setIsLoading(true);
+    const { isComplete } = await deletePet(id);
+    if (isComplete) {
+      setIsLoading(false);
+    }
+  };
 
   return (
     <Card>
@@ -93,7 +88,6 @@ export const CardPet: FC<Props> = ({
                 color="info"
                 disableElevation
                 startIcon={<Monitor />}
-                sx={{ marginRight: 2 }}
                 onClick={() => navigateTo(`pets/sections/${id}`)}
               >
                 Monitorear
@@ -109,9 +103,17 @@ export const CardPet: FC<Props> = ({
               >
                 Ver
               </Button>
-              <Button variant="outlined" color="secondary">
+              <LoadingButton
+                onClick={() => onDeletePet(id)}
+                variant="outlined"
+                color="secondary"
+                disableElevation
+                startIcon={<Delete />}
+                loading={isLoading}
+                loadingPosition="start"
+              >
                 Eliminar
-              </Button>
+              </LoadingButton>
             </Grid>
           </Grid>
         </Grid>
