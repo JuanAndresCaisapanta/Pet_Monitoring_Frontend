@@ -1,7 +1,6 @@
 import { useState, ChangeEvent, useContext, useEffect } from "react";
 
 import Image from "next/image";
-import { useRouter } from "next/router";
 
 import {
   Checkbox,
@@ -72,8 +71,6 @@ export const TabAddPet = () => {
   const { addPet } = useContext(PetContext);
   const { user } = useContext(AuthContext);
 
-  const router = useRouter();
-
   const {
     register,
     handleSubmit,
@@ -86,7 +83,7 @@ export const TabAddPet = () => {
     return () => {
       clearSpecies();
     };
-  }, []);
+  });
 
   const handleSelectSpecies = (event: SelectChangeEvent) => {
     setSelectSpecies(event.target.value);

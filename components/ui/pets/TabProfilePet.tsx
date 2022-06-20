@@ -96,7 +96,7 @@ export const TabProfilePet = () => {
     return () => {
       clearSpecies();
     };
-  }, []);
+  });
 
   useEffect(() => {
     if (pet?.name) {
@@ -163,7 +163,21 @@ export const TabProfilePet = () => {
   };
 
   const onCancel = () => {
-    router.reload();
+    setValue("name", pet?.name!);
+    setValue("birth_date", pet?.birth_date!);
+    setSelectSex(pet?.sex);
+    setValue("sex", pet?.sex);
+    setSelectColorPetMain(pet?.color_main);
+    setValue("color_main", pet?.color_main);
+    setSelectColorPetSecondary(pet?.color_secondary);
+    setValue("color_secondary", pet?.color_secondary);
+    setValue("weight", pet?.weight!);
+    setImgSrc(`data:image/jpeg;base64,${pet?.image}`);
+    setValue("image", pet?.image);
+    setValue("breed", pet?.breed.id!);
+    setSelectSpecies(pet?.breed.species.id.toString());
+    getBreeds(pet?.breed.species.id);
+    setSelectBreed(pet?.breed.id.toString());
   };
 
   const onUpdatePet = async ({
