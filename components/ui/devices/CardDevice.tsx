@@ -1,6 +1,6 @@
 import { FC, useContext, useState } from "react";
 
-import { Card, Avatar, Typography, CardContent, Grid } from "@mui/material";
+import { Card, Avatar, Typography, CardContent, Grid, CardActions } from "@mui/material";
 
 import OnDeviceTrainingOutlinedIcon from "@mui/icons-material/OnDeviceTrainingOutlined";
 import { LoadingButton } from "@mui/lab";
@@ -61,24 +61,27 @@ export const CardDevice: FC<Props> = ({ code, name, id }) => {
                 {name}
               </Typography>
             </Grid>
-
-            <Grid item xs={12} md={12}>
-              <LoadingButton
+          </Grid>
+        </Grid>
+      </CardContent>
+      <LoadingButton
                 onClick={() => onDeleteDevice(id)}
                 variant="outlined"
                 color="secondary"
-                sx={{ marginRight: 2 }}
+                sx={{
+                  py: 1,
+                  width: "100%",
+                  borderTopLeftRadius: 0,
+                  borderTopRightRadius: 0,
+                }}
                 disableElevation
                 startIcon={<Delete />}
                 loading={isLoading}
                 loadingPosition="start"
+                
               >
                 Eliminar
               </LoadingButton>
-            </Grid>
-          </Grid>
-        </Grid>
-      </CardContent>
     </Card>
   );
 };

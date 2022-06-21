@@ -98,7 +98,10 @@ export const CardPet: FC<Props> = ({ id, name, species, sex, race, image }) => {
                 variant="contained"
                 disableElevation
                 startIcon={<Visibility />}
-                sx={{ marginRight: 2 }}
+                sx={{
+                  width: "40%",
+                  marginRight: 2
+                }}
                 onClick={() => navigateTo(`pets/pet/profile/${id}`)}
               >
                 Ver
@@ -111,6 +114,9 @@ export const CardPet: FC<Props> = ({ id, name, species, sex, race, image }) => {
                 startIcon={<Delete />}
                 loading={isLoading}
                 loadingPosition="start"
+                sx={{
+                  width: "50%",
+                }}
               >
                 Eliminar
               </LoadingButton>

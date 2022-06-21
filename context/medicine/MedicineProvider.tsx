@@ -6,6 +6,8 @@ import { petMonitoringApi } from "../../api";
 import { AuthContext } from "../auth";
 import { MedicineContext, medicineReducer } from "./";
 import { IMedicine } from "../../interfaces";
+import { swalMessage } from "../../components";
+import { PetContext } from "../pet/PetContext";
 
 export interface MedicineState {
   medicine?: IMedicine;
@@ -23,6 +25,7 @@ interface Props {
 export const MedicineProvider: FC<Props> = ({ children }) => {
   const [state, dispatch] = useReducer(medicineReducer, MEDICINE_INITIAL_STATE);
   const { checkToken } = useContext(AuthContext);
+  const { getPet } = useContext(PetContext);
 
   const getMedicine = async (id: any) => {
     if (!Cookies.get("token")) {
@@ -183,30 +186,41 @@ export const MedicineProvider: FC<Props> = ({ children }) => {
   };
 
   const deleteMedicine = async (
-    id: any,
-  ): Promise<{ hasError: boolean; message?: string }> => {
-    try {
-      const token = Cookies.get("token") || "";
-      await petMonitoringApi.delete(`/medicine/${id}`, {
-        headers: { Authorization: `Bearer ${token}` },
+    pet_id: number,
+    medicine_id: number,
+  ): Promise<{ isComplete: boolean }> => {
+    const token = Cookies.get("token") || "";
+    return Swal.fire({
+      background: "#F4F5FA",
+      title: "¿Está seguro de eliminar la medicina?",
+      text: "No podrá revertir esta acción",
+      icon: "warning",
+      showCancelButton: true,
+      backdrop: false,
+      confirmButtonColor: "#9E69FD",
+      cancelButtonColor: "#9C9FA4",
+      confirmButtonText: "Si, Eliminar",
+    })
+      .then(async (result) => {
+        if (result.isConfirmed) {
+          await petMonitoringApi
+            .delete(`/medicine/${medicine_id}`, {
+              headers: { Authorization: `Bearer ${token}` },
+            })
+            .then(() => {
+              checkToken();
+              getPet(pet_id);
+              swalMessage("Listo", "Medicina Eliminada", "success");
+            })
+            .catch(() => {
+              swalMessage("Error", "No se pudo eliminar la medicina", "error");
+            });
+        }
+        return { isComplete: true };
+      })
+      .catch(() => {
+        return { isComplete: true };
       });
-      checkToken();
-
-      return {
-        hasError: false,
-      };
-    } catch (error) {
-      if (axios.isAxiosError(error)) {
-        return {
-          hasError: true,
-          message: error.message,
-        };
-      }
-      return {
-        hasError: true,
-        message: "No se pudo eliminar la medicina - intente de nuevo",
-      };
-    }
   };
 
   return (

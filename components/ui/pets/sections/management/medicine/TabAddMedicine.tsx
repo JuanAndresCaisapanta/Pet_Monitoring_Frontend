@@ -168,8 +168,9 @@ export const TabAddMedicine = () => {
                 style={{ borderRadius: "15px" }}
                 src={imgSrc}
                 width="250rem"
-                height="250rem"
-                alt="Imagen Mascota"
+                height="177rem"
+                alt="Imagen Medicina"
+                quality={100}
               />
 
               <Button

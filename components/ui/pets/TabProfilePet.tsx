@@ -96,7 +96,7 @@ export const TabProfilePet = () => {
     return () => {
       clearSpecies();
     };
-  });
+  }, []);
 
   useEffect(() => {
     if (pet?.name) {

@@ -1,7 +1,6 @@
 import { useContext, useState } from "react";
 
 import { useRouter } from "next/router";
-import Image from "next/image";
 
 import {
   Button,
@@ -11,16 +10,17 @@ import {
   CardHeader,
   Divider,
   Grid,
+  IconButton,
   SelectChangeEvent,
   TextField,
   Typography,
 } from "@mui/material";
+import { LoadingButton } from "@mui/lab";
+import { NavigateBefore, Save } from "@mui/icons-material";
 import { useForm } from "react-hook-form";
 
 import { AuthContext, DeviceContext } from "../../../context";
-import { AutocompleteForm, SelectFormId } from "../elements";
-import { LoadingButton } from "@mui/lab";
-import { Save } from "@mui/icons-material";
+import { SelectFormId } from "../elements";
 
 type FormData = {
   code: string;
@@ -41,7 +41,7 @@ export const TabAddDevice = () => {
     formState: { errors },
   } = useForm<FormData>();
 
-  const route = useRouter();
+  const router = useRouter();
 
   const onSelectPet = (event: SelectChangeEvent) => {
     setSelectPet(event.target.value);
@@ -60,95 +60,108 @@ export const TabAddDevice = () => {
     setSelectPet("");
     setValue("pet", 0);
   };
-  if(user?.pet){
-  return (
-    <Card>
-      <CardHeader
-        title={`Información de su Dispositivo`}
-        titleTypographyProps={{ variant: "body1", color: "#3A3541DE" }}
-      />
-      <Divider sx={{ margin: 0 }} />
-      <form
-        noValidate
-        autoComplete="off"
-        encType="multipart/form-data"
-        onSubmit={handleSubmit(onAddDevice)}
-      >
-        <CardContent>
-          <Grid container spacing={2}>
-            <Grid item xs={12} sm={6}>
-              <Grid container spacing={2}>
-                <Grid item xs={12} sm={12}>
-                  <TextField
-                    fullWidth
-                    label="Código Dispositivo"
-                    defaultValue=""
-                    {...register("code", {
-                      required: "Este campo es requerido",
-                      minLength: { value: 2, message: "Mínimo 2 caracteres" },
-                    })}
-                    error={!!errors.code}
-                    helperText={errors.code?.message}
-                    disabled={isLoading}
-                  />
+  if (user?.pet) {
+    return (
+      <Card>
+        <CardHeader
+          title={`Información de su Dispositivo`}
+          titleTypographyProps={{ variant: "body1" }}
+          action={
+            <IconButton
+              aria-label="close"
+              onClick={() => router.back()}
+              style={{ color: "#9E69FD" }}
+            >
+              <NavigateBefore />
+            </IconButton>
+          }
+        />
+        <Divider sx={{ margin: 0 }} />
+        <form
+          noValidate
+          autoComplete="off"
+          encType="multipart/form-data"
+          onSubmit={handleSubmit(onAddDevice)}
+        >
+          <CardContent>
+            <Grid container spacing={2}>
+              <Grid item xs={12} sm={6}>
+                <Grid container spacing={2}>
+                  <Grid item xs={12} sm={12}>
+                    <TextField
+                      fullWidth
+                      label="Código Dispositivo"
+                      defaultValue=""
+                      {...register("code", {
+                        required: "Este campo es requerido",
+                        minLength: { value: 2, message: "Mínimo 2 caracteres" },
+                      })}
+                      error={!!errors.code}
+                      helperText={errors.code?.message}
+                      disabled={isLoading}
+                    />
+                  </Grid>
                 </Grid>
-                <Grid item xs={12} sm={12}>
-                  <SelectFormId
-                    label="Mascota"
-                    name="pet"
-                    object={user?.pet}
-                    value={selectPet}
-                    onChange={onSelectPet}
-                    register={register}
-                    error={!!errors.pet}
-                    helperText={errors.pet?.message}
-                    disabled={isLoading}
-                  />
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <Grid container spacing={2}>
+                  <Grid item xs={12} sm={12}>
+                    <SelectFormId
+                      label="Mascota"
+                      name="pet"
+                      object={user?.pet}
+                      value={selectPet}
+                      onChange={onSelectPet}
+                      register={register}
+                      error={!!errors.pet}
+                      helperText={errors.pet?.message}
+                      disabled={isLoading}
+                    />
+                  </Grid>
                 </Grid>
               </Grid>
             </Grid>
-          </Grid>
-        </CardContent>
-        <Divider sx={{ margin: 0 }} />
-        <CardActions sx={{ padding: "16px" }}>
-          <Grid container spacing={2}>
-            <Grid item xs={12} md={12}>
-              <LoadingButton
-                variant="contained"
-                color="primary"
-                sx={{ marginRight: 2 }}
-                disableElevation
-                type="submit"
-                startIcon={<Save />}
-                loading={isLoading}
-                loadingPosition="start"
-              >
-                Guardar
-              </LoadingButton>
-              <Button
-                disableElevation
-                variant="outlined"
-                color="secondary"
-                onClick={onCancel}
-                disabled={isLoading}
-              >
-                Cancelar
-              </Button>
+          </CardContent>
+          <Divider sx={{ margin: 0 }} />
+          <CardActions sx={{ padding: "16px" }}>
+            <Grid container spacing={2}>
+              <Grid item xs={12} md={12}>
+                <LoadingButton
+                  variant="contained"
+                  color="primary"
+                  sx={{ marginRight: 2 }}
+                  disableElevation
+                  type="submit"
+                  startIcon={<Save />}
+                  loading={isLoading}
+                  loadingPosition="start"
+                >
+                  Guardar
+                </LoadingButton>
+                <Button
+                  disableElevation
+                  variant="outlined"
+                  color="secondary"
+                  onClick={onCancel}
+                  disabled={isLoading}
+                >
+                  Cancelar
+                </Button>
+              </Grid>
             </Grid>
-          </Grid>
-        </CardActions>
-      </form>
-    </Card>
-  )
-} else {
-  return (
-    <Grid container direction="column" alignItems={"center"}>
-      <Grid item>
-        <Typography color={"primary"} sx={{ mt: 1 }}>
-          Sin Mascotas Agregadas
-        </Typography>
+          </CardActions>
+        </form>
+      </Card>
+    );
+  } else {
+    return (
+      <Grid container direction="column" alignItems={"center"}>
+        <Grid item>
+          <Typography color={"primary"} sx={{ mt: 1 }}>
+            Sin Mascotas Agregadas
+          </Typography>
+        </Grid>
       </Grid>
-    </Grid>
-  );
-}
+    );
+  }
 };

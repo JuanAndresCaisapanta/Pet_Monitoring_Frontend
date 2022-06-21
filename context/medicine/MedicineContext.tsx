@@ -31,7 +31,10 @@ interface ContextProps {
     application_date: string,
     typeMedicine: number,
   ) => Promise<{ hasError: boolean; message?: string }>;
-  deleteMedicine: (id: any) => Promise<{ hasError: boolean; message?: string }>;
+  deleteMedicine: (
+    pet_id: number,
+    medicine_id: number,
+  ) => Promise<{ isComplete: boolean }>;
 }
 
 export const MedicineContext = createContext({} as ContextProps);

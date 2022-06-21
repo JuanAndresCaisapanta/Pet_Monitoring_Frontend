@@ -9,26 +9,26 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
+
 import SearchIcon from "@mui/icons-material/Search";
 
 import { MedicineContext, PetContext } from "../../../../../../context";
+
 import { CardMedicine } from "./CardMedicine";
-import Swal from "sweetalert2";
 
 export const TabMedicine = () => {
   const [searchWord, setSearchWord] = useState("");
   const { pet, getPet, isLoaded, petChange } = useContext(PetContext);
-  const { deleteMedicine } = useContext(MedicineContext);
   const router = useRouter();
 
-  const { id } = router.query;
+  const { id: pet_id } = router.query;
 
   useEffect(() => {
-    getPet(id);
+    getPet(pet_id);
     return () => {
       petChange();
     };
-  }, [id]);
+  }, [pet_id]);
 
   const filteredOptions = pet?.medicine!.filter(
     (medicine) =>
@@ -76,45 +76,14 @@ export const TabMedicine = () => {
               .map((medicine) => (
                 <Grid item xs={12} sm={6} key={medicine.id}>
                   <CardMedicine
-                    id={medicine.id}
+                    pet_id={Number(pet_id)}
+                    medicine_id={medicine.id}
                     name={medicine.name}
                     image={medicine.image}
                     manufacturer={medicine.manufacturer}
                     application_date={medicine.application_date}
-                    production_date={medicine.production_date}
-                    expiration_date={medicine.expiration_date}
                     applicator={medicine.applicator}
                     typeMedicine={medicine.typeMedicine.name}
-                    onDelete={() =>
-                      Swal.fire({
-                        background: "#F4F5FA",
-                        title: "¿Está seguro de borrar la Medicina?",
-                        text: "No podrá revertir esta acción",
-                        icon: "warning",
-                        showCancelButton: true,
-                        backdrop: false,
-                        confirmButtonColor: "#3085d6",
-                        cancelButtonColor: "#d33",
-                        confirmButtonText: "Si, Borrar",
-                      }).then((result) => {
-                        if (result.isConfirmed) {
-                          deleteMedicine(medicine.id).then(() => {
-                            Swal.fire({
-                              background: "#F4F5FA",
-                              title: "Listo",
-                              text: "Medicina Borrada",
-                              icon: "success",
-                              confirmButtonText: "Ocultar",
-                              backdrop: false,
-                              timer: 1500,
-                              timerProgressBar: true,
-                              showConfirmButton: false,
-                            });
-                            getPet(id);
-                          });
-                        }
-                      })
-                    }
                   />
                 </Grid>
               ))

@@ -89,7 +89,7 @@ export const PetProvider: FC<Props> = ({ children }) => {
           headers: {
             Authorization: `Bearer ${token}`,
             "Content-Type": "multipart/form-data",
-          },
+          }, 
         },
       )
       .then(() => {

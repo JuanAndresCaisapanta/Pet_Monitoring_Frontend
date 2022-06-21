@@ -21,13 +21,14 @@ import {
   Card,
   CardHeader,
   FormHelperText,
+  IconButton,
 } from "@mui/material";
 import {
   DesktopDatePicker,
   LoadingButton,
   LocalizationProvider,
 } from "@mui/lab";
-import { Save } from "@mui/icons-material";
+import { NavigateBefore, Save } from "@mui/icons-material";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import imageCompression from "browser-image-compression";
 import { useForm } from "react-hook-form";
@@ -41,6 +42,7 @@ import {
 import { SelectFormName, SelectFormId } from "../elements";
 import { ISpecies } from "../../../interfaces";
 import { colorPet, sexPet } from "../../../data";
+import { useRouter } from "next/router";
 
 type FormData = {
   name: string;
@@ -71,6 +73,8 @@ export const TabAddPet = () => {
   const { addPet } = useContext(PetContext);
   const { user } = useContext(AuthContext);
 
+  const router = useRouter();
+
   const {
     register,
     handleSubmit,
@@ -83,7 +87,7 @@ export const TabAddPet = () => {
     return () => {
       clearSpecies();
     };
-  });
+  }, []);
 
   const handleSelectSpecies = (event: SelectChangeEvent) => {
     setSelectSpecies(event.target.value);
@@ -203,6 +207,15 @@ export const TabAddPet = () => {
         <CardHeader
           title={`Información de su Mascota`}
           titleTypographyProps={{ variant: "body1", color: "#3A3541DE" }}
+          action={
+            <IconButton
+              aria-label="close"
+              onClick={() => router.back()}
+              style={{ color: "#9E69FD" }}
+            >
+              <NavigateBefore />
+            </IconButton>
+          }
         />
         <Divider sx={{ margin: 0 }} />
         <form

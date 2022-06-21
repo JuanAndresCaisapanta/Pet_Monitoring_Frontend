@@ -1,8 +1,12 @@
 import { useContext, useState } from "react";
 
 import {
+  Card,
   CardContent,
+  CardHeader,
+  Divider,
   Grid,
+  IconButton,
   InputAdornment,
   TextField,
   Typography,
@@ -11,9 +15,12 @@ import SearchIcon from "@mui/icons-material/Search";
 
 import { AuthContext } from "../../../context";
 import { CardDevice } from "./CardDevice";
+import { useRouter } from "next/router";
+import { NavigateBefore } from "@mui/icons-material";
 
 export const TabListDevices = () => {
   const [searchWord, setSearchWord] = useState("");
+  const router = useRouter();
   const { user } = useContext(AuthContext);
 
   const filteredOptions = user?.device.filter(
@@ -23,6 +30,21 @@ export const TabListDevices = () => {
   );
   if (user?.device) {
     return (
+      <Card>
+      <CardHeader
+        title={`Lista de sus Dispositivos`}
+        titleTypographyProps={{ variant: "body1" }}
+        action={
+          <IconButton
+            aria-label="close"
+            onClick={() => router.back()}
+            style={{ color: "#9E69FD" }}
+          >
+            <NavigateBefore />
+          </IconButton>
+        }
+      />
+      <Divider sx={{ margin: 0 }} />
       <CardContent>
         <Grid container spacing={2} justifyContent={"center"}>
           <Grid item xs={12} md={12} textAlign="center">
@@ -69,6 +91,7 @@ export const TabListDevices = () => {
           )}
         </Grid>
       </CardContent>
+      </Card>
     );
   } else {
     return (

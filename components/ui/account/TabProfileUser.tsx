@@ -12,8 +12,9 @@ import {
   CardHeader,
   Card,
   CardActions,
+  IconButton,
 } from "@mui/material";
-import { Update } from "@mui/icons-material";
+import { NavigateBefore, Update } from "@mui/icons-material";
 import { LoadingButton } from "@mui/lab";
 import imageCompression from "browser-image-compression";
 import { useForm } from "react-hook-form";
@@ -21,6 +22,7 @@ import { useForm } from "react-hook-form";
 import { AuthContext } from "../../../context";
 import { UserContext } from "../../../context/user/UserContext";
 import { validations } from "../../../utils";
+import { useRouter } from "next/router";
 
 type FormData = {
   name: string;
@@ -38,6 +40,7 @@ export const TabProfileUser = () => {
   const [isLoading, setIsLoading] = useState(false);
   const { user } = useContext(AuthContext);
   const { updateUser } = useContext(UserContext);
+  const router = useRouter();
   const {
     register,
     handleSubmit,
@@ -129,7 +132,16 @@ export const TabProfileUser = () => {
       <Card>
         <CardHeader
           title={`Información de ${userName} ${userLastName}`}
-          titleTypographyProps={{ variant: "body1", color: "#3A3541DE" }}
+          titleTypographyProps={{ variant: "body1" }}
+          action={
+            <IconButton
+              aria-label="close"
+              onClick={() => router.back()}
+              style={{ color: "#9E69FD" }}
+            >
+              <NavigateBefore />
+            </IconButton>
+          }
         />
         <Divider sx={{ margin: 0 }} />
         <form
