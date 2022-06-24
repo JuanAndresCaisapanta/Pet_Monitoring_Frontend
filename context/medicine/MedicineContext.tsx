@@ -3,8 +3,11 @@ import { IMedicine } from "../../interfaces";
 
 interface ContextProps {
   medicine?: IMedicine;
+
   loaded: boolean;
+
   getMedicine: (id: any) => void;
+
   addMedicine: (
     name: string,
     image: any,
@@ -17,7 +20,9 @@ interface ContextProps {
     application_date: string,
     typeMedicine: number,
     pet: number,
-  ) => Promise<{ hasError: boolean; message?: string }>;
+    clear_form: () => void,
+  ) => Promise<{ isComplete: boolean }>;
+
   updateMedicine: (
     id: any,
     name: string,
@@ -30,11 +35,11 @@ interface ContextProps {
     expiration_date: string,
     application_date: string,
     typeMedicine: number,
-  ) => Promise<{ hasError: boolean; message?: string }>;
-  deleteMedicine: (
-    pet_id: number,
-    medicine_id: number,
   ) => Promise<{ isComplete: boolean }>;
+
+  deleteMedicine: (pet_id: number, medicine_id: number) => Promise<{ isComplete: boolean }>;
+
+  clearMedicine: () => void;
 }
 
 export const MedicineContext = createContext({} as ContextProps);

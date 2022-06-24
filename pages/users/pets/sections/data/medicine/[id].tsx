@@ -9,7 +9,7 @@ import {
   AddCircleOutlineOutlined,
 } from "@mui/icons-material";
 
-import { TabMedicine, MainLayout, TabAddMedicine } from "../../../../../../components";
+import { TabListMedicines, MainLayout, TabAddMedicine } from "../../../../../../components";
 
 const Tab = styled(MuiTab)<TabProps>(({ theme }) => ({
   [theme.breakpoints.down("md")]: {
@@ -60,7 +60,7 @@ const MedicinePage = () => {
           />
         </TabList>
         <TabPanel sx={{ p: 0 }} value="medicines">
-          <TabMedicine />
+          <TabListMedicines />
         </TabPanel>
         <TabPanel sx={{ p: 0 }} value="add-medicines">
           <TabAddMedicine/>

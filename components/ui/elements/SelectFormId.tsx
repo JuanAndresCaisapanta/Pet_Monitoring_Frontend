@@ -45,7 +45,6 @@ export const SelectFormId: FC<Props> = ({
         {...register(name, {
           onChange: onChange,
           required: "Este campo es requerido",
-          defaultValue: object ? object.id : "",
         })}
         defaultValue={""}
         error={error}

@@ -140,6 +140,7 @@ export const PetProvider: FC<Props> = ({ children }) => {
       )
       .then(() => {
         checkToken();
+        getPet(id);
         swalMessage("Listo", "Mascota Actualizada", "success");
         return { isComplete: true };
       })

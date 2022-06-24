@@ -1,23 +1,25 @@
-import { IMedicine } from '../../interfaces';
-import { MedicineState } from './';
+import { IMedicine } from "../../interfaces";
+import { MedicineState } from "./";
 
+type MedicineActionType =
+  | { type: "[Medicine] - getMedicine"; payload: IMedicine }
+  | { type: "[Medicine] - clearMedicine" };
 
-type MedicineActionType = 
-   | { type: '[Medicine] - getMedicine'; payload: IMedicine  } 
-
-
-export const medicineReducer = ( state: MedicineState, action: MedicineActionType ): MedicineState => {
-
-   switch (action.type) {
-      case '[Medicine] - getMedicine':
-         return {
-            ...state,
-            medicine: action.payload,
-            loaded: true
-          }
-
-       default:
-          return state;
-   }
-
-}
+export const medicineReducer = (state: MedicineState, action: MedicineActionType): MedicineState => {
+  switch (action.type) {
+    case "[Medicine] - getMedicine":
+      return {
+        ...state,
+        medicine: action.payload,
+        loaded: true,
+      };
+    case "[Medicine] - clearMedicine":
+      return {
+        ...state,
+        medicine: undefined,
+        loaded: false,
+      };
+    default:
+      return state;
+  }
+};

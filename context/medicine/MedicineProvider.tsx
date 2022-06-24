@@ -36,9 +36,7 @@ export const MedicineProvider: FC<Props> = ({ children }) => {
     }
     try {
       const token = Cookies.get("token") || "";
-      const { data } = await petMonitoringApi.get(
-        `/auth/validate-token/${token}`,
-      );
+      const { data } = await petMonitoringApi.get(`/auth/validate-token/${token}`);
       if (data == true) {
         const medicine = await petMonitoringApi.get(`/medicine/${id}`, {
           headers: { Authorization: `Bearer ${token}` },
@@ -67,10 +65,11 @@ export const MedicineProvider: FC<Props> = ({ children }) => {
     application_date: string,
     typeMedicine: number,
     pet: number,
-  ): Promise<{ hasError: boolean; message?: string }> => {
-    try {
-      const token = Cookies.get("token") || "";
-      await petMonitoringApi.post(
+    clear_form: () => void,
+  ): Promise<{ isComplete: boolean }> => {
+    const token = Cookies.get("token") || "";
+    return await petMonitoringApi
+      .post(
         `/medicine`,
         {
           name,
@@ -82,8 +81,8 @@ export const MedicineProvider: FC<Props> = ({ children }) => {
           production_date,
           expiration_date,
           application_date,
-          typeMedicine,
-          pet,
+          typeMedicine: { id: typeMedicine },
+          pet: { id: pet },
         },
         {
           headers: {
@@ -91,37 +90,21 @@ export const MedicineProvider: FC<Props> = ({ children }) => {
             "Content-Type": "multipart/form-data",
           },
         },
-      );
-      checkToken();
-      Swal.fire({
-        background: "#F4F5FA",
-        title: "Listo",
-        text: "Mascota Agregada",
-        icon: "success",
-        backdrop: false,
-        timer: 1500,
-        timerProgressBar: true,
-        showConfirmButton: false,
+      )
+      .then(() => {
+        checkToken();
+        swalMessage("Listo", "Medicina Agregada", "success");
+        clear_form();
+        return { isComplete: true };
+      })
+      .catch(() => {
+        swalMessage("Error", "No se pudo agregar la medicina", "error");
+        return { isComplete: true };
       });
-      return {
-        hasError: false,
-      };
-    } catch (error) {
-      if (axios.isAxiosError(error)) {
-        return {
-          hasError: true,
-          message: error.message,
-        };
-      }
-      return {
-        hasError: true,
-        message: "No se pudo agregar la medicina - intente de nuevo",
-      };
-    }
   };
 
   const updateMedicine = async (
-    id: any,
+    id: number,
     name: string,
     image: any,
     manufacturer: string,
@@ -132,10 +115,10 @@ export const MedicineProvider: FC<Props> = ({ children }) => {
     expiration_date: string,
     application_date: string,
     typeMedicine: number,
-  ): Promise<{ hasError: boolean; message?: string }> => {
-    try {
-      const token = Cookies.get("token") || "";
-      await petMonitoringApi.put(
+  ): Promise<{ isComplete: boolean }> => {
+    const token = Cookies.get("token") || "";
+    return await petMonitoringApi
+      .put(
         `/medicine/${id}`,
         {
           name,
@@ -147,7 +130,7 @@ export const MedicineProvider: FC<Props> = ({ children }) => {
           production_date,
           expiration_date,
           application_date,
-          typeMedicine,
+          typeMedicine: { id: typeMedicine },
         },
         {
           headers: {
@@ -155,40 +138,20 @@ export const MedicineProvider: FC<Props> = ({ children }) => {
             "Content-Type": "multipart/form-data",
           },
         },
-      );
-      checkToken();
-      Swal.fire({
-        background: "#F4F5FA",
-        title: "Listo",
-        text: "Medicina Actualizada",
-        icon: "success",
-        confirmButtonText: "Ocultar",
-        backdrop: false,
-        timer: 1500,
-        timerProgressBar: true,
-        showConfirmButton: false,
+      )
+      .then(() => {
+        checkToken();
+        getMedicine(id);
+        swalMessage("Listo", "Medicina Actualizada", "success");
+        return { isComplete: true };
+      })
+      .catch(() => {
+        swalMessage("Error", "No se pudo actualizar la medicina", "error");
+        return { isComplete: true };
       });
-      return {
-        hasError: false,
-      };
-    } catch (error) {
-      if (axios.isAxiosError(error)) {
-        return {
-          hasError: true,
-          message: error.message,
-        };
-      }
-      return {
-        hasError: true,
-        message: "No se pudo actualizar la medicina - intente de nuevo",
-      };
-    }
   };
 
-  const deleteMedicine = async (
-    pet_id: number,
-    medicine_id: number,
-  ): Promise<{ isComplete: boolean }> => {
+  const deleteMedicine = async (pet_id: number, medicine_id: number): Promise<{ isComplete: boolean }> => {
     const token = Cookies.get("token") || "";
     return Swal.fire({
       background: "#F4F5FA",
@@ -223,6 +186,12 @@ export const MedicineProvider: FC<Props> = ({ children }) => {
       });
   };
 
+  const clearMedicine= () => {
+    dispatch({
+      type: "[Medicine] - clearMedicine",
+    });
+  }
+
   return (
     <MedicineContext.Provider
       value={{
@@ -231,6 +200,7 @@ export const MedicineProvider: FC<Props> = ({ children }) => {
         addMedicine,
         updateMedicine,
         deleteMedicine,
+        clearMedicine,
       }}
     >
       {children}

@@ -1,26 +1,21 @@
 import { ChangeEvent, useContext, useState, useEffect } from "react";
 
 import Image from "next/image";
+import { useRouter } from "next/router";
 
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
+import { Update } from "@mui/icons-material";
 import { DesktopDatePicker, LocalizationProvider } from "@mui/lab";
-import {
-  Button,
-  CardContent,
-  Grid,
-  SelectChangeEvent,
-  TextField,
-  Typography,
-} from "@mui/material";
+import { Button, Grid, SelectChangeEvent, TextField, Typography } from "@mui/material";
 
 import { useForm } from "react-hook-form";
-import { SelectFormName } from "../../../../elements";
-import {
-  MedicineContext,
-  TypeMedicineContext,
-} from "../../../../../../context";
+
+import moment from "moment";
+
 import imageCompression from "browser-image-compression";
-import { useRouter } from "next/router";
+
+import { CardForm } from "../../../../elements";
+import { MedicineContext, TypeMedicineContext } from "../../../../../../context";
 import { SelectFormId } from "../../../../elements/SelectFormId";
 
 type FormData = {
@@ -30,27 +25,26 @@ type FormData = {
   batch: number;
   applicator: string;
   description: string;
-  production_date: string;
-  expiration_date: string;
-  application_date: string;
+  production_date: string | undefined;
+  expiration_date: string | undefined;
+  application_date: string | undefined;
   typeMedicine: number;
 };
 
 export const TabProfileMedicine = () => {
-  const router = useRouter();
-  const { id } = router.query;
-  const [productionDate, setProductionDate] = useState<Date | null>(new Date());
-  const [applicationDate, setApplicationDate] = useState<Date | null>(
-    new Date(),
-  );
-  const [expirationDate, setExpirationDate] = useState<Date | null>(new Date());
-  const [imgSrc, setImgSrc] = useState<string>(
-    "/images/medicine/medicine-profile.png",
-  );
+  const [imgSrc, setImgSrc] = useState<string>("/images/medicine/medicine-profile.png");
+  const [selectTypeMedicine, setSelectTypeMedicine] = useState<string>("");
+  const [productionDate, setProductionDate] = useState<Date | null>(null);
+  const [applicationDate, setApplicationDate] = useState<Date | null>(null);
+  const [expirationDate, setExpirationDate] = useState<Date | null>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [medicineName, setMedicineName] = useState<string | null>("");
+
   const { typeMedicine, getTypeMedicine } = useContext(TypeMedicineContext);
-  const { updateMedicine, getMedicine, loaded, medicine } =
-    useContext(MedicineContext);
-  const [selectTypeMedicine, setSelectTypeMedicine] = useState(``);
+  const { updateMedicine, getMedicine, loaded, medicine, clearMedicine } = useContext(MedicineContext);
+
+  const router = useRouter();
+  const { id: medicine_id } = router.query;
 
   const {
     register,
@@ -64,17 +58,37 @@ export const TabProfileMedicine = () => {
   }, []);
 
   useEffect(() => {
-    getMedicine(id);
-  }, [id]);
+    if (medicine?.name) {
+      setMedicineName(medicine?.name);
+    }
+  }, [medicine]);
 
   useEffect(() => {
-    if (medicine) {
+    getMedicine(medicine_id);
+    return () => {
+      clearMedicine();
+    };
+  }, [medicine_id]);
+
+  function padTo2Digits(num: any) {
+    return num?.toString().padStart(2, "0");
+  }
+
+  function formatDate(date: any) {
+    return [padTo2Digits(date?.getMonth() + 1), padTo2Digits(date?.getDate()), date?.getFullYear()].join("/");
+  }
+
+  useEffect(() => {
+    if (medicine?.image) {
       setSelectTypeMedicine(medicine.typeMedicine.id.toString());
       setValue("typeMedicine", medicine.typeMedicine.id);
       setImgSrc(`data:image/jpeg;base64,${medicine?.image}`);
-      setProductionDate(new Date(medicine?.production_date));
-      setApplicationDate(new Date(medicine?.application_date));
-      setExpirationDate(new Date(medicine?.expiration_date));
+      setApplicationDate(moment(medicine.application_date, "DD/MM/YYYY").toDate());
+      setValue("application_date", medicine.application_date);
+      setProductionDate(moment(medicine.production_date, "DD/MM/YYYY").toDate());
+      setValue("production_date", medicine.production_date);
+      setExpirationDate(moment(medicine.expiration_date, "DD/MM/YYYY").toDate());
+      setValue("expiration_date", medicine.expiration_date);
       setValue("name", medicine?.name);
       setValue("manufacturer", medicine?.manufacturer);
       setValue("batch", medicine?.batch);
@@ -82,17 +96,6 @@ export const TabProfileMedicine = () => {
       setValue("description", medicine?.description);
     }
   }, [medicine]);
-  const handleChangeProductionDate = (newValue: Date | null) => {
-    setProductionDate(newValue);
-  };
-
-  const handleChangeApplicationDate = (newValue: Date | null) => {
-    setApplicationDate(newValue);
-  };
-
-  const handleChangeExpirationDate = (newValue: Date | null) => {
-    setExpirationDate(newValue);
-  };
 
   const onChangeImage = (file: ChangeEvent) => {
     const reader = new FileReader();
@@ -103,11 +106,25 @@ export const TabProfileMedicine = () => {
     }
   };
 
-  const onCancel = () => {
-    router.reload();
+  const handleClearForm = () => {
+    setSelectTypeMedicine(medicine?.typeMedicine.id.toString()!);
+    setValue("typeMedicine", medicine?.typeMedicine.id!);
+    setImgSrc(`data:image/jpeg;base64,${medicine?.image}`);
+    setProductionDate(new Date(medicine?.production_date!));
+    setValue("production_date", medicine?.production_date!);
+    setApplicationDate(new Date(medicine?.application_date!));
+    setValue("application_date", new Date(medicine?.application_date!).toString());
+
+    setExpirationDate(new Date(medicine?.expiration_date!));
+    setValue("expiration_date", medicine?.expiration_date!);
+    setValue("name", medicine?.name!);
+    setValue("manufacturer", medicine?.manufacturer!);
+    setValue("batch", medicine?.batch!);
+    setValue("applicator", medicine?.applicator!);
+    setValue("description", medicine?.description!);
   };
 
-  const onUpdateMedicine = async ({
+  const handleUpdateMedicine = async ({
     name,
     image,
     manufacturer,
@@ -119,97 +136,82 @@ export const TabProfileMedicine = () => {
     application_date,
     typeMedicine,
   }: FormData) => {
+    setIsLoading(true);
     const options = {
       maxSizeMB: 1,
       maxWidthOrHeight: 1920,
       useWebWorker: true,
     };
-    // setShowError(false);
     if (image[0] != null) {
-      const cImage = await imageCompression(image[0], options);
-      await updateMedicine(
-        id,
+      const compressed_image = await imageCompression(image[0], options);
+      const { isComplete } = await updateMedicine(
+        medicine_id,
         name,
-        cImage,
+        compressed_image,
         manufacturer,
         batch,
         applicator,
         description,
-        production_date,
-        expiration_date,
-        application_date,
+        moment(production_date!, "DD/MM/YYYY").format("MM/DD/YYYY"),
+        moment(expiration_date!, "DD/MM/YYYY").format("MM/DD/YYYY"),
+        moment(application_date!, "DD/MM/YYYY").format("MM/DD/YYYY"),
         typeMedicine,
-      ).then((res) => {
-        router.back();
-      });
-      // if (hasError) {
-      //   // setShowError(true);
-      //   // setErrorMessage(message!);
-      //   // setTimeout(() => setShowError(false), 3000);
-      //   return;
-      // }
+      );
+      if (isComplete) {
+        setIsLoading(false);
+      }
     } else {
-      await updateMedicine(
-        id,
+      const { isComplete } = await updateMedicine(
+        medicine_id,
         name,
         image[0],
         manufacturer,
         batch,
         applicator,
         description,
-        production_date,
-        expiration_date,
-        application_date,
+        moment(production_date!, "DD/MM/YYYY").format("MM/DD/YYYY"),
+        moment(expiration_date!, "DD/MM/YYYY").format("MM/DD/YYYY"),
+        moment(application_date!, "DD/MM/YYYY").format("MM/DD/YYYY"),
         typeMedicine,
-      ).then((res) => {
-        router.back();
-      });
-
-      // if (hasError) {
-      //   // setShowError(true);
-      //   // setErrorMessage(message!);
-      //   // setTimeout(() => setShowError(false), 3000);
-      //   return;
-      // }
+      );
+      console.log(formatDate(new Date(production_date!)));
+      if (isComplete) {
+        setIsLoading(false);
+      }
     }
   };
 
-  if (loaded) {
+  if (medicine) {
     return (
-      <CardContent>
-        <form
-          noValidate
-          autoComplete="off"
-          onSubmit={handleSubmit(onUpdateMedicine)}
-          encType={`multipart/form-data`}
-        >
-          <Grid container spacing={2}>
-            <Grid item xs={12} md={6}>
-              <Grid
-                container
-                item
-                xs={12}
-                sm={12}
-                direction="column"
-                alignItems="center"
-              >
-                <Typography color="primary">Imagen Medicina</Typography>
+      <CardForm
+        title={`Información de medicamento ${medicineName}`}
+        router={() => router.back()}
+        submit={handleSubmit(handleUpdateMedicine)}
+        clearForm={handleClearForm}
+        encType={`multipart/form-data`}
+        startIcon={<Update />}
+        isLoading={isLoading}
+        leftContent={
+          <>
+            <Grid container item xs={12} sm={12} direction="column" alignItems="center">
+              <Grid item xs={12} md={12}>
                 <Image
                   style={{ borderRadius: "15px" }}
                   src={imgSrc}
                   width="250rem"
-                  height="250rem"
+                  height="175rem"
                   alt="Imagen Mascota"
                 />
-
+              </Grid>
+              <Grid item xs={12} md={12}>
                 <Button
                   component="label"
+                  disabled={isLoading}
                   variant="text"
                   htmlFor="account-settings-upload-image"
                   disableElevation
-                  sx={{ mt: 1 }}
                 >
-                  Cambiar
+                  Cambiar Imagen
                   <input
                     hidden
                     type="file"
@@ -220,194 +222,196 @@ export const TabProfileMedicine = () => {
                 </Button>
               </Grid>
             </Grid>
-            <Grid item xs={12} sm={6}>
-              <Grid container spacing={2}>
-                <Grid item xs={12} sm={6}>
-                  <TextField
-                    fullWidth
-                    type="text"
-                    label="Nombre"
-                    placeholder="Nombre"
-                    {...register("name", {
-                      required: "Este campo es requerido",
-                      minLength: { value: 2, message: "Mínimo 2 caracteres" },
-                    })}
-                    error={!!errors.name}
-                    helperText={errors.name?.message}
-                  />
-                </Grid>
-                <Grid item xs={12} sm={6}>
-                  <TextField
-                    fullWidth
-                    type="text"
-                    label="Fabricante"
-                    placeholder="Farbricante"
-                    {...register("manufacturer", {
-                      required: "Este campo es requerido",
-                      minLength: { value: 2, message: "Mínimo 2 caracteres" },
-                    })}
-                    error={!!errors.name}
-                    helperText={errors.name?.message}
-                  />
-                </Grid>
-                <Grid item xs={12} sm={6}>
-                  <TextField
-                    fullWidth
-                    type="number"
-                    label="Lote"
-                    placeholder="Lote"
-                    {...register("batch", {
-                      required: "Este campo es requerido",
-                      minLength: { value: 2, message: "Mínimo 2 caracteres" },
-                    })}
-                    onKeyPress={(event) => {
-                      if (
-                        event?.key === "-" ||
-                        event?.key === "+" ||
-                        event?.key === "." ||
-                        event?.key === "e" ||
-                        event?.key === ","
-                      ) {
-                        event.preventDefault();
-                      }
-                    }}
-                    error={!!errors.name}
-                    helperText={errors.name?.message}
-                  />
-                </Grid>
-                <Grid item xs={12} sm={6}>
-                  <TextField
-                    fullWidth
-                    type="text"
-                    label="Aplicador"
-                    placeholder="Aplicador"
-                    {...register("applicator", {
-                      required: "Este campo es requerido",
-                      minLength: { value: 2, message: "Mínimo 2 caracteres" },
-                    })}
-                    error={!!errors.name}
-                    helperText={errors.name?.message}
-                  />
-                </Grid>
-                <Grid item xs={12} sm={6}>
-                  <SelectFormId
-                    label="Tipo"
-                    name="typeMedicine"
-                    value={selectTypeMedicine}
-                    onChange={(e: SelectChangeEvent) =>
-                      setSelectTypeMedicine(e.target.value)
-                    }
-                    object={typeMedicine}
-                    register={register}
-                    error={!!errors.typeMedicine}
-                    helperText={errors.typeMedicine?.message}
-                  />
-                </Grid>
-                <Grid item xs={12} sm={6}>
-                  <LocalizationProvider dateAdapter={AdapterDateFns}>
-                    <DesktopDatePicker
-                      label="Fecha Aplicación"
-                      inputFormat="MM/dd/yyyy"
-                      value={applicationDate}
-                      onChange={handleChangeApplicationDate}
-                      maxDate={new Date()}
-                      renderInput={(params) => (
-                        <TextField
-                          fullWidth
-                          {...params}
-                          {...register("application_date", {
-                            required: "Este campo es requerido",
-                          })}
-                          error={!!errors.application_date}
-                          helperText={errors.application_date?.message}
-                        />
-                      )}
-                    />
-                  </LocalizationProvider>
-                </Grid>
-                <Grid item xs={12} sm={6}>
-                  <LocalizationProvider dateAdapter={AdapterDateFns}>
-                    <DesktopDatePicker
-                      label="Fecha Producción"
-                      inputFormat="MM/dd/yyyy"
-                      value={productionDate}
-                      onChange={handleChangeProductionDate}
-                      maxDate={new Date()}
-                      renderInput={(params) => (
-                        <TextField
-                          fullWidth
-                          {...params}
-                          {...register("production_date", {
-                            required: "Este campo es requerido",
-                          })}
-                          error={!!errors.production_date}
-                          helperText={errors.production_date?.message}
-                        />
-                      )}
-                    />
-                  </LocalizationProvider>
-                </Grid>
-                <Grid item xs={12} sm={6}>
-                  <LocalizationProvider dateAdapter={AdapterDateFns}>
-                    <DesktopDatePicker
-                      label="Fecha Expiración"
-                      inputFormat="MM/dd/yyyy"
-                      value={expirationDate}
-                      onChange={handleChangeExpirationDate}
-                      maxDate={new Date()}
-                      renderInput={(params) => (
-                        <TextField
-                          fullWidth
-                          {...params}
-                          {...register("expiration_date", {
-                            required: "Este campo es requerido",
-                          })}
-                          error={!!errors.expiration_date}
-                          helperText={errors.expiration_date?.message}
-                        />
-                      )}
-                    />
-                  </LocalizationProvider>
-                </Grid>
-                <Grid item xs={12} sm={12}>
-                  <TextField
-                    fullWidth
-                    type="text"
-                    multiline
-                    rows={4}
-                    label="Descripción"
-                    placeholder="Descripción"
-                    {...register("description", {
-                      required: "Este campo es requerido",
-                      minLength: { value: 2, message: "Mínimo 2 caracteres" },
-                    })}
-                    error={!!errors.name}
-                    helperText={errors.name?.message}
-                  />
-                </Grid>
+            <Grid item container spacing={2}>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  fullWidth
+                  type="text"
+                  label="Nombre"
+                  placeholder="Nombre"
+                  {...register("name", {
+                    required: "Este campo es requerido",
+                    minLength: { value: 2, message: "Mínimo 2 caracteres" },
+                  })}
+                  disabled={isLoading}
+                  error={!!errors.name}
+                  helperText={errors.name?.message}
+                />
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  fullWidth
+                  type="text"
+                  label="Fabricante"
+                  placeholder="Farbricante"
+                  {...register("manufacturer", {
+                    required: "Este campo es requerido",
+                    minLength: { value: 2, message: "Mínimo 2 caracteres" },
+                  })}
+                  disabled={isLoading}
+                  error={!!errors.name}
+                  helperText={errors.name?.message}
+                />
               </Grid>
             </Grid>
-            <Grid item xs={12}>
-              <Button
-                variant="contained"
-                disableElevation
-                sx={{ marginRight: 3.5 }}
-                type="submit"
-              >
-                Actualizar
-              </Button>
-              <Button
-                type="reset"
-                variant="outlined"
-                color="error"
-                onClick={onCancel}
-              >
-                Cancelar
-              </Button>
+          </>
+        }
+        rightContent={
+          <>
+            <Grid container spacing={2}>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  fullWidth
+                  type="number"
+                  label="Lote"
+                  placeholder="Lote"
+                  {...register("batch", {
+                    required: "Este campo es requerido",
+                    minLength: { value: 2, message: "Mínimo 2 caracteres" },
+                  })}
+                  onKeyPress={(event) => {
+                    if (
+                      event?.key === "-" ||
+                      event?.key === "+" ||
+                      event?.key === "." ||
+                      event?.key === "e" ||
+                      event?.key === ","
+                    ) {
+                      event.preventDefault();
+                    }
+                  }}
+                  disabled={isLoading}
+                  error={!!errors.name}
+                  helperText={errors.name?.message}
+                />
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  fullWidth
+                  type="text"
+                  label="Aplicador"
+                  placeholder="Aplicador"
+                  {...register("applicator", {
+                    required: "Este campo es requerido",
+                    minLength: { value: 2, message: "Mínimo 2 caracteres" },
+                  })}
+                  disabled={isLoading}
+                  error={!!errors.name}
+                  helperText={errors.name?.message}
+                />
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <SelectFormId
+                  label="Tipo"
+                  name="typeMedicine"
+                  value={selectTypeMedicine}
+                  onChange={(e: SelectChangeEvent) => setSelectTypeMedicine(e.target.value)}
+                  object={typeMedicine}
+                  register={register}
+                  disabled={isLoading}
+                  error={!!errors.typeMedicine}
+                  helperText={errors.typeMedicine?.message}
+                />
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <LocalizationProvider dateAdapter={AdapterDateFns}>
+                  <DesktopDatePicker
+                    label="Fecha Aplicación"
+                    inputFormat="dd/MM/yyyy"
+                    disabled={isLoading}
+                    value={applicationDate}
+                    onChange={(newValue: Date | null) => {
+                      setApplicationDate(newValue);
+                      setValue("application_date", moment(newValue, "DD/MM/YYYY").format("DD/MM/YYYY"));
+                    }}
+                    maxDate={new Date()}
+                    renderInput={(params) => (
+                      <TextField
+                        fullWidth
+                        {...params}
+                        {...register("application_date", {
+                          required: "Este campo es requerido",
+                        })}
+                        error={!!errors.application_date}
+                        helperText={errors.application_date?.message}
+                      />
+                    )}
+                  />
+                </LocalizationProvider>
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <LocalizationProvider dateAdapter={AdapterDateFns}>
+                  <DesktopDatePicker
+                    label="Fecha Producción"
+                    inputFormat="dd/MM/yyyy"
+                    disabled={isLoading}
+                    value={productionDate}
+                    onChange={(newValue: Date | null) => {
+                      setProductionDate(newValue);
+                      setValue("production_date", moment(newValue, "DD/MM/YYYY").format("DD/MM/YYYY"));
+                    }}
+                    maxDate={new Date()}
+                    renderInput={(params) => (
+                      <TextField
+                        fullWidth
+                        {...params}
+                        {...register("production_date", {
+                          required: "Este campo es requerido",
+                        })}
+                        error={!!errors.production_date}
+                        helperText={errors.production_date?.message}
+                      />
+                    )}
+                  />
+                </LocalizationProvider>
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <LocalizationProvider dateAdapter={AdapterDateFns}>
+                  <DesktopDatePicker
+                    label="Fecha Expiración"
+                    inputFormat="dd/MM/yyyy"
+                    disabled={isLoading}
+                    value={expirationDate}
+                    onChange={(newValue: Date | null) => {
+                      setExpirationDate(newValue);
+                      setValue("expiration_date", moment(newValue, "DD/MM/YYYY").format("DD/MM/YYYY"));
+                    }}
+                    maxDate={new Date()}
+                    renderInput={(params) => (
+                      <TextField
+                        fullWidth
+                        {...params}
+                        {...register("expiration_date", {
+                          required: "Este campo es requerido",
+                        })}
+                        error={!!errors.expiration_date}
+                        helperText={errors.expiration_date?.message}
+                      />
+                    )}
+                  />
+                </LocalizationProvider>
+              </Grid>
+              <Grid item xs={12} sm={12}>
+                <TextField
+                  fullWidth
+                  type="text"
+                  multiline
+                  rows={2}
+                  disabled={isLoading}
+                  label="Descripción"
+                  placeholder="Descripción"
+                  {...register("description", {
+                    required: "Este campo es requerido",
+                    minLength: { value: 2, message: "Mínimo 2 caracteres" },
+                  })}
+                  error={!!errors.name}
+                  helperText={errors.name?.message}
+                />
+              </Grid>
             </Grid>
-          </Grid>
-        </form>
-      </CardContent>
+          </>
+        }
+      />
     );
   } else {
     return (

@@ -2,17 +2,14 @@ import { FC, useContext, useState } from "react";
 
 import { useRouter } from "next/router";
 
-import { Delete, Visibility } from "@mui/icons-material";
-import {
-  Button,
-  Card,
-  Grid,
-  GridProps,
-  styled,
-  Typography,
-} from "@mui/material";
 import Image from "next/image";
+
+import { Delete, Visibility } from "@mui/icons-material";
+
+import { Button, Card, Grid, Typography } from "@mui/material";
+
 import { LoadingButton } from "@mui/lab";
+
 import { MedicineContext } from "../../../../../../context";
 
 interface Props {
@@ -66,7 +63,7 @@ export const CardMedicine: FC<Props> = ({
         >
           <Image
             width="250rem"
-            height="177rem"
+            height="175rem"
             alt="Mascota"
             src={`data:image/jpeg;base64,${image}`}
             style={{ borderRadius: "15px" }}

@@ -1,4 +1,4 @@
-export * from './TabListMedicine'
+export * from './TabListMedicines'
 export * from './CardMedicine'
 export * from './TabAddMedicine'
 export * from './TabAddMedicine'
