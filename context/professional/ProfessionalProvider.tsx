@@ -1,6 +1,5 @@
 import { FC, ReactNode, useContext, useReducer } from "react";
 
-import axios from "axios";
 import Cookies from "js-cookie";
 import Swal from "sweetalert2";
 
@@ -29,18 +28,18 @@ export const ProfessionalProvider: FC<Props> = ({ children }) => {
   const { getPet } = useContext(PetContext);
   const { checkToken } = useContext(AuthContext);
 
-  const getProfessional = async (id: number) => {
+  const getProfessional = async (professional_id: number) => {
     if (!Cookies.get("token")) {
       return;
     }
-    if (id === undefined) {
+    if (professional_id === undefined) {
       return;
     }
     try {
       const token = Cookies.get("token") || "";
       const { data } = await petMonitoringApi.get(`/auth/validate-token/${token}`);
       if (data == true) {
-        const professional = await petMonitoringApi.get(`/professional/${id}`, {
+        const professional = await petMonitoringApi.get(`/professional/${professional_id}`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         dispatch({
@@ -61,9 +60,9 @@ export const ProfessionalProvider: FC<Props> = ({ children }) => {
     address: string,
     email: string,
     cell_phone: string,
-    profession: number,
-    pet: number,
-    clearForm: () => void
+    profession_id: number,
+    pet_id: number,
+    clearForm: () => void,
   ): Promise<{ isComplete: boolean }> => {
     const token = Cookies.get("token") || "";
     return await petMonitoringApi
@@ -75,8 +74,8 @@ export const ProfessionalProvider: FC<Props> = ({ children }) => {
           address,
           email,
           cell_phone,
-          profession: { id: profession },
-          pet: { id: pet },
+          profession: { id: profession_id },
+          pet: { id: pet_id },
         },
         {
           headers: {
@@ -97,25 +96,25 @@ export const ProfessionalProvider: FC<Props> = ({ children }) => {
   };
 
   const updateProfessional = async (
-    id: number,
+    professional_id: number,
     name: string,
     last_name: string,
     address: string,
     email: string,
     cell_phone: string,
-    profession: number,
+    profession_id: number,
   ): Promise<{ isComplete: boolean }> => {
     const token = Cookies.get("token") || "";
     return await petMonitoringApi
       .put(
-        `/professional/${id}`,
+        `/professional/${professional_id}`,
         {
           name,
           last_name,
           address,
           email,
           cell_phone,
-          profession: { id: profession },
+          profession: { id: profession_id },
         },
         {
           headers: {
@@ -125,7 +124,7 @@ export const ProfessionalProvider: FC<Props> = ({ children }) => {
       )
       .then(() => {
         checkToken();
-        getProfessional(id);
+        getProfessional(professional_id);
         swalMessage("Listo", "Profesional Actualizado", "success");
         return { isComplete: true };
       })

@@ -6,7 +6,7 @@ interface ContextProps {
 
   isLoaded: boolean;
 
-  getProfessional: (id: number) => void;
+  getProfessional: (professional_id: number) => void;
 
   addProfessional: (
     name: string,
@@ -14,19 +14,19 @@ interface ContextProps {
     address: string,
     email: string,
     cell_phone: string,
-    profession: number,
-    pet: number,
-    clearForm: () => void
+    profession_id: number,
+    pet_id: number,
+    clearForm: () => void,
   ) => Promise<{ isComplete: boolean }>;
 
   updateProfessional: (
-    id: number,
+    professional_id: number,
     name: string,
     last_name: string,
     address: string,
     email: string,
     cell_phone: string,
-    profession: number,
+    profession_id: number,
   ) => Promise<{ isComplete: boolean }>;
 
   deleteProfessional: (pet_id: number, professional_id: number) => Promise<{ isComplete: boolean }>;
