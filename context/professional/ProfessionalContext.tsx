@@ -16,7 +16,8 @@ interface ContextProps {
     cell_phone: string,
     profession: number,
     pet: number,
-  ) => Promise<{ hasError: boolean; message?: string }>;
+    clearForm: () => void
+  ) => Promise<{ isComplete: boolean }>;
 
   updateProfessional: (
     id: number,
@@ -26,11 +27,9 @@ interface ContextProps {
     email: string,
     cell_phone: string,
     profession: number,
-  ) => Promise<{ hasError: boolean; message?: string }>;
+  ) => Promise<{ isComplete: boolean }>;
 
-  deleteProfessional: (
-    id: number,
-  ) => Promise<{ hasError: boolean; message?: string }>;
+  deleteProfessional: (pet_id: number, professional_id: number) => Promise<{ isComplete: boolean }>;
 
   clearProfessional: () => void;
 
@@ -39,7 +38,7 @@ interface ContextProps {
     fromEmail: string,
     subject: string,
     body: string,
-  ) => Promise<{ hasError: boolean; message?: string }>;
+  ) => Promise<{ isComplete: boolean }>;
 }
 
 export const ProfessionalContext = createContext({} as ContextProps);

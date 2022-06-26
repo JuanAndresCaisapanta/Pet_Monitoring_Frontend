@@ -41,7 +41,7 @@ const ProfilePetPage = () => {
             label={
               <Box sx={{ display: "flex", alignItems: "center" }}>
                 <Pets />
-                <TabName>Establecimiento</TabName>
+                <TabName>Mascota</TabName>
               </Box>
             }
           />

@@ -181,6 +181,7 @@ export const TabAddPet = () => {
         submit={handleSubmit(handleAddPet)}
         clearForm={handleClearForm}
         encType={`multipart/form-data`}
+        textLoadingButton={"Guardar"}
         startIcon={<Save />}
         isLoading={isLoading}
         leftContent={

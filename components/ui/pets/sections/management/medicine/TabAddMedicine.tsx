@@ -152,6 +152,7 @@ export const TabAddMedicine = () => {
       submit={handleSubmit(handleAddMedicine)}
       clearForm={handleClearForm}
       encType={`multipart/form-data`}
+      textLoadingButton={"Guardar"}
       startIcon={<Save />}
       isLoading={isLoading}
       leftContent={

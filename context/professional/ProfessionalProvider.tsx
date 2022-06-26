@@ -8,6 +8,8 @@ import { ProfessionalContext, professionalReducer } from ".";
 import { petMonitoringApi } from "../../api";
 import { IProfessional } from "../../interfaces";
 import { AuthContext } from "../auth";
+import { swalMessage } from "../../components";
+import { PetContext } from "../pet";
 
 export interface ProfessionalState {
   professional?: IProfessional;
@@ -23,11 +25,8 @@ interface Props {
   children: ReactNode;
 }
 export const ProfessionalProvider: FC<Props> = ({ children }) => {
-  const [state, dispatch] = useReducer(
-    professionalReducer,
-    PROFESSIONAL_INITIAL_STATE,
-  );
-
+  const [state, dispatch] = useReducer(professionalReducer, PROFESSIONAL_INITIAL_STATE);
+  const { getPet } = useContext(PetContext);
   const { checkToken } = useContext(AuthContext);
 
   const getProfessional = async (id: number) => {
@@ -39,9 +38,7 @@ export const ProfessionalProvider: FC<Props> = ({ children }) => {
     }
     try {
       const token = Cookies.get("token") || "";
-      const { data } = await petMonitoringApi.get(
-        `/auth/validate-token/${token}`,
-      );
+      const { data } = await petMonitoringApi.get(`/auth/validate-token/${token}`);
       if (data == true) {
         const professional = await petMonitoringApi.get(`/professional/${id}`, {
           headers: { Authorization: `Bearer ${token}` },
@@ -66,10 +63,11 @@ export const ProfessionalProvider: FC<Props> = ({ children }) => {
     cell_phone: string,
     profession: number,
     pet: number,
-  ): Promise<{ hasError: boolean; message?: string }> => {
-    try {
-      const token = Cookies.get("token") || "";
-      await petMonitoringApi.post(
+    clearForm: () => void
+  ): Promise<{ isComplete: boolean }> => {
+    const token = Cookies.get("token") || "";
+    return await petMonitoringApi
+      .post(
         `/professional`,
         {
           name,
@@ -85,33 +83,17 @@ export const ProfessionalProvider: FC<Props> = ({ children }) => {
             Authorization: `Bearer ${token}`,
           },
         },
-      );
-      checkToken();
-      Swal.fire({
-        background: "#F4F5FA",
-        title: "Listo",
-        text: "Profesional Agregado",
-        icon: "success",
-        backdrop: false,
-        timer: 1500,
-        timerProgressBar: true,
-        showConfirmButton: false,
+      )
+      .then(() => {
+        checkToken();
+        clearForm();
+        swalMessage("Listo", "Profesional Agregado", "success");
+        return { isComplete: true };
+      })
+      .catch(() => {
+        swalMessage("Error", "No se pudo agregar al profesional - intente de nuevo", "error");
+        return { isComplete: true };
       });
-      return {
-        hasError: false,
-      };
-    } catch (error) {
-      if (axios.isAxiosError(error)) {
-        return {
-          hasError: true,
-          message: error.message,
-        };
-      }
-      return {
-        hasError: true,
-        message: "No se pudo agregar al profesional - intente de nuevo",
-      };
-    }
   };
 
   const updateProfessional = async (
@@ -122,10 +104,10 @@ export const ProfessionalProvider: FC<Props> = ({ children }) => {
     email: string,
     cell_phone: string,
     profession: number,
-  ): Promise<{ hasError: boolean; message?: string }> => {
-    try {
-      const token = Cookies.get("token") || "";
-      await petMonitoringApi.put(
+  ): Promise<{ isComplete: boolean }> => {
+    const token = Cookies.get("token") || "";
+    return await petMonitoringApi
+      .put(
         `/professional/${id}`,
         {
           name,
@@ -140,61 +122,52 @@ export const ProfessionalProvider: FC<Props> = ({ children }) => {
             Authorization: `Bearer ${token}`,
           },
         },
-      );
-      checkToken();
-      Swal.fire({
-        background: "#F4F5FA",
-        title: "Listo",
-        text: "Professional Actualizado",
-        icon: "success",
-        confirmButtonText: "Ocultar",
-        backdrop: false,
-        timer: 1500,
-        timerProgressBar: true,
-        showConfirmButton: false,
+      )
+      .then(() => {
+        checkToken();
+        getProfessional(id);
+        swalMessage("Listo", "Profesional Actualizado", "success");
+        return { isComplete: true };
+      })
+      .catch(() => {
+        swalMessage("Error", "No se pudo actualizar al profesional - intente de nuevo", "error");
+        return { isComplete: true };
       });
-      return {
-        hasError: false,
-      };
-    } catch (error) {
-      if (axios.isAxiosError(error)) {
-        return {
-          hasError: true,
-          message: error.message,
-        };
-      }
-      return {
-        hasError: true,
-        message: "No se pudo actualizar al profesional - intente de nuevo",
-      };
-    }
   };
 
-  const deleteProfessional = async (
-    id: number,
-  ): Promise<{ hasError: boolean; message?: string }> => {
-    try {
-      const token = Cookies.get("token") || "";
-      await petMonitoringApi.delete(`/professional/${id}`, {
-        headers: { Authorization: `Bearer ${token}` },
+  const deleteProfessional = async (pet_id: number, professional_id: number): Promise<{ isComplete: boolean }> => {
+    const token = Cookies.get("token") || "";
+    return Swal.fire({
+      background: "#F4F5FA",
+      title: "¿Está seguro de eliminar al profesional?",
+      text: "No podrá revertir esta acción",
+      icon: "warning",
+      showCancelButton: true,
+      backdrop: false,
+      confirmButtonColor: "#9E69FD",
+      cancelButtonColor: "#9C9FA4",
+      confirmButtonText: "Si, Eliminar",
+    })
+      .then(async (result) => {
+        if (result.isConfirmed) {
+          await petMonitoringApi
+            .delete(`/professional/${professional_id}`, {
+              headers: { Authorization: `Bearer ${token}` },
+            })
+            .then(() => {
+              checkToken();
+              getPet(pet_id);
+              swalMessage("Listo", "Profesional Eliminado", "success");
+            })
+            .catch(() => {
+              swalMessage("Error", "No se pudo eliminar al profesional", "error");
+            });
+        }
+        return { isComplete: true };
+      })
+      .catch(() => {
+        return { isComplete: true };
       });
-      checkToken();
-
-      return {
-        hasError: false,
-      };
-    } catch (error) {
-      if (axios.isAxiosError(error)) {
-        return {
-          hasError: true,
-          message: error.message,
-        };
-      }
-      return {
-        hasError: true,
-        message: "No se pudo eliminar al profesional - intente de nuevo",
-      };
-    }
   };
 
   const clearProfessional = () => {
@@ -208,10 +181,10 @@ export const ProfessionalProvider: FC<Props> = ({ children }) => {
     fromEmail: string,
     subject: string,
     body: string,
-  ): Promise<{ hasError: boolean; message?: string }> => {
-    try {
-      const token = Cookies.get("token") || "";
-      await petMonitoringApi.post(
+  ): Promise<{ isComplete: boolean }> => {
+    const token = Cookies.get("token") || "";
+    return await petMonitoringApi
+      .post(
         `/professional/email`,
         {
           toEmail,
@@ -224,33 +197,16 @@ export const ProfessionalProvider: FC<Props> = ({ children }) => {
             Authorization: `Bearer ${token}`,
           },
         },
-      );
-      checkToken();
-      Swal.fire({
-        background: "#F4F5FA",
-        title: "Listo",
-        text: "Correo Electrónico Enviado",
-        icon: "success",
-        backdrop: false,
-        timer: 1500,
-        timerProgressBar: true,
-        showConfirmButton: false,
+      )
+      .then(() => {
+        checkToken();
+        swalMessage("Listo", "Correo Electrónico Enviado", "success");
+        return { isComplete: true };
+      })
+      .catch(() => {
+        swalMessage("Error", "No se pudo enviar el correo electrónico - intente de nuevo", "error");
+        return { isComplete: true };
       });
-      return {
-        hasError: false,
-      };
-    } catch (error) {
-      if (axios.isAxiosError(error)) {
-        return {
-          hasError: true,
-          message: error.message,
-        };
-      }
-      return {
-        hasError: true,
-        message: "No se pudo enviar el correo electrónico - intente de nuevo",
-      };
-    }
   };
 
   return (

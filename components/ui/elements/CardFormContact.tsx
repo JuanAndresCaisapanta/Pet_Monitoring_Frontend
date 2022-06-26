@@ -1,56 +1,38 @@
-import { FC, FormEventHandler, ReactNode } from "react";
-
-import { NavigateBefore } from "@mui/icons-material";
-
 import { LoadingButton } from "@mui/lab";
-
-import { Button, Card, CardActions, CardContent, CardHeader, Divider, Grid, IconButton, TextField } from '@mui/material';
+import { Button, Card, CardActions, CardContent, CardHeader, Divider, Grid } from "@mui/material";
+import { FC, FormEventHandler, ReactNode } from "react";
 
 interface Props {
   title: string;
-  router: () => void;
   submit: FormEventHandler<HTMLFormElement> | undefined;
-  clearForm: () => void;
   isLoading: boolean;
-  encType?: string;
+  startIcon: ReactNode;
   textLoadingButton: string;
-  startIcon:ReactNode;
+  clearForm: () => void;
   leftContent: ReactNode;
   rightContent: ReactNode;
 }
-
-export const CardForm: FC<Props> = ({
+export const CardFormContact: FC<Props> = ({
   title,
-  router,
   submit,
-  clearForm,
   isLoading,
-  encType,
   startIcon,
   textLoadingButton,
+  clearForm,
   leftContent,
   rightContent,
 }) => {
   return (
     <Card>
-      <CardHeader
-        sx={{ paddingTop: "4px", paddingBottom: "4px" }}
-        title={title}
-        titleTypographyProps={{ variant: "body1" }}
-        action={
-          <IconButton aria-label="close" onClick={router} style={{ color: "#9E69FD" }}>
-            <NavigateBefore />
-          </IconButton>
-        }
-      />
+      <CardHeader title={title} titleTypographyProps={{ variant: "body1", color: "#3A3541DE" }} />
       <Divider sx={{ margin: 0 }} />
-      <form noValidate autoComplete="off" onSubmit={submit} encType={encType}>
+      <form noValidate autoComplete="off" onSubmit={submit}>
         <CardContent>
           <Grid container spacing={2}>
-            <Grid item xs={12} md={6}>
+            <Grid item xs={12} md={4}>
               {leftContent}
             </Grid>
-            <Grid item xs={12} md={6}>
+            <Grid item xs={12} md={8}>
               {rightContent}
             </Grid>
           </Grid>

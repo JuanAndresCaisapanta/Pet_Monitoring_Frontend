@@ -1,97 +1,103 @@
-import { FC } from "react";
+import { FC, useContext, useState } from "react";
 
-import {
-  Card,
-  Avatar,
-  Button,
-  Typography,
-  CardContent,
-  Grid,
-} from "@mui/material";
+import { Card, Avatar, Button, Typography, CardContent, Grid, CardActions } from "@mui/material";
 
 import { Delete, HailOutlined, Visibility } from "@mui/icons-material";
 import { useRouter } from "next/router";
+import { LoadingButton } from "@mui/lab";
+import { ProfessionalContext } from "../../../../../../context";
 
 interface Props {
-  id: number;
+  pet_id: number;
+  professional_id: number;
   name: string;
   last_name: string;
   profession: string;
 }
 
-export const CardProfessional: FC<Props> = ({
-  id,
-  name,
-  last_name,
-  profession,
-}) => {
+export const CardProfessional: FC<Props> = ({ pet_id, professional_id, name, last_name, profession }) => {
+  const [isLoading, setIsLoading] = useState(false);
+
+  const { deleteProfessional } = useContext(ProfessionalContext);
+
   const router = useRouter();
-  const navigateTo = (url: string) => {
-    router.push(url);
+
+  const handleNavigate = (url: string) => {
+    return router.push(url);
+  };
+
+  const handleDeleteProfessional = async (pet_id: number, professional_id: number) => {
+    setIsLoading(true);
+    const { isComplete } = await deleteProfessional(pet_id, professional_id);
+    if (isComplete) {
+      setIsLoading(false);
+    }
   };
 
   return (
     <Card>
       <CardContent>
         <Grid container spacing={1}>
-          <Grid container direction="row" textAlign="left" spacing={1}>
-            <Grid item container xs={12} md={12} justifyContent="center">
-              <Avatar
-                sx={{
-                  width: 50,
-                  height: 50,
-                  mt: 2,
-                  color: "common.white",
-                  backgroundColor: "primary.main",
-                }}
-              >
-                <HailOutlined sx={{ fontSize: "2rem" }} />
-              </Avatar>
-            </Grid>
-            <Grid container spacing={1} marginLeft={1} marginRight={1}  marginTop={1}>
-              <Grid item xs={12} md={12}>
-                <Typography variant="body1" noWrap>
-                  <b>Nombre: </b>
-                  {name}
-                </Typography>
-              </Grid>
-              <Grid item xs={12} md={12}>
-                <Typography variant="body1" noWrap>
-                  <b>Apellido: </b>
-                  {last_name}
-                </Typography>
-              </Grid>
-              <Grid item xs={12} md={12}>
-                <Typography variant="body1" noWrap>
-                  <b>Profesión: </b>
-                  {profession}
-                </Typography>
-              </Grid>
-            </Grid>
-            <Grid item xs={12} md={12} textAlign="center" sx={{ marginTop: 1 }}>
-              <Button
-                variant="contained"
-                color="primary"
-                disableElevation
-                startIcon={<Visibility />}
-                onClick={() => navigateTo(`profile/${id}`)}
-                sx={{ marginRight: 2 }}
-              >
-                Ver
-              </Button>
-              <Button
-                variant="outlined"
-                color="secondary"
-                disableElevation
-                startIcon={<Delete />}
-                // onClick={onDelete}
-              >
-                Eliminar
-              </Button>
-            </Grid>
+          <Grid item xs={12} md={12} textAlign="center">
+            <Avatar
+              sx={{
+                width: 50,
+                height: 50,
+                color: "common.white",
+                backgroundColor: "primary.main",
+                margin: "auto",
+              }}
+            >
+              <HailOutlined sx={{ fontSize: "2rem" }} />
+            </Avatar>
+          </Grid>
+          <Grid item xs={12} md={12}>
+            <Typography variant="body2" noWrap>
+              <b>Nombre: </b>
+              {name}
+            </Typography>
+          </Grid>
+          <Grid item xs={12} md={12}>
+            <Typography variant="body2" noWrap>
+              <b>Apellido: </b>
+              {last_name}
+            </Typography>
+          </Grid>
+          <Grid item xs={12} md={12}>
+            <Typography variant="body2" noWrap>
+              <b>Profesión: </b>
+              {profession}
+            </Typography>
           </Grid>
         </Grid>
       </CardContent>
+      <CardActions sx={{paddingTop:0}}>
+        <Button
+          variant="contained"
+          disableElevation
+          startIcon={<Visibility />}
+          sx={{
+            width: "50%",
+          }}
+          onClick={() => handleNavigate(`profile/${professional_id}`)}
+        >
+          Ver
+        </Button>
+        <LoadingButton
+          onClick={() => handleDeleteProfessional(pet_id, professional_id)}
+          variant="outlined"
+          color="secondary"
+          disableElevation
+          startIcon={<Delete />}
+          loading={isLoading}
+          loadingPosition="start"
+          sx={{
+            width: "50%",
+          }}
+        >
+          Eliminar
+        </LoadingButton>
+      </CardActions>
     </Card>
   );
 };

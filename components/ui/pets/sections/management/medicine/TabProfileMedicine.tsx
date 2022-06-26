@@ -32,8 +32,8 @@ type FormData = {
 };
 
 export const TabProfileMedicine = () => {
-  const [imgSrc, setImgSrc] = useState<string>("/images/medicine/medicine-profile.png");
-  const [selectTypeMedicine, setSelectTypeMedicine] = useState<string>("");
+  const [imagePath, setImagePath] = useState<string>("/images/medicine/medicine-profile.png");
+  const [listTypeMedicine, setListTypeMedicine] = useState<string>("");
   const [productionDate, setProductionDate] = useState<Date | null>(null);
   const [applicationDate, setApplicationDate] = useState<Date | null>(null);
   const [expirationDate, setExpirationDate] = useState<Date | null>(null);
@@ -80,9 +80,9 @@ export const TabProfileMedicine = () => {
 
   useEffect(() => {
     if (medicine?.image) {
-      setSelectTypeMedicine(medicine.typeMedicine.id.toString());
+      setListTypeMedicine(medicine.typeMedicine.id.toString());
       setValue("typeMedicine", medicine.typeMedicine.id);
-      setImgSrc(`data:image/jpeg;base64,${medicine?.image}`);
+      setImagePath(`data:image/jpeg;base64,${medicine?.image}`);
       setApplicationDate(moment(medicine.application_date, "DD/MM/YYYY").toDate());
       setValue("application_date", medicine.application_date);
       setProductionDate(moment(medicine.production_date, "DD/MM/YYYY").toDate());
@@ -101,22 +101,21 @@ export const TabProfileMedicine = () => {
     const reader = new FileReader();
     const { files } = file.target as HTMLInputElement;
     if (files && files.length !== 0) {
-      reader.onload = () => setImgSrc(reader.result as string);
+      reader.onload = () => setImagePath(reader.result as string);
       reader.readAsDataURL(files[0]);
     }
   };
 
   const handleClearForm = () => {
-    setSelectTypeMedicine(medicine?.typeMedicine.id.toString()!);
+    setListTypeMedicine(medicine?.typeMedicine.id.toString()!);
     setValue("typeMedicine", medicine?.typeMedicine.id!);
-    setImgSrc(`data:image/jpeg;base64,${medicine?.image}`);
-    setProductionDate(new Date(medicine?.production_date!));
-    setValue("production_date", medicine?.production_date!);
-    setApplicationDate(new Date(medicine?.application_date!));
-    setValue("application_date", new Date(medicine?.application_date!).toString());
-
-    setExpirationDate(new Date(medicine?.expiration_date!));
-    setValue("expiration_date", medicine?.expiration_date!);
+    setImagePath(`data:image/jpeg;base64,${medicine?.image}`);
+    setApplicationDate(moment(medicine?.application_date, "DD/MM/YYYY").toDate());
+    setValue("application_date", medicine?.application_date);
+    setProductionDate(moment(medicine?.production_date, "DD/MM/YYYY").toDate());
+    setValue("production_date", medicine?.production_date);
+    setExpirationDate(moment(medicine?.expiration_date, "DD/MM/YYYY").toDate());
+    setValue("expiration_date", medicine?.expiration_date);
     setValue("name", medicine?.name!);
     setValue("manufacturer", medicine?.manufacturer!);
     setValue("batch", medicine?.batch!);
@@ -197,7 +196,7 @@ export const TabProfileMedicine = () => {
               <Grid item xs={12} md={12}>
                 <Image
                   style={{ borderRadius: "15px" }}
-                  src={imgSrc}
+                  src={imagePath}
                   width="250rem"
                   height="175rem"
                   alt="Imagen Mascota"
@@ -304,8 +303,8 @@ export const TabProfileMedicine = () => {
                 <SelectFormId
                   label="Tipo"
                   name="typeMedicine"
-                  value={selectTypeMedicine}
-                  onChange={(e: SelectChangeEvent) => setSelectTypeMedicine(e.target.value)}
+                  value={listTypeMedicine}
+                  onChange={(event: SelectChangeEvent) => setListTypeMedicine(event.target.value)}
                   object={typeMedicine}
                   register={register}
                   disabled={isLoading}

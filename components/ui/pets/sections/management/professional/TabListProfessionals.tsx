@@ -2,70 +2,42 @@ import { useContext, useEffect, useState } from "react";
 
 import { useRouter } from "next/router";
 
-import {
-  CardContent,
-  Grid,
-  InputAdornment,
-  TextField,
-  Typography,
-} from "@mui/material";
-import SearchIcon from "@mui/icons-material/Search";
+import { Grid, Typography } from "@mui/material";
 
-import Swal from "sweetalert2";
-
-import { PetContext, ProfessionalContext } from "../../../../../../context";
+import { PetContext } from "../../../../../../context";
 import { CardProfessional } from "./CardProfessional";
+import { CardList } from "../../../../elements";
 
 export const TabListProfessionals = () => {
   const [searchWord, setSearchWord] = useState("");
   const { pet, getPet, isLoaded, petChange } = useContext(PetContext);
-  const { deleteProfessional } = useContext(ProfessionalContext);
   const router = useRouter();
 
-  const { id } = router.query;
+  const { id: pet_id } = router.query;
 
   useEffect(() => {
-    getPet(id);
+    getPet(pet_id);
     return () => {
       petChange();
     };
-  }, [id]);
+  }, [pet_id]);
 
   const professionals = pet?.professional;
 
   const filteredOptions = professionals?.filter(
     (professional) =>
-      professional.name.toLowerCase().includes(searchWord.toLowerCase()) ||
+      `${professional.name} ${professional.last_name}`.toLowerCase().includes(searchWord.toLowerCase()) ||
       !searchWord,
   );
 
-  if (isLoaded) {
+  if (isLoaded && pet?.name) {
     return (
-      <CardContent>
-        <Grid container spacing={2}>
-          <Grid
-            container
-            sx={{ mt: 2 }}
-            direction="column"
-            alignItems={"center"}
-          >
-            <Grid item>
-              <TextField
-                size="small"
-                sx={{ "& .MuiOutlinedInput-root": { borderRadius: 4 } }}
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <SearchIcon fontSize="small" />
-                    </InputAdornment>
-                  ),
-                }}
-                onChange={(e) => setSearchWord(e.target.value)}
-                placeholder={"Buscar"}
-              />
-            </Grid>
-          </Grid>
-          {filteredOptions!.length > 0 ? (
+      <CardList
+        title={`Lista de las profesionales de ${pet?.name}`}
+        router={() => router.back()}
+        onChange={(event) => setSearchWord(event.target.value)}
+        filterCard={
+          filteredOptions!.length > 0 ? (
             filteredOptions!
               .sort((a: any, b: any) => {
                 if (a.name < b.name) {
@@ -77,9 +49,10 @@ export const TabListProfessionals = () => {
                 return 0;
               })
               .map((professional) => (
-                <Grid item xs={12} sm={4} key={professional.id}>
+                <Grid item xs={12} sm={3} key={professional.id}>
                   <CardProfessional
-                    id={professional.id}
+                    pet_id={Number(pet_id)}
+                    professional_id={professional.id}
                     name={professional.name}
                     last_name={professional.last_name}
                     profession={professional.profession.name}
@@ -94,9 +67,9 @@ export const TabListProfessionals = () => {
                 </Typography>
               </Grid>
             </Grid>
-          )}
-        </Grid>
-      </CardContent>
+          )
+        }
+      />
     );
   } else {
     return (

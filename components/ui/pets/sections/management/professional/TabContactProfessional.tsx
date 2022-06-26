@@ -2,168 +2,144 @@ import { useContext, useEffect, useState } from "react";
 
 import { useRouter } from "next/router";
 
-import {
-  CardContent,
-  Grid,
-  Typography,
-  TextField,
-  CardActions,
-  Card,
-  Button,
-  CardHeader,
-  Divider,
-  SelectChangeEvent,
-} from "@mui/material";
+import { Grid, Typography, TextField, SelectChangeEvent } from "@mui/material";
 import { Send } from "@mui/icons-material";
+
 import { useForm } from "react-hook-form";
 
 import { ProfessionalContext, AuthContext } from "../../../../../../context";
-import { SelectFormId } from "../../../../elements";
+import { CardFormContact, SelectFormId } from "../../../../elements";
 import { contactProfessional } from "../../../../../../data";
 
 type FormData = {
-  contact: number;
+  contact: number | "";
   message: string;
 };
 
 export const TabContactProfessional = () => {
-  const router = useRouter();
-  const { id } = router.query;
-  const [selectContact, setSelectContact] = useState(``);
+  const [professionalName, setProfessionalName] = useState("");
+  const [professionalLastName, setProfessionalLastName] = useState("");
+  const [messageDefault, setMessageDefault] = useState("");
+  const [listContact, setListContact] = useState<string | null>("");
+  const [isLoading, setIsLoading] = useState(false);
+
   const { user } = useContext(AuthContext);
 
-  const {
-    professional,
-    getProfessional,
-    clearProfessional,
-    sendEmail,
-    isLoaded: isProfessionalLoaded,
-  } = useContext(ProfessionalContext);
+  const router = useRouter();
+
+  const { id: professional_id } = router.query;
+
+  const { professional, getProfessional, clearProfessional, sendEmail, isLoaded } =
+    useContext(ProfessionalContext);
 
   const {
     register,
     handleSubmit,
+    setValue,
     formState: { errors },
   } = useForm<FormData>();
 
+  const message = `Saludos ${professional?.name} ${professional?.last_name},\nSoy ${user?.name} ${
+    user?.last_name
+  } quisiera separar una cita para mi ${professional?.pet.breed.species.name.toLowerCase()} ${
+    professional?.pet.breed.name
+  } ${professional?.pet.name},\nMi número de celular es: ${user?.phone}\nEspero su respuesta excelente día.`;
+
+  const moniopet = `Mensaje enviado através de MonIOpeT.`;
+
   useEffect(() => {
-    if (id !== undefined) {
-      getProfessional(Number(id));
+    if (professional_id !== undefined) {
+      getProfessional(Number(professional_id));
     }
     return () => {
       clearProfessional();
     };
-  }, [id]);
+  }, [professional_id]);
 
-  const onSendEmail = async ({ message }: FormData) => {
-    const { hasError, message: errorMessage } = await sendEmail(
+  useEffect(() => {
+    if (professional) {
+      setProfessionalName(professional.name);
+      setProfessionalLastName(professional.last_name);
+      setMessageDefault(message);
+      setValue("message", message);
+    }
+  }, [professional]);
+
+  const handleSendEmail = async ({ message }: FormData) => {
+    setIsLoading(true);
+    const { isComplete } = await sendEmail(
       professional?.email!,
       user?.email!,
       `Mensaje para ${professional?.name} ${professional?.last_name}`,
-      message,
+      message + `\n\n ${moniopet}`,
     );
+    if (isComplete) {
+      setIsLoading(false);
+    }
   };
 
-  const onSendWhatsapp = async ({ message }: FormData) => {
+  const handleSendWhatsapp = async ({ message }: FormData) => {
     window.open(`https://wa.me/${professional?.cell_phone}/?text=${message}`);
   };
 
-  if (isProfessionalLoaded) {
+  const handleClearForm = () => {
+    setListContact("");
+    setValue("contact", "");
+    setMessageDefault(message);
+    setValue("message", message);
+  };
+
+  if (isLoaded) {
     return (
-      <Card>
-        <CardHeader
-          title={`Contactar a ${professional?.name} ${professional?.last_name}`}
-          titleTypographyProps={{ variant: "body1", color: "#3A3541DE" }}
-        />
-        <Divider sx={{ margin: 0 }} />
-        <form
-          noValidate
-          autoComplete="off"
-          onSubmit={handleSubmit(
-            selectContact == "1"
-              ? onSendEmail
-              : selectContact == "2"
-              ? onSendWhatsapp
-              : () => {},
-          )}
-        >
-          <CardContent>
-            <Grid container spacing={2}>
-              <Grid item xs={12} md={4}>
-                <Grid container spacing={2}>
-                  <Grid item xs={12} sm={12}>
-                    <SelectFormId
-                      label="Medio de contacto"
-                      name="contact"
-                      value={selectContact}
-                      onChange={(event: SelectChangeEvent) =>
-                        setSelectContact(event.target.value)
-                      }
-                      object={contactProfessional}
-                      register={register}
-                      error={!!errors.contact}
-                      helperText={errors.contact?.message}
-                    />
-                  </Grid>
-                </Grid>
-              </Grid>
-              <Grid item xs={12} md={8}>
-                <Grid container spacing={2}>
-                  <Grid item xs={12} sm={12}>
-                    <TextField
-                      fullWidth
-                      multiline
-                      defaultValue={` Saludos ${professional?.name} ${
-                        professional?.last_name
-                      },\n Soy ${user?.name} ${
-                        user?.last_name
-                      } quisiera separar una cita para mi ${professional?.pet.breed.species.name.toLowerCase()} ${
-                        professional?.pet.breed.name
-                      } ${professional?.pet.name},\n Mi número de celular es: ${
-                        user?.phone
-                      }\n Espero su respuesta excelente día.\n\n Mensaje enviado através de MonIOpeT.`}
-                      rows={8}
-                      type="text"
-                      label="Mensaje"
-                      placeholder="Mensaje"
-                      {...register("message", {
-                        required: "Este campo es requerido",
-                        minLength: { value: 2, message: "Mínimo 2 caracteres" },
-                      })}
-                      error={!!errors.message}
-                      helperText={errors.message?.message}
-                    />
-                  </Grid>
-                </Grid>
-              </Grid>
+      <CardFormContact
+        title={`Contactar a ${professionalName} ${professionalLastName}`}
+        submit={handleSubmit(
+          listContact == "1" ? handleSendEmail : listContact == "2" ? handleSendWhatsapp : () => {},
+        )}
+        isLoading={isLoading}
+        startIcon={<Send />}
+        textLoadingButton={"Enviar"}
+        clearForm={handleClearForm}
+        leftContent={
+          <Grid container spacing={2}>
+            <Grid item xs={12} sm={12}>
+              <SelectFormId
+                label="Medio de contacto"
+                name="contact"
+                value={listContact}
+                onChange={(event: SelectChangeEvent) => setListContact(event.target.value)}
+                object={contactProfessional}
+                register={register}
+                error={!!errors.contact}
+                helperText={errors.contact?.message}
+                disabled={isLoading}
+              />
             </Grid>
-          </CardContent>
-          <Divider sx={{ margin: 0 }} />
-          <CardActions sx={{ padding: "16px" }}>
-            <Grid container spacing={2}>
-              <Grid item xs={12} md={12}>
-                <Button
-                  variant="contained"
-                  color="primary"
-                  sx={{ marginRight: 2 }}
-                  disableElevation
-                  type="submit"
-                  startIcon={<Send />}
-                >
-                  Enviar
-                </Button>
-                <Button
-                  variant="outlined"
-                  color="secondary"
-                  onClick={() => router.reload()}
-                >
-                  Cancelar
-                </Button>
-              </Grid>
+          </Grid>
+        }
+        rightContent={
+          <Grid container spacing={2}>
+            <Grid item xs={12} sm={12}>
+              <TextField
+                fullWidth
+                multiline
+                value={messageDefault}
+                rows={8}
+                type="text"
+                label="Mensaje"
+                placeholder="Mensaje"
+                {...register("message", {
+                  required: "Este campo es requerido",
+                  minLength: { value: 2, message: "Mínimo 2 caracteres" },
+                })}
+                error={!!errors.message}
+                helperText={errors.message?.message}
+                disabled={isLoading}
+              />
             </Grid>
-          </CardActions>
-        </form>
-      </Card>
+          </Grid>
+        }
+      />
     );
   } else {
     return (
