@@ -1,68 +1,33 @@
 import { useContext, useState } from "react";
 
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  Divider,
-  Grid,
-  IconButton,
-  InputAdornment,
-  TextField,
-  Typography,
-} from "@mui/material";
-import SearchIcon from "@mui/icons-material/Search";
+import { useRouter } from "next/router";
+
+import { Grid, Typography } from "@mui/material";
 
 import { AuthContext } from "../../../context";
 import { CardDevice } from "./CardDevice";
-import { useRouter } from "next/router";
-import { NavigateBefore } from "@mui/icons-material";
+import { CardList } from "../elements";
 
 export const TabListDevices = () => {
   const [searchWord, setSearchWord] = useState("");
-  const router = useRouter();
+
   const { user } = useContext(AuthContext);
 
-  const filteredOptions = user?.device.filter(
-    (device) =>
-      device.code.toLowerCase().includes(searchWord.toLowerCase()) ||
-      !searchWord,
+  const router = useRouter();
+
+  const devices = user?.device;
+
+  const filteredOptions = devices?.filter(
+    (device) => device.code.toLowerCase().includes(searchWord.toLowerCase()) || !searchWord,
   );
   if (user?.device) {
     return (
-      <Card>
-      <CardHeader
-        title={`Lista de sus Dispositivos`}
-        titleTypographyProps={{ variant: "body1" }}
-        action={
-          <IconButton
-            aria-label="close"
-            onClick={() => router.back()}
-            style={{ color: "#9E69FD" }}
-          >
-            <NavigateBefore />
-          </IconButton>
-        }
-      />
-      <Divider sx={{ margin: 0 }} />
-      <CardContent>
-        <Grid container spacing={2} justifyContent={"center"}>
-          <Grid item xs={12} md={12} textAlign="center">
-            <TextField
-              size="small"
-              sx={{ "& .MuiOutlinedInput-root": { borderRadius: 4 } }}
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <SearchIcon fontSize="small" />
-                  </InputAdornment>
-                ),
-              }}
-              onChange={(e) => setSearchWord(e.target.value)}
-              placeholder={"Buscar"}
-            />
-          </Grid>
-          {filteredOptions!.length > 0 ? (
+      <CardList
+        title={`Lista de dispositivos`}
+        router={() => router.back()}
+        onChange={(event) => setSearchWord(event.target.value)}
+        filterCard={
+          filteredOptions!.length > 0 ? (
             filteredOptions!
               .sort((a: any, b: any) => {
                 if (a.name < b.name) {
@@ -85,13 +50,16 @@ export const TabListDevices = () => {
                 </Grid>
               ))
           ) : (
-            <Grid item>
-              <Typography color={"primary"}>Sin Resultados.</Typography>
+            <Grid container direction="column" alignItems={"center"}>
+              <Grid item>
+                <Typography color={"primary"} sx={{ mt: 1 }}>
+                  Sin Resultados.
+                </Typography>
+              </Grid>
             </Grid>
-          )}
-        </Grid>
-      </CardContent>
-      </Card>
+          )
+        }
+      />
     );
   } else {
     return (

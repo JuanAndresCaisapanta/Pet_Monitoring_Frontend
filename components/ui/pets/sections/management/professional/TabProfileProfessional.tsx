@@ -23,7 +23,7 @@ type FormData = {
 
 export const TabProfileProfessional = () => {
   const router = useRouter();
-  const { id } = router.query;
+  const { id: professional_id } = router.query;
   const [listProfession, setListProfession] = useState("");
   const [professionalName, setProfessionalName] = useState("");
   const [professionalLastName, setProfessionalLastName] = useState("");
@@ -56,13 +56,13 @@ export const TabProfileProfessional = () => {
   }, [professional]);
 
   useEffect(() => {
-    if (id !== undefined) {
-      getProfessional(Number(id));
+    if (professional_id !== undefined) {
+      getProfessional(Number(professional_id));
     }
     return () => {
       clearProfessional();
     };
-  }, [id]);
+  }, [professional_id]);
 
   useEffect(() => {
     if (professional) {
@@ -98,7 +98,7 @@ export const TabProfileProfessional = () => {
   }: FormData) => {
     setIsLoading(true);
     const { isComplete } = await updateProfessional(
-      Number(id),
+      Number(professional_id),
       name,
       last_name,
       address,

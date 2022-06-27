@@ -1,28 +1,17 @@
 import { useState, ChangeEvent, useContext, useEffect } from "react";
 
+import { useRouter } from "next/router";
 import Image from "next/image";
 
-import {
-  Grid,
-  TextField,
-  CardContent,
-  Typography,
-  Button,
-  Divider,
-  CardHeader,
-  Card,
-  CardActions,
-  IconButton,
-} from "@mui/material";
-import { NavigateBefore, Update } from "@mui/icons-material";
-import { LoadingButton } from "@mui/lab";
+import { Grid, TextField, Typography, Button } from "@mui/material";
+import { Update } from "@mui/icons-material";
 import imageCompression from "browser-image-compression";
 import { useForm } from "react-hook-form";
 
 import { AuthContext } from "../../../context";
 import { UserContext } from "../../../context/user/UserContext";
 import { validations } from "../../../utils";
-import { useRouter } from "next/router";
+import { CardForm } from "../elements";
 
 type FormData = {
   name: string;
@@ -38,9 +27,12 @@ export const TabProfileUser = () => {
   const [userName, setUserName] = useState("");
   const [userLastName, setUserLastName] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+
   const { user } = useContext(AuthContext);
   const { updateUser } = useContext(UserContext);
+
   const router = useRouter();
+
   const {
     register,
     handleSubmit,
@@ -68,7 +60,7 @@ export const TabProfileUser = () => {
     }
   }, [user, setValue]);
 
-  const onChange = (file: ChangeEvent) => {
+  const onChangeImage = (file: ChangeEvent) => {
     const reader = new FileReader();
     const { files } = file.target as HTMLInputElement;
     if (files && files.length !== 0) {
@@ -77,22 +69,17 @@ export const TabProfileUser = () => {
     }
   };
 
-  const onCancel = () => {
-    setImgSrc(`data:image/jpeg;base64,${user?.image}`);
-    setValue("name", user?.name!);
-    setValue("last_name", user?.last_name!);
-    setValue("email", user?.email!);
-    setValue("address", user?.address || "");
-    setValue("phone", user?.phone || "");
+  const handleClearForm = () => {
+    if (user?.image) {
+      setImgSrc(`data:image/jpeg;base64,${user?.image}`);
+      setValue("name", user?.name!);
+      setValue("last_name", user?.last_name!);
+      setValue("email", user?.email!);
+      setValue("address", user?.address || "");
+      setValue("phone", user?.phone || "");
+    }
   };
-  const onUpdateForm = async ({
-    name,
-    last_name,
-    email,
-    address,
-    phone,
-    image,
-  }: FormData) => {
+  const handleUpdateUser = async ({ name, last_name, email, address, phone, image }: FormData) => {
     setIsLoading(true);
     const options = {
       maxSizeMB: 1,
@@ -101,26 +88,12 @@ export const TabProfileUser = () => {
     };
     if (image[0] != null) {
       const compressedImage = await imageCompression(image[0], options);
-      const { isComplete } = await updateUser(
-        name,
-        last_name,
-        email,
-        address,
-        phone,
-        compressedImage,
-      );
+      const { isComplete } = await updateUser(name, last_name, email, address, phone, compressedImage);
       if (isComplete) {
         setIsLoading(false);
       }
     } else {
-      const { isComplete } = await updateUser(
-        name,
-        last_name,
-        email,
-        address,
-        phone,
-        image[0],
-      );
+      const { isComplete } = await updateUser(name, last_name, email, address, phone, image[0]);
       if (isComplete) {
         setIsLoading(false);
       }
@@ -129,170 +102,120 @@ export const TabProfileUser = () => {
 
   if (user) {
     return (
-      <Card>
-        <CardHeader
-          title={`Información de ${userName} ${userLastName}`}
-          titleTypographyProps={{ variant: "body1" }}
-          action={
-            <IconButton
-              aria-label="close"
-              onClick={() => router.back()}
-              style={{ color: "#9E69FD" }}
-            >
-              <NavigateBefore />
-            </IconButton>
-          }
-        />
-        <Divider sx={{ margin: 0 }} />
-        <form
-          noValidate
-          autoComplete="off"
-          encType="multipart/form-data"
-          onSubmit={handleSubmit(onUpdateForm)}
-        >
-          <CardContent>
-            <Grid container spacing={2}>
-              <Grid item xs={12} sm={6}>
-                <Grid
-                  container
-                  item
-                  xs={12}
-                  sm={12}
-                  direction="column"
-                  alignItems="center"
-                >
-                  <Image
-                    style={{ borderRadius: "15px" }}
-                    src={imgSrc}
-                    width="250rem"
-                    height="177rem"
-                    alt="Imagen Perfil"
-                    quality={100}
-                  />
-                  <Button
-                    component="label"
-                    variant="text"
-                    htmlFor="account-settings-upload-image"
-                    disableElevation
-                    disabled={isLoading}
-                  >
-                    Cambiar Imagen
-                    <input
-                      hidden
-                      type="file"
-                      {...register("image", { onChange: onChange })}
-                      accept="image/*"
-                      id="account-settings-upload-image"
-                    />
-                  </Button>
-                </Grid>
-                <Grid item container spacing={2}>
-                  <Grid item xs={12} sm={6}>
-                    <TextField
-                      fullWidth
-                      label="Nombre"
-                      {...register("name", {
-                        required: "Este campo es requerido",
-                        minLength: { value: 2, message: "Mínimo 2 caracteres" },
-                      })}
-                      error={!!errors.name}
-                      helperText={errors.name?.message}
-                      disabled={isLoading}
-                    />
-                  </Grid>
-                  <Grid item xs={12} sm={6}>
-                    <TextField
-                      fullWidth
-                      label="Apellido"
-                      {...register("last_name", {
-                        required: "Este campo es requerido",
-                        minLength: { value: 2, message: "Mínimo 2 caracteres" },
-                      })}
-                      error={!!errors.last_name}
-                      helperText={errors.last_name?.message}
-                      disabled={isLoading}
-                    />
-                  </Grid>
-                </Grid>
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <Grid container spacing={2}>
-                  <Grid item xs={12} sm={12}>
-                    <TextField
-                      fullWidth
-                      type="email"
-                      label="Correo Electrónico"
-                      {...register("email", {
-                        required: "Este campo es requerido",
-                        validate: validations.isEmail,
-                      })}
-                      error={!!errors.email}
-                      helperText={errors.email?.message}
-                      disabled={isLoading}
-                    />
-                  </Grid>
-                  <Grid item xs={12} sm={12}>
-                    <TextField
-                      fullWidth
-                      type="tel"
-                      inputProps={{ inputMode: "numeric", pattern: "[0-9]*" }}
-                      label="Teléfono"
-                      {...register("phone", {
-                        minLength: { value: 2, message: "Mínimo 2 caracteres" },
-                      })}
-                      error={!!errors.phone}
-                      helperText={errors.phone?.message}
-                      disabled={isLoading}
-                    />
-                  </Grid>
-                  <Grid item xs={12} sm={12}>
-                    <TextField
-                      fullWidth
-                      multiline
-                      rows={4}
-                      label="Dirección"
-                      {...register("address", {
-                        minLength: { value: 2, message: "Mínimo 2 caracteres" },
-                      })}
-                      error={!!errors.address}
-                      helperText={errors.address?.message}
-                      disabled={isLoading}
-                    />
-                  </Grid>
-                </Grid>
-              </Grid>
+      <CardForm
+        title={`Información de ${userName} ${userLastName}`}
+        router={() => router.back()}
+        submit={handleSubmit(handleUpdateUser)}
+        clearForm={handleClearForm}
+        encType={`multipart/form-data`}
+        textLoadingButton={"Actualizar"}
+        startIcon={<Update />}
+        isLoading={isLoading}
+        leftContent={
+          <>
+            <Grid container item xs={12} sm={12} direction="column" alignItems="center">
+              <Image
+                style={{ borderRadius: "15px" }}
+                src={imgSrc}
+                width="250rem"
+                height="175rem"
+                alt="Imagen Perfil"
+                quality={100}
+              />
+              <Button
+                component="label"
+                variant="text"
+                htmlFor="account-settings-upload-image"
+                disableElevation
+                disabled={isLoading}
+              >
+                Cambiar Imagen
+                <input
+                  hidden
+                  type="file"
+                  {...register("image", { onChange: onChangeImage })}
+                  accept="image/*"
+                  id="account-settings-upload-image"
+                />
+              </Button>
             </Grid>
-          </CardContent>
-          <Divider sx={{ margin: 0 }} />
-          <CardActions sx={{ padding: "16px" }}>
-            <Grid container spacing={2}>
-              <Grid item xs={12} md={12}>
-                <LoadingButton
-                  variant="contained"
-                  color="primary"
-                  sx={{ marginRight: 2 }}
-                  disableElevation
-                  type="submit"
-                  startIcon={<Update />}
-                  loading={isLoading}
-                  loadingPosition="start"
-                >
-                  Actualizar
-                </LoadingButton>
-                <Button
-                  disableElevation
-                  variant="outlined"
-                  color="secondary"
-                  onClick={onCancel}
+            <Grid item container spacing={2}>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  fullWidth
+                  label="Nombre"
+                  {...register("name", {
+                    required: "Este campo es requerido",
+                    minLength: { value: 2, message: "Mínimo 2 caracteres" },
+                  })}
+                  error={!!errors.name}
+                  helperText={errors.name?.message}
                   disabled={isLoading}
-                >
-                  Cancelar
-                </Button>
+                />
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  fullWidth
+                  label="Apellido"
+                  {...register("last_name", {
+                    required: "Este campo es requerido",
+                    minLength: { value: 2, message: "Mínimo 2 caracteres" },
+                  })}
+                  error={!!errors.last_name}
+                  helperText={errors.last_name?.message}
+                  disabled={isLoading}
+                />
               </Grid>
             </Grid>
-          </CardActions>
-        </form>
-      </Card>
+          </>
+        }
+        rightContent={
+          <Grid container spacing={2}>
+            <Grid item xs={12} sm={12}>
+              <TextField
+                fullWidth
+                type="email"
+                label="Correo Electrónico"
+                {...register("email", {
+                  required: "Este campo es requerido",
+                  validate: validations.isEmail,
+                })}
+                error={!!errors.email}
+                helperText={errors.email?.message}
+                disabled={isLoading}
+              />
+            </Grid>
+            <Grid item xs={12} sm={12}>
+              <TextField
+                fullWidth
+                type="tel"
+                inputProps={{ inputMode: "numeric", pattern: "[0-9]*" }}
+                label="Teléfono"
+                {...register("phone", {
+                  minLength: { value: 2, message: "Mínimo 2 caracteres" },
+                })}
+                error={!!errors.phone}
+                helperText={errors.phone?.message}
+                disabled={isLoading}
+              />
+            </Grid>
+            <Grid item xs={12} sm={12}>
+              <TextField
+                fullWidth
+                multiline
+                rows={4}
+                label="Dirección"
+                {...register("address", {
+                  minLength: { value: 2, message: "Mínimo 2 caracteres" },
+                })}
+                error={!!errors.address}
+                helperText={errors.address?.message}
+                disabled={isLoading}
+              />
+            </Grid>
+          </Grid>
+        }
+      />
     );
   } else {
     return (

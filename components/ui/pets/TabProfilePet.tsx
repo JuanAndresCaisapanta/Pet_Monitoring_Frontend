@@ -55,7 +55,7 @@ type FormData = {
   breed: number;
 };
 
-export const TabProfilePet = () => {
+export const TabProfilePet = () => { 
   const [imagePath, setImagePath] = useState<string>("/images/pet/pet-profile.jpg");
   const [listSpecies, setListSpecies] = useState<string | null>("");
   const [listSex, setListSex] = useState<string | null>("");
@@ -225,6 +225,7 @@ export const TabProfilePet = () => {
         submit={handleSubmit(handleUpdatePet)}
         clearForm={handleClearForm}
         encType={`multipart/form-data`}
+        textLoadingButton={"Actualizar"}
         startIcon={<Update />}
         isLoading={isLoading}
         leftContent={

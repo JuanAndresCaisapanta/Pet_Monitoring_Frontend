@@ -2,69 +2,42 @@ import { useContext, useEffect, useState } from "react";
 
 import { useRouter } from "next/router";
 
-import {
-  CardContent,
-  Grid,
-  InputAdornment,
-  TextField,
-  Typography,
-} from "@mui/material";
-import SearchIcon from "@mui/icons-material/Search";
+import { Grid, Typography } from "@mui/material";
 
-import Swal from "sweetalert2";
-
-import { EstablishmentContext, PetContext } from "../../../../../../context";
+import { PetContext } from "../../../../../../context";
 import { CardEstablishment } from "./CardEstablishment";
+import { CardList } from "../../../../elements";
+
 export const TabListEstablishments = () => {
   const [searchWord, setSearchWord] = useState("");
+
   const { pet, getPet, isLoaded, petChange } = useContext(PetContext);
-  const { deleteEstablishment } = useContext(EstablishmentContext);
+
   const router = useRouter();
 
-  const { id } = router.query;
+  const { id: pet_id } = router.query;
 
   useEffect(() => {
-    getPet(id);
+    getPet(pet_id);
     return () => {
       petChange();
     };
-  }, [id]);
+  }, [pet_id]);
 
   const establishments = pet?.establishment;
 
   const filteredOptions = establishments?.filter(
-    (establishment) =>
-      establishment.name.toLowerCase().includes(searchWord.toLowerCase()) ||
-      !searchWord,
+    (establishment) => establishment.name.toLowerCase().includes(searchWord.toLowerCase()) || !searchWord,
   );
 
   if (isLoaded) {
     return (
-      <CardContent>
-        <Grid container spacing={2}>
-          <Grid
-            container
-            sx={{ mt: 2 }}
-            direction="column"
-            alignItems={"center"}
-          >
-            <Grid item>
-              <TextField
-                size="small"
-                sx={{ "& .MuiOutlinedInput-root": { borderRadius: 4 } }}
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <SearchIcon fontSize="small" />
-                    </InputAdornment>
-                  ),
-                }}
-                onChange={(e) => setSearchWord(e.target.value)}
-                placeholder={"Buscar"}
-              />
-            </Grid>
-          </Grid>
-          {filteredOptions!.length > 0 ? (
+      <CardList
+        title={`Lista de los establecimientos de ${pet?.name}`}
+        router={() => router.back()}
+        onChange={(event) => setSearchWord(event.target.value)}
+        filterCard={
+          filteredOptions!.length > 0 ? (
             filteredOptions!
               .sort((a: any, b: any) => {
                 if (a.name < b.name) {
@@ -78,7 +51,8 @@ export const TabListEstablishments = () => {
               .map((establishment) => (
                 <Grid item xs={12} sm={4} key={establishment.id}>
                   <CardEstablishment
-                    id={establishment.id}
+                    pet_id={Number(pet_id)}
+                    establishment_id={establishment.id}
                     name={establishment.name}
                     type={establishment.typeEstablishment.name}
                   />
@@ -92,9 +66,9 @@ export const TabListEstablishments = () => {
                 </Typography>
               </Grid>
             </Grid>
-          )}
-        </Grid>
-      </CardContent>
+          )
+        }
+      />
     );
   } else {
     return (

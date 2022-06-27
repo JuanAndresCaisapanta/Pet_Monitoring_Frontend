@@ -42,6 +42,7 @@ export const TabAddProfessional = () => {
   } = useForm<FormData>();
 
   const router = useRouter();
+
   const { id: pet_id } = router.query;
 
   useEffect(() => {
@@ -68,7 +69,7 @@ export const TabAddProfessional = () => {
       last_name,
       address,
       email,
-      cell_phone,
+      cell_phone, 
       profession!,
       Number(pet_id),
       handleClearForm,
@@ -78,7 +79,7 @@ export const TabAddProfessional = () => {
     }
   };
 
-  if (isLoadedProfessions) {
+  if (isLoadedProfessions&&professions) {
     return (
       <CardForm
         title={`Ingrese la información del Profesional`}

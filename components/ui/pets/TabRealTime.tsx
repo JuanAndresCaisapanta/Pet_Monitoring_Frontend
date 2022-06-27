@@ -36,6 +36,7 @@ export const TabRealTime = () => {
         <CardHeader
           title={`Información en tiempo real de ${pet?.name}`}
           titleTypographyProps={{ variant: "body1" }}
+          sx={{ paddingTop: "4px", paddingBottom: "4px" }}
           action={
             <IconButton
               aria-label="close"

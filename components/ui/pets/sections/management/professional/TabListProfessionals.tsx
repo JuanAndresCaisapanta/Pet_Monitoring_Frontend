@@ -33,7 +33,7 @@ export const TabListProfessionals = () => {
   if (isLoaded && pet?.name) {
     return (
       <CardList
-        title={`Lista de las profesionales de ${pet?.name}`}
+        title={`Lista de los profesionales de ${pet?.name}`}
         router={() => router.back()}
         onChange={(event) => setSearchWord(event.target.value)}
         filterCard={

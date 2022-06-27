@@ -29,8 +29,13 @@ export const TabContactProfessional = () => {
 
   const { id: professional_id } = router.query;
 
-  const { professional, getProfessional, clearProfessional, sendEmail, isLoaded } =
-    useContext(ProfessionalContext);
+  const {
+    professional,
+    getProfessional,
+    clearProfessional,
+    sendEmail,
+    isLoaded: isProfessionalLoaded,
+  } = useContext(ProfessionalContext);
 
   const {
     register,
@@ -89,13 +94,14 @@ export const TabContactProfessional = () => {
     setValue("message", message);
   };
 
-  if (isLoaded) {
+  if (isProfessionalLoaded && professional) {
     return (
       <CardFormContact
         title={`Contactar a ${professionalName} ${professionalLastName}`}
         submit={handleSubmit(
           listContact == "1" ? handleSendEmail : listContact == "2" ? handleSendWhatsapp : () => {},
         )}
+        router={() => router.back()}
         isLoading={isLoading}
         startIcon={<Send />}
         textLoadingButton={"Enviar"}

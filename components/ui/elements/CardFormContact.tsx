@@ -1,5 +1,6 @@
+import { NavigateBefore } from "@mui/icons-material";
 import { LoadingButton } from "@mui/lab";
-import { Button, Card, CardActions, CardContent, CardHeader, Divider, Grid } from "@mui/material";
+import { Button, Card, CardActions, CardContent, CardHeader, Divider, Grid, IconButton } from "@mui/material";
 import { FC, FormEventHandler, ReactNode } from "react";
 
 interface Props {
@@ -9,6 +10,7 @@ interface Props {
   startIcon: ReactNode;
   textLoadingButton: string;
   clearForm: () => void;
+  router: () => void;
   leftContent: ReactNode;
   rightContent: ReactNode;
 }
@@ -19,12 +21,22 @@ export const CardFormContact: FC<Props> = ({
   startIcon,
   textLoadingButton,
   clearForm,
+  router,
   leftContent,
   rightContent,
 }) => {
   return (
     <Card>
-      <CardHeader title={title} titleTypographyProps={{ variant: "body1", color: "#3A3541DE" }} />
+      <CardHeader
+        sx={{ paddingTop: "4px", paddingBottom: "4px" }}
+        title={title}
+        titleTypographyProps={{ variant: "body1" }}
+        action={
+          <IconButton aria-label="close" onClick={router} style={{ color: "#9E69FD" }}>
+            <NavigateBefore />
+          </IconButton>
+        }
+      />
       <Divider sx={{ margin: 0 }} />
       <form noValidate autoComplete="off" onSubmit={submit}>
         <CardContent>
