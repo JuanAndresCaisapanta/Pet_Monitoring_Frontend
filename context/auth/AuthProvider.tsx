@@ -3,12 +3,12 @@ import { FC, ReactNode, useEffect, useReducer } from "react";
 import { useRouter } from "next/router";
 
 import Cookies from "js-cookie";
-import axios from "axios";
 import jwt from "jsonwebtoken";
 
 import { petMonitoringApi } from "../../api";
 import { IUser } from "../../interfaces";
 import { AuthContext, authReducer } from "./";
+import { swalMessage } from "../../components";
 
 export interface AuthState {
   isLoggedIn: boolean;
@@ -39,9 +39,7 @@ export const AuthProvider: FC<Props> = ({ children }) => {
     }
     try {
       const token = Cookies.get("token") || "";
-      const { data } = await petMonitoringApi.get(
-        `/auth/validate-token/${token}`,
-      );
+      const { data } = await petMonitoringApi.get(`/auth/validate-token/${token}`);
       if (data == true) {
         const { sub: email } = jwt.decode(token) as { sub: string };
         const { data } = await petMonitoringApi.get(`/user/${email}`, {
@@ -50,30 +48,28 @@ export const AuthProvider: FC<Props> = ({ children }) => {
         dispatch({ type: "[Auth] - Login", payload: data });
       } else {
         Cookies.remove("token");
-        Cookies.remove("pet_id");
       }
     } catch (error) {
       Cookies.remove("token");
-      Cookies.remove("pet_id");
     }
   };
 
-  const loginUser = async (
-    email: string,
-    password: string,
-  ): Promise<boolean> => {
-    try {
-      const { data } = await petMonitoringApi.post("/auth/login", {
+  const loginUser = async (email: string, password: string): Promise<{ isComplete: boolean }> => {
+    return await petMonitoringApi
+      .post("/auth/login", {
         email,
         password,
+      })
+      .then((response) => {
+        Cookies.set("token", response.data.token);
+        checkToken();
+        swalMessage("Bienvenido", "Ingreso realizado con éxito", "success");
+        return { isComplete: true };
+      })
+      .catch(() => {
+        swalMessage("Error", "Error al ingresar - verifique la información proporcionada", "error");
+        return { isComplete: true };
       });
-      const { token } = data;
-      Cookies.set("token", token);
-      checkToken();
-      return true;
-    } catch (error) {
-      return false;
-    }
   };
 
   const registerUser = async (
@@ -81,46 +77,36 @@ export const AuthProvider: FC<Props> = ({ children }) => {
     last_name: string,
     email: string,
     password: string,
-    creation_date: string,
     image: any,
-  ): Promise<{ hasError: boolean; message?: string }> => {
-    try {
-      const { data } = await petMonitoringApi.post(
+  ): Promise<{ isComplete: boolean }> => {
+    return await petMonitoringApi
+      .post(
         "/auth/register",
         {
           name,
           last_name,
           email,
           password,
-          creation_date,
           image,
         },
         { headers: { "Content-Type": "multipart/form-data" } },
-      );
-      const { token, user } = data;
-      Cookies.set("token", token);
-      dispatch({ type: "[Auth] - Login", payload: user });
-      return {
-        hasError: false,
-      };
-    } catch (error) {
-      if (axios.isAxiosError(error)) {
-        return {
-          hasError: true,
-          message: error.message,
-        };
-      }
-      return {
-        hasError: true,
-        message: "No se pudo crear el usuario - intente de nuevo",
-      };
-    }
+      )
+      .then((response) => {
+        const { token, user } = response.data;
+        Cookies.set("token", token);
+        dispatch({ type: "[Auth] - Login", payload: user });
+        swalMessage("Listo", "Registro realizado con éxito", "success");
+        return { isComplete: true };
+      })
+      .catch(() => {
+        swalMessage("Error", "Error al registrar - verifique la información proporcionada", "error");
+        return { isComplete: true };
+      });
   };
 
   const logout = () => {
     router.reload();
     Cookies.remove("token");
-    Cookies.remove("pet_id");
   };
 
   return (

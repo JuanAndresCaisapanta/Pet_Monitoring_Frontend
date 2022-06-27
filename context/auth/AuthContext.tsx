@@ -5,15 +5,14 @@ interface ContextProps {
   isLoggedIn: boolean;
   user?: IUser;
 
-  loginUser: (email: string, password: string) => Promise<boolean>;
+  loginUser: (email: string, password: string) => Promise<{ isComplete: boolean }>;
   registerUser: (
     name: string,
     last_name: string,
     email: string,
     password: string,
-    creation_date: string,
     image: any,
-  ) => Promise<{ hasError: boolean; message?: string }>;
+  ) => Promise<{ isComplete: boolean }>;
   logout: () => void;
   checkToken: () => void;
 }

@@ -5,7 +5,6 @@ import { useRouter } from "next/router";
 
 import { styled } from "@mui/material/styles";
 import {
-  Chip,
   FormHelperText,
   Box,
   Button,
@@ -17,18 +16,13 @@ import {
   OutlinedInput,
   InputAdornment,
 } from "@mui/material";
-
-import {
-  VisibilityOutlined,
-  VisibilityOffOutlined,
-  ErrorOutline,
-} from "@mui/icons-material";
-
+import { VisibilityOutlined, VisibilityOffOutlined, Login } from "@mui/icons-material";
 import { useForm } from "react-hook-form";
 
 import { validations } from "../../utils";
 import { AuthLayout } from "../../components";
 import { AuthContext } from "../../context";
+import { LoadingButton } from "@mui/lab";
 
 interface State {
   password: string;
@@ -47,6 +41,7 @@ type FormData = {
 };
 
 const LoginPage = () => {
+  const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
 
   const {
@@ -55,8 +50,6 @@ const LoginPage = () => {
     formState: { errors },
   } = useForm<FormData>();
 
-  const [showError, setShowError] = useState(false);
-
   const [values, setValues] = useState<State>({
     password: "",
     showPassword: false,
@@ -64,15 +57,13 @@ const LoginPage = () => {
 
   const { loginUser } = useContext(AuthContext);
 
-  const onLoginUser = async ({ email, password }: FormData) => {
-    setShowError(false);
-    const isValidLogin = await loginUser(email, password);
-    if (!isValidLogin) {
-      setShowError(true);
-      setTimeout(() => setShowError(false), 3000);
-      return;
+  const handleLoginUser = async ({ email, password }: FormData) => {
+    setIsLoading(true);
+    const { isComplete } = await loginUser(email, password);
+    if (isComplete) {
+      router.replace("/users");
+      setIsLoading(false);
     }
-    router.replace("/users");
   };
 
   const handleClickShowPassword = () => {
@@ -85,14 +76,7 @@ const LoginPage = () => {
 
   return (
     <>
-      <form noValidate autoComplete="off" onSubmit={handleSubmit(onLoginUser)}>
-        <Chip
-          label="No reconocemos ese usuario / contraseña"
-          color="error"
-          icon={<ErrorOutline />}
-          className="fadeIn"
-          sx={{ display: showError ? "flex" : "none" }}
-        />
+      <form noValidate autoComplete="off" onSubmit={handleSubmit(handleLoginUser)}>
         <TextField
           autoFocus
           fullWidth
@@ -105,6 +89,7 @@ const LoginPage = () => {
           })}
           error={!!errors.email}
           helperText={errors.email?.message}
+          disabled={isLoading}
         />
         <FormControl fullWidth sx={{ marginBottom: 2 }}>
           <InputLabel htmlFor="auth-login-password">Contraseña</InputLabel>
@@ -116,6 +101,7 @@ const LoginPage = () => {
               minLength: { value: 3, message: "Mínimo 6 caracteres" },
             })}
             error={!!errors.password}
+            disabled={isLoading}
             endAdornment={
               <InputAdornment position="end">
                 <IconButton
@@ -124,11 +110,7 @@ const LoginPage = () => {
                   onMouseDown={handleMouseDownPassword}
                   aria-label="toggle password visibility"
                 >
-                  {values.showPassword ? (
-                    <VisibilityOutlined />
-                  ) : (
-                    <VisibilityOffOutlined />
-                  )}
+                  {values.showPassword ? <VisibilityOutlined /> : <VisibilityOffOutlined />}
                 </IconButton>
               </InputAdornment>
             }
@@ -149,21 +131,23 @@ const LoginPage = () => {
           }}
         >
           <Link passHref href="/">
-            <LinkStyled onClick={(e) => e.preventDefault()}>
-              Olvido su contraseña?
-            </LinkStyled>
+            <LinkStyled onClick={(e) => e.preventDefault()}>Olvido su contraseña?</LinkStyled>
           </Link>
         </Box>
-        <Button
+        <LoadingButton
           fullWidth
           size="large"
           variant="contained"
+          color="primary"
           sx={{ marginBottom: 2 }}
-          type="submit"
           disableElevation
+          type="submit"
+          startIcon={<Login />}
+          loading={isLoading}
+          loadingPosition="start"
         >
-          Ingresar
-        </Button>
+          Iniciar Sesión
+        </LoadingButton>
       </form>
       <Box
         sx={{
@@ -188,10 +172,7 @@ const LoginPage = () => {
 
 LoginPage.getLayout = function getLayout(page: ReactElement) {
   return (
-    <AuthLayout
-      title="Ingresar"
-      detail="Por favor ingrese con su correo y contraseña"
-    >
+    <AuthLayout title="Ingresar" detail="Por favor ingrese con su correo y contraseña">
       {page}
     </AuthLayout>
   );

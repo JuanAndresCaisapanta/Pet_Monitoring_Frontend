@@ -48,7 +48,7 @@ export const TabAddDevice = () => {
     setSelectPet("");
     setValue("pet", null);
   };
-  if (user?.pet) {
+  if (user?.pet.length! > 0) {
     return (
       <CardForm
         title={`Ingrese la información de su Dispositivo`}

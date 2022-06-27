@@ -35,6 +35,7 @@ import { SelectFormName, SelectFormId } from "../elements";
 import { ISpecies } from "../../../interfaces";
 import { colorPet, sexPet } from "../../../data";
 import { CardForm } from "../elements/CardForm";
+import moment from "moment";
 
 type FormData = {
   name: string;
@@ -108,7 +109,7 @@ export const TabAddPet = () => {
     setValue("name", "");
     setValue("weight", 1);
     setBirthDate(new Date());
-    setValue("birth_date", new Date().toString());
+    setValue("birth_date", null);
     setListSpecies("");
     setValue("species", null);
     clearBreeds();
@@ -116,7 +117,7 @@ export const TabAddPet = () => {
     setValue("breed", null);
     setImgSrc("/images/pet/pet-profile.jpg");
     setValue("image", 0);
-  };
+  }; 
 
   const handleAddPet = async ({
     name,
@@ -145,7 +146,7 @@ export const TabAddPet = () => {
         sex!,
         sterilization,
         compressedImage,
-        birth_date!,
+        moment(birth_date!, "DD/MM/YYYY").format("MM/DD/YYYY"),
         breed!,
         user!.id,
         handleClearForm,
@@ -162,7 +163,7 @@ export const TabAddPet = () => {
         sex!,
         sterilization,
         image[0],
-        birth_date!,
+        moment(birth_date!, "DD/MM/YYYY").format("MM/DD/YYYY"),
         breed!,
         user!.id,
         handleClearForm,
@@ -235,11 +236,12 @@ export const TabAddPet = () => {
                 <LocalizationProvider dateAdapter={AdapterDateFns}>
                   <DesktopDatePicker
                     label="Fecha Nacimiento"
-                    inputFormat="MM/dd/yyyy"
+                    inputFormat="dd/MM/yyyy"
                     disabled={isLoading}
                     value={birthDate}
                     onChange={(newValue: Date | null) => {
                       setBirthDate(newValue);
+                      setValue("birth_date", moment(newValue, "DD/MM/YYYY").format("DD/MM/YYYY"));
                     }}
                     maxDate={new Date()}
                     renderInput={(params) => (

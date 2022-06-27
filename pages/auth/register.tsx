@@ -1,10 +1,4 @@
-import {
-  ChangeEvent,
-  MouseEvent,
-  ReactElement,
-  useContext,
-  useState,
-} from "react";
+import { ChangeEvent, MouseEvent, ReactElement, useContext, useState } from "react";
 
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -19,26 +13,18 @@ import {
   Button,
   Box,
   InputAdornment,
-  Chip,
   FormHelperText,
   Grid,
-  CircularProgress,
-  Stack,
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
-
-import {
-  VisibilityOutlined,
-  VisibilityOffOutlined,
-  ErrorOutline,
-} from "@mui/icons-material";
-
+import { VisibilityOutlined, VisibilityOffOutlined, Save } from "@mui/icons-material";
 import { useForm } from "react-hook-form";
+import { LoadingButton } from "@mui/lab";
+import imageCompression from "browser-image-compression";
 
 import { AuthLayout } from "../../components";
 import { AuthContext } from "../../context";
 import { validations } from "../../utils";
-import imageCompression from "browser-image-compression";
 
 interface State {
   password: string;
@@ -66,10 +52,8 @@ type FormData = {
 };
 
 const RegisterPage = () => {
-  const [showError, setShowError] = useState(false);
-  const [errorMessage, setErrorMessage] = useState("");
   const [imgSrc, setImgSrc] = useState("/images/profile/user.png");
-  const [loading, setLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [values, setValues] = useState<State>({
     password: "",
     showPassword: false,
@@ -85,62 +69,27 @@ const RegisterPage = () => {
     formState: { errors },
   } = useForm<FormData>();
 
-  const current = new Date();
-  const date = `${current.getFullYear()}-${
-    current.getMonth() + 1
-  }-${current.getDate()}`;
-
-  const onRegisterForm = async ({
-    name,
-    last_name,
-    email,
-    password,
-    image,
-  }: FormData) => {
+  const handleRegisterUser = async ({ name, last_name, email, password, image }: FormData) => {
+    setIsLoading(true);
     const options = {
       maxSizeMB: 1,
       maxWidthOrHeight: 1920,
       useWebWorker: true,
     };
-
-    setShowError(false);
     if (image[0] != null) {
-      const cImage = await imageCompression(image[0], options);
-      const { hasError, message } = await registerUser(
-        name,
-        last_name,
-        email,
-        password,
-        date,
-        cImage,
-      );
-      if (hasError) {
-        setShowError(true);
-        setLoading(false);
-        setErrorMessage(message!);
-        setTimeout(() => setShowError(false), 3000);
-        return;
+      const compressedImage = await imageCompression(image[0], options);
+      const { isComplete } = await registerUser(name, last_name, email, password, compressedImage);
+      if (isComplete) {
+        router.replace("/auth/login");
+        setIsLoading(false);
       }
     } else {
-      const { hasError, message } = await registerUser(
-        name,
-        last_name,
-        email,
-        password,
-        date,
-        image[0],
-      );
-      if (hasError) {
-        setShowError(true);
-        setLoading(false);
-        setErrorMessage(message!);
-        setTimeout(() => setShowError(false), 3000);
-        return;
+      const { isComplete } = await registerUser(name, last_name, email, password, image[0]);
+      if (isComplete) {
+        router.replace("/auth/login");
+        setIsLoading(false);
       }
     }
-    setLoading(true);
-
-    router.replace("/auth/login");
   };
 
   const handleClickShowPassword = () => {
@@ -161,8 +110,7 @@ const RegisterPage = () => {
   };
 
   const onCancel = () => {
-    setImgSrc("/images/profile/user.png");
-    router.reload();
+    router.replace("/auth/login");
   };
 
   return (
@@ -170,21 +118,9 @@ const RegisterPage = () => {
       <form
         noValidate
         autoComplete="off"
-        onSubmit={handleSubmit(onRegisterForm)}
+        onSubmit={handleSubmit(handleRegisterUser)}
         encType={`multipart/form-data`}
       >
-        <Chip
-          label="Existen problemas con el ingreso de datos"
-          color="error"
-          icon={<ErrorOutline />}
-          className="fadeIn"
-          sx={{ display: showError ? "flex" : "none", marginBottom: "1rem" }}
-        />
-        {loading && (
-          <Stack alignItems="center">
-            <CircularProgress sx={{ position: "fixed" }} />
-          </Stack>
-        )}
         <Box sx={{ alignItems: "center" }}>
           <ImgStyled src={imgSrc} alt="Imagen Perfil" />
         </Box>
@@ -194,7 +130,7 @@ const RegisterPage = () => {
             variant="text"
             htmlFor="account-settings-upload-image"
             disableElevation
-            disabled={loading}
+            disabled={isLoading}
           >
             Cargar Imagen
             <input
@@ -217,7 +153,7 @@ const RegisterPage = () => {
           })}
           error={!!errors.name}
           helperText={errors.name?.message}
-          disabled={loading}
+          disabled={isLoading}
         />
         <TextField
           fullWidth
@@ -229,10 +165,9 @@ const RegisterPage = () => {
           })}
           error={!!errors.name}
           helperText={errors.name?.message}
-          disabled={loading}
+          disabled={isLoading}
         />
         <TextField
-          disabled={loading}
           fullWidth
           label="Correo Electrónico"
           sx={{ marginBottom: 1 }}
@@ -242,11 +177,11 @@ const RegisterPage = () => {
           })}
           error={!!errors.email}
           helperText={errors.email?.message}
+          disabled={isLoading}
         />
         <FormControl fullWidth sx={{ marginBottom: 2 }}>
           <InputLabel htmlFor="auth-register-password">Contraseña</InputLabel>
           <OutlinedInput
-            disabled={loading}
             label="Contraseña"
             type={values.showPassword ? "text" : "password"}
             {...register("password", {
@@ -254,6 +189,7 @@ const RegisterPage = () => {
               minLength: { value: 3, message: "Mínimo 6 caracteres" },
             })}
             error={!!errors.password}
+            disabled={isLoading}
             endAdornment={
               <InputAdornment position="end">
                 <IconButton
@@ -279,15 +215,18 @@ const RegisterPage = () => {
         </FormControl>
         <Grid container>
           <Grid item xs={12} sm={6}>
-            <Button
+            <LoadingButton
+              variant="contained"
+              color="primary"
+              sx={{ marginBottom: 1 }}
               disableElevation
               type="submit"
-              variant="contained"
-              sx={{ marginBottom: 1 }}
-              disabled={loading}
+              startIcon={<Save />}
+              loading={isLoading}
+              loadingPosition="start"
             >
               Registrarse
-            </Button>
+            </LoadingButton>
           </Grid>
           <Grid item xs={12} sm={6}>
             <Button
@@ -295,7 +234,7 @@ const RegisterPage = () => {
               color="secondary"
               variant="outlined"
               onClick={onCancel}
-              disabled={loading}
+              disabled={isLoading}
               sx={{ marginBottom: 1 }}
             >
               Cancelar
@@ -326,10 +265,7 @@ const RegisterPage = () => {
 
 RegisterPage.getLayout = function getLayout(page: ReactElement) {
   return (
-    <AuthLayout
-      title="Ingresar"
-      detail=" Porfavor ingrese los datos necesarios"
-    >
+    <AuthLayout title="Ingresar" detail=" Porfavor ingrese los datos necesarios">
       {page}
     </AuthLayout>
   );
