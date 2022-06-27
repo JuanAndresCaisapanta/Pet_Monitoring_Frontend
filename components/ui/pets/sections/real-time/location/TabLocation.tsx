@@ -173,6 +173,22 @@ export const TabLocation = () => {
             </CardContent>
           </Card>
         ) : (
+          <Card>
+            <CardHeader
+              sx={{ paddingTop: "4px", paddingBottom: "4px" }}
+              title={`Ubicación de ${pet?.name}`}
+              titleTypographyProps={{ variant: "body1" }}
+              action={
+                <IconButton
+                  aria-label="close"
+                  onClick={() => router.back()}
+                  style={{ color: "#9E69FD" }}
+                >
+                  <NavigateBefore />
+                </IconButton>
+              }
+            />
+            <Divider sx={{ margin: 0 }} />
           <Grid container direction="column" alignItems={"center"}>
             <Grid item>
               <Typography color={"primary"} sx={{ mt: 1 }}>
@@ -180,6 +196,7 @@ export const TabLocation = () => {
               </Typography>
             </Grid>
           </Grid>
+          </Card>
         )}
       </>
     );

@@ -111,7 +111,7 @@ export const DeviceProvider: FC<Props> = ({ children }) => {
       });
   };
 
-  const deleteDevice = async (id: number): Promise<{ isComplete: boolean }> => {
+  const deleteDevice = async (device_id: number): Promise<{ isComplete: boolean }> => {
     const token = Cookies.get("token") || "";
     let code: any;
     let callback: any;
@@ -129,7 +129,7 @@ export const DeviceProvider: FC<Props> = ({ children }) => {
       .then(async (result) => {
         if (result.isConfirmed) {
           await petMonitoringApi
-            .get(`/device/${id}`, {
+            .get(`/device/${device_id}`, {
               headers: {
                 Authorization: `Bearer ${token}`,
               },

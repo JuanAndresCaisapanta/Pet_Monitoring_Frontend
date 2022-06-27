@@ -41,7 +41,7 @@ export const TabListDevices = () => {
               .map((device) => (
                 <Grid item xs={12} sm={3} key={device.id}>
                   <CardDevice
-                    id={device.id}
+                    device_id={device.id}
                     code={device.code}
                     name={device.masterData
                       .map((data) => data.pet?.name)
