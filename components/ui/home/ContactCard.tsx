@@ -1,21 +1,10 @@
-import {
-  Avatar,
-  Box,
-  CardContent,
-  CardHeader,
-  Card,
-  Grid,
-  Typography,
-} from "@mui/material";
+import { Avatar, Box, CardContent, CardHeader, Card, Grid, Typography } from "@mui/material";
 import ContactPhoneIcon from "@mui/icons-material/ContactPhone";
 
 export const ContactCard = () => {
   return (
     <Card>
-      <CardHeader
-        title="Servicio Técnico"
-        titleTypographyProps={{ color: "primary" }}
-      />
+      <CardHeader title="Servicio Técnico" titleTypographyProps={{ color: "primary" }} />
       <CardContent sx={{ pt: (theme) => `${theme.spacing(1)} !important` }}>
         <Grid sx={{ pt: (theme) => `${theme.spacing(1)} !important` }}>
           <Box sx={{ display: "flex", alignItems: "center" }}>
@@ -33,9 +22,7 @@ export const ContactCard = () => {
             </Avatar>
             <Box sx={{ display: "flex", flexDirection: "column" }}>
               <Typography variant="caption">0999288791</Typography>
-              <Typography variant="caption">
-                juancaisapanta@hotmail.com
-              </Typography>
+              <Typography variant="caption">juancaisapanta@hotmail.com</Typography>
             </Box>
           </Box>
         </Grid>

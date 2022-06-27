@@ -16,15 +16,19 @@ type FormData = {
   email: string;
   cell_phone: string;
   phone: string;
-  typeEstablishment: number|null;
+  typeEstablishment: number | null;
 };
 
 export const TabAddEstablishment = () => {
   const [listTypeEstablishment, setListTypeEstablishment] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
-  const { typeEstablishments, getTypeEstablishments, isLoaded:isLoadedTypeEstablishments, clearTypeEstablishments } =
-    useContext(TypeEstablishmentContext);
+  const {
+    typeEstablishments,
+    getTypeEstablishments,
+    isLoaded: isLoadedTypeEstablishments,
+    clearTypeEstablishments,
+  } = useContext(TypeEstablishmentContext);
   const { addEstablishment } = useContext(EstablishmentContext);
 
   const {

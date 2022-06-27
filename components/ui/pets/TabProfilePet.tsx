@@ -1,13 +1,10 @@
 import { ChangeEvent, useContext, useState, useEffect } from "react";
 
 import Image from "next/image";
-
 import { useRouter } from "next/router";
 
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
-
 import { DesktopDatePicker, LocalizationProvider } from "@mui/lab";
-
 import {
   Button,
   Checkbox,
@@ -23,23 +20,15 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-
 import { Update } from "@mui/icons-material";
-
 import moment from "moment";
-
 import { useForm } from "react-hook-form";
-
 import imageCompression from "browser-image-compression";
 
 import { CardForm, SelectFormName } from "../elements";
-
 import { BreedContext, PetContext, SpeciesContext } from "../../../context";
-
 import { colorPet, sexPet } from "../../../data";
-
 import { ISpecies } from "../../../interfaces";
-
 import { SelectFormId } from "../elements/SelectFormId";
 
 type FormData = {
@@ -55,7 +44,7 @@ type FormData = {
   breed: number;
 };
 
-export const TabProfilePet = () => { 
+export const TabProfilePet = () => {
   const [imagePath, setImagePath] = useState<string>("/images/pet/pet-profile.jpg");
   const [listSpecies, setListSpecies] = useState<string | null>("");
   const [listSex, setListSex] = useState<string | null>("");

@@ -5,11 +5,7 @@ import { TabList, TabPanel, TabContext } from "@mui/lab";
 import MuiTab, { TabProps } from "@mui/material/Tab";
 import { Email, Store } from "@mui/icons-material";
 
-import {
-  MainLayout,
-  TabContactEstablishment,
-  TabProfileEstablishment,
-} from "../../../../../../../components";
+import { MainLayout, TabContactEstablishment, TabProfileEstablishment } from "../../../../../../../components";
 
 const Tab = styled(MuiTab)<TabProps>(({ theme }) => ({
   [theme.breakpoints.down("md")]: {
@@ -72,10 +68,7 @@ const ProfileEstablishmentPage = () => {
 
 ProfileEstablishmentPage.getLayout = function getLayout(page: ReactElement) {
   return (
-    <MainLayout
-      title={"Establecimiento"}
-      pageDescription={"Información del establecimiento"}
-    >
+    <MainLayout title={"Establecimiento"} pageDescription={"Información del establecimiento"}>
       {page}
     </MainLayout>
   );

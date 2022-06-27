@@ -1,7 +1,6 @@
 import { MouseEvent, ReactElement, useContext, useState } from "react";
 
 import Link from "next/link";
-import { useRouter } from "next/router";
 
 import { styled } from "@mui/material/styles";
 import {
@@ -43,7 +42,6 @@ type FormData = {
 const LoginPage = () => {
   const [isLoading, setIsLoading] = useState(false);
 
-
   const {
     register,
     handleSubmit,
@@ -61,7 +59,6 @@ const LoginPage = () => {
     setIsLoading(true);
     const { isComplete } = await loginUser(email, password);
     if (isComplete) {
-
       setIsLoading(false);
     }
   };

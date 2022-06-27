@@ -4,7 +4,6 @@ import { Box, Card } from "@mui/material";
 import MuiTab, { TabProps } from "@mui/material/Tab";
 import { styled } from "@mui/material/styles";
 import { TabList, TabPanel, TabContext } from "@mui/lab";
-
 import { AccountCircleOutlined, LockOpenOutlined } from "@mui/icons-material";
 
 import { MainLayout, TabProfileUser, TabSecurity } from "../../../components";
@@ -68,10 +67,7 @@ const ProfilePage = () => {
 };
 ProfilePage.getLayout = function getLayout(page: ReactElement) {
   return (
-    <MainLayout
-      title={"Monitoreo Mascotas"}
-      pageDescription={"Una PWA donde se puede monitorear a tu mascota"}
-    >
+    <MainLayout title={"Monitoreo Mascotas"} pageDescription={"Una PWA donde se puede monitorear a tu mascota"}>
       {page}
     </MainLayout>
   );

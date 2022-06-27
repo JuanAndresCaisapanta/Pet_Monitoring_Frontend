@@ -1,10 +1,11 @@
+import { FC } from "react";
+
 import {
   Battery0BarOutlined,
   Battery2BarOutlined,
   Battery4BarOutlined,
   BatteryStdOutlined,
 } from "@mui/icons-material";
-import { FC } from "react";
 
 interface Props {
   value: number;

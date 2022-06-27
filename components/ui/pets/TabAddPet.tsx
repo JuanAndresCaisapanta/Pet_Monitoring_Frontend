@@ -117,7 +117,7 @@ export const TabAddPet = () => {
     setValue("breed", null);
     setImgSrc("/images/pet/pet-profile.jpg");
     setValue("image", 0);
-  }; 
+  };
 
   const handleAddPet = async ({
     name,

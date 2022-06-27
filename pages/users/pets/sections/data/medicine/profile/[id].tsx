@@ -3,13 +3,9 @@ import { SyntheticEvent, useState, ReactElement } from "react";
 import { Box, Card, styled } from "@mui/material";
 import { TabList, TabPanel, TabContext } from "@mui/lab";
 import MuiTab, { TabProps } from "@mui/material/Tab";
+import { VaccinesOutlined } from "@mui/icons-material";
 
-import {
-  VaccinesOutlined
-} from "@mui/icons-material";
-
-import { MainLayout,TabProfileMedicine} from "../../../../../../../components";
-
+import { MainLayout, TabProfileMedicine } from "../../../../../../../components";
 
 const Tab = styled(MuiTab)<TabProps>(({ theme }) => ({
   [theme.breakpoints.down("md")]: {
@@ -51,7 +47,7 @@ const ProfileMedicinePage = () => {
           />
         </TabList>
         <TabPanel sx={{ p: 0 }} value="medicine">
-          <TabProfileMedicine/>
+          <TabProfileMedicine />
         </TabPanel>
       </TabContext>
     </Card>
@@ -60,10 +56,7 @@ const ProfileMedicinePage = () => {
 
 ProfileMedicinePage.getLayout = function getLayout(page: ReactElement) {
   return (
-    <MainLayout
-      title={"Medicinas"}
-      pageDescription={"Aqui se puede revisar los medicamentos de tu mascota"}
-    >
+    <MainLayout title={"Medicinas"} pageDescription={"Aqui se puede revisar los medicamentos de tu mascota"}>
       {page}
     </MainLayout>
   );

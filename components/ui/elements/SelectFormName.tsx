@@ -10,7 +10,7 @@ interface Props {
   label: string;
   name: string;
   disabled?: boolean;
-  error:any
+  error: any;
   helperText: any;
 }
 
@@ -27,7 +27,9 @@ export const SelectFormName: FC<Props> = ({
 }) => {
   return (
     <FormControl fullWidth>
-      <InputLabel error={error} id="demo-simple-select-label">{label}</InputLabel>
+      <InputLabel error={error} id="demo-simple-select-label">
+        {label}
+      </InputLabel>
       <Select
         labelId="demo-simple-select-label"
         id="demo-simple-select"

@@ -4,9 +4,7 @@ import { useRouter } from "next/router";
 
 import { Grid, Typography, TextField, SelectChangeEvent } from "@mui/material";
 import { Save } from "@mui/icons-material";
-
 import { Controller, useForm } from "react-hook-form";
-
 import MuiPhoneNumber from "material-ui-phone-number";
 
 import { ProfessionalContext, ProfessionContext } from "../../../../../../context";
@@ -69,7 +67,7 @@ export const TabAddProfessional = () => {
       last_name,
       address,
       email,
-      cell_phone, 
+      cell_phone,
       profession!,
       Number(pet_id),
       handleClearForm,
@@ -79,7 +77,7 @@ export const TabAddProfessional = () => {
     }
   };
 
-  if (isLoadedProfessions&&professions) {
+  if (isLoadedProfessions && professions) {
     return (
       <CardForm
         title={`Ingrese la información del Profesional`}

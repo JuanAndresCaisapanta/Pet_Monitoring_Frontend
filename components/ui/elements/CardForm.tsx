@@ -1,10 +1,8 @@
 import { FC, FormEventHandler, ReactNode } from "react";
 
 import { NavigateBefore } from "@mui/icons-material";
-
 import { LoadingButton } from "@mui/lab";
-
-import { Button, Card, CardActions, CardContent, CardHeader, Divider, Grid, IconButton, TextField } from '@mui/material';
+import { Button, Card, CardActions, CardContent, CardHeader, Divider, Grid, IconButton } from "@mui/material";
 
 interface Props {
   title: string;
@@ -14,7 +12,7 @@ interface Props {
   isLoading: boolean;
   encType?: string;
   textLoadingButton: string;
-  startIcon:ReactNode;
+  startIcon: ReactNode;
   leftContent: ReactNode;
   rightContent: ReactNode;
 }

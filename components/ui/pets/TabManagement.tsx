@@ -1,18 +1,11 @@
+import { useContext, useEffect } from "react";
+
 import { useRouter } from "next/router";
 
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  Divider,
-  Grid,
-  IconButton,
-  Typography,
-} from "@mui/material";
+import { Card, CardContent, CardHeader, Divider, Grid, IconButton, Typography } from "@mui/material";
+import { NavigateBefore } from "@mui/icons-material";
 
 import { CardSection } from "./CardSection";
-import { NavigateBefore } from "@mui/icons-material";
-import { useContext, useEffect } from "react";
 import { PetContext } from "../../../context";
 
 export const TabManagement = () => {
@@ -37,11 +30,7 @@ export const TabManagement = () => {
           titleTypographyProps={{ variant: "body1" }}
           sx={{ paddingTop: "4px", paddingBottom: "4px" }}
           action={
-            <IconButton
-              aria-label="close"
-              onClick={() => router.back()}
-              style={{ color: "#9E69FD" }}
-            >
+            <IconButton aria-label="close" onClick={() => router.back()} style={{ color: "#9E69FD" }}>
               <NavigateBefore />
             </IconButton>
           }

@@ -7,11 +7,8 @@ import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { Update } from "@mui/icons-material";
 import { DesktopDatePicker, LocalizationProvider } from "@mui/lab";
 import { Button, Grid, SelectChangeEvent, TextField, Typography } from "@mui/material";
-
 import { useForm } from "react-hook-form";
-
 import moment from "moment";
-
 import imageCompression from "browser-image-compression";
 
 import { CardForm } from "../../../../elements";
@@ -188,6 +185,7 @@ export const TabProfileMedicine = () => {
         submit={handleSubmit(handleUpdateMedicine)}
         clearForm={handleClearForm}
         encType={`multipart/form-data`}
+        textLoadingButton={"Actualizar"}
         startIcon={<Update />}
         isLoading={isLoading}
         leftContent={

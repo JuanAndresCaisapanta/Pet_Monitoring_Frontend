@@ -3,7 +3,6 @@ import { SyntheticEvent, useState, ReactElement } from "react";
 import { Box, Card, styled } from "@mui/material";
 import { TabList, TabPanel, TabContext } from "@mui/lab";
 import MuiTab, { TabProps } from "@mui/material/Tab";
-
 import { HailOutlined, AddCircleOutlineOutlined } from "@mui/icons-material";
 
 import { TabListProfessionals, MainLayout, TabAddProfessional } from "../../../../../../components";
@@ -60,7 +59,7 @@ const ProfessionalsPage = () => {
           <TabListProfessionals />
         </TabPanel>
         <TabPanel sx={{ p: 0 }} value="add-professionals">
-          <TabAddProfessional/>
+          <TabAddProfessional />
         </TabPanel>
       </TabContext>
     </Card>
@@ -69,10 +68,7 @@ const ProfessionalsPage = () => {
 
 ProfessionalsPage.getLayout = function getLayout(page: ReactElement) {
   return (
-    <MainLayout
-      title={"Profesionales"}
-      pageDescription={"Aqui se puede revisar los profesionales de tu mascota"}
-    >
+    <MainLayout title={"Profesionales"} pageDescription={"Aqui se puede revisar los profesionales de tu mascota"}>
       {page}
     </MainLayout>
   );

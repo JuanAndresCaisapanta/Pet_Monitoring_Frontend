@@ -23,36 +23,26 @@ export const TabListPets = () => {
   const { user } = useContext(AuthContext);
   const router = useRouter();
   const filteredOptions = user?.pet!.filter(
-    (pet) =>
-      pet.name.toLowerCase().includes(searchWord.toLowerCase()) || !searchWord,
+    (pet) => pet.name.toLowerCase().includes(searchWord.toLowerCase()) || !searchWord,
   );
 
   if (user?.pet) {
     return (
       <Card>
         <CardHeader
-       sx={{paddingTop: "4px", paddingBottom: "4px"}}
+          sx={{ paddingTop: "4px", paddingBottom: "4px" }}
           title={`Lista de sus Mascotas`}
           titleTypographyProps={{ variant: "body1" }}
           action={
-            <IconButton
-              aria-label="close"
-              onClick={() => router.back()}
-              style={{ color: "#9E69FD" }}
-            >
+            <IconButton aria-label="close" onClick={() => router.back()} style={{ color: "#9E69FD" }}>
               <NavigateBefore />
             </IconButton>
           }
         />
-        <Divider sx={{ margin: 0 }}/>
+        <Divider sx={{ margin: 0 }} />
         <CardContent>
           <Grid container spacing={2} justifyContent={"center"}>
-            <Grid
-              container
-              sx={{ mt: 2 }}
-              direction="column"
-              alignItems={"center"}
-            >
+            <Grid container sx={{ mt: 2 }} direction="column" alignItems={"center"}>
               <Grid item>
                 <TextField
                   size="small"

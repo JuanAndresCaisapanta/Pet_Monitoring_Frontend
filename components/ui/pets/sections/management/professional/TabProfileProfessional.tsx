@@ -4,9 +4,7 @@ import { useRouter } from "next/router";
 
 import { Grid, Typography, TextField, SelectChangeEvent } from "@mui/material";
 import { Update } from "@mui/icons-material";
-
 import { Controller, useForm } from "react-hook-form";
-
 import MuiPhoneNumber from "material-ui-phone-number";
 
 import { ProfessionalContext, ProfessionContext } from "../../../../../../context";

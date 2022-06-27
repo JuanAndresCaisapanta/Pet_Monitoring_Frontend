@@ -1,4 +1,5 @@
 import { FC, ReactNode, useContext } from "react";
+
 import Head from "next/head";
 
 import { Box } from "@mui/material";
@@ -13,12 +14,7 @@ interface Props {
   children: ReactNode;
 }
 
-export const MainLayout: FC<Props> = ({
-  children,
-  title,
-  pageDescription,
-  imageFullUrl,
-}) => {
+export const MainLayout: FC<Props> = ({ children, title, pageDescription, imageFullUrl }) => {
   const { isMenuOpen, toggleSideMenu } = useContext(UiContext);
 
   return (

@@ -4,17 +4,11 @@ import Image from "next/image";
 import { useRouter } from "next/router";
 
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
-
 import { DesktopDatePicker, LocalizationProvider } from "@mui/lab";
-
 import { Button, Grid, SelectChangeEvent, TextField } from "@mui/material";
-
 import { Save } from "@mui/icons-material";
-
 import moment from "moment";
-
 import { useForm } from "react-hook-form";
-
 import imageCompression from "browser-image-compression";
 
 import { MedicineContext, TypeMedicineContext } from "../../../../../../context";

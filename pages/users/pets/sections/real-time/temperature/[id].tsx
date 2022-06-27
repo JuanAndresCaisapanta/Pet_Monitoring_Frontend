@@ -3,9 +3,7 @@ import { SyntheticEvent, useState, ReactElement } from "react";
 import { Box, Card, styled } from "@mui/material";
 import { TabList, TabPanel, TabContext } from "@mui/lab";
 import MuiTab, { TabProps } from "@mui/material/Tab";
-
-import { DeviceThermostatOutlined } from "@mui/icons-material";
-import AddCircleOutlineOutlinedIcon from "@mui/icons-material/AddCircleOutlineOutlined";
+import { DeviceThermostat } from "@mui/icons-material";
 
 import { TabTemperature, MainLayout } from "../../../../../../components";
 
@@ -41,7 +39,7 @@ const TemperaturePage = () => {
             value="temperature"
             label={
               <Box sx={{ display: "flex", alignItems: "center" }}>
-                <DeviceThermostatOutlined />
+                <DeviceThermostat />
                 <TabName>Temperatura</TabName>
               </Box>
             }
@@ -69,10 +67,7 @@ const TemperaturePage = () => {
 
 TemperaturePage.getLayout = function getLayout(page: ReactElement) {
   return (
-    <MainLayout
-      title={"Monitoreo Mascotas"}
-      pageDescription={"Una PWA donde se puede monitorear a tu mascota"}
-    >
+    <MainLayout title={"Monitoreo Mascotas"} pageDescription={"Una PWA donde se puede monitorear a tu mascota"}>
       {page}
     </MainLayout>
   );

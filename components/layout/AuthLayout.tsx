@@ -36,12 +36,7 @@ export const AuthLayout: FC<Props> = ({ children, title, detail }) => {
                     justifyContent: "center",
                   }}
                 >
-                  <Image
-                    src="/images/logo.png"
-                    alt="Logo"
-                    height="50%"
-                    width="50%"
-                  />
+                  <Image src="/images/logo.png" alt="Logo" height="50%" width="50%" />
                   <Typography
                     variant="h6"
                     sx={{
@@ -56,10 +51,7 @@ export const AuthLayout: FC<Props> = ({ children, title, detail }) => {
                   </Typography>
                 </Box>
                 <Box sx={{ mb: 3 }}>
-                  <Typography
-                    variant="h5"
-                    sx={{ fontWeight: 600, marginBottom: 1.5 }}
-                  >
+                  <Typography variant="h5" sx={{ fontWeight: 600, marginBottom: 1.5 }}>
                     Bienvenido
                   </Typography>
                   <Typography variant="body2">{detail}</Typography>

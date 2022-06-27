@@ -161,7 +161,7 @@ export const MedicineProvider: FC<Props> = ({ children }) => {
       showCancelButton: true,
       backdrop: false,
       confirmButtonColor: "#9E69FD",
-      cancelButtonColor: "#9C9FA4", 
+      cancelButtonColor: "#9C9FA4",
       confirmButtonText: "Si, Eliminar",
     })
       .then(async (result) => {
@@ -186,11 +186,11 @@ export const MedicineProvider: FC<Props> = ({ children }) => {
       });
   };
 
-  const clearMedicine= () => {
+  const clearMedicine = () => {
     dispatch({
       type: "[Medicine] - clearMedicine",
     });
-  }
+  };
 
   return (
     <MedicineContext.Provider

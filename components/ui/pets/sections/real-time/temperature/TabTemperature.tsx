@@ -2,31 +2,10 @@ import { useContext, useEffect, useMemo } from "react";
 
 import { useRouter } from "next/router";
 
-import {
-  Avatar,
-  Card,
-  CardContent,
-  CardHeader,
-  Divider,
-  Grid,
-  IconButton,
-  Typography,
-} from "@mui/material";
-
+import { Avatar, Card, CardContent, CardHeader, Divider, Grid, IconButton, Typography } from "@mui/material";
 import { NavigateBefore } from "@mui/icons-material";
-
-import {
-  EmailIcon,
-  EmailShareButton,
-  WhatsappIcon,
-  WhatsappShareButton,
-} from "react-share";
-
-import {
-  CircularInput,
-  CircularTrack,
-  CircularProgress,
-} from "react-circular-input";
+import { EmailIcon, EmailShareButton, WhatsappIcon, WhatsappShareButton } from "react-share";
+import { CircularInput, CircularTrack, CircularProgress } from "react-circular-input";
 
 import { PetContext } from "../../../../../../context";
 import { Battery } from "../Battery";
@@ -87,11 +66,7 @@ export const TabTemperature = () => {
               title={`Temperatura de ${pet?.name}`}
               titleTypographyProps={{ variant: "body1" }}
               action={
-                <IconButton
-                  aria-label="close"
-                  onClick={() => router.back()}
-                  style={{ color: "#9E69FD" }}
-                >
+                <IconButton aria-label="close" onClick={() => router.back()} style={{ color: "#9E69FD" }}>
                   <NavigateBefore />
                 </IconButton>
               }
@@ -100,46 +75,20 @@ export const TabTemperature = () => {
             <CardContent>
               <Grid container spacing={2}>
                 <Grid item xs={12} sm={8}>
-                  <Grid
-                    container
-                    item
-                    xs={12}
-                    sm={12}
-                    direction="column"
-                    alignItems="center"
-                  >
+                  <Grid container item xs={12} sm={12} direction="column" alignItems="center">
                     {detail?.temperature ? (
-                      <CircularInput
-                        value={conversion}
-                        style={{ marginTop: 10 }}
-                      >
+                      <CircularInput value={conversion} style={{ marginTop: 10 }}>
                         <CircularTrack strokeWidth={5} stroke="#9C9FA4" />
-                        <CircularProgress
-                          stroke={`hsl(${conversion * 100}, 100%, 50%)`}
-                        />
-                        <text
-                          x={100}
-                          y={100}
-                          textAnchor="middle"
-                          dy="0.3em"
-                          fontWeight="bold"
-                        >
+                        <CircularProgress stroke={`hsl(${conversion * 100}, 100%, 50%)`} />
+                        <text x={100} y={100} textAnchor="middle" dy="0.3em" fontWeight="bold">
                           {`${detail?.temperature!}°`}
                         </text>
                       </CircularInput>
                     ) : (
                       <CircularInput value={0} style={{ marginTop: 10 }}>
                         <CircularTrack strokeWidth={5} stroke="#9C9FA4" />
-                        <CircularProgress
-                          stroke={`hsl(${0 * 100}, 100%, 50%)`}
-                        />
-                        <text
-                          x={100}
-                          y={100}
-                          textAnchor="middle"
-                          dy="0.3em"
-                          fontWeight="bold"
-                        >
+                        <CircularProgress stroke={`hsl(${0 * 100}, 100%, 50%)`} />
+                        <text x={100} y={100} textAnchor="middle" dy="0.3em" fontWeight="bold">
                           {`0°`}
                         </text>
                       </CircularInput>
@@ -149,18 +98,9 @@ export const TabTemperature = () => {
                 <Grid item xs={12} sm={4}>
                   <Grid container spacing={2}>
                     <Grid item xs={12} sm={12}>
-                      <Grid
-                        container
-                        spacing={2}
-                        direction="row"
-                        alignItems="center"
-                        justifyContent="center"
-                      >
+                      <Grid container spacing={2} direction="row" alignItems="center" justifyContent="center">
                         <Grid item>
-                          <Avatar
-                            alt="Remy Sharp"
-                            src={`data:image/jpeg;base64,${pet?.image}`}
-                          />
+                          <Avatar alt="Remy Sharp" src={`data:image/jpeg;base64,${pet?.image}`} />
                         </Grid>
                         <Grid item>
                           <Typography variant="h6">{pet?.name}</Typography>
@@ -175,9 +115,8 @@ export const TabTemperature = () => {
                     </Grid>
                     <Grid item xs={12} sm={12} textAlign="justify">
                       <Typography variant="body2">
-                        La temperatura de {pet?.name} se actualizara cada 10
-                        minutos despues de encender el dispositivo espere por
-                        favor.
+                        La temperatura de {pet?.name} se actualizara cada 10 minutos despues de encender el
+                        dispositivo espere por favor.
                       </Typography>
                     </Grid>
                     <Grid item xs={12} sm={12}>
@@ -192,10 +131,7 @@ export const TabTemperature = () => {
                       <WhatsappShareButton url={url_temp}>
                         <WhatsappIcon size={32} round={true} />
                       </WhatsappShareButton>
-                      <EmailShareButton
-                        url={url_temp}
-                        subject={`Ubicación de ${pet?.name}`}
-                      >
+                      <EmailShareButton url={url_temp} subject={`Ubicación de ${pet?.name}`}>
                         <EmailIcon size={32} round={true} />
                       </EmailShareButton>
                     </Grid>
@@ -206,28 +142,24 @@ export const TabTemperature = () => {
           </Card>
         ) : (
           <Card>
-          <CardHeader
-            sx={{ paddingTop: "4px", paddingBottom: "4px" }}
-            title={`Temperatúra de ${pet?.name}`}
-            titleTypographyProps={{ variant: "body1" }}
-            action={
-              <IconButton
-                aria-label="close"
-                onClick={() => router.back()}
-                style={{ color: "#9E69FD" }}
-              >
-                <NavigateBefore />
-              </IconButton>
-            }
-          />
-          <Divider sx={{ margin: 0 }} />
-          <Grid container direction="column" alignItems={"center"}>
-            <Grid item>
-              <Typography color={"primary"} sx={{ mt: 1 }}>
-                Sin lecturas encienda el dispositivo
-              </Typography>
+            <CardHeader
+              sx={{ paddingTop: "4px", paddingBottom: "4px" }}
+              title={`Temperatúra de ${pet?.name}`}
+              titleTypographyProps={{ variant: "body1" }}
+              action={
+                <IconButton aria-label="close" onClick={() => router.back()} style={{ color: "#9E69FD" }}>
+                  <NavigateBefore />
+                </IconButton>
+              }
+            />
+            <Divider sx={{ margin: 0 }} />
+            <Grid container direction="column" alignItems={"center"}>
+              <Grid item>
+                <Typography color={"primary"} sx={{ mt: 1 }}>
+                  Sin lecturas encienda el dispositivo
+                </Typography>
+              </Grid>
             </Grid>
-          </Grid>
           </Card>
         )}
       </>

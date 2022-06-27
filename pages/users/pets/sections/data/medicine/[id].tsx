@@ -3,11 +3,7 @@ import { SyntheticEvent, useState, ReactElement } from "react";
 import { Box, Card, styled } from "@mui/material";
 import { TabList, TabPanel, TabContext } from "@mui/lab";
 import MuiTab, { TabProps } from "@mui/material/Tab";
-
-import {
-  VaccinesOutlined,
-  AddCircleOutlineOutlined,
-} from "@mui/icons-material";
+import { VaccinesOutlined, AddCircleOutlineOutlined } from "@mui/icons-material";
 
 import { TabListMedicines, MainLayout, TabAddMedicine } from "../../../../../../components";
 
@@ -63,7 +59,7 @@ const MedicinePage = () => {
           <TabListMedicines />
         </TabPanel>
         <TabPanel sx={{ p: 0 }} value="add-medicines">
-          <TabAddMedicine/>
+          <TabAddMedicine />
         </TabPanel>
       </TabContext>
     </Card>
@@ -72,10 +68,7 @@ const MedicinePage = () => {
 
 MedicinePage.getLayout = function getLayout(page: ReactElement) {
   return (
-    <MainLayout
-      title={"Medicinas"}
-      pageDescription={"Aqui se puede revisar los medicamentos de tu mascota"}
-    >
+    <MainLayout title={"Medicinas"} pageDescription={"Aqui se puede revisar los medicamentos de tu mascota"}>
       {page}
     </MainLayout>
   );

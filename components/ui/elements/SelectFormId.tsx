@@ -1,12 +1,6 @@
 import { FC } from "react";
 
-import {
-  FormControl,
-  MenuItem,
-  InputLabel,
-  Select,
-  FormHelperText,
-} from "@mui/material";
+import { FormControl, MenuItem, InputLabel, Select, FormHelperText } from "@mui/material";
 
 interface Props {
   object?: any;

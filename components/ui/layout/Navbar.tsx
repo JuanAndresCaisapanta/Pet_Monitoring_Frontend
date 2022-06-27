@@ -1,15 +1,6 @@
 import { FC, useContext, useEffect, useState } from "react";
 
-import {
-  AppBar,
-  Avatar,
-  Box,
-  IconButton,
-  Toolbar,
-  Tooltip,
-  Typography,
-} from "@mui/material";
-
+import { AppBar, Avatar, Box, IconButton, Toolbar, Tooltip, Typography } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 
 import { AuthContext } from "../../../context";

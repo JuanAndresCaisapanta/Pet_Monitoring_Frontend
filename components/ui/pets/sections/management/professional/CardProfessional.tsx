@@ -1,10 +1,11 @@
 import { FC, useContext, useState } from "react";
 
-import { Card, Avatar, Button, Typography, CardContent, Grid, CardActions } from "@mui/material";
-
-import { Delete, HailOutlined, Visibility } from "@mui/icons-material";
 import { useRouter } from "next/router";
+
 import { LoadingButton } from "@mui/lab";
+import { Card, Avatar, Button, Typography, CardContent, Grid, CardActions } from "@mui/material";
+import { Delete, HailOutlined, Visibility } from "@mui/icons-material";
+
 import { ProfessionalContext } from "../../../../../../context";
 
 interface Props {
@@ -71,7 +72,7 @@ export const CardProfessional: FC<Props> = ({ pet_id, professional_id, name, las
           </Grid>
         </Grid>
       </CardContent>
-      <CardActions sx={{paddingTop:0}}>
+      <CardActions sx={{ paddingTop: 0 }}>
         <Button
           variant="contained"
           disableElevation

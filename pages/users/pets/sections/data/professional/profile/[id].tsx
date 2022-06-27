@@ -3,14 +3,9 @@ import { SyntheticEvent, useState, ReactElement } from "react";
 import { Box, Card, styled } from "@mui/material";
 import { TabList, TabPanel, TabContext } from "@mui/lab";
 import MuiTab, { TabProps } from "@mui/material/Tab";
-
 import { Email, HailOutlined } from "@mui/icons-material";
 
-import {
-  MainLayout,
-  TabContactProfessional,
-  TabProfileProfessional,
-} from "../../../../../../../components";
+import { MainLayout, TabContactProfessional, TabProfileProfessional } from "../../../../../../../components";
 
 const Tab = styled(MuiTab)<TabProps>(({ theme }) => ({
   [theme.breakpoints.down("md")]: {
@@ -73,10 +68,7 @@ const ProfileProfessionalPage = () => {
 
 ProfileProfessionalPage.getLayout = function getLayout(page: ReactElement) {
   return (
-    <MainLayout
-      title={"Profesional"}
-      pageDescription={"Información del profesional"}
-    >
+    <MainLayout title={"Profesional"} pageDescription={"Información del profesional"}>
       {page}
     </MainLayout>
   );

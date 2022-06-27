@@ -1,13 +1,10 @@
 import { FC, useContext, useState } from "react";
 
 import { useRouter } from "next/router";
-
 import Image from "next/image";
 
 import { Delete, Visibility } from "@mui/icons-material";
-
 import { Button, Card, Grid, Typography } from "@mui/material";
-
 import { LoadingButton } from "@mui/lab";
 
 import { MedicineContext } from "../../../../../../context";

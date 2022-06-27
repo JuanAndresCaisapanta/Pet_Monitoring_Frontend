@@ -55,10 +55,7 @@ const LocationPage = () => {
 
 LocationPage.getLayout = function getLayout(page: ReactElement) {
   return (
-    <MainLayout
-      title={"Ubicación de tu mascota"}
-      pageDescription={"Aqui podras ver la ubicacion de tu mascota"}
-    >
+    <MainLayout title={"Ubicación de tu mascota"} pageDescription={"Aqui podras ver la ubicacion de tu mascota"}>
       {page}
     </MainLayout>
   );

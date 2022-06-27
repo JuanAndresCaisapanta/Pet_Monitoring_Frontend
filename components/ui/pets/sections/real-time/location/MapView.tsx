@@ -1,7 +1,6 @@
 import { FC } from "react";
 
 import { Card, Grid } from "@mui/material";
-
 import Map, { Marker } from "react-map-gl";
 
 import { IPet } from "../../../../../../interfaces";
@@ -15,10 +14,10 @@ export const MapView: FC<Props> = ({ pet }) => {
     <Card>
       <Grid container spacing={2}>
         <Grid item xs={12} md={12}>
-          {pet?.masterData!
-            .map((masterData:any) =>
+          {pet
+            ?.masterData!.map((masterData: any) =>
               masterData.detailData
-                .map((detailData:any, i:any, { length }:any) => {
+                .map((detailData: any, i: any, { length }: any) => {
                   if (i + 1 === length) {
                     return (
                       <Map

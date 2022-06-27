@@ -5,11 +5,7 @@ import { TabList, TabPanel, TabContext } from "@mui/lab";
 import MuiTab, { TabProps } from "@mui/material/Tab";
 import { AddCircleOutlineOutlined, Store } from "@mui/icons-material";
 
-import {
-  TabListEstablishments,
-  MainLayout,
-  TabAddEstablishment,
-} from "../../../../../../components";
+import { TabListEstablishments, MainLayout, TabAddEstablishment } from "../../../../../../components";
 
 const Tab = styled(MuiTab)<TabProps>(({ theme }) => ({
   [theme.breakpoints.down("md")]: {
@@ -71,10 +67,7 @@ const EstablishmentsPage = () => {
 };
 EstablishmentsPage.getLayout = function getLayout(page: ReactElement) {
   return (
-    <MainLayout
-      title={"Esblecimientos"}
-      pageDescription={"Lista de Establecimientos"}
-    >
+    <MainLayout title={"Esblecimientos"} pageDescription={"Lista de Establecimientos"}>
       {page}
     </MainLayout>
   );

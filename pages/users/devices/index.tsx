@@ -4,11 +4,7 @@ import { Box, Card } from "@mui/material";
 import { TabList, TabPanel, TabContext } from "@mui/lab";
 import { styled } from "@mui/material/styles";
 import MuiTab, { TabProps } from "@mui/material/Tab";
-
-import {
-  OnDeviceTrainingOutlined,
-  AddCircleOutlineOutlined,
-} from "@mui/icons-material";
+import { OnDeviceTrainingOutlined, AddCircleOutlineOutlined } from "@mui/icons-material";
 
 import { MainLayout, TabListDevices, TabAddDevice } from "../../../components";
 
@@ -72,10 +68,7 @@ const DevicePage = () => {
 
 DevicePage.getLayout = function getLayout(page: ReactElement) {
   return (
-    <MainLayout
-      title={"Monitoreo Mascotas"}
-      pageDescription={"Una PWA donde se puede monitorear a tu mascota"}
-    >
+    <MainLayout title={"Monitoreo Mascotas"} pageDescription={"Una PWA donde se puede monitorear a tu mascota"}>
       {page}
     </MainLayout>
   );

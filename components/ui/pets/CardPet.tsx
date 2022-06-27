@@ -100,7 +100,7 @@ export const CardPet: FC<Props> = ({ id, name, species, sex, race, image }) => {
                 startIcon={<Visibility />}
                 sx={{
                   width: "40%",
-                  marginRight: 2
+                  marginRight: 2,
                 }}
                 onClick={() => navigateTo(`pets/pet/profile/${id}`)}
               >

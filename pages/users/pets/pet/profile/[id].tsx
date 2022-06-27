@@ -68,10 +68,7 @@ const ProfilePetPage = () => {
 
 ProfilePetPage.getLayout = function getLayout(page: ReactElement) {
   return (
-    <MainLayout
-      title={"Mascota"}
-      pageDescription={"Información de la mascota seleccionada"}
-    >
+    <MainLayout title={"Mascota"} pageDescription={"Información de la mascota seleccionada"}>
       {page}
     </MainLayout>
   );

@@ -11,11 +11,7 @@ interface Props {
 }
 export const SideMenu: FC<Props> = ({ isMenuOpen, toggleSideMenu }) => {
   return (
-    <Box
-      component="nav"
-      sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}
-      aria-label="mailbox folders"
-    >
+    <Box component="nav" sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }} aria-label="mailbox folders">
       <Drawer
         variant="temporary"
         open={isMenuOpen}

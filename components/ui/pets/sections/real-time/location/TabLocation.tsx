@@ -13,15 +13,8 @@ import {
   IconButton,
   Typography,
 } from "@mui/material";
-
 import { NavigateBefore } from "@mui/icons-material";
-
-import {
-  EmailIcon,
-  EmailShareButton,
-  WhatsappIcon,
-  WhatsappShareButton,
-} from "react-share";
+import { EmailIcon, EmailShareButton, WhatsappIcon, WhatsappShareButton } from "react-share";
 
 import { PetContext } from "../../../../../../context";
 import { MapView } from "./MapView";
@@ -86,11 +79,7 @@ export const TabLocation = () => {
               title={`Ubicación de ${pet?.name}`}
               titleTypographyProps={{ variant: "body1" }}
               action={
-                <IconButton
-                  aria-label="close"
-                  onClick={() => router.back()}
-                  style={{ color: "#9E69FD" }}
-                >
+                <IconButton aria-label="close" onClick={() => router.back()} style={{ color: "#9E69FD" }}>
                   <NavigateBefore />
                 </IconButton>
               }
@@ -104,18 +93,9 @@ export const TabLocation = () => {
                 <Grid item xs={12} sm={4}>
                   <Grid container spacing={2}>
                     <Grid item xs={12} sm={12}>
-                      <Grid
-                        container
-                        spacing={2}
-                        direction="row"
-                        alignItems="center"
-                        justifyContent="center"
-                      >
+                      <Grid container spacing={2} direction="row" alignItems="center" justifyContent="center">
                         <Grid item>
-                          <Avatar
-                            alt="Remy Sharp"
-                            src={`data:image/jpeg;base64,${pet?.image}`}
-                          />
+                          <Avatar alt="Remy Sharp" src={`data:image/jpeg;base64,${pet?.image}`} />
                         </Grid>
                         <Grid item>
                           <Typography variant="h6">{pet?.name}</Typography>
@@ -130,21 +110,15 @@ export const TabLocation = () => {
                     </Grid>
                     <Grid item xs={12} sm={12} textAlign="justify">
                       <Typography variant="body2">
-                        La ubicación de {pet?.name} se actualizara cada 10
-                        minutos despues de encender el dispositivo espere por
-                        favor.
+                        La ubicación de {pet?.name} se actualizara cada 10 minutos despues de encender el
+                        dispositivo espere por favor.
                       </Typography>
                     </Grid>
                     <Grid item xs={12} sm={12}>
                       <Divider />
                     </Grid>
                     <Grid item xs={12} sm={12}>
-                      <Button
-                        disableElevation
-                        fullWidth
-                        variant="contained"
-                        onClick={openMap}
-                      >
+                      <Button disableElevation fullWidth variant="contained" onClick={openMap}>
                         Ubicar en Mapa
                       </Button>
                     </Grid>
@@ -160,10 +134,7 @@ export const TabLocation = () => {
                       <WhatsappShareButton url={url_map}>
                         <WhatsappIcon size={32} round={true} />
                       </WhatsappShareButton>
-                      <EmailShareButton
-                        url={url_map}
-                        subject={`Ubicación de ${pet?.name}`}
-                      >
+                      <EmailShareButton url={url_map} subject={`Ubicación de ${pet?.name}`}>
                         <EmailIcon size={32} round={true} />
                       </EmailShareButton>
                     </Grid>
@@ -179,23 +150,19 @@ export const TabLocation = () => {
               title={`Ubicación de ${pet?.name}`}
               titleTypographyProps={{ variant: "body1" }}
               action={
-                <IconButton
-                  aria-label="close"
-                  onClick={() => router.back()}
-                  style={{ color: "#9E69FD" }}
-                >
+                <IconButton aria-label="close" onClick={() => router.back()} style={{ color: "#9E69FD" }}>
                   <NavigateBefore />
                 </IconButton>
               }
             />
             <Divider sx={{ margin: 0 }} />
-          <Grid container direction="column" alignItems={"center"}>
-            <Grid item>
-              <Typography color={"primary"} sx={{ mt: 1 }}>
-                Sin lecturas encienda el dispositivo
-              </Typography>
+            <Grid container direction="column" alignItems={"center"}>
+              <Grid item>
+                <Typography color={"primary"} sx={{ mt: 1 }}>
+                  Sin lecturas encienda el dispositivo
+                </Typography>
+              </Grid>
             </Grid>
-          </Grid>
           </Card>
         )}
       </>
