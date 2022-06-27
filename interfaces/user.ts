@@ -4,7 +4,12 @@ export interface IUser {
   last_name: string;
   email: string;
   password?: string;
-  role: [{ authority: string }, { authority: string }];
+  role: [
+    {
+        id: number,
+        name: string
+    },
+  ],
   address?: string;
   phone?: string;
   creation_date: Date;

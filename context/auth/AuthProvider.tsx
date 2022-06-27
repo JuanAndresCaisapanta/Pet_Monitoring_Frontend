@@ -1,4 +1,4 @@
-import { FC, ReactNode, useEffect, useReducer } from "react";
+import { FC, ReactNode, useEffect, useReducer, useContext } from "react";
 
 import { useRouter } from "next/router";
 
@@ -26,7 +26,6 @@ interface Props {
 
 export const AuthProvider: FC<Props> = ({ children }) => {
   const [state, dispatch] = useReducer(authReducer, AUTH_INITIAL_STATE);
-
   const router = useRouter();
 
   useEffect(() => {
@@ -45,6 +44,11 @@ export const AuthProvider: FC<Props> = ({ children }) => {
         const { data } = await petMonitoringApi.get(`/user/${email}`, {
           headers: { Authorization: `Bearer ${token}` },
         });
+        if (data.role[0].name === "ROLE_ADMIN") {
+          router.replace("/admin", undefined, { shallow: true });
+        } else if (data.role[0].name === "ROLE_USER") {
+          router.replace("/users", undefined, { shallow: true });
+        }
         dispatch({ type: "[Auth] - Login", payload: data });
       } else {
         Cookies.remove("token");
@@ -63,6 +67,11 @@ export const AuthProvider: FC<Props> = ({ children }) => {
       .then((response) => {
         Cookies.set("token", response.data.token);
         checkToken();
+        if (response.data.authorities[0].authority === "ROLE_ADMIN") {
+          router.replace("/admin", undefined, { shallow: true });
+        } else if (response.data.authorities[0].authority === "ROLE_USER") {
+          router.replace("/users", undefined, { shallow: true });
+        }
         swalMessage("Bienvenido", "Ingreso realizado con éxito", "success");
         return { isComplete: true };
       })

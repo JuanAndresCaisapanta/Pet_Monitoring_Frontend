@@ -42,7 +42,7 @@ type FormData = {
 
 const LoginPage = () => {
   const [isLoading, setIsLoading] = useState(false);
-  const router = useRouter();
+
 
   const {
     register,
@@ -61,7 +61,7 @@ const LoginPage = () => {
     setIsLoading(true);
     const { isComplete } = await loginUser(email, password);
     if (isComplete) {
-      router.replace("/users");
+
       setIsLoading(false);
     }
   };
