@@ -1,38 +1,69 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useMemo, useState } from "react";
 
+import Image from "next/image";
 import { useRouter } from "next/router";
 
-import { NavigateBefore } from "@mui/icons-material";
+import { NavigateBefore, Search } from "@mui/icons-material";
 import {
-  Grid,
-  CardContent,
-  TextField,
-  InputAdornment,
-  Typography,
   Card,
+  CardContent,
   CardHeader,
-  IconButton,
   Divider,
+  Grid,
+  IconButton,
+  InputAdornment,
+  TextField,
+  Typography,
 } from "@mui/material";
-import SearchIcon from "@mui/icons-material/Search";
+import Map, { Marker } from "react-map-gl";
 
-import { CardPet } from "./CardPet";
-import { AuthContext } from "../../../context";
+import { PetContext } from "../../../../../../context";
+import { CircularInput, CircularProgress, CircularTrack } from "react-circular-input";
 
-export const TabListPets = () => {
-  const [searchWord, setSearchWord] = useState("");
-  const { user } = useContext(AuthContext);
+export const TabHistoryTemperature = () => {
+  const { isLoaded, getPet, pet, petChange } = useContext(PetContext);
+  const [petName, setPetName] = useState("");
   const router = useRouter();
-  const filteredOptions = user?.pet!.filter(
-    (pet) => pet.name.toLowerCase().includes(searchWord.toLowerCase()) || !searchWord,
+  const { id } = router.query;
+
+  useMemo(() => {
+    getPet(id);
+    setPetName(pet?.name!);
+    return () => {
+      petChange();
+    };
+  }, [id]);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      getPet(id);
+    }, 30000);
+    return () => {
+      clearInterval(interval);
+      petChange();
+    };
+  }, [id]);
+
+  const [searchWord, setSearchWord] = useState("");
+  const arrayDetails: any = [];
+  pet?.masterData?.length! > 0
+    ? pet?.masterData?.map((masterData: any) =>
+        masterData.detailData.map((detailData: any) => {
+          return arrayDetails.push(detailData);
+        }),
+      )
+    : undefined;
+
+  const filteredOptions = arrayDetails!.filter(
+    (details: any) => details.creation_date?.toLowerCase().includes(searchWord.toLowerCase()) || !searchWord,
   );
 
-  if (user?.pet) {
+  if (isLoaded) {
     return (
       <Card>
         <CardHeader
           sx={{ paddingTop: "4px", paddingBottom: "4px" }}
-          title={`Lista de sus Mascotas`}
+          title={`Hitorial de Temperaturas de ${petName} `}
           titleTypographyProps={{ variant: "body1" }}
           action={
             <IconButton aria-label="close" onClick={() => router.back()} style={{ color: "#9E69FD" }}>
@@ -51,7 +82,7 @@ export const TabListPets = () => {
                   InputProps={{
                     startAdornment: (
                       <InputAdornment position="start">
-                        <SearchIcon fontSize="small" />
+                        <Search fontSize="small" />
                       </InputAdornment>
                     ),
                   }}
@@ -71,16 +102,16 @@ export const TabListPets = () => {
                   }
                   return 0;
                 })
-                .map((pet) => (
-                  <Grid item xs={12} sm={6} key={pet.id}>
-                    <CardPet
-                      id={pet.id}
-                      image={pet.image}
-                      name={pet.name}
-                      sex={pet.sex}
-                      race={pet.breed.name}
-                      species={pet.breed.species.name}
-                    />
+                .map((details: any, i: any) => (
+                  <Grid item xs={12} sm={4} key={details.id} textAlign="center">
+                    <Typography>Fecha: {details.creation_date}</Typography>
+                    <CircularInput value={(details?.temperature! * 1) / 50} style={{ marginTop: 10 }}>
+                        <CircularTrack strokeWidth={5} stroke="#9C9FA4" />
+                        <CircularProgress stroke={`hsl(${((details?.temperature! * 1) / 50) * 100}, 100%, 50%)`} />
+                        <text x={100} y={100} textAnchor="middle" dy="0.3em" fontWeight="bold">
+                          {`${details?.temperature!}°`}
+                        </text>
+                      </CircularInput>
                   </Grid>
                 ))
             ) : (

@@ -6,7 +6,6 @@ import { styled } from "@mui/material/styles";
 import {
   FormHelperText,
   Box,
-  Button,
   TextField,
   InputLabel,
   Typography,
@@ -16,12 +15,13 @@ import {
   InputAdornment,
 } from "@mui/material";
 import { VisibilityOutlined, VisibilityOffOutlined, Login } from "@mui/icons-material";
+import { LoadingButton } from "@mui/lab";
 import { useForm } from "react-hook-form";
 
 import { validations } from "../../utils";
 import { AuthLayout } from "../../components";
 import { AuthContext } from "../../context";
-import { LoadingButton } from "@mui/lab";
+import { useRouter } from "next/router";
 
 interface State {
   password: string;
@@ -41,7 +41,9 @@ type FormData = {
 
 const LoginPage = () => {
   const [isLoading, setIsLoading] = useState(false);
+  const { loginUser, user } = useContext(AuthContext);
 
+  const router = useRouter();
   const {
     register,
     handleSubmit,
@@ -52,8 +54,6 @@ const LoginPage = () => {
     password: "",
     showPassword: false,
   });
-
-  const { loginUser } = useContext(AuthContext);
 
   const handleLoginUser = async ({ email, password }: FormData) => {
     setIsLoading(true);

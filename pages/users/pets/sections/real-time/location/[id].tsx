@@ -3,9 +3,9 @@ import { SyntheticEvent, useState, ReactElement } from "react";
 import { Box, Card, styled } from "@mui/material";
 import { TabList, TabPanel, TabContext } from "@mui/lab";
 import MuiTab, { TabProps } from "@mui/material/Tab";
-import LocationOnOutlinedIcon from "@mui/icons-material/LocationOnOutlined";
+import { LocationOn, ListAlt } from "@mui/icons-material";
 
-import { MainLayout, TabLocation } from "../../../../../../components";
+import { MainLayout, TabHistoryLocation, TabLocation } from "../../../../../../components";
 
 const Tab = styled(MuiTab)<TabProps>(({ theme }) => ({
   [theme.breakpoints.down("md")]: {
@@ -39,14 +39,26 @@ const LocationPage = () => {
             value="location"
             label={
               <Box sx={{ display: "flex", alignItems: "center" }}>
-                <LocationOnOutlinedIcon />
+                <LocationOn />
                 <TabName>Ubicación</TabName>
+              </Box>
+            }
+          />
+          <Tab
+            value="history"
+            label={
+              <Box sx={{ display: "flex", alignItems: "center" }}>
+                <ListAlt />
+                <TabName>Historial</TabName>
               </Box>
             }
           />
         </TabList>
         <TabPanel sx={{ p: 0 }} value="location">
           <TabLocation />
+        </TabPanel>
+        <TabPanel sx={{ p: 0 }} value="history">
+          <TabHistoryLocation />
         </TabPanel>
       </TabContext>
     </Card>

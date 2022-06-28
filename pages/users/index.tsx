@@ -1,14 +1,8 @@
-import { ReactElement } from "react";
+import { ReactElement, useContext } from "react";
 
 import { Grid } from "@mui/material";
 
-import {
-  ContactCard,
-  HomeCard,
-  HomeTable,
-  MainLayout,
-  ManualCard,
-} from "../../components";
+import { ContactCard, HomeCard, HomeTable, MainLayout, ManualCard } from "../../components";
 
 const HomePage = () => {
   return (
@@ -30,10 +24,7 @@ const HomePage = () => {
 };
 HomePage.getLayout = function getLayout(page: ReactElement) {
   return (
-    <MainLayout
-      title={"Monitoreo Mascotas"}
-      pageDescription={"Una PWA donde se puede monitorear a tu mascota"}
-    >
+    <MainLayout title={"Monitoreo Mascotas"} pageDescription={"Una PWA donde se puede monitorear a tu mascota"}>
       {page}
     </MainLayout>
   );

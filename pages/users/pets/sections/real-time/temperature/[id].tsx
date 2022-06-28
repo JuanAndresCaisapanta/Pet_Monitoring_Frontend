@@ -3,9 +3,9 @@ import { SyntheticEvent, useState, ReactElement } from "react";
 import { Box, Card, styled } from "@mui/material";
 import { TabList, TabPanel, TabContext } from "@mui/lab";
 import MuiTab, { TabProps } from "@mui/material/Tab";
-import { DeviceThermostat } from "@mui/icons-material";
+import { DeviceThermostat, ListAlt } from "@mui/icons-material";
 
-import { TabTemperature, MainLayout } from "../../../../../../components";
+import { TabTemperature, MainLayout, TabHistoryTemperature } from "../../../../../../components";
 
 const Tab = styled(MuiTab)<TabProps>(({ theme }) => ({
   [theme.breakpoints.down("md")]: {
@@ -44,22 +44,22 @@ const TemperaturePage = () => {
               </Box>
             }
           />
-          {/* <Tab
-          value="add-pets"
-          label={
-            <Box sx={{ display: "flex", alignItems: "center" }}>
-              <AddCircleOutlineOutlinedIcon />
-              <TabName>Agregar</TabName>
-            </Box>
-          }
-        /> */}
+        <Tab
+            value="history"
+            label={
+              <Box sx={{ display: "flex", alignItems: "center" }}>
+                <ListAlt />
+                <TabName>Historial</TabName>
+              </Box>
+            }
+          />
         </TabList>
         <TabPanel sx={{ p: 0 }} value="temperature">
           <TabTemperature />
         </TabPanel>
-        {/* <TabPanel sx={{ p: 0 }} value="add-pets">
-        <TabInfoPet />
-      </TabPanel> */}
+        <TabPanel sx={{ p: 0 }} value="history">
+          <TabHistoryTemperature />
+        </TabPanel>
       </TabContext>
     </Card>
   );

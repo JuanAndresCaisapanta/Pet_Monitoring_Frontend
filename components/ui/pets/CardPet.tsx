@@ -84,6 +84,7 @@ export const CardPet: FC<Props> = ({ id, name, species, sex, race, image }) => {
             </Grid>
             <Grid item xs={12} md={12} textAlign="center">
               <Button
+              fullWidth
                 variant="contained"
                 color="info"
                 disableElevation
@@ -99,7 +100,7 @@ export const CardPet: FC<Props> = ({ id, name, species, sex, race, image }) => {
                 disableElevation
                 startIcon={<Visibility />}
                 sx={{
-                  width: "40%",
+                  width: "44%",
                   marginRight: 2,
                 }}
                 onClick={() => navigateTo(`pets/pet/profile/${id}`)}

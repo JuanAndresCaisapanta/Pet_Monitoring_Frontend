@@ -48,7 +48,8 @@ export const DrawerList: FC<Props> = ({ toggleSideMenu }) => {
               </ListItem>
             </div>
           );
-        } else if (role.name === "ROLE_USER") {
+        }
+        if (role.name === "ROLE_USER") {
           return (
             <div key={role.id}>
               <ListItem button onClick={() => navigateTo("/users")}>

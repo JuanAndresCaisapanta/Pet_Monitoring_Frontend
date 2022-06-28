@@ -1,5 +1,7 @@
 import { FC } from "react";
 
+import Image from "next/image";
+
 import { Card, Grid } from "@mui/material";
 import Map, { Marker } from "react-map-gl";
 
@@ -38,13 +40,15 @@ export const MapView: FC<Props> = ({ pet }) => {
                           latitude={detailData?.latitude as number}
                           anchor="bottom"
                         >
-                          <img
+                          <Image
                             src={`data:image/jpeg;base64,${pet?.image}`}
                             style={{
-                              width: 35,
-                              height: 35,
                               borderRadius: "50%",
                             }}
+                            width="35px"
+                            height="35px"
+                            alt="Mascota"
+                            quality={100}
                           />
                         </Marker>
                       </Map>
