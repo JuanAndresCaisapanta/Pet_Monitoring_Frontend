@@ -9,3 +9,4 @@ export * from "./profession";
 export * from "./typeEstablishment";
 export * from "./establishment";
 export * from "./token"
+export * from "./notification";

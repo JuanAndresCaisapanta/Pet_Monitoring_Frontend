@@ -11,3 +11,4 @@ export * from "./professional"
 export * from "./profession"
 export * from './establishment'
 export * from './typeEstablishment'
+export * from './notification'

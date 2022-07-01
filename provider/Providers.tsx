@@ -7,6 +7,7 @@ import {
   BreedProvider,
   DeviceProvider,
   MedicineProvider,
+  NotificationProvider,
   PetProvider,
   ProfessionalProvider,
   ProfessionProvider,
@@ -37,12 +38,14 @@ export const Providers: FC<Props> = ({ children }) => {
                       <MedicineProvider>
                         <ProfessionalProvider>
                           <EstablishmentProvider>
-                            <UiProvider>
-                              <ThemeProvider theme={theme}>
-                                <CssBaseline />
-                                {children}
-                              </ThemeProvider>
-                            </UiProvider>
+                            <NotificationProvider>
+                              <UiProvider>
+                                <ThemeProvider theme={theme}>
+                                  <CssBaseline />
+                                  {children}
+                                </ThemeProvider>
+                              </UiProvider>
+                            </NotificationProvider>
                           </EstablishmentProvider>
                         </ProfessionalProvider>
                       </MedicineProvider>
