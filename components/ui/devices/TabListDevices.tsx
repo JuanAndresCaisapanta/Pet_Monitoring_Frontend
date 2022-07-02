@@ -43,9 +43,7 @@ export const TabListDevices = () => {
                   <CardDevice
                     device_id={device.id}
                     code={device.code}
-                    name={device.masterData
-                      .map((data) => data.pet?.name)
-                      .filter((v: any, i: any, a: any) => a.indexOf(v) === i)}
+                    name={device.pet.name}
                   />
                 </Grid>
               ))

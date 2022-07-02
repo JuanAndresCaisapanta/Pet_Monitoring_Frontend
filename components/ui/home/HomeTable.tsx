@@ -29,15 +29,10 @@ const columns: GridColDef[] = [
 export const HomeTable = () => {
   const { user } = useContext(AuthContext);
   const rows: any = [];
-  const rowsData = user?.device?.map((data) =>
-    data.masterData.map((masterdata) => ({
-      id: masterdata?.id as number,
-      pet_name: masterdata?.pet.name as string,
-      device_code: data.code as string,
-    })),
-  );
-
-  rowsData?.forEach((element) => rows.push(element[0]));
+  const rowsData = user?.device?.map((data) => {
+    return { id: data?.id as number, pet_name: data?.pet.name as string, device_code: data.code as string };
+  });
+  rowsData?.forEach((element) => rows.push(element));
   return (
     <Card>
       <Box

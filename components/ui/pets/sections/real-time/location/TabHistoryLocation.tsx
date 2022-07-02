@@ -45,10 +45,10 @@ export const TabHistoryLocation = () => {
 
   const [searchWord, setSearchWord] = useState("");
   const arrayDetails: any = [];
-  pet?.masterData?.length! > 0
-    ? pet?.masterData?.map((masterData: any) =>
-        masterData.detailData.map((detailData: any) => {
-          return arrayDetails.push(detailData);
+  pet?.device?.length! > 0
+    ? pet?.device?.map((device: any) =>
+        device.deviceDetail.map((deviceDetail: any) => {
+          return arrayDetails.push(deviceDetail);
         }),
       )
     : undefined;

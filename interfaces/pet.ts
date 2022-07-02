@@ -61,17 +61,21 @@ export interface IPet {
       };
     },
   ];
-  masterData?: [
+  device: [
     {
       id: number;
-      detailData?: [
+      code: string;
+      pet: {
+        id: number;
+        name: string;
+      };
+      deviceDetail: [
         {
           id: number;
           latitude: number;
           longitude: number;
           temperature: number;
           battery: number;
-          creation_date: string;
         },
       ];
     },

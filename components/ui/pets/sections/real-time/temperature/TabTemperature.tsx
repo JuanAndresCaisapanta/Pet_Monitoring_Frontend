@@ -34,16 +34,16 @@ export const TabTemperature = () => {
   }, [id]);
 
   const detail =
-    pet?.masterData?.length! > 0
-      ? pet?.masterData
-          ?.map((masterData: any) =>
-            masterData.detailData
-              .map((detailData: any, i: any, { length }: any) => {
+    pet?.device?.length! > 0
+      ? pet?.device
+          ?.map((device: any) =>
+            device.deviceDetail
+              .map((deviceDetail: any, i: any, { length }: any) => {
                 if (i + 1 === length) {
                   return {
                     detail: {
-                      temperature: detailData.temperature,
-                      battery: detailData.battery,
+                      temperature: deviceDetail.temperature,
+                      battery: deviceDetail.battery,
                     },
                   };
                 }

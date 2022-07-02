@@ -37,15 +37,17 @@ export interface IUser {
     {
       id: number;
       code: string;
-      creation_date: string;
-      update_date: string;
-      masterData: [
+      pet: {
+        id: number;
+        name: string;
+      };
+      deviceDetail: [
         {
           id: number;
-          pet: {
-            id: number;
-            name: string;
-          };
+          latitude: number;
+          longitude: number;
+          temperature: number;
+          battery: number;
         },
       ];
     },

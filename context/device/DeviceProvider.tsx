@@ -29,7 +29,7 @@ export const DeviceProvider: FC<Props> = ({ children }) => {
         {
           code,
           users: { id: user?.id },
-          callback: "en espera",
+          pet: { id: pet },
         },
         {
           headers: {
@@ -40,73 +40,55 @@ export const DeviceProvider: FC<Props> = ({ children }) => {
       .then(async (device) => {
         id = device.data;
         if (device.data) {
-          await petMonitoringApi
-            .post(
-              `/master-detail-data/master`,
-              {
-                device: { id: device.data },
-                users: { id: user?.id },
-                pet: { id: pet },
+          await sigfoxCallbackApi
+            .post(`/device-types/${code}/callbacks`, {
+              channel: "URL",
+              callbackType: 0,
+              callbackSubtype: 2,
+              payloadConfig: "lat::float:32 long::float:32 temp::int:16 bat::uint:16",
+              enabled: true,
+              url: `${process.env.NEXT_PUBLIC_API_PET_MONITORING}/device-detail`,
+              httpMethod: "POST",
+              headers: {
+                Authorization: `Bearer ${token}`,
               },
-              {
-                headers: {
-                  Authorization: `Bearer ${token}`,
-                },
-              },
-            )
-            .then(async (master) => {
-              if (master.data) {
-                await sigfoxCallbackApi
-                  .post(`/device-types/${code}/callbacks`, {
-                    channel: "URL",
-                    callbackType: 0,
-                    callbackSubtype: 2,
-                    payloadConfig: "lat::float:32 long::float:32 temp::int:16 bat::uint:16",
-                    enabled: true,
-                    url: `${process.env.NEXT_PUBLIC_API_PET_MONITORING}/master-detail-data/detail`,
-                    httpMethod: "POST",
+              sendSni: false,
+              bodyTemplate:
+                '{\n"latitude":{customData#lat},\n"longitude":{customData#long},\n"temperature":{customData#temp},\n"battery":{customData#bat},\n"masterData":{"id":' +
+                device.data +
+                "}\n}",
+              contentType: "application/json",
+            })
+            .then(async (callback) => {
+              if (callback.data) {
+                await petMonitoringApi.put(
+                  `/device/${id}`,
+                  {
+                    callback_code: callback.data.id,
+                  },
+                  {
                     headers: {
                       Authorization: `Bearer ${token}`,
                     },
-                    sendSni: false,
-                    bodyTemplate:
-                      '{\n"latitude":{customData#lat},\n"longitude":{customData#long},\n"temperature":{customData#temp},\n"battery":{customData#bat},\n"masterData":{"id":' +
-                      master.data +
-                      "}\n}",
-                    contentType: "application/json",
-                  })
-                  .then(async (callback) => {
-                    if (callback.data) {
-                      await petMonitoringApi.put(
-                        `/device/${id}`,
-                        {
-                          callback: callback.data.id,
-                        },
-                        {
-                          headers: {
-                            Authorization: `Bearer ${token}`,
-                          },
-                        },
-                      );
-                      checkToken();
-                      swalMessage("Success", "Dispositivo agregado", "success");
-                    }
-                  })
-                  .catch(async () => {
-                    await petMonitoringApi.delete(`/device/${id}`, {
-                      headers: {
-                        Authorization: `Bearer ${token}`,
-                      },
-                    });
-                    swalMessage("Error", "Error al agregar el dispositivo - revise su código", "error");
-                  });
+                  },
+                );
+                checkToken();
+                swalMessage("Success", "Dispositivo agregado", "success");
               }
+            })
+            .catch(async () => {
+              await petMonitoringApi.delete(`/device/${id}`, {
+                headers: {
+                  Authorization: `Bearer ${token}`,
+                },
+              });
+              swalMessage("Error", "Error al agregar el dispositivo - revise su código", "error");
             });
         }
         return { isComplete: true };
       })
-      .catch((error) => {
-        swalMessage("Error", error.response.data.message, "error");
+      .catch(async () => {
+        swalMessage("Error", "Error al agregar el dispositivo - revise su código", "error");
         return { isComplete: true };
       });
   };
@@ -137,7 +119,7 @@ export const DeviceProvider: FC<Props> = ({ children }) => {
             .then(async (device) => {
               if (device.data) {
                 code = device.data.code;
-                callback = device.data.callback;
+                callback = device.data.callback_code;
                 await petMonitoringApi
                   .delete(`/device/${device.data.id}`, {
                     headers: {

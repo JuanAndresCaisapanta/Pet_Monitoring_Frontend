@@ -17,16 +17,16 @@ export const MapView: FC<Props> = ({ pet }) => {
       <Grid container spacing={2}>
         <Grid item xs={12} md={12}>
           {pet
-            ?.masterData!.map((masterData: any) =>
-              masterData.detailData
-                .map((detailData: any, i: any, { length }: any) => {
+            ?.device.map((device: any) =>
+              device.deviceDetail
+                .map((deviceDetail: any, i: any, { length }: any) => {
                   if (i + 1 === length) {
                     return (
                       <Map
                         key={i}
                         initialViewState={{
-                          longitude: detailData?.longitude as number,
-                          latitude: detailData?.latitude as number,
+                          longitude: deviceDetail?.longitude as number,
+                          latitude:deviceDetail?.latitude as number,
                           zoom: 16.5,
                           bearing: 0,
                           pitch: 0,
@@ -36,8 +36,8 @@ export const MapView: FC<Props> = ({ pet }) => {
                         mapboxAccessToken="pk.eyJ1IjoianVhbmNhaXNhcGFudGEiLCJhIjoiY2wzczQyajB5MW45eDNpb2Vsd3FnemxxcCJ9.Goc9SFssphx808eCRVIBSg"
                       >
                         <Marker
-                          longitude={detailData?.longitude as number}
-                          latitude={detailData?.latitude as number}
+                          longitude={deviceDetail?.longitude as number}
+                          latitude={deviceDetail?.latitude as number}
                           anchor="bottom"
                         >
                           <Image
