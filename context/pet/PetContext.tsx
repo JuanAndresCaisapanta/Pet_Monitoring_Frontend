@@ -1,11 +1,13 @@
 import { createContext } from "react";
 
-import { IPet } from "../../interfaces";
+import { IPet, IPets } from "../../interfaces";
 
 interface ContextProps {
   isLoaded: boolean;
 
   pet?: IPet;
+
+  pets?: IPets;
 
   getPet: (id: any) => void;
 
@@ -22,7 +24,7 @@ interface ContextProps {
     birth_date: string,
     breed: number,
     users: number,
-    clear: ()=>void
+    clear: () => void,
   ) => Promise<{ isComplete: boolean }>;
 
   updatePet: (
@@ -38,7 +40,11 @@ interface ContextProps {
     breed: number,
   ) => Promise<{ isComplete: boolean }>;
 
-  deletePet: (id: number) => Promise<{ isComplete: boolean }>;
+  deletePet: (name?:string,user_id?:number,id?: number) => Promise<{ isComplete: boolean }>;
+
+  getPetsEstablishment: (text: string, user_id: number) => Promise<{ isComplete: boolean }>;
+
+  clearPetsEstablishment: () => void;
 }
 
 export const PetContext = createContext({} as ContextProps);

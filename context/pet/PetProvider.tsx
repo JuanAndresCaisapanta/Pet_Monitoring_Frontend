@@ -3,7 +3,7 @@ import { FC, ReactNode, useContext, useReducer } from "react";
 import Cookies from "js-cookie";
 
 import { petMonitoringApi } from "../../api";
-import { IPet } from "../../interfaces";
+import { IPet, IPets } from "../../interfaces";
 import { AuthContext } from "../auth";
 import { PetContext, petReducer } from "./";
 import { swalMessage } from "../../components";
@@ -12,11 +12,13 @@ import Swal from "sweetalert2";
 export interface PetState {
   isLoaded: boolean;
   pet?: IPet;
+  pets?: IPets;
 }
 
 const PET_INITIAL_STATE: PetState = {
   isLoaded: false,
   pet: undefined,
+  pets: undefined,
 };
 
 interface Props {
@@ -36,9 +38,7 @@ export const PetProvider: FC<Props> = ({ children }) => {
     }
     try {
       const token = Cookies.get("token") || "";
-      const { data } = await petMonitoringApi.get(
-        `/auth/validate-token/${token}`,
-      );
+      const { data } = await petMonitoringApi.get(`/auth/validate-token/${token}`);
       if (data == true) {
         const pet = await petMonitoringApi.get(`/pet/${id}`, {
           headers: { Authorization: `Bearer ${token}` },
@@ -89,7 +89,7 @@ export const PetProvider: FC<Props> = ({ children }) => {
           headers: {
             Authorization: `Bearer ${token}`,
             "Content-Type": "multipart/form-data",
-          }, 
+          },
         },
       )
       .then(() => {
@@ -150,7 +150,7 @@ export const PetProvider: FC<Props> = ({ children }) => {
       });
   };
 
-  const deletePet = async (id: number) => {
+  const deletePet = async (name?:string,user_id?:number,id?: number) => {
     const token = Cookies.get("token") || "";
     return Swal.fire({
       background: "#F4F5FA",
@@ -171,6 +171,7 @@ export const PetProvider: FC<Props> = ({ children }) => {
             })
             .then(() => {
               checkToken();
+              getPetsEstablishment(name,user_id);
               swalMessage("Listo", "Mascota Eliminada", "success");
             })
             .catch(() => {
@@ -184,6 +185,41 @@ export const PetProvider: FC<Props> = ({ children }) => {
       });
   };
 
+  const getPetsEstablishment = async (text: string|undefined, user_id: number|undefined): Promise<{ isComplete: boolean }> => {
+    if (!Cookies.get("token")) {
+      return { isComplete: true };
+    }
+    if (user_id === undefined) {
+      return { isComplete: true };
+    }
+    const token = Cookies.get("token") || "";
+    return await petMonitoringApi
+      .get(`/auth/validate-token/${token}`)
+      .then(async (validation) => {
+        if (validation.data == true) {
+          await petMonitoringApi
+            .get(`/establishment/pets/${text}/${user_id}`, {
+              headers: { Authorization: `Bearer ${token}` },
+            })
+            .then((pets) => {
+              dispatch({ type: "[Pet] - getPetsEstablishment", payload: pets.data });
+            })
+            .catch(() => {
+              Cookies.remove("token");
+            });
+        }
+        return { isComplete: true };
+      })
+      .catch(() => {
+        Cookies.remove("token");
+        return { isComplete: true };
+      });
+  };
+
+  const clearPetsEstablishment = () => {
+    dispatch({ type: "[Pet] - clearPetsEstablishment" });
+  }
+
   return (
     <PetContext.Provider
       value={{
@@ -193,6 +229,8 @@ export const PetProvider: FC<Props> = ({ children }) => {
         getPet,
         petChange,
         deletePet,
+        getPetsEstablishment,
+        clearPetsEstablishment,
       }}
     >
       {children}

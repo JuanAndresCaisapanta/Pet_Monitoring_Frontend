@@ -11,6 +11,7 @@ import {
   Pets,
   ManageAccounts,
   SupervisedUserCircle,
+  Ballot,
 } from "@mui/icons-material";
 
 import { AuthContext } from "../../../context";
@@ -63,6 +64,12 @@ export const DrawerList: FC<Props> = ({ toggleSideMenu }) => {
                   <ManageAccounts />
                 </ListItemIcon>
                 <ListItemText primary={"Cuenta"} />
+              </ListItem>
+              <ListItem button onClick={() => navigateTo("/users/consults")}>
+                <ListItemIcon>
+                  <Ballot />
+                </ListItemIcon>
+                <ListItemText primary={"Consultas"} />
               </ListItem>
               <Divider textAlign="left" sx={{ fontSize: 14 }}>
                 Secciones

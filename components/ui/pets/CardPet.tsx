@@ -16,11 +16,13 @@ interface Props {
   sex: string;
   race: string;
   image: any;
+  name_establishment?:string
+  user_id?:number
 }
 
-export const CardPet: FC<Props> = ({ id, name, species, sex, race, image }) => {
+export const CardPet: FC<Props> = ({ id, name, species, sex, race, image, name_establishment,user_id }) => {
   const [isLoading, setIsLoading] = useState(false);
-  const { deletePet } = useContext(PetContext);
+  const { deletePet,clearPetsEstablishment } = useContext(PetContext);
 
   const router = useRouter();
 
@@ -30,7 +32,7 @@ export const CardPet: FC<Props> = ({ id, name, species, sex, race, image }) => {
 
   const onDeletePet = async (id: number) => {
     setIsLoading(true);
-    const { isComplete } = await deletePet(id);
+    const { isComplete } = await deletePet(name_establishment,user_id,id);
     if (isComplete) {
       setIsLoading(false);
     }
@@ -89,7 +91,7 @@ export const CardPet: FC<Props> = ({ id, name, species, sex, race, image }) => {
                 color="info"
                 disableElevation
                 startIcon={<Monitor />}
-                onClick={() => navigateTo(`pets/sections/${id}`)}
+                onClick={() => {navigateTo(`pets/sections/${id}`);}}
               >
                 Monitorear
               </Button>
@@ -103,7 +105,7 @@ export const CardPet: FC<Props> = ({ id, name, species, sex, race, image }) => {
                   width: "44%",
                   marginRight: 2,
                 }}
-                onClick={() => navigateTo(`pets/pet/profile/${id}`)}
+                onClick={() => {navigateTo(`pets/pet/profile/${id}`); clearPetsEstablishment()}}
               >
                 Ver
               </Button>

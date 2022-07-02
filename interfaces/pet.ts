@@ -77,3 +77,5 @@ export interface IPet {
     },
   ];
 }
+
+export interface IPets extends Array<IPet> {}

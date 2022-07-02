@@ -4,9 +4,9 @@ import { Box, Card } from "@mui/material";
 import MuiTab, { TabProps } from "@mui/material/Tab";
 import { styled } from "@mui/material/styles";
 import { TabList, TabPanel, TabContext } from "@mui/lab";
-import { AccountCircleOutlined, LockOpenOutlined } from "@mui/icons-material";
+import { Ballot } from "@mui/icons-material";
 
-import { MainLayout, TabConsultUser, TabProfileUser, TabSecurity } from "../../../components";
+import { MainLayout, TabConsult } from "../../../components";
 
 const Tab = styled(MuiTab)<TabProps>(({ theme }) => ({
   [theme.breakpoints.down("md")]: {
@@ -22,8 +22,8 @@ const TabName = styled("span")(({ theme }) => ({
   fontSize: "0.8rem",
   marginLeft: theme.spacing(2.4),
 }));
-const ProfilePage = () => {
-  const [value, setValue] = useState<string>("account");
+const ConsultPage = () => {
+  const [value, setValue] = useState<string>("consult");
 
   const handleChange = (event: SyntheticEvent, newValue: string) => {
     setValue(newValue);
@@ -37,39 +37,27 @@ const ProfilePage = () => {
           sx={{ borderBottom: (theme) => `1px solid ${theme.palette.divider}` }}
         >
           <Tab
-            value="account"
+            value="consult"
             label={
               <Box sx={{ display: "flex", alignItems: "center" }}>
-                <AccountCircleOutlined />
-                <TabName>Perfil</TabName>
-              </Box>
-            }
-          />
-          <Tab
-            value="security"
-            label={
-              <Box sx={{ display: "flex", alignItems: "center" }}>
-                <LockOpenOutlined />
-                <TabName>Seguridad</TabName>
+                <Ballot />
+                <TabName>Consultas</TabName>
               </Box>
             }
           />
         </TabList>
-        <TabPanel sx={{ p: 0 }} value="account">
-          <TabProfileUser />
-        </TabPanel>
-        <TabPanel sx={{ p: 0 }} value="security">
-          <TabSecurity />
+        <TabPanel sx={{ p: 0 }} value="consult">
+          <TabConsult />
         </TabPanel>
       </TabContext>
     </Card>
   );
 };
-ProfilePage.getLayout = function getLayout(page: ReactElement) {
+ConsultPage.getLayout = function getLayout(page: ReactElement) {
   return (
     <MainLayout title={"Monitoreo Mascotas"} pageDescription={"Una PWA donde se puede monitorear a tu mascota"}>
       {page}
     </MainLayout>
   );
 };
-export default ProfilePage;
+export default ConsultPage;

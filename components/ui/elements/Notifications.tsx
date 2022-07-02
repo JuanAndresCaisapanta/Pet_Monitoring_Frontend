@@ -18,7 +18,7 @@ export const Notifications = () => {
       clearInterval(interval);
       //petChange();
     };
-  }, [user?.id]);
+  }, [getNotificationsByUser]);
 
   const newNotifications = `Tiene ${user_notifications?.length} notificaciones`;
   const noNotifications = "No tiene notificaciones";
