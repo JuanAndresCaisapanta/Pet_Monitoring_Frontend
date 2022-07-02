@@ -6,7 +6,7 @@ import { styled } from "@mui/material/styles";
 import { TabList, TabPanel, TabContext } from "@mui/lab";
 import { AccountCircleOutlined, LockOpenOutlined } from "@mui/icons-material";
 
-import { MainLayout, TabConsultUser, TabProfileUser, TabSecurity } from "../../../components";
+import { MainLayout, TabProfileUser, TabSecurity } from "../../../components";
 
 const Tab = styled(MuiTab)<TabProps>(({ theme }) => ({
   [theme.breakpoints.down("md")]: {
