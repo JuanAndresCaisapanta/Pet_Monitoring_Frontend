@@ -87,8 +87,8 @@ export const TabProfileUser = () => {
       useWebWorker: true,
     };
     if (image[0] != null) {
-      const compressedImage = await imageCompression(image[0], options);
-      const { isComplete } = await updateUser(name, last_name, email, address, phone, compressedImage);
+      const compressed_image = await imageCompression(image[0], options);
+      const { isComplete } = await updateUser(name, last_name, email, address, phone, compressed_image);
       if (isComplete) {
         setIsLoading(false);
       }

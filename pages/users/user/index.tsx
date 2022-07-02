@@ -6,7 +6,7 @@ import { styled } from "@mui/material/styles";
 import { TabList, TabPanel, TabContext } from "@mui/lab";
 import { AccountCircleOutlined, LockOpenOutlined } from "@mui/icons-material";
 
-import { MainLayout, TabProfileUser, TabSecurity } from "../../../components";
+import { MainLayout, TabConsultUser, TabProfileUser, TabSecurity } from "../../../components";
 
 const Tab = styled(MuiTab)<TabProps>(({ theme }) => ({
   [theme.breakpoints.down("md")]: {
@@ -54,12 +54,24 @@ const ProfilePage = () => {
               </Box>
             }
           />
+          <Tab
+            value="consult"
+            label={
+              <Box sx={{ display: "flex", alignItems: "center" }}>
+                <LockOpenOutlined />
+                <TabName>Consultas</TabName>
+              </Box>
+            }
+          />
         </TabList>
         <TabPanel sx={{ p: 0 }} value="account">
           <TabProfileUser />
         </TabPanel>
         <TabPanel sx={{ p: 0 }} value="security">
           <TabSecurity />
+        </TabPanel>
+        <TabPanel sx={{ p: 0 }} value="consult">
+          <TabConsultUser />
         </TabPanel>
       </TabContext>
     </Card>
