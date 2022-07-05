@@ -65,7 +65,7 @@ export const TabProfilePet = () => {
   const { id } = router.query;
 
   useEffect(() => {
-    getPet(id);
+    getPet(Number(id));
     return () => {
       clearBreeds();
       clearSpecies();
