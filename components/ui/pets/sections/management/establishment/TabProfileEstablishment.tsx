@@ -7,7 +7,7 @@ import { Update } from "@mui/icons-material";
 import { Controller, useForm } from "react-hook-form";
 import MuiPhoneNumber from "material-ui-phone-number";
 
-import { EstablishmentContext, TypeEstablishmentContext } from "../../../../../../context";
+import { EstablishmentContext, EstablishmentTypeContext } from "../../../../../../context";
 import { CardForm, SelectFormId } from "../../../../elements";
 
 type FormData = {
@@ -26,8 +26,8 @@ export const TabProfileEstablishment = () => {
   const [establishmentName, setEstablishmentName] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
-  const { typeEstablishments, getTypeEstablishments, clearTypeEstablishments } =
-    useContext(TypeEstablishmentContext);
+  const { establishmentType, getEstablishmentType, clearEstablishmentType } =
+    useContext(EstablishmentTypeContext);
 
   const { establishment, getEstablishment, clearEstablishment, updateEstablishment } =
     useContext(EstablishmentContext);
@@ -41,9 +41,9 @@ export const TabProfileEstablishment = () => {
   } = useForm<FormData>();
 
   useEffect(() => {
-    getTypeEstablishments();
+    getEstablishmentType();
     return () => {
-      clearTypeEstablishments();
+      clearEstablishmentType();
     };
   }, []);
 
@@ -69,8 +69,8 @@ export const TabProfileEstablishment = () => {
       setValue("email", establishment?.email);
       setValue("cell_phone", establishment?.cell_phone);
       setValue("phone", establishment?.phone);
-      setValue("typeEstablishment", establishment?.typeEstablishment.id);
-      setListTypeEstablishment(establishment.typeEstablishment.id.toString());
+      setValue("typeEstablishment", establishment?.establishmentType.id);
+      setListTypeEstablishment(establishment.establishmentType.id.toString());
     }
   }, [establishment]);
 
@@ -81,8 +81,8 @@ export const TabProfileEstablishment = () => {
       setValue("email", establishment?.email);
       setValue("cell_phone", establishment?.cell_phone);
       setValue("phone", establishment?.phone);
-      setValue("typeEstablishment", establishment?.typeEstablishment.id);
-      setListTypeEstablishment(establishment.typeEstablishment.id.toString());
+      setValue("typeEstablishment", establishment?.establishmentType.id);
+      setListTypeEstablishment(establishment.establishmentType.id.toString());
     }
   };
 
@@ -109,7 +109,7 @@ export const TabProfileEstablishment = () => {
     }
   };
 
-  if (typeEstablishments && establishment) {
+  if (establishmentType && establishment) {
     return (
       <CardForm
         title={`Información de ${establishmentName}`}
@@ -142,7 +142,7 @@ export const TabProfileEstablishment = () => {
                 name="typeEstablishment"
                 value={listTypeEstablishment}
                 onChange={(event: SelectChangeEvent) => setListTypeEstablishment(event.target.value)}
-                object={typeEstablishments}
+                object={establishmentType}
                 register={register}
                 error={!!errors.typeEstablishment}
                 helperText={errors.typeEstablishment?.message}

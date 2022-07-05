@@ -5,18 +5,20 @@ import Swal from "sweetalert2";
 
 import { petMonitoringApi } from "../../api";
 import { swalMessage } from "../../components";
-import { IEstablishment } from "../../interfaces";
+import { IEstablishment, IFullNames } from "../../interfaces";
 import { AuthContext } from "../auth";
 import { PetContext } from "../pet";
 import { EstablishmentContext, establishmentReducer } from "./";
 
 export interface EstablishmentState {
   establishment?: IEstablishment;
+  establishmentsFullName?: IFullNames;
   isLoaded: boolean;
 }
 
 const ESTABLISHMENT_INITIAL_STATE: EstablishmentState = {
   establishment: undefined,
+  establishmentsFullName: undefined,
   isLoaded: false,
 };
 
@@ -60,9 +62,9 @@ export const EstablishmentProvider: FC<Props> = ({ children }) => {
     email: string,
     cell_phone: string,
     phone: string,
-    typeEstablishment_id: number,
-    pet_id: number,
-    clearForm: () => void,
+    establishmentType_id: number,
+    petId: number,
+    clearEstablishmentForm: () => void,
   ): Promise<{ isComplete: boolean }> => {
     const token = Cookies.get("token") || "";
     return await petMonitoringApi
@@ -74,8 +76,8 @@ export const EstablishmentProvider: FC<Props> = ({ children }) => {
           email,
           cell_phone,
           phone,
-          typeEstablishment: { id: typeEstablishment_id },
-          pet: { id: pet_id },
+          typeEstablishment: { id: establishmentType_id },
+          pet: { id: petId },
         },
         {
           headers: {
@@ -85,7 +87,7 @@ export const EstablishmentProvider: FC<Props> = ({ children }) => {
       )
       .then(() => {
         checkToken();
-        clearForm();
+        clearEstablishmentForm();
         swalMessage("Listo", "Establecimiento Agregado", "success");
         return { isComplete: true };
       })
@@ -102,19 +104,19 @@ export const EstablishmentProvider: FC<Props> = ({ children }) => {
     email: string,
     cell_phone: string,
     phone: string,
-    typeEstablishment_id: number,
+    establishmentType_id: number,
   ): Promise<{ isComplete: boolean }> => {
     const token = Cookies.get("token") || "";
     return await petMonitoringApi
       .put(
-        `/establishment/${establishment_id}`,
+        `/establishment/${establishmentType_id}`,
         {
           name,
           address,
           email,
           cell_phone,
           phone,
-          typeEstablishment: { id: typeEstablishment_id },
+          typeEstablishment: { id: establishmentType_id },
         },
         {
           headers: {
@@ -136,7 +138,7 @@ export const EstablishmentProvider: FC<Props> = ({ children }) => {
 
   const deleteEstablishment = async (
     pet_id: number,
-    professional_id: number,
+    establishment_id: number,
   ): Promise<{ isComplete: boolean }> => {
     const token = Cookies.get("token") || "";
     return Swal.fire({
@@ -153,7 +155,7 @@ export const EstablishmentProvider: FC<Props> = ({ children }) => {
       .then(async (result) => {
         if (result.isConfirmed) {
           await petMonitoringApi
-            .delete(`/establishment/${professional_id}`, {
+            .delete(`/establishment/${establishment_id}`, {
               headers: { Authorization: `Bearer ${token}` },
             })
             .then(() => {
@@ -172,25 +174,64 @@ export const EstablishmentProvider: FC<Props> = ({ children }) => {
       });
   };
 
+  const getEstablishmentsFullName = async (
+    user_id?: number,
+  ): Promise<{ isComplete: boolean }> => {
+    if (!Cookies.get("token")) {
+      return { isComplete: true };
+    }
+    if (user_id === undefined) {
+      return { isComplete: true };
+    }
+    const token = Cookies.get("token") || "";
+    return await petMonitoringApi
+      .get(`/auth/validate-token/${token}`)
+      .then(async (validation) => {
+        if (validation.data == true) {
+          await petMonitoringApi
+            .get(`/establishment/pets/user/${user_id}`, {
+              headers: { Authorization: `Bearer ${token}` },
+            })
+            .then((establishments_fullName) => {
+              dispatch({ type: "[Establishment] - getEstablishmentsFullName", payload: establishments_fullName.data });
+            })
+            .catch(() => {
+              Cookies.remove("token");
+            });
+        }
+        return { isComplete: true };
+      })
+      .catch(() => {
+        Cookies.remove("token");
+        return { isComplete: true };
+      });
+  };
+
+  const clearEstablishmentsFullName = () => {
+    dispatch({
+      type: "[Establishment] - clearEstablishmentsFullName",
+    });
+  }
+
   const clearEstablishment = () => {
     dispatch({
       type: "[Establishment] - clearEstablishment",
     });
   };
 
-  const sendEmail = async (
-    toEmail: string,
-    fromEmail: string,
+  const sendEmailEstablishment = async (
+    to_email: string,
+    from_email: string,
     subject: string,
     body: string,
   ): Promise<{ isComplete: boolean }> => {
     const token = Cookies.get("token") || "";
     return await petMonitoringApi
       .post(
-        `/establishment/email`,
+        `/establishment/emailEstablishment`,
         {
-          toEmail,
-          fromEmail,
+          to_email,
+          from_email,
           subject,
           body,
         },
@@ -219,8 +260,10 @@ export const EstablishmentProvider: FC<Props> = ({ children }) => {
         addEstablishment,
         updateEstablishment,
         deleteEstablishment,
+        getEstablishmentsFullName,
+        clearEstablishmentsFullName,
         clearEstablishment,
-        sendEmail,
+        sendEmailEstablishment,
       }}
     >
       {children}

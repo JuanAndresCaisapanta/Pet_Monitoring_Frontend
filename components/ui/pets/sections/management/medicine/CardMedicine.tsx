@@ -16,7 +16,7 @@ interface Props {
   manufacturer: string;
   application_date: string;
   applicator: string;
-  typeMedicine: string;
+  medicineType: string;
   image: any;
 }
 
@@ -27,7 +27,7 @@ export const CardMedicine: FC<Props> = ({
   manufacturer,
   application_date,
   applicator,
-  typeMedicine,
+  medicineType,
   image,
 }) => {
   const [isLoading, setIsLoading] = useState(false);
@@ -76,7 +76,7 @@ export const CardMedicine: FC<Props> = ({
             </Grid>
             <Grid item xs={12} md={12}>
               <Typography variant="body1">
-                <b>Tipo: </b> {typeMedicine}
+                <b>Tipo: </b> {medicineType}
               </Typography>
             </Grid>
             <Grid item xs={12} md={12}>

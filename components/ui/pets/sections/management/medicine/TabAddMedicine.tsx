@@ -11,7 +11,7 @@ import moment from "moment";
 import { useForm } from "react-hook-form";
 import imageCompression from "browser-image-compression";
 
-import { MedicineContext, TypeMedicineContext } from "../../../../../../context";
+import { MedicineContext, MedicineTypeContext } from "../../../../../../context";
 import { CardForm, SelectFormId } from "../../../../elements";
 
 type FormData = {
@@ -24,7 +24,7 @@ type FormData = {
   production_date: string | null;
   expiration_date: string | null;
   application_date: string | null;
-  typeMedicine: number | null;
+  medicineType: number | null;
   pet: number | null;
 };
 
@@ -36,7 +36,7 @@ export const TabAddMedicine = () => {
   const [expirationDate, setExpirationDate] = useState<Date | null>(new Date());
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const { typeMedicine, getTypeMedicine } = useContext(TypeMedicineContext);
+  const { medicineType, getMedicineType } = useContext(MedicineTypeContext);
   const { addMedicine } = useContext(MedicineContext);
 
   const router = useRouter();
@@ -51,7 +51,7 @@ export const TabAddMedicine = () => {
   } = useForm<FormData>();
 
   useEffect(() => {
-    getTypeMedicine();
+    getMedicineType();
   }, []);
 
   const onChangeImage = (file: ChangeEvent) => {
@@ -71,7 +71,7 @@ export const TabAddMedicine = () => {
     setValue("batch", null);
     setValue("applicator", "");
     setTypeMedicines("");
-    setValue("typeMedicine", null);
+    setValue("medicineType", null);
     setApplicationDate(new Date());
     setValue("application_date", null);
     setProductionDate(new Date());
@@ -91,7 +91,7 @@ export const TabAddMedicine = () => {
     production_date,
     expiration_date,
     application_date,
-    typeMedicine,
+    medicineType,
   }: FormData) => {
     setIsLoading(true);
     const options = {
@@ -111,7 +111,7 @@ export const TabAddMedicine = () => {
         moment(production_date!, "DD/MM/YYYY").format("MM/DD/YYYY"),
         moment(expiration_date!, "DD/MM/YYYY").format("MM/DD/YYYY"),
         moment(application_date!, "DD/MM/YYYY").format("MM/DD/YYYY"),
-        typeMedicine!,
+        medicineType!,
         Number(user_id),
         handleClearForm,
       );
@@ -129,7 +129,7 @@ export const TabAddMedicine = () => {
         moment(production_date!, "DD/MM/YYYY").format("MM/DD/YYYY"),
         moment(expiration_date!, "DD/MM/YYYY").format("MM/DD/YYYY"),
         moment(application_date!, "DD/MM/YYYY").format("MM/DD/YYYY"),
-        typeMedicine!,
+        medicineType!,
         Number(user_id),
         handleClearForm,
       );
@@ -265,11 +265,11 @@ export const TabAddMedicine = () => {
                 name="typeMedicine"
                 value={typeMedicines}
                 onChange={(event: SelectChangeEvent) => setTypeMedicines(event.target.value)}
-                object={typeMedicine}
+                object={medicineType}
                 register={register}
                 disabled={isLoading}
-                error={!!errors.typeMedicine}
-                helperText={errors.typeMedicine?.message}
+                error={!!errors.medicineType}
+                helperText={errors.medicineType?.message}
               />
             </Grid>
             <Grid item xs={12} md={6}>

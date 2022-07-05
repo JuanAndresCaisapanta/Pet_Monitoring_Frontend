@@ -5,7 +5,7 @@ export interface IEstablishment {
   email:string;
   cell_phone: string;
   phone: string;
-  typeEstablishment: {
+  establishmentType: {
     id: number;
     name: string;
   };

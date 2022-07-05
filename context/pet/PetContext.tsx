@@ -9,7 +9,7 @@ interface ContextProps {
 
   pets?: IPets;
 
-  getPet: (id: any) => void;
+  getPet: (pet_id: number) => void;
 
   petChange: () => void;
 
@@ -24,11 +24,11 @@ interface ContextProps {
     birth_date: string,
     breed: number,
     users: number,
-    clear: () => void,
+    clearPetForm: () => void,
   ) => Promise<{ isComplete: boolean }>;
 
   updatePet: (
-    id: number,
+    pet_id: number,
     name: string,
     color_main: string,
     color_secondary: string,
@@ -40,11 +40,32 @@ interface ContextProps {
     breed: number,
   ) => Promise<{ isComplete: boolean }>;
 
-  deletePet: (name?:string,user_id?:number,id?: number) => Promise<{ isComplete: boolean }>;
+  deletePet: (
+    type_id?: number,
+    fullName?: string,
+    user_id?: number,
+    pet_id?: number,
+  ) => Promise<{ isComplete: boolean }>;
 
-  getPetsEstablishment: (text: string, user_id: number) => Promise<{ isComplete: boolean }>;
+  getPetsEstablishment: (
+    establishmentType_id?: number,
+    establishment_fullName?: string,
+    user_id?: number,
+  ) => Promise<{ isComplete: boolean }>;
 
-  clearPetsEstablishment: () => void;
+  getPetsMedicine: (
+    medicineType_id?: number,
+    medicine_fullName?: string,
+    user_id?: number,
+  ) => Promise<{ isComplete: boolean }>;
+
+  getPetsProfessional: (
+    profession_id?: number,
+    professional_fullName?: string,
+    user_id?: number,
+  ) => Promise<{ isComplete: boolean }>;
+
+  clearPets: () => void;
 }
 
 export const PetContext = createContext({} as ContextProps);

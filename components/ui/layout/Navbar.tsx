@@ -4,7 +4,7 @@ import { AppBar, Avatar, Box, IconButton, Toolbar, Tooltip, Typography } from "@
 import MenuIcon from "@mui/icons-material/Menu";
 
 import { AuthContext } from "../../../context";
-import { Notifications } from '../elements/Notifications';
+import { Notifications } from "../elements/Notifications";
 
 const drawerWidth = 210;
 interface Props {
@@ -44,10 +44,10 @@ export const Navbar: FC<Props> = ({ toggleSideMenu }) => {
           </Typography>
         </Box>
 
-        <Notifications/>
+        <Notifications />
 
         <Tooltip title={user?.name || ""}>
-          <IconButton sx={{ p: 0, marginLeft:2 }} >
+          <IconButton sx={{ p: 0, marginLeft: 2 }}>
             <Avatar alt="Usuario" src={imgSrc} />
           </IconButton>
         </Tooltip>

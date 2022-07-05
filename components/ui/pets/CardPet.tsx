@@ -16,13 +16,14 @@ interface Props {
   sex: string;
   race: string;
   image: any;
-  name_establishment?:string
-  user_id?:number
+  full_name?: string;
+  types?: number;
+  user_id?: number;
 }
 
-export const CardPet: FC<Props> = ({ id, name, species, sex, race, image, name_establishment,user_id }) => {
+export const CardPet: FC<Props> = ({ id, name, species, sex, race, image, full_name, types, user_id }) => {
   const [isLoading, setIsLoading] = useState(false);
-  const { deletePet,clearPetsEstablishment } = useContext(PetContext);
+  const { deletePet, clearPets } = useContext(PetContext);
 
   const router = useRouter();
 
@@ -32,7 +33,7 @@ export const CardPet: FC<Props> = ({ id, name, species, sex, race, image, name_e
 
   const onDeletePet = async (id: number) => {
     setIsLoading(true);
-    const { isComplete } = await deletePet(name_establishment,user_id,id);
+    const { isComplete } = await deletePet(types, full_name, user_id, id);
     if (isComplete) {
       setIsLoading(false);
     }
@@ -86,12 +87,14 @@ export const CardPet: FC<Props> = ({ id, name, species, sex, race, image, name_e
             </Grid>
             <Grid item xs={12} md={12} textAlign="center">
               <Button
-              fullWidth
+                fullWidth
                 variant="contained"
                 color="info"
                 disableElevation
                 startIcon={<Monitor />}
-                onClick={() => {navigateTo(`pets/sections/${id}`);}}
+                onClick={() => {
+                  navigateTo(`pets/sections/${id}`);
+                }}
               >
                 Monitorear
               </Button>
@@ -105,7 +108,10 @@ export const CardPet: FC<Props> = ({ id, name, species, sex, race, image, name_e
                   width: "44%",
                   marginRight: 2,
                 }}
-                onClick={() => {navigateTo(`pets/pet/profile/${id}`); clearPetsEstablishment()}}
+                onClick={() => {
+                  navigateTo(`pets/pet/profile/${id}`);
+                  clearPets();
+                }}
               >
                 Ver
               </Button>

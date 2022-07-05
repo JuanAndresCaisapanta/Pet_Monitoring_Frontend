@@ -28,7 +28,7 @@ export interface IPet {
       production_date: string;
       expiration_date: string;
       application_date: string;
-      typeMedicine: {
+      medicineType: {
         id: number;
         name: string;
       };
@@ -55,7 +55,7 @@ export interface IPet {
       email: string;
       cell_phone: string;
       phone: string;
-      typeEstablishment: {
+      establishmentType: {
         id: number;
         name: string;
       };

@@ -12,7 +12,7 @@ import moment from "moment";
 import imageCompression from "browser-image-compression";
 
 import { CardForm } from "../../../../elements";
-import { MedicineContext, TypeMedicineContext } from "../../../../../../context";
+import { MedicineContext, MedicineTypeContext } from "../../../../../../context";
 import { SelectFormId } from "../../../../elements/SelectFormId";
 
 type FormData = {
@@ -25,7 +25,7 @@ type FormData = {
   production_date: string | undefined;
   expiration_date: string | undefined;
   application_date: string | undefined;
-  typeMedicine: number;
+  medicineType: number;
 };
 
 export const TabProfileMedicine = () => {
@@ -37,8 +37,8 @@ export const TabProfileMedicine = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [medicineName, setMedicineName] = useState<string | null>("");
 
-  const { typeMedicine, getTypeMedicine } = useContext(TypeMedicineContext);
-  const { updateMedicine, getMedicine, loaded, medicine, clearMedicine } = useContext(MedicineContext);
+  const { medicineType, getMedicineType } = useContext(MedicineTypeContext);
+  const { updateMedicine, getMedicine, medicine, clearMedicine } = useContext(MedicineContext);
 
   const router = useRouter();
   const { id: medicine_id } = router.query;
@@ -51,7 +51,7 @@ export const TabProfileMedicine = () => {
   } = useForm<FormData>();
 
   useEffect(() => {
-    getTypeMedicine();
+    getMedicineType();
   }, []);
 
   useEffect(() => {
@@ -77,8 +77,8 @@ export const TabProfileMedicine = () => {
 
   useEffect(() => {
     if (medicine?.image) {
-      setListTypeMedicine(medicine.typeMedicine.id.toString());
-      setValue("typeMedicine", medicine.typeMedicine.id);
+      setListTypeMedicine(medicine.medicineType.id.toString());
+      setValue("medicineType", medicine.medicineType.id);
       setImagePath(`data:image/jpeg;base64,${medicine?.image}`);
       setApplicationDate(moment(medicine.application_date, "DD/MM/YYYY").toDate());
       setValue("application_date", medicine.application_date);
@@ -104,8 +104,8 @@ export const TabProfileMedicine = () => {
   };
 
   const handleClearForm = () => {
-    setListTypeMedicine(medicine?.typeMedicine.id.toString()!);
-    setValue("typeMedicine", medicine?.typeMedicine.id!);
+    setListTypeMedicine(medicine?.medicineType.id.toString()!);
+    setValue("medicineType", medicine?.medicineType.id!);
     setImagePath(`data:image/jpeg;base64,${medicine?.image}`);
     setApplicationDate(moment(medicine?.application_date, "DD/MM/YYYY").toDate());
     setValue("application_date", medicine?.application_date);
@@ -130,7 +130,7 @@ export const TabProfileMedicine = () => {
     production_date,
     expiration_date,
     application_date,
-    typeMedicine,
+    medicineType: typeMedicine,
   }: FormData) => {
     setIsLoading(true);
     const options = {
@@ -303,11 +303,11 @@ export const TabProfileMedicine = () => {
                   name="typeMedicine"
                   value={listTypeMedicine}
                   onChange={(event: SelectChangeEvent) => setListTypeMedicine(event.target.value)}
-                  object={typeMedicine}
+                  object={medicineType}
                   register={register}
                   disabled={isLoading}
-                  error={!!errors.typeMedicine}
-                  helperText={errors.typeMedicine?.message}
+                  error={!!errors.medicineType}
+                  helperText={errors.medicineType?.message}
                 />
               </Grid>
               <Grid item xs={12} sm={6}>

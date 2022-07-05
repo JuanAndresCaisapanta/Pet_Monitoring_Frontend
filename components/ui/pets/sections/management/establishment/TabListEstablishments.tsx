@@ -18,7 +18,7 @@ export const TabListEstablishments = () => {
   const { id: pet_id } = router.query;
 
   useEffect(() => {
-    getPet(pet_id);
+    getPet(Number(pet_id));
     return () => {
       petChange();
     };
@@ -54,7 +54,7 @@ export const TabListEstablishments = () => {
                     pet_id={Number(pet_id)}
                     establishment_id={establishment.id}
                     name={establishment.name}
-                    type={establishment.typeEstablishment.name}
+                    type={establishment.establishmentType.name}
                   />
                 </Grid>
               ))

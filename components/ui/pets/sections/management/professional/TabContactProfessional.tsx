@@ -32,7 +32,7 @@ export const TabContactProfessional = () => {
     professional,
     getProfessional,
     clearProfessional,
-    sendEmail,
+    sendEmailProfessional,
     isLoaded: isProfessionalLoaded,
   } = useContext(ProfessionalContext);
 
@@ -71,7 +71,7 @@ export const TabContactProfessional = () => {
 
   const handleSendEmail = async ({ message }: FormData) => {
     setIsLoading(true);
-    const { isComplete } = await sendEmail(
+    const { isComplete } = await sendEmailProfessional(
       professional?.email!,
       user?.email!,
       `Mensaje para ${professional?.name} ${professional?.last_name}`,

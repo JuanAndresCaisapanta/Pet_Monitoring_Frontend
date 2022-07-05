@@ -12,8 +12,8 @@ import {
   ProfessionalProvider,
   ProfessionProvider,
   SpeciesProvider,
-  TypeEstablishmentProvider,
-  TypeMedicineProvider,
+  EstablishmentTypeProvider,
+  MedicineTypeProvider,
   UiProvider,
   UserProvider,
 } from "../context";
@@ -28,9 +28,9 @@ export const Providers: FC<Props> = ({ children }) => {
   return (
     <AuthProvider>
       <UserProvider>
-        <TypeMedicineProvider>
+        <MedicineTypeProvider>
           <ProfessionProvider>
-            <TypeEstablishmentProvider>
+            <EstablishmentTypeProvider>
               <SpeciesProvider>
                 <BreedProvider>
                   <PetProvider>
@@ -53,9 +53,9 @@ export const Providers: FC<Props> = ({ children }) => {
                   </PetProvider>
                 </BreedProvider>
               </SpeciesProvider>
-            </TypeEstablishmentProvider>
+            </EstablishmentTypeProvider>
           </ProfessionProvider>
-        </TypeMedicineProvider>
+        </MedicineTypeProvider>
       </UserProvider>
     </AuthProvider>
   );

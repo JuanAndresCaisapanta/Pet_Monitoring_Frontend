@@ -17,7 +17,7 @@ export const TabTemperature = () => {
   const { id } = router.query;
 
   useMemo(() => {
-    getPet(id);
+    getPet(Number(id));
     return () => {
       petChange();
     };
@@ -25,7 +25,7 @@ export const TabTemperature = () => {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      getPet(id);
+      getPet(Number(id));
     }, 5000);
     return () => {
       clearInterval(interval);

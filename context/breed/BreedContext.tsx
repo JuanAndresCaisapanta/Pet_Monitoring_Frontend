@@ -5,7 +5,7 @@ import { IBreed } from "../../interfaces";
 interface ContextProps {
   breeds?: IBreed;
   isLoaded?: boolean;
-  getBreeds: (id: number) => void;
+  getBreeds: (species_id: number) => void;
   clearBreeds: () => void;
 }
 

@@ -6,9 +6,9 @@ interface ContextProps {
 
   isLoaded?: boolean;
 
-  getNotificationsByUser: (user_id: number|undefined) => void;
+  getNotificationsByUser: (user_id?: number) => void;
 
-  deleteNotification: (user_id: number|undefined, notification_id: number|undefined) => Promise<{ isComplete: boolean }>;
+  deleteNotification: (user_id?: number, notification_id?: number) => Promise<{ isComplete: boolean }>;
 }
 
 export const NotificationContext = createContext({} as ContextProps);

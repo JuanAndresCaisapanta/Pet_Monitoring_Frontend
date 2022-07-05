@@ -16,7 +16,7 @@ export const TabListProfessionals = () => {
   const { id: pet_id } = router.query;
 
   useEffect(() => {
-    getPet(pet_id);
+    getPet(Number(pet_id));
     return () => {
       petChange();
     };

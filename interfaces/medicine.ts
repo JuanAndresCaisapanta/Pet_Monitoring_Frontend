@@ -9,7 +9,7 @@ export interface IMedicine {
   production_date: string;
   expiration_date: string;
   application_date: string;
-  typeMedicine: {
+  medicineType: {
     id: number;
     name: string;
   };

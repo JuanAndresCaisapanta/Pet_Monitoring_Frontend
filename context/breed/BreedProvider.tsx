@@ -23,7 +23,7 @@ interface Props {
 export const BreedProvider: FC<Props> = ({ children }) => {
   const [state, dispatch] = useReducer(breedReducer, BREED_INITIAL_STATE);
 
-  const getBreeds = async (id: number) => {
+  const getBreeds = async (species_id: number) => {
     if (!Cookies.get("token")) {
       return;
     }
@@ -33,7 +33,7 @@ export const BreedProvider: FC<Props> = ({ children }) => {
         `/auth/validate-token/${token}`,
       );
       if (data == true) {
-        const { data } = await petMonitoringApi.get(`breed/species/${id}`, {
+        const { data } = await petMonitoringApi.get(`breed/species/${species_id}`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         dispatch({ type: "[Breed] - getBreeds", payload: data });

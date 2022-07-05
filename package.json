@@ -34,6 +34,7 @@
     "react-map-gl": "^7.0.15",
     "react-share": "^4.4.0",
     "react-thermometer-ecotropy": "^1.0.2",
+    "sharp": "^0.30.7",
     "sweetalert2": "^11.4.14"
   },
   "devDependencies": {

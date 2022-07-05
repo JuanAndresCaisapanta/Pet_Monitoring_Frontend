@@ -7,7 +7,7 @@ import { Save } from "@mui/icons-material";
 import { Controller, useForm } from "react-hook-form";
 import MuiPhoneNumber from "material-ui-phone-number";
 
-import { EstablishmentContext, TypeEstablishmentContext } from "../../../../../../context";
+import { EstablishmentContext, EstablishmentTypeContext } from "../../../../../../context";
 import { CardForm, SelectFormId } from "../../../../elements";
 
 type FormData = {
@@ -23,12 +23,7 @@ export const TabAddEstablishment = () => {
   const [listTypeEstablishment, setListTypeEstablishment] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
-  const {
-    typeEstablishments,
-    getTypeEstablishments,
-    isLoaded: isLoadedTypeEstablishments,
-    clearTypeEstablishments,
-  } = useContext(TypeEstablishmentContext);
+  const { establishmentType, getEstablishmentType, clearEstablishmentType } = useContext(EstablishmentTypeContext);
   const { addEstablishment } = useContext(EstablishmentContext);
 
   const {
@@ -44,9 +39,9 @@ export const TabAddEstablishment = () => {
   const { id: pet_id } = router.query;
 
   useEffect(() => {
-    getTypeEstablishments();
+    getEstablishmentType();
     return () => {
-      clearTypeEstablishments();
+      clearEstablishmentType();
     };
   }, []);
 
@@ -83,7 +78,7 @@ export const TabAddEstablishment = () => {
     }
   };
 
-  if (isLoadedTypeEstablishments && typeEstablishments) {
+  if (establishmentType) {
     return (
       <CardForm
         title={`Ingrese la información del Establecimiento`}
@@ -116,7 +111,7 @@ export const TabAddEstablishment = () => {
                 name="typeEstablishment"
                 value={listTypeEstablishment}
                 onChange={(event: SelectChangeEvent) => setListTypeEstablishment(event.target.value)}
-                object={typeEstablishments}
+                object={establishmentType}
                 register={register}
                 error={!!errors.typeEstablishment}
                 helperText={errors.typeEstablishment?.message}

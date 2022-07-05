@@ -1,22 +1,25 @@
-import axios from "axios";
-import Cookies from "js-cookie";
 import { FC, ReactNode, useContext, useReducer } from "react";
+
+import Cookies from "js-cookie";
 import Swal from "sweetalert2";
+
 import { petMonitoringApi } from "../../api";
 import { AuthContext } from "../auth";
 import { MedicineContext, medicineReducer } from "./";
-import { IMedicine } from "../../interfaces";
+import { IFullNames, IMedicine } from "../../interfaces";
 import { swalMessage } from "../../components";
 import { PetContext } from "../pet/PetContext";
 
 export interface MedicineState {
   medicine?: IMedicine;
-  loaded: boolean;
+  medicinesFullName?: IFullNames;
+  isLoaded: boolean;
 }
 
 const MEDICINE_INITIAL_STATE: MedicineState = {
   medicine: undefined,
-  loaded: false,
+  medicinesFullName: undefined,
+  isLoaded: false,
 };
 
 interface Props {
@@ -27,18 +30,18 @@ export const MedicineProvider: FC<Props> = ({ children }) => {
   const { checkToken } = useContext(AuthContext);
   const { getPet } = useContext(PetContext);
 
-  const getMedicine = async (id: any) => {
+  const getMedicine = async (medicine_id: any) => {
     if (!Cookies.get("token")) {
       return;
     }
-    if (id === undefined) {
+    if (medicine_id === undefined) {
       return;
     }
     try {
       const token = Cookies.get("token") || "";
       const { data } = await petMonitoringApi.get(`/auth/validate-token/${token}`);
       if (data == true) {
-        const medicine = await petMonitoringApi.get(`/medicine/${id}`, {
+        const medicine = await petMonitoringApi.get(`/medicine/${medicine_id}`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         dispatch({
@@ -63,9 +66,9 @@ export const MedicineProvider: FC<Props> = ({ children }) => {
     production_date: string,
     expiration_date: string,
     application_date: string,
-    typeMedicine: number,
-    pet: number,
-    clear_form: () => void,
+    medicineType_id: number,
+    pet_id: number,
+    clearMedicineForm: () => void,
   ): Promise<{ isComplete: boolean }> => {
     const token = Cookies.get("token") || "";
     return await petMonitoringApi
@@ -81,8 +84,8 @@ export const MedicineProvider: FC<Props> = ({ children }) => {
           production_date,
           expiration_date,
           application_date,
-          typeMedicine: { id: typeMedicine },
-          pet: { id: pet },
+          medicine_type: { id: medicineType_id },
+          pet: { id: pet_id },
         },
         {
           headers: {
@@ -94,7 +97,7 @@ export const MedicineProvider: FC<Props> = ({ children }) => {
       .then(() => {
         checkToken();
         swalMessage("Listo", "Medicina Agregada", "success");
-        clear_form();
+        clearMedicineForm();
         return { isComplete: true };
       })
       .catch(() => {
@@ -104,7 +107,7 @@ export const MedicineProvider: FC<Props> = ({ children }) => {
   };
 
   const updateMedicine = async (
-    id: number,
+    medicine_id: any,
     name: string,
     image: any,
     manufacturer: string,
@@ -114,12 +117,12 @@ export const MedicineProvider: FC<Props> = ({ children }) => {
     production_date: string,
     expiration_date: string,
     application_date: string,
-    typeMedicine: number,
+    medicineType_id: number,
   ): Promise<{ isComplete: boolean }> => {
     const token = Cookies.get("token") || "";
     return await petMonitoringApi
       .put(
-        `/medicine/${id}`,
+        `/medicine/${medicine_id}`,
         {
           name,
           image,
@@ -130,7 +133,7 @@ export const MedicineProvider: FC<Props> = ({ children }) => {
           production_date,
           expiration_date,
           application_date,
-          typeMedicine: { id: typeMedicine },
+          medicine_type: { id: medicineType_id },
         },
         {
           headers: {
@@ -141,7 +144,7 @@ export const MedicineProvider: FC<Props> = ({ children }) => {
       )
       .then(() => {
         checkToken();
-        getMedicine(id);
+        getMedicine(medicine_id);
         swalMessage("Listo", "Medicina Actualizada", "success");
         return { isComplete: true };
       })
@@ -192,6 +195,45 @@ export const MedicineProvider: FC<Props> = ({ children }) => {
     });
   };
 
+  const getMedicinesFullName = async (
+    user_id?: number,
+  ): Promise<{ isComplete: boolean }> => {
+    if (!Cookies.get("token")) {
+      return { isComplete: true };
+    }
+    if (user_id === undefined) {
+      return { isComplete: true };
+    }
+    const token = Cookies.get("token") || "";
+    return await petMonitoringApi
+      .get(`/auth/validate-token/${token}`)
+      .then(async (validation) => {
+        if (validation.data == true) {
+          await petMonitoringApi
+            .get(`/medicine/pets/user/${user_id}`, {
+              headers: { Authorization: `Bearer ${token}` },
+            })
+            .then((medicines_fullName) => {
+              dispatch({ type: "[Medicine] - getMedicinesFullName", payload: medicines_fullName.data });
+            })
+            .catch(() => {
+              Cookies.remove("token");
+            });
+        }
+        return { isComplete: true };
+      })
+      .catch(() => {
+        Cookies.remove("token");
+        return { isComplete: true };
+      });
+  };
+
+  const clearMedicinesFullName = () => {
+    dispatch({
+      type: "[Medicine] - clearMedicinesFullName",
+    });
+  }
+
   return (
     <MedicineContext.Provider
       value={{
@@ -201,6 +243,8 @@ export const MedicineProvider: FC<Props> = ({ children }) => {
         updateMedicine,
         deleteMedicine,
         clearMedicine,
+        getMedicinesFullName,
+        clearMedicinesFullName,
       }}
     >
       {children}

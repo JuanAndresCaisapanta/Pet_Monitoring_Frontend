@@ -26,7 +26,7 @@ export const TabLocation = () => {
   const { id } = router.query;
 
   useMemo(() => {
-    getPet(id);
+    getPet(Number(id));
     return () => {
       petChange();
     };
@@ -34,7 +34,7 @@ export const TabLocation = () => {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      getPet(id);
+      getPet(Number(id));
     }, 30000);
     return () => {
       clearInterval(interval);

@@ -24,7 +24,7 @@ export const NotificationProvider: FC<Props> = ({ children }) => {
   const [state, dispatch] = useReducer(notificationReducer, NOTIFICATION_INITIAL_STATE);
   const { checkToken } = useContext(AuthContext);
 
-  const getNotificationsByUser = async (user_id: number | undefined) => {
+  const getNotificationsByUser = async (user_id?: number) => {
     if (!Cookies.get("token")) {
       return;
     }
@@ -51,8 +51,8 @@ export const NotificationProvider: FC<Props> = ({ children }) => {
   };
 
   const deleteNotification = async (
-    user_id: number|undefined,
-    notification_id: number|undefined,
+    user_id?: number,
+    notification_id?: number,
   ): Promise<{ isComplete: boolean }> => {
     const token = Cookies.get("token") || "";
     return Swal.fire({

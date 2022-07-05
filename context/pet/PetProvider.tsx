@@ -1,5 +1,6 @@
 import { FC, ReactNode, useContext, useReducer } from "react";
 
+import Swal from "sweetalert2";
 import Cookies from "js-cookie";
 
 import { petMonitoringApi } from "../../api";
@@ -7,7 +8,6 @@ import { IPet, IPets } from "../../interfaces";
 import { AuthContext } from "../auth";
 import { PetContext, petReducer } from "./";
 import { swalMessage } from "../../components";
-import Swal from "sweetalert2";
 
 export interface PetState {
   isLoaded: boolean;
@@ -29,18 +29,18 @@ export const PetProvider: FC<Props> = ({ children }) => {
 
   const { checkToken } = useContext(AuthContext);
 
-  const getPet = async (id: any) => {
+  const getPet = async (pet_id: number) => {
     if (!Cookies.get("token")) {
       return;
     }
-    if (id === undefined) {
+    if (pet_id === undefined) {
       return;
     }
     try {
       const token = Cookies.get("token") || "";
       const { data } = await petMonitoringApi.get(`/auth/validate-token/${token}`);
       if (data == true) {
-        const pet = await petMonitoringApi.get(`/pet/${id}`, {
+        const pet = await petMonitoringApi.get(`/pet/${pet_id}`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         dispatch({ type: "[Pet] - getPet", payload: pet.data });
@@ -67,7 +67,7 @@ export const PetProvider: FC<Props> = ({ children }) => {
     birth_date: string,
     breed: number,
     users: number,
-    clear: () => void,
+    clearPetForm: () => void,
   ): Promise<{ isComplete: boolean }> => {
     const token = Cookies.get("token") || "";
     return await petMonitoringApi
@@ -95,7 +95,7 @@ export const PetProvider: FC<Props> = ({ children }) => {
       .then(() => {
         checkToken();
         swalMessage("Listo", "Mascota Agregada", "success");
-        clear();
+        clearPetForm();
         return { isComplete: true };
       })
       .catch(() => {
@@ -105,7 +105,7 @@ export const PetProvider: FC<Props> = ({ children }) => {
   };
 
   const updatePet = async (
-    id: number,
+    pet_id: number,
     name: string,
     color_main: string,
     color_secondary: string,
@@ -119,7 +119,7 @@ export const PetProvider: FC<Props> = ({ children }) => {
     const token = Cookies.get("token") || "";
     return await petMonitoringApi
       .put(
-        `/pet/${id}`,
+        `/pet/${pet_id}`,
         {
           name,
           color_main,
@@ -140,7 +140,7 @@ export const PetProvider: FC<Props> = ({ children }) => {
       )
       .then(() => {
         checkToken();
-        getPet(id);
+        getPet(pet_id);
         swalMessage("Listo", "Mascota Actualizada", "success");
         return { isComplete: true };
       })
@@ -150,7 +150,7 @@ export const PetProvider: FC<Props> = ({ children }) => {
       });
   };
 
-  const deletePet = async (name?:string,user_id?:number,id?: number) => {
+  const deletePet = async (type_id?: number, fullName?: string, user_id?: number, pet_id?: number) => {
     const token = Cookies.get("token") || "";
     return Swal.fire({
       background: "#F4F5FA",
@@ -166,12 +166,12 @@ export const PetProvider: FC<Props> = ({ children }) => {
       .then(async (result) => {
         if (result.isConfirmed) {
           await petMonitoringApi
-            .delete(`/pet/${id}`, {
+            .delete(`/pet/${pet_id}`, {
               headers: { Authorization: `Bearer ${token}` },
             })
             .then(() => {
               checkToken();
-              getPetsEstablishment(name,user_id);
+              getPetsEstablishment(type_id, fullName, user_id);
               swalMessage("Listo", "Mascota Eliminada", "success");
             })
             .catch(() => {
@@ -185,7 +185,11 @@ export const PetProvider: FC<Props> = ({ children }) => {
       });
   };
 
-  const getPetsEstablishment = async (text: string|undefined, user_id: number|undefined): Promise<{ isComplete: boolean }> => {
+  const getPetsEstablishment = async (
+    establishmentType_id?: number,
+    establishment_fullName?: string,
+    user_id?: number,
+  ): Promise<{ isComplete: boolean }> => {
     if (!Cookies.get("token")) {
       return { isComplete: true };
     }
@@ -198,7 +202,7 @@ export const PetProvider: FC<Props> = ({ children }) => {
       .then(async (validation) => {
         if (validation.data == true) {
           await petMonitoringApi
-            .get(`/establishment/pets/${text}/${user_id}`, {
+            .get(`/establishment/pets/${establishmentType_id}/${establishment_fullName}/${user_id}`, {
               headers: { Authorization: `Bearer ${token}` },
             })
             .then((pets) => {
@@ -216,9 +220,79 @@ export const PetProvider: FC<Props> = ({ children }) => {
       });
   };
 
-  const clearPetsEstablishment = () => {
-    dispatch({ type: "[Pet] - clearPetsEstablishment" });
-  }
+  const getPetsMedicine = async (
+    medicineType_id?: number,
+    medicine_fullName?: string,
+    user_id?: number,
+  ): Promise<{ isComplete: boolean }> => {
+    if (!Cookies.get("token")) {
+      return { isComplete: true };
+    }
+    if (user_id === undefined) {
+      return { isComplete: true };
+    }
+    const token = Cookies.get("token") || "";
+    return await petMonitoringApi
+      .get(`/auth/validate-token/${token}`)
+      .then(async (validation) => {
+        if (validation.data == true) {
+          await petMonitoringApi
+            .get(`/medicine/pets/${medicineType_id}/${medicine_fullName}/${user_id}`, {
+              headers: { Authorization: `Bearer ${token}` },
+            })
+            .then((pets) => {
+              dispatch({ type: "[Pet] - getPetsMedicine", payload: pets.data });
+            })
+            .catch(() => {
+              Cookies.remove("token");
+            });
+        }
+        return { isComplete: true };
+      })
+      .catch(() => {
+        Cookies.remove("token");
+        return { isComplete: true };
+      });
+  };
+
+  const getPetsProfessional = async (
+    profession_id?: number,
+    professional_fullName?: string,
+    user_id?: number,
+  ): Promise<{ isComplete: boolean }> => {
+    if (!Cookies.get("token")) {
+      return { isComplete: true };
+    }
+    if (user_id === undefined) {
+      return { isComplete: true };
+    }
+    const token = Cookies.get("token") || "";
+    return await petMonitoringApi
+      .get(`/auth/validate-token/${token}`)
+      .then(async (validation) => {
+        if (validation.data == true) {
+          await petMonitoringApi
+            .get(`/professional/pets/${profession_id}/${professional_fullName}/${user_id}`, {
+              headers: { Authorization: `Bearer ${token}` },
+            })
+            .then((pets) => {
+              dispatch({ type: "[Pet] - getPetsProfessional", payload: pets.data });
+            })
+            .catch(() => {
+              Cookies.remove("token");
+            });
+        }
+        return { isComplete: true };
+      })
+      .catch(() => {
+        Cookies.remove("token");
+        return { isComplete: true };
+      });
+  };
+
+  const clearPets = () => {
+    dispatch({ type: "[Pet] - clearPets" });
+  };
 
   return (
     <PetContext.Provider
@@ -230,7 +304,9 @@ export const PetProvider: FC<Props> = ({ children }) => {
         petChange,
         deletePet,
         getPetsEstablishment,
-        clearPetsEstablishment,
+        getPetsMedicine,
+        getPetsProfessional,
+        clearPets,
       }}
     >
       {children}

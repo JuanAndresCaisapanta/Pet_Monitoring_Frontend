@@ -1,4 +1,4 @@
-import { IEstablishment } from "../../interfaces";
+import { IEstablishment, IFullNames } from "../../interfaces";
 import { EstablishmentState } from "./";
 
 type EstablishmentActionType =
@@ -6,6 +6,8 @@ type EstablishmentActionType =
       type: "[Establishment] - getEstablishment";
       payload: IEstablishment;
     }
+  | { type: "[Establishment] - getEstablishmentsFullName"; payload: IFullNames }
+  | { type: "[Establishment] - clearEstablishmentsFullName" }
   | { type: "[Establishment] - clearEstablishment" };
 
 export const establishmentReducer = (
@@ -18,6 +20,18 @@ export const establishmentReducer = (
         ...state,
         establishment: action.payload,
         isLoaded: true,
+      };
+    case "[Establishment] - getEstablishmentsFullName":
+      return {
+        ...state,
+        establishmentsFullName: action.payload,
+        isLoaded: true,
+      };
+    case "[Establishment] - clearEstablishmentsFullName":
+      return {
+        ...state,
+        establishmentsFullName: undefined,
+        isLoaded: false,
       };
     case "[Establishment] - clearEstablishment":
       return {

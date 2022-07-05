@@ -31,7 +31,7 @@ export const TabContactEstablishment = () => {
     establishment,
     getEstablishment,
     clearEstablishment,
-    sendEmail,
+    sendEmailEstablishment,
     isLoaded: isEstablishmentLoaded,
   } = useContext(EstablishmentContext);
 
@@ -69,7 +69,7 @@ export const TabContactEstablishment = () => {
 
   const handleSendEmail = async ({ message }: FormData) => {
     setIsLoading(true);
-    const { isComplete } = await sendEmail(
+    const { isComplete } = await sendEmailEstablishment(
       establishment?.email!,
       user?.email!,
       `Mensaje para ${establishment?.name}}`,

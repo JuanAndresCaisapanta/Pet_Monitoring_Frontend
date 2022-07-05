@@ -1,8 +1,11 @@
 import { createContext } from "react";
 import { IProfessional } from "../../interfaces";
+import { IFullNames } from "../../interfaces/fullName";
 
 interface ContextProps {
   professional?: IProfessional;
+
+  professionalsFullName?: IFullNames;
 
   isLoaded: boolean;
 
@@ -16,7 +19,7 @@ interface ContextProps {
     cell_phone: string,
     profession_id: number,
     pet_id: number,
-    clearForm: () => void,
+    clearProfessionalForm: () => void,
   ) => Promise<{ isComplete: boolean }>;
 
   updateProfessional: (
@@ -33,12 +36,16 @@ interface ContextProps {
 
   clearProfessional: () => void;
 
-  sendEmail: (
-    toEmail: string,
-    fromEmail: string,
+  sendEmailProfessional: (
+    to_email: string,
+    from_email: string,
     subject: string,
     body: string,
   ) => Promise<{ isComplete: boolean }>;
+
+  getProfessionalsFullName: (user_id?: number) => Promise<{ isComplete: boolean }>;
+
+  clearProfessionalsFullName: () => void;
 }
 
 export const ProfessionalContext = createContext({} as ContextProps);

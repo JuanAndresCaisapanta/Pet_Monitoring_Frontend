@@ -1,16 +1,15 @@
 import { PetState } from "./";
-import { IPet,IPets } from "../../interfaces";
+import { IPet, IPets } from "../../interfaces";
 
 type PetActionType =
   | { type: "[Pet] - getPet"; payload: IPet }
   | { type: "[Pet] - getPetsEstablishment"; payload: IPets }
+  | { type: "[Pet] - getPetsMedicine"; payload: IPets }
+  | { type: "[Pet] - getPetsProfessional"; payload: IPets }
   | { type: "[Pet] - petChange" }
-  |{ type: "[Pet] - clearPetsEstablishment" };
+  | { type: "[Pet] - clearPets" };
 
-export const petReducer = (
-  state: PetState,
-  action: PetActionType,
-): PetState => {
+export const petReducer = (state: PetState, action: PetActionType): PetState => {
   switch (action.type) {
     case "[Pet] - getPet":
       return {
@@ -18,7 +17,19 @@ export const petReducer = (
         isLoaded: true,
         pet: action.payload,
       };
-      case "[Pet] - getPetsEstablishment":
+    case "[Pet] - getPetsEstablishment":
+      return {
+        ...state,
+        isLoaded: true,
+        pets: action.payload,
+      };
+    case "[Pet] - getPetsMedicine":
+      return {
+        ...state,
+        isLoaded: true,
+        pets: action.payload,
+      };
+    case "[Pet] - getPetsProfessional":
       return {
         ...state,
         isLoaded: true,
@@ -30,14 +41,12 @@ export const petReducer = (
         isLoaded: false,
         pet: undefined,
       };
-
-      case "[Pet] - clearPetsEstablishment":
+    case "[Pet] - clearPets":
       return {
         ...state,
         isLoaded: false,
         pets: undefined,
       };
-
     default:
       return state;
   }

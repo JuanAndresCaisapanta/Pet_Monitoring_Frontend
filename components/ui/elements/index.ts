@@ -1,5 +1,6 @@
 export * from './SelectFormName'
 export * from './SelectFormId'
+export * from './SelectFormI'
 export * from './CardForm'
 export * from './CardList'
 export * from './CardFormContact'
