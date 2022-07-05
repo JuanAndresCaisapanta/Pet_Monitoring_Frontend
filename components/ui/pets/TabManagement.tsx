@@ -16,7 +16,7 @@ export const TabManagement = () => {
   const { id } = router.query;
 
   useEffect(() => {
-    getPet(id);
+    getPet(Number(id));
     return () => {
       petChange();
     };
