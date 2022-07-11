@@ -3,6 +3,7 @@ import { SpeciesState } from ".";
 
 type SpeciesActionType =
   | { type: "[Species] - getSpecies"; payload: ISpecies }
+  |{type:"[Species] - getLastSpecies", payload:ISpecies}
   | { type: "[Species] - clearSpecies" };
 
 export const speciesReducer = (
@@ -14,6 +15,12 @@ export const speciesReducer = (
       return {
         ...state,
         species: action.payload,
+        isLoaded: true,
+      };
+      case "[Species] - getLastSpecies":
+      return {
+        ...state,
+        lastSpecies: action.payload,
         isLoaded: true,
       };
     case "[Species] - clearSpecies":

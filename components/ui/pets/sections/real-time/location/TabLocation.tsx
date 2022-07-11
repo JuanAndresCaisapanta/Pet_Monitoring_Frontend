@@ -1,4 +1,4 @@
-import { useContext, useEffect, useMemo } from "react";
+import { useContext, useEffect, useMemo, useState } from "react";
 
 import { useRouter } from "next/router";
 
@@ -13,7 +13,7 @@ import {
   IconButton,
   Typography,
 } from "@mui/material";
-import { NavigateBefore } from "@mui/icons-material";
+import { Battery0BarRounded, Battery30Rounded, Battery80Rounded, BatteryFullRounded, NavigateBefore } from "@mui/icons-material";
 import { EmailIcon, EmailShareButton, WhatsappIcon, WhatsappShareButton } from "react-share";
 
 import { PetContext } from "../../../../../../context";
@@ -22,25 +22,32 @@ import { Battery } from "../Battery";
 
 export const TabLocation = () => {
   const { isLoaded, getPet, pet, petChange } = useContext(PetContext);
+  const [battery, setBattery] = useState(0);
   const router = useRouter();
-  const { id } = router.query;
+  const { id: pet_id } = router.query;
 
   useMemo(() => {
-    getPet(Number(id));
+    if (pet_id !== undefined) {
+      getPet(Number(pet_id));
+    }
     return () => {
       petChange();
     };
-  }, [id]);
+  }, [pet_id]);
 
   useEffect(() => {
     const interval = setInterval(() => {
-      getPet(Number(id));
-    }, 30000);
+      if (pet_id !== undefined) {
+      getPet(Number(pet_id));
+      setBattery(detail?.battery);
+      console.log(detail?.battery);
+      }
+    },  1000);
     return () => {
       clearInterval(interval);
       petChange();
     };
-  }, [id]);
+  }, [pet_id]);
 
   const detail =
     pet?.device?.length! > 0
@@ -69,7 +76,7 @@ export const TabLocation = () => {
     window.open(url_map);
   };
 
-  if (isLoaded) {
+  if (pet) {
     return (
       <>
         {detail?.latitude != undefined || detail != undefined ? (
@@ -101,7 +108,7 @@ export const TabLocation = () => {
                           <Typography variant="h6">{pet?.name}</Typography>
                         </Grid>
                         <Grid item>
-                          <Battery value={detail?.battery!} />
+                          <Battery value={detail?.battery} />
                         </Grid>
                       </Grid>
                     </Grid>

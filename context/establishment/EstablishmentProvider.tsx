@@ -76,7 +76,7 @@ export const EstablishmentProvider: FC<Props> = ({ children }) => {
           email,
           cell_phone,
           phone,
-          typeEstablishment: { id: establishmentType_id },
+          establishmentType: { id: establishmentType_id },
           pet: { id: petId },
         },
         {
@@ -116,7 +116,7 @@ export const EstablishmentProvider: FC<Props> = ({ children }) => {
           email,
           cell_phone,
           phone,
-          typeEstablishment: { id: establishmentType_id },
+          establishmentType: { id: establishmentType_id },
         },
         {
           headers: {

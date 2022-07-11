@@ -14,24 +14,28 @@ export const TabTemperature = () => {
   const { isLoaded, getPet, pet, petChange } = useContext(PetContext);
   const router = useRouter();
 
-  const { id } = router.query;
+  const { id: pet_id } = router.query;
 
   useMemo(() => {
-    getPet(Number(id));
+    if(pet_id !== undefined) {
+    getPet(Number(pet_id));
+    }
     return () => {
       petChange();
     };
-  }, [id]);
+  }, [pet_id]);
 
   useEffect(() => {
     const interval = setInterval(() => {
-      getPet(Number(id));
+      if(pet_id !== undefined) {
+      getPet(Number(pet_id));
+      }
     }, 5000);
     return () => {
       clearInterval(interval);
       petChange();
     };
-  }, [id]);
+  }, [pet_id]);
 
   const detail =
     pet?.device?.length! > 0
@@ -56,7 +60,7 @@ export const TabTemperature = () => {
 
   const conversion = (detail?.temperature! * 1) / 50;
 
-  if (isLoaded) {
+  if (pet) {
     return (
       <>
         {detail?.temperature != undefined || detail != undefined ? (

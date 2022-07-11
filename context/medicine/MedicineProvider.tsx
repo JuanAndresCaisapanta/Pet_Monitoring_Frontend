@@ -30,7 +30,7 @@ export const MedicineProvider: FC<Props> = ({ children }) => {
   const { checkToken } = useContext(AuthContext);
   const { getPet } = useContext(PetContext);
 
-  const getMedicine = async (medicine_id: any) => {
+  const getMedicine = async (medicine_id: number) => {
     if (!Cookies.get("token")) {
       return;
     }
@@ -84,7 +84,7 @@ export const MedicineProvider: FC<Props> = ({ children }) => {
           production_date,
           expiration_date,
           application_date,
-          medicine_type: { id: medicineType_id },
+          medicineType: { id: medicineType_id },
           pet: { id: pet_id },
         },
         {
@@ -133,7 +133,7 @@ export const MedicineProvider: FC<Props> = ({ children }) => {
           production_date,
           expiration_date,
           application_date,
-          medicine_type: { id: medicineType_id },
+          medicineType: { id: medicineType_id },
         },
         {
           headers: {

@@ -23,25 +23,29 @@ export const TabHistoryLocation = () => {
   const { isLoaded, getPet, pet, petChange } = useContext(PetContext);
   const [petName, setPetName] = useState("");
   const router = useRouter();
-  const { id } = router.query;
+  const { id: pet_id } = router.query;
 
   useMemo(() => {
-    getPet(Number(id));
+    if (pet_id !== undefined) {
+    getPet(Number(pet_id));
     setPetName(pet?.name!);
+    }
     return () => {
       petChange();
     };
-  }, [id]);
+  }, [pet_id]);
 
   useEffect(() => {
     const interval = setInterval(() => {
-      getPet(Number(id));
+      if (pet_id !== undefined) {
+      getPet(Number(pet_id));
+      }
     }, 30000);
     return () => {
       clearInterval(interval);
       petChange();
     };
-  }, [id]);
+  }, [pet_id]);
 
   const [searchWord, setSearchWord] = useState("");
   const arrayDetails: any = [];

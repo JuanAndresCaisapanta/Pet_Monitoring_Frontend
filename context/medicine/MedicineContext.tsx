@@ -6,7 +6,7 @@ interface ContextProps {
   medicinesFullName?: IFullNames;
   isLoaded: boolean;
 
-  getMedicine: (medicine_id: any) => void;
+  getMedicine: (medicine_id: number) => void;
 
   addMedicine: (
     name: string,

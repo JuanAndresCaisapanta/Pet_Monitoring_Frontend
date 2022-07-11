@@ -30,7 +30,7 @@ type FormData = {
 
 export const TabProfileMedicine = () => {
   const [imagePath, setImagePath] = useState<string>("/images/medicine/medicine-profile.png");
-  const [listTypeMedicine, setListTypeMedicine] = useState<string>("");
+  const [listMedicineType, setListMedicineType] = useState<string>("");
   const [productionDate, setProductionDate] = useState<Date | null>(null);
   const [applicationDate, setApplicationDate] = useState<Date | null>(null);
   const [expirationDate, setExpirationDate] = useState<Date | null>(null);
@@ -51,6 +51,15 @@ export const TabProfileMedicine = () => {
   } = useForm<FormData>();
 
   useEffect(() => {
+    if(medicine_id!==undefined){
+    getMedicine(Number(medicine_id));
+    }
+    return () => {
+      clearMedicine();
+    };
+  }, [medicine_id]);
+
+  useEffect(() => {
     getMedicineType();
   }, []);
 
@@ -60,12 +69,7 @@ export const TabProfileMedicine = () => {
     }
   }, [medicine]);
 
-  useEffect(() => {
-    getMedicine(medicine_id);
-    return () => {
-      clearMedicine();
-    };
-  }, [medicine_id]);
+  
 
   function padTo2Digits(num: any) {
     return num?.toString().padStart(2, "0");
@@ -77,7 +81,7 @@ export const TabProfileMedicine = () => {
 
   useEffect(() => {
     if (medicine?.image) {
-      setListTypeMedicine(medicine.medicineType.id.toString());
+      setListMedicineType(medicine.medicineType.id.toString());
       setValue("medicineType", medicine.medicineType.id);
       setImagePath(`data:image/jpeg;base64,${medicine?.image}`);
       setApplicationDate(moment(medicine.application_date, "DD/MM/YYYY").toDate());
@@ -104,7 +108,7 @@ export const TabProfileMedicine = () => {
   };
 
   const handleClearForm = () => {
-    setListTypeMedicine(medicine?.medicineType.id.toString()!);
+    setListMedicineType(medicine?.medicineType.id.toString()!);
     setValue("medicineType", medicine?.medicineType.id!);
     setImagePath(`data:image/jpeg;base64,${medicine?.image}`);
     setApplicationDate(moment(medicine?.application_date, "DD/MM/YYYY").toDate());
@@ -301,8 +305,8 @@ export const TabProfileMedicine = () => {
                 <SelectFormId
                   label="Tipo"
                   name="typeMedicine"
-                  value={listTypeMedicine}
-                  onChange={(event: SelectChangeEvent) => setListTypeMedicine(event.target.value)}
+                  value={listMedicineType}
+                  onChange={(event: SelectChangeEvent) => setListMedicineType(event.target.value)}
                   object={medicineType}
                   register={register}
                   disabled={isLoading}

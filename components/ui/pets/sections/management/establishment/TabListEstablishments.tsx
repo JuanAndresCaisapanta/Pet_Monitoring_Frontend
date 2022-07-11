@@ -18,7 +18,10 @@ export const TabListEstablishments = () => {
   const { id: pet_id } = router.query;
 
   useEffect(() => {
-    getPet(Number(pet_id));
+    if(pet_id!==undefined) {
+      getPet(Number(pet_id));
+    }
+   
     return () => {
       petChange();
     };

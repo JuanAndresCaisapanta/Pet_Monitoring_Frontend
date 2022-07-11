@@ -5,6 +5,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 
 import { AuthContext } from "../../../context";
 import { Notifications } from "../elements/Notifications";
+import Image from "next/image";
 
 const drawerWidth = 210;
 interface Props {
@@ -16,7 +17,7 @@ export const Navbar: FC<Props> = ({ toggleSideMenu }) => {
   const [imgSrc, setImgSrc] = useState<string>("/images/profile/user.png");
   useEffect(() => {
     if (user?.image) {
-      setImgSrc(`data:image/jpeg;base64,${user?.image}`);
+      setImgSrc(`data:image/jpg;base64,${user?.image}`);
     }
   }, [setImgSrc, user]);
 
@@ -43,12 +44,21 @@ export const Navbar: FC<Props> = ({ toggleSideMenu }) => {
             MonIOpeT
           </Typography>
         </Box>
-
-        <Notifications />
-
+        {user?.role.map((role,i:any) => {
+        if (role.name === "ROLE_USER") {
+          return <div key={i}><Notifications /></div>
+        }})}
         <Tooltip title={user?.name || ""}>
           <IconButton sx={{ p: 0, marginLeft: 2 }}>
-            <Avatar alt="Usuario" src={imgSrc} />
+            <Avatar alt="Usuario">
+            <Image
+                src={imgSrc}
+                width="100%"
+                height="100%"
+                alt="Imagen Perfil"
+                quality={100}
+              />
+            </Avatar>
           </IconButton>
         </Tooltip>
       </Toolbar>

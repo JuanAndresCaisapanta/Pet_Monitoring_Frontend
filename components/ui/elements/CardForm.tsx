@@ -41,7 +41,7 @@ export const CardForm: FC<Props> = ({
           </IconButton>
         }
       />
-      <Divider sx={{ margin: 0 }} />
+      <Divider sx={{ margin: 0 }} /> 
       <form noValidate autoComplete="off" onSubmit={submit} encType={encType}>
         <CardContent>
           <Grid container spacing={2}>

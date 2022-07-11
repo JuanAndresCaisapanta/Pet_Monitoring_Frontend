@@ -12,6 +12,11 @@ import {
   ManageAccounts,
   SupervisedUserCircle,
   Ballot,
+  Group,
+  Shop,
+  Vaccines,
+  Hail,
+  Store,
 } from "@mui/icons-material";
 
 import { AuthContext } from "../../../context";
@@ -38,14 +43,57 @@ export const DrawerList: FC<Props> = ({ toggleSideMenu }) => {
         if (role.name === "ROLE_ADMIN") {
           return (
             <div key={role.id}>
-              <Divider textAlign="left" sx={{ fontSize: 14 }}>
-                Administración
-              </Divider>
-              <ListItem button>
+              <ListItem button onClick={() => navigateTo("/admin")}>
                 <ListItemIcon>
-                  <SupervisedUserCircle />
+                  <Home />
+                </ListItemIcon>
+                <ListItemText primary={"Inicio"} />
+              </ListItem>
+              <Divider />
+              <ListItem button onClick={() => navigateTo("/admin/users")}>
+                <ListItemIcon>
+                  <Group/>
                 </ListItemIcon>
                 <ListItemText primary={"Usuarios"} />
+              </ListItem>
+              <Divider />
+              <ListItem button onClick={() => navigateTo("/admin/species")}>
+                <ListItemIcon>
+                  <Ballot />
+                </ListItemIcon>
+                <ListItemText primary={"Especies"} />
+              </ListItem>
+              <ListItem button onClick={() => navigateTo("/admin/breeds")}>
+                <ListItemIcon>
+                  <Ballot />
+                </ListItemIcon>
+                <ListItemText primary={"Razas"} />
+              </ListItem>
+              <Divider />
+              <ListItem button onClick={() => navigateTo("/admin/establishments")}>
+                <ListItemIcon>
+                  <Store />
+                </ListItemIcon>
+                <ListItemText primary={"Establecimientos"} />
+              </ListItem>
+              <ListItem button onClick={() => navigateTo("/admin/medicines")}>
+                <ListItemIcon>
+                  <Vaccines />
+                </ListItemIcon>
+                <ListItemText primary={"Medicinas"} />
+              </ListItem>
+              <ListItem button onClick={() => navigateTo("/admin/professions")}>
+                <ListItemIcon>
+                  <Hail />
+                </ListItemIcon>
+                <ListItemText primary={"Profesiones"} />
+              </ListItem>
+              <Divider />
+              <ListItem button onClick={logout}>
+                <ListItemIcon>
+                  <ExitToApp />
+                </ListItemIcon>
+                <ListItemText primary={"Salir"} />
               </ListItem>
             </div>
           );

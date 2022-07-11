@@ -30,7 +30,7 @@ type FormData = {
 
 export const TabAddMedicine = () => {
   const [imagePath, setImagePath] = useState<string>("/images/medicine/medicine-profile.png");
-  const [typeMedicines, setTypeMedicines] = useState<string | null>("");
+  const [medicinesType, setMedicinesType] = useState<string | null>("");
   const [productionDate, setProductionDate] = useState<Date | null>(new Date());
   const [applicationDate, setApplicationDate] = useState<Date | null>(new Date());
   const [expirationDate, setExpirationDate] = useState<Date | null>(new Date());
@@ -70,7 +70,7 @@ export const TabAddMedicine = () => {
     setValue("manufacturer", "");
     setValue("batch", null);
     setValue("applicator", "");
-    setTypeMedicines("");
+    setMedicinesType("");
     setValue("medicineType", null);
     setApplicationDate(new Date());
     setValue("application_date", null);
@@ -262,9 +262,9 @@ export const TabAddMedicine = () => {
             <Grid item xs={12} md={6}>
               <SelectFormId
                 label="Tipo"
-                name="typeMedicine"
-                value={typeMedicines}
-                onChange={(event: SelectChangeEvent) => setTypeMedicines(event.target.value)}
+                name="medicineType"
+                value={medicinesType}
+                onChange={(event: SelectChangeEvent) => setMedicinesType(event.target.value)}
                 object={medicineType}
                 register={register}
                 disabled={isLoading}

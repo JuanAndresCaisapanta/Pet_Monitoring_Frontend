@@ -16,7 +16,9 @@ export const TabListMedicines = () => {
   const { id: pet_id } = router.query;
 
   useEffect(() => {
+    if (pet_id!==undefined) {
     getPet(Number(pet_id));
+    }
     return () => {
       petChange();
     };
@@ -54,7 +56,7 @@ export const TabListMedicines = () => {
                     manufacturer={medicine.manufacturer}
                     application_date={medicine.application_date}
                     applicator={medicine.applicator}
-                    medicineType={medicine.medicineType.name}
+                    medicineType={medicine.medicineType?.name}
                   />
                 </Grid>
               ))

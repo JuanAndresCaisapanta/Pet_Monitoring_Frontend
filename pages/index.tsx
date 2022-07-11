@@ -5,6 +5,7 @@ const IndexPage = () => {
   useEffect(() => {
     Router.push("/auth/login");
   });
+  
 
   return <div />;
 };

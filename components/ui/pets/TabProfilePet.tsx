@@ -62,16 +62,18 @@ export const TabProfilePet = () => {
 
   const router = useRouter();
 
-  const { id } = router.query;
+  const { id: pet_id } = router.query;
 
   useEffect(() => {
-    getPet(Number(id));
+    if(pet_id!==undefined){
+    getPet(Number(pet_id));
+    }
     return () => {
       clearBreeds();
       clearSpecies();
       petChange();
     };
-  }, [id]);
+  }, [pet_id]);
 
   useEffect(() => {
     if (pet?.name) {
@@ -173,7 +175,7 @@ export const TabProfilePet = () => {
     if (image[0] != null) {
       const compressed_image = await imageCompression(image[0], options);
       const { isComplete } = await updatePet(
-        Number(id),
+        Number(pet_id),
         name,
         color_main,
         color_secondary,
@@ -189,7 +191,7 @@ export const TabProfilePet = () => {
       }
     } else {
       const { isComplete } = await updatePet(
-        Number(id),
+        Number(pet_id),
         name,
         color_main,
         color_secondary,
