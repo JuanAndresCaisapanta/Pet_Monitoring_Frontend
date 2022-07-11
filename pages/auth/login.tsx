@@ -77,6 +77,7 @@ const LoginPage = () => {
         <TextField
           autoFocus
           fullWidth
+          id="email"
           type="email"
           label="Correo Electrónico"
           sx={{ marginBottom: 1 }}
@@ -91,6 +92,7 @@ const LoginPage = () => {
         <FormControl fullWidth sx={{ marginBottom: 2 }}>
           <InputLabel htmlFor="auth-login-password">Contraseña</InputLabel>
           <OutlinedInput
+            id="auth-login-password"
             label="Contraseña"
             type={values.showPassword ? "text" : "password"}
             {...register("password", {

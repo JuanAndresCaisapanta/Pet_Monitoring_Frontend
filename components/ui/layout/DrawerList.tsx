@@ -36,7 +36,7 @@ export const DrawerList: FC<Props> = ({ toggleSideMenu }) => {
   return (
     <div>
       <Toolbar sx={{ justifyContent: "center", backgroundColor: "#F4F5FA" }}>
-        <Image src="/images/logo.png" alt="Logo" height="50%" width="50%" />
+        <Image src="/images/logo.png" alt="Logo" height="50%" width="50%" quality={100} />
       </Toolbar>
       <Divider />
       {user?.role.map((role) => {
