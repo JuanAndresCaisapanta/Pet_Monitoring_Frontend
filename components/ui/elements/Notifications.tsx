@@ -12,7 +12,9 @@ export const Notifications = () => {
   const [isLoading, setIsLoading] = useState(false);
   useEffect(() => {
     const interval = setInterval(() => {
-      getNotificationsByUser(user?.id);
+      if (user) {
+        getNotificationsByUser(user.id);
+      }
     }, 1000);
     return () => {
       clearInterval(interval);
