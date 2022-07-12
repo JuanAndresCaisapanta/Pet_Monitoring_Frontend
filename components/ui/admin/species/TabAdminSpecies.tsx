@@ -68,6 +68,15 @@ export const TabAdminSpecies = () => {
     }
   };
 
+  const handleDeleteSpecies = (species_id: number) => () => {
+    setIsLoading(true);
+    setTimeout(() => {
+      setIsLoading(false);
+      setSpeciesId(0);
+      setValue("name", "");
+    }, 2000);
+  }
+
   const handleClearForm = () => {
     setSpeciesId(0);
     setValue("name", "");
@@ -109,20 +118,24 @@ export const TabAdminSpecies = () => {
                 startIcon={<EditIcon />}
                 onClick={handleEditSpecies(row.id as number, row.name as string)}
                 disabled={isLoading}
+                disableElevation
               >
                 Editar
               </Button>
             </Grid>
             <Grid item xs={6} textAlign={"center"}>
-              <Button
+              <LoadingButton
+                disableElevation
                 variant="outlined"
                 color="secondary"
+                onClick={handleDeleteSpecies(row.id as number)}
+                sx={{ marginRight: 2 }}
                 startIcon={<DeleteIcon />}
-                onClick={() => {}}
-                disabled={isLoading}
+                loading={isLoading}
+                loadingPosition="start"
               >
-                Delete
-              </Button>
+                Eliminar
+              </LoadingButton>
             </Grid>
           </Grid>
         );
