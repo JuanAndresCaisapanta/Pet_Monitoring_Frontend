@@ -13,7 +13,7 @@ export const Notifications = () => {
   useEffect(() => {
     const interval = setInterval(() => {
       if (user) {
-        getNotificationsByUser(user.id);
+        getNotificationsByUser(user.id); 
       }
     }, 30000);
     return () => {
