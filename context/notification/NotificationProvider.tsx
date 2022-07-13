@@ -32,10 +32,6 @@ export const NotificationProvider: FC<Props> = ({ children }) => {
       return { isComplete: true };
     }
     const token = Cookies.get("token") || "";
-    return await petMonitoringApi
-      .get(`/auth/validate-token/${token}`)
-      .then(async (validate) => {
-        if (validate.data === true) {
           return await petMonitoringApi
             .get(`/notification/user/${user_id}`, {
               headers: { Authorization: `Bearer ${token}` },
@@ -51,13 +47,7 @@ export const NotificationProvider: FC<Props> = ({ children }) => {
               Cookies.remove("token");
               return { isComplete: true };
             });
-        }
-        return { isComplete: true };
-      })
-      .catch(() => {
-        Cookies.remove("token");
-        return { isComplete: true };
-      });
+     
   };
 
   const deleteNotification = async (
