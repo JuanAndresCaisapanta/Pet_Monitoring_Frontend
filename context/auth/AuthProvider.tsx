@@ -70,12 +70,14 @@ export const AuthProvider: FC<Props> = ({ children }) => {
         password,
       })
       .then((response) => {
-        Cookies.set("token", response.data.token);
-        checkToken();
         if (response.data.authorities[0].authority === "ROLE_ADMIN") {
+          Cookies.set("token", response.data.token);
+        checkToken();
           router.replace("/admin", undefined, { shallow: true });
           swalMessage("Bienvenido", "Ingreso realizado con éxito", "success");
         } else if (response.data.authorities[0].authority === "ROLE_USER") {
+          Cookies.set("token", response.data.token);
+        checkToken();
           router.replace("/users", undefined, { shallow: true });
           swalMessage("Bienvenido", "Ingreso realizado con éxito", "success");
         } else {
@@ -84,8 +86,8 @@ export const AuthProvider: FC<Props> = ({ children }) => {
         }
         return { isComplete: true };
       })
-      .catch(() => {
-        swalMessage("Error", "Error al ingresar - verifique la información proporcionada", "error");
+      .catch((error) => {
+        swalMessage("Error", error, "error");
         return { isComplete: true };
       });
   };
