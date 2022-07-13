@@ -24,30 +24,40 @@ export const NotificationProvider: FC<Props> = ({ children }) => {
   const [state, dispatch] = useReducer(notificationReducer, NOTIFICATION_INITIAL_STATE);
   const { checkToken } = useContext(AuthContext);
 
-  const getNotificationsByUser = async (user_id?: number) => {
+  const getNotificationsByUser = async (user_id?: number): Promise<{ isComplete: boolean }> => {
     if (!Cookies.get("token")) {
-      return;
+      return { isComplete: true };
     }
     if (user_id === undefined) {
-      return;
+      return { isComplete: true };
     }
-    try {
-      const token = Cookies.get("token") || "";
-      const { data } = await petMonitoringApi.get(`/auth/validate-token/${token}`);
-      if (data == true) {
-        const notifications = await petMonitoringApi.get(`/notification/user/${user_id}`, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-        dispatch({
-          type: "[Notification] - getNotifications",
-          payload: notifications.data,
-        });
-      } else {
+    const token = Cookies.get("token") || "";
+    return await petMonitoringApi
+      .get(`/auth/validate-token/${token}`)
+      .then(async (validate) => {
+        if (validate.data === true) {
+          return await petMonitoringApi
+            .get(`/notification/user/${user_id}`, {
+              headers: { Authorization: `Bearer ${token}` },
+            })
+            .then((notifications) => {
+              dispatch({
+                type: "[Notification] - getNotifications",
+                payload: notifications.data,
+              });
+              return { isComplete: true };
+            })
+            .catch(() => {
+              Cookies.remove("token");
+              return { isComplete: true };
+            });
+        }
+        return { isComplete: true };
+      })
+      .catch(() => {
         Cookies.remove("token");
-      }
-    } catch (error) {
-      Cookies.remove("token");
-    }
+        return { isComplete: true };
+      });
   };
 
   const deleteNotification = async (

@@ -41,9 +41,7 @@ type FormData = {
 
 const LoginPage = () => {
   const [isLoading, setIsLoading] = useState(false);
-  const { loginUser, user } = useContext(AuthContext);
-
-  const router = useRouter();
+  const { loginUser } = useContext(AuthContext);
   const {
     register,
     handleSubmit,

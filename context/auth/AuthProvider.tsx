@@ -32,25 +32,35 @@ export const AuthProvider: FC<Props> = ({ children }) => {
     checkToken();
   }, []);
 
-  const checkToken = async () => {
+  const checkToken = async (): Promise<{ isComplete: boolean }> => {
     if (!Cookies.get("token")) {
-      return;
+      return { isComplete: true };
     }
-    try {
-      const token = Cookies.get("token") || "";
-      const { data } = await petMonitoringApi.get(`/auth/validate-token/${token}`);
-      if (data == true) {
-        const { sub: email } = jwt.decode(token) as { sub: string };
-        const { data } = await petMonitoringApi.get(`/user/${email}`, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-        dispatch({ type: "[Auth] - Login", payload: data });
-      } else {
+    const token = Cookies.get("token") || "";
+    return await petMonitoringApi
+      .get(`/auth/validate-token/${token}`)
+      .then(async (validate) => {
+        if (validate.data === true) {
+          const { sub: email } = jwt.decode(token) as { sub: string };
+          return await petMonitoringApi
+            .get(`/user/${email}`, {
+              headers: { Authorization: `Bearer ${token}` },
+            })
+            .then((user) => {
+              dispatch({ type: "[Auth] - Login", payload: user.data });
+              return { isComplete: true };
+            })
+            .catch(() => {
+              Cookies.remove("token");
+              return { isComplete: true };
+            });
+        }
+        return { isComplete: true };
+      })
+      .catch(() => {
         Cookies.remove("token");
-      }
-    } catch (error) {
-      Cookies.remove("token");
-    }
+        return { isComplete: true };
+      });
   };
 
   const loginUser = async (email: string, password: string): Promise<{ isComplete: boolean }> => {
@@ -58,17 +68,20 @@ export const AuthProvider: FC<Props> = ({ children }) => {
       .post("/auth/login", {
         email,
         password,
-      }) 
+      })
       .then((response) => {
         Cookies.set("token", response.data.token);
         checkToken();
         if (response.data.authorities[0].authority === "ROLE_ADMIN") {
           router.replace("/admin", undefined, { shallow: true });
-        }
-        if (response.data.authorities[0].authority === "ROLE_USER") {
+          swalMessage("Bienvenido", "Ingreso realizado con éxito", "success");
+        } else if (response.data.authorities[0].authority === "ROLE_USER") {
           router.replace("/users", undefined, { shallow: true });
+          swalMessage("Bienvenido", "Ingreso realizado con éxito", "success");
+        } else {
+          swalMessage("Error", "Error al ingresar - verifique la información proporcionada", "error");
+          router.replace("/auth/login", undefined, { shallow: true });
         }
-        swalMessage("Bienvenido", "Ingreso realizado con éxito", "success");
         return { isComplete: true };
       })
       .catch(() => {
