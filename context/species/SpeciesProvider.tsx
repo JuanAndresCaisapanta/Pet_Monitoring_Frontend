@@ -7,6 +7,7 @@ import { petMonitoringApi } from "../../api";
 import { speciesReducer } from "./speciesReducer";
 import { AuthContext } from "../auth";
 import { swalMessage } from "../../components";
+import Swal from "sweetalert2";
 
 export interface SpeciesState {
   species?: ISpecies;
@@ -88,11 +89,76 @@ export const SpeciesProvider: FC<Props> = ({ children }) => {
       )
       .then(() => {
         checkToken();
+        getSpecies();
         swalMessage("Listo", "Especie Agregada", "success");
         return { isComplete: true };
       })
       .catch(() => {
         swalMessage("Error", "No se pudo agregar la especie - intente de nuevo", "error");
+        return { isComplete: true };
+      });
+  };
+
+  const updateSpecies = async (
+    species_id: any,
+    name: string,
+  ): Promise<{ isComplete: boolean }> => {
+    const token = Cookies.get("token") || "";
+    return await petMonitoringApi
+      .put(
+        `/species/${species_id}`,
+        {
+          name,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      )
+      .then(() => {
+        checkToken();
+        getSpecies();
+        swalMessage("Listo", "Especie actualizada", "success");
+        return { isComplete: true };
+      })
+      .catch(() => {
+        swalMessage("Error", "No se pudo actualizar la especie", "error");
+        return { isComplete: true };
+      });
+  };
+
+  const deleteSpecies = async (species_id:number): Promise<{ isComplete: boolean }> => {
+    const token = Cookies.get("token") || "";
+    return Swal.fire({
+      background: "#F4F5FA",
+      title: "¿Está seguro de eliminar la especie?",
+      text: "No podrá revertir esta acción",
+      icon: "warning",
+      showCancelButton: true,
+      backdrop: false,
+      confirmButtonColor: "#9E69FD",
+      cancelButtonColor: "#9C9FA4",
+      confirmButtonText: "Si, Eliminar",
+    })
+      .then(async (result) => {
+        if (result.isConfirmed) {
+          await petMonitoringApi
+            .delete(`/species/${species_id}`, {
+              headers: { Authorization: `Bearer ${token}` },
+            })
+            .then(() => {
+              checkToken();
+              getSpecies();
+              swalMessage("Listo", "Especie eliminada", "success");
+            })
+            .catch(() => {
+              swalMessage("Error", "No se pudo eliminar la especie", "error");
+            });
+        }
+        return { isComplete: true };
+      })
+      .catch(() => {
         return { isComplete: true };
       });
   };
@@ -108,6 +174,8 @@ export const SpeciesProvider: FC<Props> = ({ children }) => {
         getSpecies,
         getLastSpecies,
         addSpecies,
+        updateSpecies,
+        deleteSpecies,
         clearSpecies,
       }}
     >

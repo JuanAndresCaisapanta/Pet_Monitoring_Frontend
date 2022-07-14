@@ -69,7 +69,9 @@ export const DrawerList: FC<Props> = ({ toggleSideMenu }) => {
                 </ListItemIcon>
                 <ListItemText primary={"Razas"} />
               </ListItem>
-              <Divider />
+              <Divider textAlign="left" sx={{ fontSize: 14 }}>
+                Tipos
+              </Divider>
               <ListItem button onClick={() => navigateTo("/admin/establishments")}>
                 <ListItemIcon>
                   <Store />

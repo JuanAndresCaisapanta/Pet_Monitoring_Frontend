@@ -1,26 +1,23 @@
-import { NavigateBefore, NearMe } from "@mui/icons-material";
-import { Card, CardContent, CardHeader, Divider, Grid, IconButton, TextField } from "@mui/material";
-import Box from "@mui/material/Box";
+import { NavigateBefore } from "@mui/icons-material";
+import { Card, CardHeader, Divider, Grid, IconButton } from "@mui/material";
 import Button from "@mui/material/Button";
-import AddIcon from "@mui/icons-material/Add";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/DeleteOutlined";
-import SaveIcon from "@mui/icons-material/Save";
-import CancelIcon from "@mui/icons-material/Close";
 
-import { DataGrid, esES, GridColDef, GridValueGetterParams } from "@mui/x-data-grid";
+import { GridValueGetterParams } from "@mui/x-data-grid";
 import { useContext, useState, useEffect } from "react";
 import { SpeciesContext } from "../../../../context/species/SpeciesContext";
 import { ISpecies } from "../../../../interfaces";
 import { useForm } from "react-hook-form";
 import { LoadingButton } from "@mui/lab";
+import { TabAdminType } from "../../elements";
 
 type FormData = {
   name: string;
 };
 
 export const TabAdminSpecies = () => {
-  const { species, getSpecies } = useContext(SpeciesContext);
+  const { species, getSpecies, addSpecies, updateSpecies, deleteSpecies } = useContext(SpeciesContext);
   const [listSpecies, setListSpecies] = useState<ISpecies[]>([]);
   const [speciesId, setSpeciesId] = useState<number>(0);
   const [isLoading, setIsLoading] = useState(false);
@@ -42,22 +39,23 @@ export const TabAdminSpecies = () => {
     }
   }, [species]);
 
-  const handleSaveSpecies = () => {
-    console.log(speciesId);
+  const handleAddSpecies = async ({ name }: FormData) => {
     if (speciesId === 0) {
       setIsLoading(true);
-      setTimeout(() => {
+      const { isComplete } = await addSpecies(name);
+      if (isComplete) {
         setIsLoading(false);
         setSpeciesId(0);
         setValue("name", "");
-      }, 2000);
+      }
     } else {
       setIsLoading(true);
-      setTimeout(() => {
+      const { isComplete } = await updateSpecies(speciesId, name);
+      if (isComplete) {
         setIsLoading(false);
         setSpeciesId(0);
         setValue("name", "");
-      }, 2000);
+      }
     }
   };
 
@@ -68,93 +66,31 @@ export const TabAdminSpecies = () => {
     }
   };
 
-  const handleDeleteSpecies = (species_id: number) => () => {
+  const handleDeleteSpecies = (species_id: number) => async () => {
     setIsLoading(true);
-    setTimeout(() => {
+    const { isComplete } = await deleteSpecies(species_id);
+    if (isComplete) {
       setIsLoading(false);
       setSpeciesId(0);
       setValue("name", "");
-    }, 2000);
-  }
+    }
+  };
 
   const handleClearForm = () => {
     setSpeciesId(0);
     setValue("name", "");
   };
 
-  const columns: GridColDef[] = [
-    {
-      field: "id",
-      headerName: "Id",
-      headerClassName: "header",
-      headerAlign: "center",
-      align: "center",
-      flex: 1,
-      minWidth: 100,
-    },
-    {
-      field: "name",
-      headerName: "Nombre Completo",
-      headerClassName: "header",
-      headerAlign: "center",
-      align: "center",
-      flex: 1,
-      minWidth: 100,
-    },
-    {
-      field: "actions",
-      headerName: "Acciones",
-      headerClassName: "header",
-      headerAlign: "center",
-      align: "center",
-      flex: 1,
-      minWidth: 100,
-      renderCell: ({ row }: GridValueGetterParams) => {
-        return (
-          <Grid container spacing={0}>
-            <Grid item xs={6} textAlign={"center"}>
-              <Button
-                variant="contained"
-                startIcon={<EditIcon />}
-                onClick={handleEditSpecies(row.id as number, row.name as string)}
-                disabled={isLoading}
-                disableElevation
-              >
-                Editar
-              </Button>
-            </Grid>
-            <Grid item xs={6} textAlign={"center"}>
-              <LoadingButton
-                disableElevation
-                variant="outlined"
-                color="secondary"
-                onClick={handleDeleteSpecies(row.id as number)}
-                sx={{ marginRight: 2 }}
-                startIcon={<DeleteIcon />}
-                loading={isLoading}
-                loadingPosition="start"
-              >
-                Eliminar
-              </LoadingButton>
-            </Grid>
-          </Grid>
-        );
-      },
-    },
-  ];
-
   const rows = listSpecies.map((species) => ({
     id: species.id,
     name: species.name,
   }));
 
-  const ALPHA_NUMERIC_DASH_REGEX = /^[a-zA-Z]+$/;
-
   return (
     <Card>
       <CardHeader
         sx={{ paddingTop: "4px", paddingBottom: "4px" }}
-        title={"admin"}
+        title={"Mantenimiento"}
         titleTypographyProps={{ variant: "body1" }}
         action={
           <IconButton aria-label="close" style={{ color: "#9E69FD" }}>
@@ -163,92 +99,46 @@ export const TabAdminSpecies = () => {
         }
       />
       <Divider sx={{ margin: 0 }} />
-      <CardContent>
-        <form noValidate autoComplete="off" onSubmit={handleSubmit(handleSaveSpecies)}>
-          <Grid container spacing={2}>
-            <Grid item xs={4}>
-              {speciesId !== 0 ? (
-                <TextField fullWidth type="number" label="Id" placeholder="Id" disabled value={speciesId} />
-              ) : (
-                <></>
-              )}
+      <TabAdminType
+        handleSubmit={handleSubmit(handleAddSpecies)}
+        handleClearForm={handleClearForm}
+        register={register}
+        errors={errors}
+        renderCell={({ row }: GridValueGetterParams) => {
+          return (
+            <Grid container spacing={0}>
+              <Grid item xs={6} textAlign={"center"}>
+                <Button
+                  variant="contained"
+                  startIcon={<EditIcon />}
+                  onClick={handleEditSpecies(row.id as number, row.name as string)}
+                  disabled={isLoading}
+                  disableElevation
+                >
+                  Editar
+                </Button>
+              </Grid>
+              <Grid item xs={6} textAlign={"center"}>
+                <LoadingButton
+                  disableElevation
+                  variant="outlined"
+                  color="secondary"
+                  onClick={handleDeleteSpecies(row.id as number)}
+                  sx={{ marginRight: 2 }}
+                  startIcon={<DeleteIcon />}
+                  loading={isLoading}
+                  loadingPosition="start"
+                >
+                  Eliminar
+                </LoadingButton>
+              </Grid>
             </Grid>
-            <Grid item xs={4}>
-              <TextField
-                fullWidth
-                label="Nombre"
-                placeholder="Nombre"
-                {...register("name", {
-                  required: "Este campo es requerido",
-                  minLength: { value: 2, message: "Mínimo 2 caracteres" },
-                  pattern: {
-                    value: /^[a-zA-Z]+$/,
-                    message: "Solo se permiten letras",
-                  },
-                })}
-                onKeyDown={(event) => {
-                  if (!ALPHA_NUMERIC_DASH_REGEX.test(event.key)) {
-                    event.preventDefault();
-                  }
-                }}
-                InputLabelProps={{ shrink: true }}
-                error={!!errors.name}
-                helperText={errors.name?.message}
-                disabled={isLoading}
-              />
-            </Grid>
-            <Grid item container direction="row" alignItems="center" justifyContent="center" xs={4}>
-              <LoadingButton
-                variant="contained"
-                color="primary"
-                disableElevation
-                type="submit"
-                sx={{ marginRight: 2 }}
-                startIcon={<SaveIcon />}
-                loading={isLoading}
-                loadingPosition="start"
-              >
-                Guardar
-              </LoadingButton>
-              <Button
-                disableElevation
-                variant="outlined"
-                color="secondary"
-                onClick={handleClearForm}
-                disabled={isLoading}
-              >
-                Cancelar
-              </Button>
-            </Grid>
-          </Grid>
-        </form>
-      </CardContent>
-      <Divider sx={{ margin: 0 }} />
-      <CardContent>
-        <Box
-          sx={{
-            width: "100%",
-            "& .header": {
-              backgroundColor: "#9E69FD",
-              color: "#fff",
-            },
-          }}
-        >
-          <Grid container className="fadeIn">
-            <Grid item xs={12} sx={{ width: "100%" }}>
-              <DataGrid
-                autoHeight
-                rows={rows}
-                columns={columns}
-                pageSize={10}
-                rowsPerPageOptions={[10]}
-                disableSelectionOnClick
-                localeText={esES.components.MuiDataGrid.defaultProps.localeText}
-              />
-            </Grid>
-          </Grid>
-        </Box>
-      </CardContent>
+          );
+        }}
+        id={speciesId}
+        isLoading={isLoading}
+        rows={rows}
+      />
     </Card>
   );
 };
