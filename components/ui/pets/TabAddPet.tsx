@@ -1,7 +1,6 @@
 import { useState, ChangeEvent, useContext, useEffect } from "react";
 
 import Image from "next/image";
-
 import { useRouter } from "next/router";
 
 import {
@@ -18,24 +17,20 @@ import {
   Typography,
   Button,
   FormHelperText,
+  CircularProgress,
 } from "@mui/material";
-
 import { Save } from "@mui/icons-material";
-
 import { DesktopDatePicker, LocalizationProvider } from "@mui/lab";
-
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
-
 import imageCompression from "browser-image-compression";
-
 import { useForm } from "react-hook-form";
+import moment from "moment";
 
 import { AuthContext, BreedContext, SpeciesContext, PetContext } from "../../../context";
 import { SelectFormName, SelectFormId } from "../elements";
 import { ISpecies } from "../../../interfaces";
 import { colorPet, sexPet } from "../../../data";
 import { CardForm } from "../elements/CardForm";
-import moment from "moment";
 
 type FormData = {
   name: string;
@@ -405,6 +400,11 @@ export const TabAddPet = () => {
         <Grid item>
           <Typography color={"primary"} sx={{ mt: 1 }}>
             Cargando...
+          </Typography>
+        </Grid>
+        <Grid item>
+          <Typography color={"primary"} sx={{ mt: 1 }}>
+            <CircularProgress color="secondary" />
           </Typography>
         </Grid>
       </Grid>

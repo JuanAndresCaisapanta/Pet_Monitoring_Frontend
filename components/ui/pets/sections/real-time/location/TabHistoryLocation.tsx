@@ -8,6 +8,7 @@ import {
   Card,
   CardContent,
   CardHeader,
+  CircularProgress,
   Divider,
   Grid,
   IconButton,
@@ -27,8 +28,8 @@ export const TabHistoryLocation = () => {
 
   useMemo(() => {
     if (pet_id !== undefined) {
-    getPet(Number(pet_id));
-    setPetName(pet?.name!);
+      getPet(Number(pet_id));
+      setPetName(pet?.name!);
     }
     return () => {
       petChange();
@@ -38,7 +39,7 @@ export const TabHistoryLocation = () => {
   useEffect(() => {
     const interval = setInterval(() => {
       if (pet_id !== undefined) {
-      getPet(Number(pet_id));
+        getPet(Number(pet_id));
       }
     }, 30000);
     return () => {
@@ -159,6 +160,11 @@ export const TabHistoryLocation = () => {
           <Typography color={"primary"} sx={{ mt: 1 }}>
             Cargando...
           </Typography>
+          <Grid item>
+            <Typography color={"primary"} sx={{ mt: 1 }}>
+              <CircularProgress color="secondary" />
+            </Typography>
+          </Grid>
         </Grid>
       </Grid>
     );

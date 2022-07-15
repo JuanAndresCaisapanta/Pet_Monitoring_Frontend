@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from "react";
 
 import { useRouter } from "next/router";
 
-import { Grid, Typography, TextField, SelectChangeEvent } from "@mui/material";
+import { Grid, Typography, TextField, SelectChangeEvent, CircularProgress } from "@mui/material";
 import { Update } from "@mui/icons-material";
 import { Controller, useForm } from "react-hook-form";
 import MuiPhoneNumber from "material-ui-phone-number";
@@ -234,6 +234,11 @@ export const TabProfileProfessional = () => {
         <Grid item>
           <Typography color={"primary"} sx={{ mt: 1 }}>
             Cargando...
+          </Typography>
+        </Grid>
+        <Grid item>
+          <Typography color={"primary"} sx={{ mt: 1 }}>
+            <CircularProgress color="secondary" />
           </Typography>
         </Grid>
       </Grid>

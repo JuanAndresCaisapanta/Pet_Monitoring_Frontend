@@ -1,15 +1,10 @@
 import { FC } from "react";
 
 import {
-  Battery0BarOutlined,
   Battery0BarRounded,
-  Battery2BarOutlined,
   Battery30Rounded,
-  Battery4BarOutlined,
   Battery60Rounded,
-  Battery80Rounded,
   BatteryFullRounded,
-  BatteryStdOutlined,
 } from "@mui/icons-material";
 import { Grid, Typography } from "@mui/material";
 

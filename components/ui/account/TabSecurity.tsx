@@ -1,10 +1,4 @@
-import {
-  ChangeEvent,
-  MouseEvent,
-  useContext,
-  useEffect,
-  useState,
-} from "react";
+import { ChangeEvent, MouseEvent, useContext, useEffect, useState } from "react";
 
 import {
   Grid,
@@ -59,24 +53,20 @@ export const TabSecurity = () => {
   }, [user]);
 
   // Handle Current Password
-  const handleCurrentPasswordChange =
-    (prop: keyof State) => (event: ChangeEvent<HTMLInputElement>) => {
-      setValues({ ...values, [prop]: event.target.value });
-    };
+  const handleCurrentPasswordChange = (prop: keyof State) => (event: ChangeEvent<HTMLInputElement>) => {
+    setValues({ ...values, [prop]: event.target.value });
+  };
   const handleClickShowCurrentPassword = () => {
     setValues({ ...values, showCurrentPassword: !values.showCurrentPassword });
   };
-  const handleMouseDownCurrentPassword = (
-    event: MouseEvent<HTMLButtonElement>,
-  ) => {
+  const handleMouseDownCurrentPassword = (event: MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
   };
 
   // Handle New Password
-  const handleNewPasswordChange =
-    (prop: keyof State) => (event: ChangeEvent<HTMLInputElement>) => {
-      setValues({ ...values, [prop]: event.target.value });
-    };
+  const handleNewPasswordChange = (prop: keyof State) => (event: ChangeEvent<HTMLInputElement>) => {
+    setValues({ ...values, [prop]: event.target.value });
+  };
   const handleClickShowNewPassword = () => {
     setValues({ ...values, showNewPassword: !values.showNewPassword });
   };
@@ -85,19 +75,16 @@ export const TabSecurity = () => {
   };
 
   // Handle Confirm New Password
-  const handleConfirmNewPasswordChange =
-    (prop: keyof State) => (event: ChangeEvent<HTMLInputElement>) => {
-      setValues({ ...values, [prop]: event.target.value });
-    };
+  const handleConfirmNewPasswordChange = (prop: keyof State) => (event: ChangeEvent<HTMLInputElement>) => {
+    setValues({ ...values, [prop]: event.target.value });
+  };
   const handleClickShowConfirmNewPassword = () => {
     setValues({
       ...values,
       showConfirmNewPassword: !values.showConfirmNewPassword,
     });
   };
-  const handleMouseDownConfirmNewPassword = (
-    event: MouseEvent<HTMLButtonElement>,
-  ) => {
+  const handleMouseDownConfirmNewPassword = (event: MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
   };
 
@@ -120,9 +107,7 @@ export const TabSecurity = () => {
               <Grid container spacing={2}>
                 <Grid item xs={12}>
                   <FormControl fullWidth>
-                    <InputLabel htmlFor="account-settings-current-password">
-                      Contraseña Actual
-                    </InputLabel>
+                    <InputLabel htmlFor="account-settings-current-password">Contraseña Actual</InputLabel>
                     <OutlinedInput
                       label="Contraseña Actual"
                       value={values.currentPassword}
@@ -155,9 +140,7 @@ export const TabSecurity = () => {
               <Grid container spacing={2}>
                 <Grid item xs={12}>
                   <FormControl fullWidth>
-                    <InputLabel htmlFor="account-settings-new-password">
-                      Contraseña Nueva
-                    </InputLabel>
+                    <InputLabel htmlFor="account-settings-new-password">Contraseña Nueva</InputLabel>
                     <OutlinedInput
                       label="Contraseña Nueva"
                       value={values.newPassword}
@@ -172,11 +155,7 @@ export const TabSecurity = () => {
                             aria-label="toggle password visibility"
                             onMouseDown={handleMouseDownNewPassword}
                           >
-                            {values.showNewPassword ? (
-                              <VisibilityOutlinedIcon />
-                            ) : (
-                              <VisibilityOffOutlinedIcon />
-                            )}
+                            {values.showNewPassword ? <VisibilityOutlinedIcon /> : <VisibilityOffOutlinedIcon />}
                           </IconButton>
                         </InputAdornment>
                       }
@@ -194,9 +173,7 @@ export const TabSecurity = () => {
                       value={values.confirmNewPassword}
                       id="account-settings-confirm-new-password"
                       type={values.showConfirmNewPassword ? "text" : "password"}
-                      onChange={handleConfirmNewPasswordChange(
-                        "confirmNewPassword",
-                      )}
+                      onChange={handleConfirmNewPasswordChange("confirmNewPassword")}
                       endAdornment={
                         <InputAdornment position="end">
                           <IconButton

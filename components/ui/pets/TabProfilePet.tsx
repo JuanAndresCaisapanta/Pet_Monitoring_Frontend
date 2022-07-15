@@ -8,6 +8,7 @@ import { DesktopDatePicker, LocalizationProvider } from "@mui/lab";
 import {
   Button,
   Checkbox,
+  CircularProgress,
   FormControl,
   FormControlLabel,
   FormGroup,
@@ -65,8 +66,8 @@ export const TabProfilePet = () => {
   const { id: pet_id } = router.query;
 
   useEffect(() => {
-    if(pet_id!==undefined){
-    getPet(Number(pet_id));
+    if (pet_id !== undefined) {
+      getPet(Number(pet_id));
     }
     return () => {
       clearBreeds();
@@ -439,6 +440,11 @@ export const TabProfilePet = () => {
         <Grid item>
           <Typography color={"primary"} sx={{ mt: 1 }}>
             Cargando...
+          </Typography>
+        </Grid>
+        <Grid item>
+          <Typography color={"primary"} sx={{ mt: 1 }}>
+            <CircularProgress color="secondary" />
           </Typography>
         </Grid>
       </Grid>

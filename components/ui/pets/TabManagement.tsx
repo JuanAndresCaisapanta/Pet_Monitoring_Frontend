@@ -2,7 +2,16 @@ import { useContext, useEffect } from "react";
 
 import { useRouter } from "next/router";
 
-import { Card, CardContent, CardHeader, Divider, Grid, IconButton, Typography } from "@mui/material";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CircularProgress,
+  Divider,
+  Grid,
+  IconButton,
+  Typography,
+} from "@mui/material";
 import { NavigateBefore } from "@mui/icons-material";
 
 import { CardSection } from "./CardSection";
@@ -75,6 +84,11 @@ export const TabManagement = () => {
         <Grid item>
           <Typography color={"primary"} sx={{ mt: 1 }}>
             Cargando...
+          </Typography>
+        </Grid>
+        <Grid item>
+          <Typography color={"primary"} sx={{ mt: 1 }}>
+            <CircularProgress color="secondary" />
           </Typography>
         </Grid>
       </Grid>

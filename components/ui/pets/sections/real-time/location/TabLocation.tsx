@@ -13,15 +13,16 @@ import {
   IconButton,
   Typography,
 } from "@mui/material";
-import { Battery0BarRounded, Battery30Rounded, Battery80Rounded, BatteryFullRounded, NavigateBefore } from "@mui/icons-material";
+import { NavigateBefore } from "@mui/icons-material";
 import { EmailIcon, EmailShareButton, WhatsappIcon, WhatsappShareButton } from "react-share";
+import CircularProgressMui from "@mui/material/CircularProgress";
 
 import { PetContext } from "../../../../../../context";
 import { MapView } from "./MapView";
 import { Battery } from "../Battery";
 
 export const TabLocation = () => {
-  const { isLoaded, getPet, pet, petChange } = useContext(PetContext);
+  const { getPet, pet, petChange } = useContext(PetContext);
   const [battery, setBattery] = useState(0);
   const router = useRouter();
   const { id: pet_id } = router.query;
@@ -38,11 +39,11 @@ export const TabLocation = () => {
   useEffect(() => {
     const interval = setInterval(() => {
       if (pet_id !== undefined) {
-      getPet(Number(pet_id));
-      setBattery(detail?.battery);
-      console.log(detail?.battery);
+        getPet(Number(pet_id));
+        setBattery(detail?.battery);
+        console.log(detail?.battery);
       }
-    },  1000);
+    }, 1000);
     return () => {
       clearInterval(interval);
       petChange();
@@ -180,6 +181,11 @@ export const TabLocation = () => {
         <Grid item>
           <Typography color={"primary"} sx={{ mt: 1 }}>
             Cargando...
+          </Typography>
+        </Grid>
+        <Grid item>
+          <Typography color={"primary"} sx={{ mt: 1 }}>
+            <CircularProgressMui color="secondary" />
           </Typography>
         </Grid>
       </Grid>

@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from "react";
 
 import { useRouter } from "next/router";
 
-import { Grid, Typography, TextField, SelectChangeEvent } from "@mui/material";
+import { Grid, Typography, TextField, SelectChangeEvent, CircularProgress } from "@mui/material";
 import { Send } from "@mui/icons-material";
 import { useForm } from "react-hook-form";
 
@@ -150,6 +150,11 @@ export const TabContactEstablishment = () => {
         <Grid item>
           <Typography color={"primary"} sx={{ mt: 1 }}>
             Cargando...
+          </Typography>
+        </Grid>
+        <Grid item>
+          <Typography color={"primary"} sx={{ mt: 1 }}>
+            <CircularProgress color="secondary" />
           </Typography>
         </Grid>
       </Grid>

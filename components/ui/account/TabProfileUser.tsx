@@ -3,7 +3,7 @@ import { useState, ChangeEvent, useContext, useEffect } from "react";
 import { useRouter } from "next/router";
 import Image from "next/image";
 
-import { Grid, TextField, Typography, Button } from "@mui/material";
+import { Grid, TextField, Typography, Button, CircularProgress } from "@mui/material";
 import { Update } from "@mui/icons-material";
 import imageCompression from "browser-image-compression";
 import { useForm } from "react-hook-form";
@@ -223,6 +223,11 @@ export const TabProfileUser = () => {
         <Grid item>
           <Typography color={"primary"} sx={{ mt: 1 }}>
             Cargando...
+          </Typography>
+        </Grid>
+        <Grid item>
+          <Typography color={"primary"} sx={{ mt: 1 }}>
+            <CircularProgress color="secondary" />
           </Typography>
         </Grid>
       </Grid>

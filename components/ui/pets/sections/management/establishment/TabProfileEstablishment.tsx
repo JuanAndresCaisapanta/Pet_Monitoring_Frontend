@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from "react";
 
 import { useRouter } from "next/router";
 
-import { Grid, Typography, TextField, SelectChangeEvent } from "@mui/material";
+import { Grid, Typography, TextField, SelectChangeEvent, CircularProgress } from "@mui/material";
 import { Update } from "@mui/icons-material";
 import { Controller, useForm } from "react-hook-form";
 import MuiPhoneNumber from "material-ui-phone-number";
@@ -26,8 +26,7 @@ export const TabProfileEstablishment = () => {
   const [establishmentName, setEstablishmentName] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
-  const { establishmentType, getEstablishmentType, clearEstablishmentType } =
-    useContext(EstablishmentTypeContext);
+  const { establishmentType, getEstablishmentType, clearEstablishmentType } = useContext(EstablishmentTypeContext);
 
   const { establishment, getEstablishment, clearEstablishment, updateEstablishment } =
     useContext(EstablishmentContext);
@@ -236,6 +235,11 @@ export const TabProfileEstablishment = () => {
         <Grid item>
           <Typography color={"primary"} sx={{ mt: 1 }}>
             Cargando...
+          </Typography>
+        </Grid>
+        <Grid item>
+          <Typography color={"primary"} sx={{ mt: 1 }}>
+            <CircularProgress color="secondary" />
           </Typography>
         </Grid>
       </Grid>

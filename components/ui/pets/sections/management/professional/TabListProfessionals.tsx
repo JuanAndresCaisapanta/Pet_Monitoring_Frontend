@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from "react";
 
 import { useRouter } from "next/router";
 
-import { Grid, Typography } from "@mui/material";
+import { CircularProgress, Grid, Typography } from "@mui/material";
 
 import { PetContext } from "../../../../../../context";
 import { CardProfessional } from "./CardProfessional";
@@ -79,6 +79,11 @@ export const TabListProfessionals = () => {
         <Grid item>
           <Typography color={"primary"} sx={{ mt: 1 }}>
             Cargando...
+          </Typography>
+        </Grid>
+        <Grid item>
+          <Typography color={"primary"} sx={{ mt: 1 }}>
+            <CircularProgress color="secondary" />
           </Typography>
         </Grid>
       </Grid>

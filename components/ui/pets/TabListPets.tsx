@@ -2,7 +2,7 @@ import { useContext, useState } from "react";
 
 import { useRouter } from "next/router";
 
-import { NavigateBefore } from "@mui/icons-material";
+import { NavigateBefore, Search } from "@mui/icons-material";
 import {
   Grid,
   CardContent,
@@ -13,8 +13,8 @@ import {
   CardHeader,
   IconButton,
   Divider,
+  CircularProgress,
 } from "@mui/material";
-import SearchIcon from "@mui/icons-material/Search";
 
 import { CardPet } from "./CardPet";
 import { AuthContext } from "../../../context";
@@ -51,7 +51,7 @@ export const TabListPets = () => {
                   InputProps={{
                     startAdornment: (
                       <InputAdornment position="start">
-                        <SearchIcon fontSize="small" />
+                        <Search fontSize="small" />
                       </InputAdornment>
                     ),
                   }}
@@ -102,6 +102,11 @@ export const TabListPets = () => {
         <Grid item>
           <Typography color={"primary"} sx={{ mt: 1 }}>
             Cargando...
+          </Typography>
+        </Grid>
+        <Grid item>
+          <Typography color={"primary"} sx={{ mt: 1 }}>
+            <CircularProgress color="secondary" />
           </Typography>
         </Grid>
       </Grid>

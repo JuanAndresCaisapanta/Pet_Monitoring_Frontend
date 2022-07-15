@@ -6,6 +6,7 @@ import { Avatar, Card, CardContent, CardHeader, Divider, Grid, IconButton, Typog
 import { NavigateBefore } from "@mui/icons-material";
 import { EmailIcon, EmailShareButton, WhatsappIcon, WhatsappShareButton } from "react-share";
 import { CircularInput, CircularTrack, CircularProgress } from "react-circular-input";
+import CircularProgressMui from "@mui/material/CircularProgress"
 
 import { PetContext } from "../../../../../../context";
 import { Battery } from "../Battery";
@@ -17,8 +18,8 @@ export const TabTemperature = () => {
   const { id: pet_id } = router.query;
 
   useMemo(() => {
-    if(pet_id !== undefined) {
-    getPet(Number(pet_id));
+    if (pet_id !== undefined) {
+      getPet(Number(pet_id));
     }
     return () => {
       petChange();
@@ -27,8 +28,8 @@ export const TabTemperature = () => {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      if(pet_id !== undefined) {
-      getPet(Number(pet_id));
+      if (pet_id !== undefined) {
+        getPet(Number(pet_id));
       }
     }, 5000);
     return () => {
@@ -175,6 +176,11 @@ export const TabTemperature = () => {
           <Typography color={"primary"} sx={{ mt: 1 }}>
             Cargando...
           </Typography>
+          <Grid item>
+            <Typography color={"primary"} sx={{ mt: 1 }}>
+              <CircularProgressMui color="secondary" />
+            </Typography>
+          </Grid>
         </Grid>
       </Grid>
     );

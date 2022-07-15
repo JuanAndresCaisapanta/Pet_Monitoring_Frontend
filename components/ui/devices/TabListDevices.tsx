@@ -2,7 +2,7 @@ import { useContext, useState } from "react";
 
 import { useRouter } from "next/router";
 
-import { Grid, Typography } from "@mui/material";
+import { CircularProgress, Grid, Typography } from "@mui/material";
 
 import { AuthContext } from "../../../context";
 import { CardDevice } from "./CardDevice";
@@ -65,6 +65,11 @@ export const TabListDevices = () => {
         <Grid item>
           <Typography color={"primary"} sx={{ mt: 1 }}>
             Cargando...
+          </Typography>
+        </Grid>
+        <Grid item>
+          <Typography color={"primary"} sx={{ mt: 1 }}>
+            <CircularProgress color="secondary" />
           </Typography>
         </Grid>
       </Grid>

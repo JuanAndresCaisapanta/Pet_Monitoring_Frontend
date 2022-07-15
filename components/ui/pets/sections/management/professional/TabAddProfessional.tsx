@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from "react";
 
 import { useRouter } from "next/router";
 
-import { Grid, Typography, TextField, SelectChangeEvent } from "@mui/material";
+import { Grid, Typography, TextField, SelectChangeEvent, CircularProgress } from "@mui/material";
 import { Save } from "@mui/icons-material";
 import { Controller, useForm } from "react-hook-form";
 import MuiPhoneNumber from "material-ui-phone-number";
@@ -23,12 +23,7 @@ export const TabAddProfessional = () => {
   const [listProfessions, setListProfessions] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
-  const {
-    professions,
-    getProfessions,
-    isLoaded: isLoadedProfessions,
-    clearProfessions,
-  } = useContext(ProfessionContext);
+  const { professions, getProfessions, clearProfessions } = useContext(ProfessionContext);
   const { addProfessional } = useContext(ProfessionalContext);
 
   const {
@@ -77,7 +72,7 @@ export const TabAddProfessional = () => {
     }
   };
 
-  if (isLoadedProfessions && professions) {
+  if (professions) {
     return (
       <CardForm
         title={`Ingrese la información del Profesional`}
@@ -203,6 +198,11 @@ export const TabAddProfessional = () => {
           <Typography color={"primary"} sx={{ mt: 1 }}>
             Cargando...
           </Typography>
+          <Grid item>
+            <Typography color={"primary"} sx={{ mt: 1 }}>
+              <CircularProgress color="secondary" />
+            </Typography>
+          </Grid>
         </Grid>
       </Grid>
     );

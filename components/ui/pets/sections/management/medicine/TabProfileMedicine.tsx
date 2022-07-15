@@ -6,7 +6,7 @@ import { useRouter } from "next/router";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { Update } from "@mui/icons-material";
 import { DesktopDatePicker, LocalizationProvider } from "@mui/lab";
-import { Button, Grid, SelectChangeEvent, TextField, Typography } from "@mui/material";
+import { Button, CircularProgress, Grid, SelectChangeEvent, TextField, Typography } from "@mui/material";
 import { useForm } from "react-hook-form";
 import moment from "moment";
 import imageCompression from "browser-image-compression";
@@ -420,6 +420,11 @@ export const TabProfileMedicine = () => {
         <Grid item>
           <Typography color={"primary"} sx={{ mt: 1 }}>
             Cargando...
+          </Typography>
+        </Grid>
+        <Grid item>
+          <Typography color={"primary"} sx={{ mt: 1 }}>
+            <CircularProgress color="secondary" />
           </Typography>
         </Grid>
       </Grid>

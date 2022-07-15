@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from "react";
 
 import { useRouter } from "next/router";
 
-import { Grid, Typography, TextField, SelectChangeEvent } from "@mui/material";
+import { Grid, Typography, TextField, SelectChangeEvent, CircularProgress } from "@mui/material";
 import { Send } from "@mui/icons-material";
 import { useForm } from "react-hook-form";
 
@@ -28,13 +28,8 @@ export const TabContactProfessional = () => {
 
   const { id: professional_id } = router.query;
 
-  const {
-    professional,
-    getProfessional,
-    clearProfessional,
-    sendEmailProfessional,
-    isLoaded: isProfessionalLoaded,
-  } = useContext(ProfessionalContext);
+  const { professional, getProfessional, clearProfessional, sendEmailProfessional } =
+    useContext(ProfessionalContext);
 
   const {
     register,
@@ -93,7 +88,7 @@ export const TabContactProfessional = () => {
     setValue("message", message);
   };
 
-  if (isProfessionalLoaded && professional) {
+  if (professional) {
     return (
       <CardFormContact
         title={`Contactar a ${professionalName} ${professionalLastName}`}
@@ -152,6 +147,11 @@ export const TabContactProfessional = () => {
         <Grid item>
           <Typography color={"primary"} sx={{ mt: 1 }}>
             Cargando...
+          </Typography>
+        </Grid>
+        <Grid item>
+          <Typography color={"primary"} sx={{ mt: 1 }}>
+            <CircularProgress color="secondary" />
           </Typography>
         </Grid>
       </Grid>
