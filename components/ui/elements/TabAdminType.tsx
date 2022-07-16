@@ -11,9 +11,9 @@ interface Props {
   register: any;
   errors: any;
   renderCell: any;
-  id: number;
   isLoading: boolean;
   rows: any;
+  regex: any;
 }
 
 export const TabAdminType: FC<Props> = ({
@@ -22,12 +22,10 @@ export const TabAdminType: FC<Props> = ({
   register,
   errors,
   renderCell,
-  id,
   isLoading,
   rows,
+  regex,
 }) => {
-  const ALPHA_NUMERIC_DASH_REGEX = /^[a-zA-Z]+$/;
-
   const columns: GridColDef[] = [
     {
       field: "id",
@@ -64,13 +62,7 @@ export const TabAdminType: FC<Props> = ({
       <CardContent>
         <form noValidate autoComplete="off" onSubmit={handleSubmit}>
           <Grid container spacing={2}>
-            <Grid item xs={4}>
-              {id !== 0 ? (
-                <TextField fullWidth type="number" label="Id" placeholder="Id" disabled value={id} />
-              ) : (
-                <></>
-              )}
-            </Grid>
+            <Grid item xs={4}></Grid>
             <Grid item xs={4}>
               <TextField
                 fullWidth
@@ -80,12 +72,12 @@ export const TabAdminType: FC<Props> = ({
                   required: "Este campo es requerido",
                   minLength: { value: 2, message: "Mínimo 2 caracteres" },
                   pattern: {
-                    value: /^[a-zA-Z]+$/,
+                    value: regex,
                     message: "Solo se permiten letras",
                   },
                 })}
                 onKeyDown={(event) => {
-                  if (!ALPHA_NUMERIC_DASH_REGEX.test(event.key)) {
+                  if (!regex.test(event.key)) {
                     event.preventDefault();
                   }
                 }}

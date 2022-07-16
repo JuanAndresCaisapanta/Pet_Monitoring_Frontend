@@ -1,25 +1,29 @@
-import { NavigateBefore } from "@mui/icons-material";
-import { Card, CardHeader, CircularProgress, Divider, Grid, IconButton, Typography } from "@mui/material";
-import Button from "@mui/material/Button";
-import EditIcon from "@mui/icons-material/Edit";
-import DeleteIcon from "@mui/icons-material/DeleteOutlined";
-
-import { GridValueGetterParams } from "@mui/x-data-grid";
 import { useContext, useState, useEffect } from "react";
-import { SpeciesContext } from "../../../../context/species/SpeciesContext";
-import { ISpecies } from "../../../../interfaces";
-import { useForm } from "react-hook-form";
+
+import { get, useForm } from "react-hook-form";
+import { NavigateBefore, Edit, Delete } from "@mui/icons-material";
+import { Card, CardHeader, CircularProgress, Divider, Grid, IconButton, Typography, Button } from "@mui/material";
+import { GridValueGetterParams } from "@mui/x-data-grid";
 import { LoadingButton } from "@mui/lab";
+
+import { IEstablishmentType} from "../../../../interfaces";
 import { TabAdminType } from "../../elements";
+import { EstablishmentTypeContext } from "../../../../context";
 
 type FormData = {
   name: string;
 };
 
-export const TabAdminSpecies = () => {
-  const { species, getSpecies, addSpecies, updateSpecies, deleteSpecies } = useContext(SpeciesContext);
-  const [listSpecies, setListSpecies] = useState<ISpecies[]>([]);
-  const [speciesId, setSpeciesId] = useState<number>(0);
+export const TabAdminEstablishmentTypes = () => {
+  const {
+    establishmentType: establishmentTypes,
+    getEstablishmentType,
+    addEstablishmentType,
+    updateEstablishmentType,
+    deleteEstablishmentType,
+  } = useContext(EstablishmentTypeContext);
+  const [listEstablishmentTypes, setListEstablishmentTypes] = useState<IEstablishmentType[]>([]);
+  const [establishmentypeId, setEstablishmentTypeId] = useState<number>(0);
   const [isLoading, setIsLoading] = useState(false);
 
   const {
@@ -30,65 +34,65 @@ export const TabAdminSpecies = () => {
   } = useForm<FormData>();
 
   useEffect(() => {
-    getSpecies();
+    getEstablishmentType();
   }, []);
 
   useEffect(() => {
-    if (species) {
-      setListSpecies(species as unknown as ISpecies[]);
+    if (establishmentTypes) {
+      setListEstablishmentTypes(establishmentTypes as unknown as IEstablishmentType[]);
     }
-  }, [species]);
+  }, [establishmentTypes]);
 
-  const handleAddSpecies = async ({ name }: FormData) => {
-    if (speciesId === 0) {
+  const handleAddProfession = async ({ name }: FormData) => {
+    if (establishmentypeId === 0) {
       setIsLoading(true);
-      const { isComplete } = await addSpecies(name);
+      const { isComplete } = await addEstablishmentType(name);
       if (isComplete) {
         setIsLoading(false);
-        setSpeciesId(0);
+        setEstablishmentTypeId(0);
         setValue("name", "");
       }
     } else {
       setIsLoading(true);
-      const { isComplete } = await updateSpecies(speciesId, name);
+      const { isComplete } = await updateEstablishmentType(establishmentypeId, name);
       if (isComplete) {
         setIsLoading(false);
-        setSpeciesId(0);
+        setEstablishmentTypeId(0);
         setValue("name", "");
       }
     }
   };
 
-  const handleUpdateSpecies = (species_id: number, species_name: string) => () => {
-    if (species_id !== 0) {
-      setSpeciesId(species_id);
-      setValue("name", species_name);
+  const handleUpdateEstablishmentType= (establishmentType_id: number, establishmentType_name: string) => () => {
+    if (establishmentType_id !== 0) {
+      setEstablishmentTypeId(establishmentType_id);
+      setValue("name", establishmentType_name);
     }
   };
 
-  const handleDeleteSpecies = (species_id: number) => async () => {
+  const handleDeleteEstablishmentType = (establishmentType_id: number) => async () => {
     setIsLoading(true);
-    const { isComplete } = await deleteSpecies(species_id);
+    const { isComplete } = await deleteEstablishmentType(establishmentType_id);
     if (isComplete) {
       setIsLoading(false);
-      setSpeciesId(0);
+      setEstablishmentTypeId(0);
       setValue("name", "");
     }
   };
 
   const handleClearForm = () => {
-    setSpeciesId(0);
+    setEstablishmentTypeId(0);
     setValue("name", "");
   };
 
-  const rows = listSpecies.map((species) => ({
-    id: species.id,
-    name: species.name,
+  const rows = listEstablishmentTypes.map((establishmentTypes) => ({
+    id: establishmentTypes.id,
+    name: establishmentTypes.name,
   }));
 
   const ALPHA_NUMERIC_DASH_REGEX = /^[a-zA-Z]+$/;
 
-  if (species) {
+  if (establishmentTypes) {
     return (
       <Card>
         <CardHeader
@@ -103,7 +107,7 @@ export const TabAdminSpecies = () => {
         />
         <Divider sx={{ margin: 0 }} />
         <TabAdminType
-          handleSubmit={handleSubmit(handleAddSpecies)}
+          handleSubmit={handleSubmit(handleAddProfession)}
           handleClearForm={handleClearForm}
           register={register}
           errors={errors}
@@ -113,8 +117,8 @@ export const TabAdminSpecies = () => {
                 <Grid item xs={6} textAlign={"center"}>
                   <Button
                     variant="contained"
-                    startIcon={<EditIcon />}
-                    onClick={handleUpdateSpecies(row.id as number, row.name as string)}
+                    startIcon={<Edit />}
+                    onClick={handleUpdateEstablishmentType(row.id as number, row.name as string)}
                     disabled={isLoading}
                     disableElevation
                   >
@@ -126,9 +130,9 @@ export const TabAdminSpecies = () => {
                     disableElevation
                     variant="outlined"
                     color="secondary"
-                    onClick={handleDeleteSpecies(row.id as number)}
+                    onClick={handleDeleteEstablishmentType(row.id as number)}
                     sx={{ marginRight: 2 }}
-                    startIcon={<DeleteIcon />}
+                    startIcon={<Delete />}
                     loading={isLoading}
                     loadingPosition="start"
                   >

@@ -1,25 +1,24 @@
-import { NavigateBefore } from "@mui/icons-material";
-import { Card, CardHeader, CircularProgress, Divider, Grid, IconButton, Typography } from "@mui/material";
-import Button from "@mui/material/Button";
-import EditIcon from "@mui/icons-material/Edit";
-import DeleteIcon from "@mui/icons-material/DeleteOutlined";
-
-import { GridValueGetterParams } from "@mui/x-data-grid";
 import { useContext, useState, useEffect } from "react";
-import { SpeciesContext } from "../../../../context/species/SpeciesContext";
-import { ISpecies } from "../../../../interfaces";
+
 import { useForm } from "react-hook-form";
+import { NavigateBefore, Edit, Delete } from "@mui/icons-material";
+import { Card, CardHeader, CircularProgress, Divider, Grid, IconButton, Typography, Button } from "@mui/material";
+import { GridValueGetterParams } from "@mui/x-data-grid";
 import { LoadingButton } from "@mui/lab";
+
+import { IProfession } from "../../../../interfaces";
 import { TabAdminType } from "../../elements";
+import { ProfessionContext } from "../../../../context";
 
 type FormData = {
   name: string;
 };
 
-export const TabAdminSpecies = () => {
-  const { species, getSpecies, addSpecies, updateSpecies, deleteSpecies } = useContext(SpeciesContext);
-  const [listSpecies, setListSpecies] = useState<ISpecies[]>([]);
-  const [speciesId, setSpeciesId] = useState<number>(0);
+export const TabAdminProfessions = () => {
+  const { professions, getProfessions, addProfession, updateProfession, deleteProfession } =
+    useContext(ProfessionContext);
+  const [listProfessions, setListProfessions] = useState<IProfession[]>([]);
+  const [professionId, setProfessionId] = useState<number>(0);
   const [isLoading, setIsLoading] = useState(false);
 
   const {
@@ -30,65 +29,65 @@ export const TabAdminSpecies = () => {
   } = useForm<FormData>();
 
   useEffect(() => {
-    getSpecies();
+    getProfessions();
   }, []);
 
   useEffect(() => {
-    if (species) {
-      setListSpecies(species as unknown as ISpecies[]);
+    if (professions) {
+      setListProfessions(professions as unknown as IProfession[]);
     }
-  }, [species]);
+  }, [professions]);
 
-  const handleAddSpecies = async ({ name }: FormData) => {
-    if (speciesId === 0) {
+  const handleAddProfession = async ({ name }: FormData) => {
+    if (professionId === 0) {
       setIsLoading(true);
-      const { isComplete } = await addSpecies(name);
+      const { isComplete } = await addProfession(name);
       if (isComplete) {
         setIsLoading(false);
-        setSpeciesId(0);
+        setProfessionId(0);
         setValue("name", "");
       }
     } else {
       setIsLoading(true);
-      const { isComplete } = await updateSpecies(speciesId, name);
+      const { isComplete } = await updateProfession(professionId, name);
       if (isComplete) {
         setIsLoading(false);
-        setSpeciesId(0);
+        setProfessionId(0);
         setValue("name", "");
       }
     }
   };
 
-  const handleUpdateSpecies = (species_id: number, species_name: string) => () => {
-    if (species_id !== 0) {
-      setSpeciesId(species_id);
-      setValue("name", species_name);
+  const handleUpdateProfession = (profession_id: number, profession_name: string) => () => {
+    if (profession_id !== 0) {
+      setProfessionId(profession_id);
+      setValue("name", profession_name);
     }
   };
 
-  const handleDeleteSpecies = (species_id: number) => async () => {
+  const handleDeleteProfession = (profession_id: number) => async () => {
     setIsLoading(true);
-    const { isComplete } = await deleteSpecies(species_id);
+    const { isComplete } = await deleteProfession(profession_id);
     if (isComplete) {
       setIsLoading(false);
-      setSpeciesId(0);
+      setProfessionId(0);
       setValue("name", "");
     }
   };
 
   const handleClearForm = () => {
-    setSpeciesId(0);
+    setProfessionId(0);
     setValue("name", "");
   };
 
-  const rows = listSpecies.map((species) => ({
-    id: species.id,
-    name: species.name,
+  const rows = listProfessions.map((professions) => ({
+    id: professions.id,
+    name: professions.name,
   }));
 
-  const ALPHA_NUMERIC_DASH_REGEX = /^[a-zA-Z]+$/;
+  const ALPHA_NUMERIC_DASH_REGEX = /^[a-zA-Z/]+$/;
 
-  if (species) {
+  if (professions) {
     return (
       <Card>
         <CardHeader
@@ -103,7 +102,7 @@ export const TabAdminSpecies = () => {
         />
         <Divider sx={{ margin: 0 }} />
         <TabAdminType
-          handleSubmit={handleSubmit(handleAddSpecies)}
+          handleSubmit={handleSubmit(handleAddProfession)}
           handleClearForm={handleClearForm}
           register={register}
           errors={errors}
@@ -113,8 +112,8 @@ export const TabAdminSpecies = () => {
                 <Grid item xs={6} textAlign={"center"}>
                   <Button
                     variant="contained"
-                    startIcon={<EditIcon />}
-                    onClick={handleUpdateSpecies(row.id as number, row.name as string)}
+                    startIcon={<Edit />}
+                    onClick={handleUpdateProfession(row.id as number, row.name as string)}
                     disabled={isLoading}
                     disableElevation
                   >
@@ -126,9 +125,9 @@ export const TabAdminSpecies = () => {
                     disableElevation
                     variant="outlined"
                     color="secondary"
-                    onClick={handleDeleteSpecies(row.id as number)}
+                    onClick={handleDeleteProfession(row.id as number)}
                     sx={{ marginRight: 2 }}
-                    startIcon={<DeleteIcon />}
+                    startIcon={<Delete />}
                     loading={isLoading}
                     loadingPosition="start"
                   >

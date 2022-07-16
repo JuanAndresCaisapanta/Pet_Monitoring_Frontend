@@ -5,7 +5,11 @@ import { IBreed } from "../../interfaces";
 interface ContextProps {
   breeds?: IBreed;
   isLoaded?: boolean;
-  getBreeds: (species_id: number) => void;
+  getBreedsBySpecies: (species_id: number) => void;
+  getBreeds: () => void;
+  addBreed: (name: string, species_id: any) => Promise<{ isComplete: boolean }>;
+  updateBreed: (breed_id: any,name: string, species_id: any) => Promise<{ isComplete: boolean }>;
+  deleteBreed: (breed_id: number) => Promise<{ isComplete: boolean }>;
   clearBreeds: () => void;
 }
 

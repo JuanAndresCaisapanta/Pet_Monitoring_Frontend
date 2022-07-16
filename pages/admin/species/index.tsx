@@ -6,8 +6,7 @@ import { styled } from "@mui/material/styles";
 import { TabList, TabPanel, TabContext } from "@mui/lab";
 import { AccountCircleOutlined, Ballot, Group, ListAlt, LockOpenOutlined } from "@mui/icons-material";
 
-import { MainLayout, TabAdminUsers, TabProfileUser, TabSecurity } from "../../../components";
-import { TabAdminSpecies } from '../../../components/ui/admin/species/TabAdminSpecies';
+import { MainLayout, TabAdminSpecies } from "../../../components";
 
 const Tab = styled(MuiTab)<TabProps>(({ theme }) => ({
   [theme.breakpoints.down("md")]: {
@@ -46,22 +45,10 @@ const AdminSpeciesPage = () => {
               </Box>
             }
           />
-          {/* <Tab
-            value="security"
-            label={
-              <Box sx={{ display: "flex", alignItems: "center" }}>
-                <LockOpenOutlined />
-                <TabName>Seguridad</TabName>
-              </Box>
-            }
-          /> */}
         </TabList>
         <TabPanel sx={{ p: 0 }} value="species">
           <TabAdminSpecies/>
         </TabPanel>
-        {/* <TabPanel sx={{ p: 0 }} value="security">
-          <TabSecurity />
-        </TabPanel> */}
       </TabContext>
     </Card>
   )

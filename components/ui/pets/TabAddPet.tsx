@@ -57,7 +57,7 @@ export const TabAddPet = () => {
   const [checkSterilization, setCheckSterilization] = useState(false);
 
   const { getSpecies, species, clearSpecies } = useContext(SpeciesContext);
-  const { getBreeds, breeds, clearBreeds } = useContext(BreedContext);
+  const { getBreedsBySpecies, breeds, clearBreeds } = useContext(BreedContext);
   const { addPet } = useContext(PetContext);
   const { user } = useContext(AuthContext);
 
@@ -79,7 +79,7 @@ export const TabAddPet = () => {
 
   const onChangeSpecies = (event: SelectChangeEvent) => {
     setListSpecies(event.target.value);
-    getBreeds(Number(event.target.value));
+    getBreedsBySpecies(Number(event.target.value));
     setListBreed("");
   };
 

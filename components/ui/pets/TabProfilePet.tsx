@@ -58,7 +58,7 @@ export const TabProfilePet = () => {
   const [birthDate, setBirthDate] = useState<Date | null>(null);
 
   const { getSpecies, species, clearSpecies } = useContext(SpeciesContext);
-  const { getBreeds, breeds, clearBreeds } = useContext(BreedContext);
+  const { getBreedsBySpecies, breeds, clearBreeds } = useContext(BreedContext);
   const { updatePet, pet, getPet, petChange } = useContext(PetContext);
 
   const router = useRouter();
@@ -98,7 +98,7 @@ export const TabProfilePet = () => {
       getSpecies();
       setListSpecies(pet?.breed.species.id.toString());
       setValue("species", pet?.breed.species.id);
-      getBreeds(pet?.breed.species.id);
+      getBreedsBySpecies(pet?.breed.species.id);
       setListBreed(pet?.breed.id.toString());
       setValue("breed", pet?.breed.id);
       setCheckSterilization(pet?.sterilization);
@@ -119,7 +119,7 @@ export const TabProfilePet = () => {
 
   const onChangeSpecies = (event: SelectChangeEvent) => {
     setListSpecies(event.target.value as string);
-    getBreeds(Number(event.target.value));
+    getBreedsBySpecies(Number(event.target.value));
     setListBreed("");
   };
 
@@ -149,7 +149,7 @@ export const TabProfilePet = () => {
     getSpecies();
     setListSpecies(pet?.breed.species.id.toString()!);
     setValue("species", pet?.breed.species.id!);
-    getBreeds(pet?.breed.species.id!);
+    getBreedsBySpecies(pet?.breed.species.id!);
     setListBreed(pet?.breed.id.toString()!);
     setValue("breed", pet?.breed.id!);
     setCheckSterilization(pet?.sterilization!);

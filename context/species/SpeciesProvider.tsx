@@ -153,7 +153,7 @@ export const SpeciesProvider: FC<Props> = ({ children }) => {
               swalMessage("Listo", "Especie eliminada", "success");
             })
             .catch(() => {
-              swalMessage("Error", "No se pudo eliminar la especie", "error");
+              swalMessage("Error", "Otros datos dependen de esta especie - Eliminelos Primero", "error");
             });
         }
         return { isComplete: true };
