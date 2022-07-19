@@ -3,9 +3,9 @@ import { SyntheticEvent, useState, ReactElement } from "react";
 import { Box, Card, styled } from "@mui/material";
 import { TabList, TabPanel, TabContext } from "@mui/lab";
 import MuiTab, { TabProps } from "@mui/material/Tab";
-import { Group, VaccinesOutlined } from "@mui/icons-material";
+import { Ballot, Hail, OnDeviceTraining, Store, Vaccines } from "@mui/icons-material";
 
-import { MainLayout, TabAdminUpdateUser } from "../../../../components";
+import { MainLayout } from "../../../../components";
 
 const Tab = styled(MuiTab)<TabProps>(({ theme }: any) => ({
   [theme.breakpoints.down("md")]: {
@@ -22,8 +22,8 @@ const TabName = styled("span")(({ theme }) => ({
   marginLeft: theme.spacing(2.4),
 }));
 
-const AdminUserPage = () => {
-  const [value, setValue] = useState<string>("user");
+const AdminDevicePage = () => {
+  const [value, setValue] = useState<string>("device");
 
   const handleChange = (event: SyntheticEvent, newValue: string) => {
     setValue(newValue);
@@ -37,29 +37,41 @@ const AdminUserPage = () => {
           sx={{ borderBottom: (theme) => `1px solid ${theme.palette.divider}` }}
         >
           <Tab
-            value="user"
+            value="device"
             label={
               <Box sx={{ display: "flex", alignItems: "center" }}>
-                <Group />
-                <TabName>Usuario</TabName>
+                <OnDeviceTraining />
+                <TabName>dispositivo</TabName>
+              </Box>
+            }
+          />
+           <Tab
+            value="detail"
+            label={
+              <Box sx={{ display: "flex", alignItems: "center" }}>
+                <Ballot />
+                <TabName>Historial</TabName>
               </Box>
             }
           />
         </TabList>
-        <TabPanel sx={{ p: 0 }} value="user">
-          <TabAdminUpdateUser />
+        <TabPanel sx={{ p: 0 }} value="device">
+          {/* <TabAdminUpdateUser /> */}
+        </TabPanel>
+        <TabPanel sx={{ p: 0 }} value="detail">
+          {/* <TabAdminUpdateUser /> */}
         </TabPanel>
       </TabContext>
     </Card>
   );
 };
 
-AdminUserPage.getLayout = function getLayout(page: ReactElement) {
+AdminDevicePage.getLayout = function getLayout(page: ReactElement) {
   return (
-    <MainLayout title={"Medicinas"} pageDescription={"Aqui se puede revisar los medicamentos de tu mascota"}>
+    <MainLayout title={"Dispositivo"} pageDescription={"Datos del dispositivo"}>
       {page}
     </MainLayout>
   );
 };
 
-export default AdminUserPage;
+export default AdminDevicePage;

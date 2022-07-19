@@ -3,9 +3,9 @@ import { SyntheticEvent, useState, ReactElement } from "react";
 import { Box, Card, styled } from "@mui/material";
 import { TabList, TabPanel, TabContext } from "@mui/lab";
 import MuiTab, { TabProps } from "@mui/material/Tab";
-import { Group, VaccinesOutlined } from "@mui/icons-material";
+import { Hail, Vaccines } from "@mui/icons-material";
 
-import { MainLayout, TabAdminUpdateUser } from "../../../../components";
+import { MainLayout } from "../../../../components";
 
 const Tab = styled(MuiTab)<TabProps>(({ theme }: any) => ({
   [theme.breakpoints.down("md")]: {
@@ -22,8 +22,8 @@ const TabName = styled("span")(({ theme }) => ({
   marginLeft: theme.spacing(2.4),
 }));
 
-const AdminUserPage = () => {
-  const [value, setValue] = useState<string>("user");
+const AdminMedicinePage = () => {
+  const [value, setValue] = useState<string>("medicine");
 
   const handleChange = (event: SyntheticEvent, newValue: string) => {
     setValue(newValue);
@@ -37,29 +37,29 @@ const AdminUserPage = () => {
           sx={{ borderBottom: (theme) => `1px solid ${theme.palette.divider}` }}
         >
           <Tab
-            value="user"
+            value="medicine"
             label={
               <Box sx={{ display: "flex", alignItems: "center" }}>
-                <Group />
-                <TabName>Usuario</TabName>
+                <Vaccines />
+                <TabName>Medicina</TabName>
               </Box>
             }
           />
         </TabList>
-        <TabPanel sx={{ p: 0 }} value="user">
-          <TabAdminUpdateUser />
+        <TabPanel sx={{ p: 0 }} value="medicine">
+          {/* <TabAdminUpdateUser /> */}
         </TabPanel>
       </TabContext>
     </Card>
   );
 };
 
-AdminUserPage.getLayout = function getLayout(page: ReactElement) {
+AdminMedicinePage.getLayout = function getLayout(page: ReactElement) {
   return (
-    <MainLayout title={"Medicinas"} pageDescription={"Aqui se puede revisar los medicamentos de tu mascota"}>
+    <MainLayout title={"Medicina"} pageDescription={"Datos de la medicina"}>
       {page}
     </MainLayout>
   );
 };
 
-export default AdminUserPage;
+export default AdminMedicinePage;
