@@ -4,9 +4,9 @@ import { Box, Card } from "@mui/material";
 import MuiTab, { TabProps } from "@mui/material/Tab";
 import { styled } from "@mui/material/styles";
 import { TabList, TabPanel, TabContext } from "@mui/lab";
-import { AccountCircleOutlined, AddCircleOutline, Group, LockOpenOutlined } from "@mui/icons-material";
+import { Hail } from "@mui/icons-material";
 
-import { MainLayout, TabAdminAddUser, TabAdminUsers, TabProfileUser, TabSecurity } from "../../../components";
+import { MainLayout, TabAdminEstablishmentTypes } from "../../../components";
 
 const Tab = styled(MuiTab)<TabProps>(({ theme }) => ({
   [theme.breakpoints.down("md")]: {
@@ -22,8 +22,8 @@ const TabName = styled("span")(({ theme }) => ({
   fontSize: "0.8rem",
   marginLeft: theme.spacing(2.4),
 }));
-const AdminUsersPage = () => {
-  const [value, setValue] = useState<string>("users");
+const AdminEstablishmentTypesPage = () => {
+  const [value, setValue] = useState<string>("establishmentTypes");
 
   const handleChange = (event: SyntheticEvent, newValue: string) => {
     setValue(newValue);
@@ -37,43 +37,28 @@ const AdminUsersPage = () => {
           sx={{ borderBottom: (theme) => `1px solid ${theme.palette.divider}` }}
         >
           <Tab
-            value="users"
+            value="establishmentTypes"
             label={
               <Box sx={{ display: "flex", alignItems: "center" }}>
-                <Group/>
-                <TabName>Usuarios</TabName>
-              </Box>
-            }
-          />
-          <Tab
-            value="add-users"
-            label={
-              <Box sx={{ display: "flex", alignItems: "center" }}>
-                <AddCircleOutline />
-                <TabName>Agregar</TabName>
+                <Hail />
+                <TabName>Establecimientos</TabName>
               </Box>
             }
           />
         </TabList>
-        <TabPanel sx={{ p: 0 }} value="users">
-          <TabAdminUsers />
-        </TabPanel>
-        <TabPanel sx={{ p: 0 }} value="add-users">
-          <TabAdminAddUser />
+        <TabPanel sx={{ p: 0 }} value="establishmentTypes">
+          <TabAdminEstablishmentTypes />
         </TabPanel>
       </TabContext>
     </Card>
   );
-}
+};
 
-AdminUsersPage.getLayout = function getLayout(page: ReactElement) {
+AdminEstablishmentTypesPage.getLayout = function getLayout(page: ReactElement) {
   return (
-    <MainLayout
-      title={"Monitoreo Mascotas"}
-      pageDescription={"Una PWA donde se puede monitorear a tu mascota"}
-    >
+    <MainLayout title={"Establecimientos"} pageDescription={"Administracion de Establecimientos"}>
       {page}
     </MainLayout>
   );
 };
-export default AdminUsersPage;
+export default AdminEstablishmentTypesPage;

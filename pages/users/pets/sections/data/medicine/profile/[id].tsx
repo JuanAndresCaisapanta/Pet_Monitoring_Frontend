@@ -7,7 +7,7 @@ import { VaccinesOutlined } from "@mui/icons-material";
 
 import { MainLayout, TabProfileMedicine } from "../../../../../../../components";
 
-const Tab = styled(MuiTab)<TabProps>(({ theme }) => ({
+const Tab = styled(MuiTab)<TabProps>(({ theme }:any) => ({
   [theme.breakpoints.down("md")]: {
     minWidth: 100,
   },

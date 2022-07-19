@@ -7,7 +7,7 @@ export async function middleware(req: NextRequest | any, ev: NextFetchEvent) {
   const url = req.nextUrl.clone();
   try {
     const data = jwt_decode(token) as IToken;
-    if (data?.role[0].authority.toString() === "ROLE_ADMIN" || !token) {
+    if (data?.role[0].authority.toString() === "Admin" || !token) {
       url.pathname = "/auth/login";
       return NextResponse.rewrite(url);
     }

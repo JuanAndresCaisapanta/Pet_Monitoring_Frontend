@@ -70,12 +70,12 @@ export const AuthProvider: FC<Props> = ({ children }) => {
         password,
       })
       .then((response) => {
-        if (response.data.authorities[0].authority === "ROLE_ADMIN") {
+        if (response.data.authorities[0].authority === "Admin") {
           Cookies.set("token", response.data.token);
         checkToken();
           router.replace("/admin", undefined, { shallow: true });
           swalMessage("Bienvenido", "Ingreso realizado con éxito", "success");
-        } else if (response.data.authorities[0].authority === "ROLE_USER") {
+        } else if (response.data.authorities[0].authority === "User") {
           Cookies.set("token", response.data.token);
         checkToken();
           router.replace("/users", undefined, { shallow: true });

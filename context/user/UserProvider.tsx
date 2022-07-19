@@ -8,10 +8,17 @@ import { petMonitoringApi } from "../../api";
 import { UserContext, userReducer } from "./";
 import { AuthContext } from "../auth/AuthContext";
 import { swalMessage } from "../../components/ui/utils/swalMessage";
+import { IUser } from "../../interfaces";
 
-export interface UserState {}
+export interface UserState {
+  users?: IUser;
+  user?: IUser;
+}
 
-const USER_INITIAL_STATE: UserState = {};
+const USER_INITIAL_STATE: UserState = {
+  users: undefined,
+  user: undefined
+};
 
 interface Props {
   children: ReactNode;
@@ -21,6 +28,30 @@ export const UserProvider: FC<Props> = ({ children }) => {
   const [state, dispatch] = useReducer(userReducer, USER_INITIAL_STATE);
 
   const { user, checkToken } = useContext(AuthContext);
+
+  const getUsers= async () => {
+    if (!Cookies.get("token")) {
+      return;
+    }
+    try {
+      const token = Cookies.get("token") || "";
+      const { data } = await petMonitoringApi.get(`/auth/validate-token/${token}`);
+      if (data == true) {
+        const users = await petMonitoringApi.get(`/user`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        dispatch({
+          type: "[User] - getUsers",
+          payload: users.data,
+        });
+      } else {
+        Cookies.remove("token");
+      }
+    } catch (error) {
+      Cookies.remove("token");
+    }
+  };
+
 
   const updateUser = async (
     name: string,
@@ -59,11 +90,19 @@ export const UserProvider: FC<Props> = ({ children }) => {
         return {isComplete: true};
       });
   };
+
+  const clearUsers= () => {
+    dispatch({
+      type: "[User] - clearUsers"
+    });
+  }
   return (
     <UserContext.Provider
       value={{
         ...state,
+        getUsers,
         updateUser,
+        clearUsers,
       }}
     >
       {children}

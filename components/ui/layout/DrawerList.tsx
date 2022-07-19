@@ -10,10 +10,8 @@ import {
   OnDeviceTraining,
   Pets,
   ManageAccounts,
-  SupervisedUserCircle,
   Ballot,
   Group,
-  Shop,
   Vaccines,
   Hail,
   Store,
@@ -40,7 +38,7 @@ export const DrawerList: FC<Props> = ({ toggleSideMenu }) => {
       </Toolbar>
       <Divider />
       {user?.role.map((role) => {
-        if (role.name === "ROLE_ADMIN") {
+        if (role.name === "Admin") {
           return (
             <div key={role.id}>
               <ListItem button onClick={() => navigateTo("/admin")}>
@@ -49,14 +47,48 @@ export const DrawerList: FC<Props> = ({ toggleSideMenu }) => {
                 </ListItemIcon>
                 <ListItemText primary={"Inicio"} />
               </ListItem>
-              <Divider />
+              <Divider textAlign="left" sx={{ fontSize: 14 }}>
+                Administrativos
+              </Divider>
               <ListItem button onClick={() => navigateTo("/admin/users")}>
                 <ListItemIcon>
-                  <Group/>
+                  <Group />
                 </ListItemIcon>
                 <ListItemText primary={"Usuarios"} />
               </ListItem>
-              <Divider />
+              <ListItem button onClick={() => navigateTo("/admin/pets")}>
+                <ListItemIcon>
+                  <Pets />
+                </ListItemIcon>
+                <ListItemText primary={"Mascotas"} />
+              </ListItem>
+              <ListItem button onClick={() => navigateTo("/admin/devices")}>
+                <ListItemIcon>
+                  <OnDeviceTraining />
+                </ListItemIcon>
+                <ListItemText primary={"Dispositivos"} />
+              </ListItem>
+              <ListItem button onClick={() => navigateTo("/admin/medicines")}>
+                <ListItemIcon>
+                  <Vaccines />
+                </ListItemIcon>
+                <ListItemText primary={"Medicinas"} />
+              </ListItem>
+              <ListItem button onClick={() => navigateTo("/admin/professionals")}>
+                <ListItemIcon>
+                  <Hail />
+                </ListItemIcon>
+                <ListItemText primary={"Profesionales"} />
+              </ListItem>
+              <ListItem button onClick={() => navigateTo("/admin/establishments")}>
+                <ListItemIcon>
+                  <Store />
+                </ListItemIcon>
+                <ListItemText primary={"Establecimientos"} />
+              </ListItem>
+              <Divider textAlign="left" sx={{ fontSize: 14 }}>
+                Tipos
+              </Divider>
               <ListItem button onClick={() => navigateTo("/admin/species")}>
                 <ListItemIcon>
                   <Ballot />
@@ -69,24 +101,21 @@ export const DrawerList: FC<Props> = ({ toggleSideMenu }) => {
                 </ListItemIcon>
                 <ListItemText primary={"Razas"} />
               </ListItem>
-              <Divider textAlign="left" sx={{ fontSize: 14 }}>
-                Tipos
-              </Divider>
-              <ListItem button onClick={() => navigateTo("/admin/establishments")}>
+              <ListItem button onClick={() => navigateTo("/admin/establishment-types")}>
                 <ListItemIcon>
-                  <Store />
+                  <Ballot />
                 </ListItemIcon>
                 <ListItemText primary={"Establecimientos"} />
               </ListItem>
-              <ListItem button onClick={() => navigateTo("/admin/medicines")}>
+              <ListItem button onClick={() => navigateTo("/admin/medicine-types")}>
                 <ListItemIcon>
-                  <Vaccines />
+                  <Ballot />
                 </ListItemIcon>
                 <ListItemText primary={"Medicinas"} />
               </ListItem>
               <ListItem button onClick={() => navigateTo("/admin/professions")}>
                 <ListItemIcon>
-                  <Hail />
+                  <Ballot />
                 </ListItemIcon>
                 <ListItemText primary={"Profesiones"} />
               </ListItem>
@@ -100,7 +129,7 @@ export const DrawerList: FC<Props> = ({ toggleSideMenu }) => {
             </div>
           );
         }
-        if (role.name === "ROLE_USER") {
+        if (role.name === "User") {
           return (
             <div key={role.id}>
               <ListItem button onClick={() => navigateTo("/users")}>
