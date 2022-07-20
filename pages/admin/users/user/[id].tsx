@@ -3,7 +3,7 @@ import { SyntheticEvent, useState, ReactElement } from "react";
 import { Box, Card, styled } from "@mui/material";
 import { TabList, TabPanel, TabContext } from "@mui/lab";
 import MuiTab, { TabProps } from "@mui/material/Tab";
-import { Group, VaccinesOutlined } from "@mui/icons-material";
+import { Group } from "@mui/icons-material";
 
 import { MainLayout, TabAdminUpdateUser } from "../../../../components";
 
@@ -56,7 +56,7 @@ const AdminUserPage = () => {
 
 AdminUserPage.getLayout = function getLayout(page: ReactElement) {
   return (
-    <MainLayout title={"Medicinas"} pageDescription={"Aqui se puede revisar los medicamentos de tu mascota"}>
+    <MainLayout title={"Usuario"} pageDescription={"Administración del usuario"}>
       {page}
     </MainLayout>
   );

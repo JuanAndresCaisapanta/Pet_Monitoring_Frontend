@@ -15,6 +15,7 @@ interface Props {
   startIcon: ReactNode;
   leftContent: ReactNode;
   rightContent: ReactNode;
+  gridDelete?:any
 }
 
 export const CardForm: FC<Props> = ({
@@ -28,6 +29,8 @@ export const CardForm: FC<Props> = ({
   textLoadingButton,
   leftContent,
   rightContent,
+  gridDelete
+
 }) => {
   return (
     <Card>
@@ -56,7 +59,7 @@ export const CardForm: FC<Props> = ({
         <Divider sx={{ margin: 0 }} />
         <CardActions sx={{ padding: "16px" }}>
           <Grid container spacing={2}>
-            <Grid item xs={12} md={12}>
+            <Grid item xs={12} md={6}>
               <LoadingButton
                 variant="contained"
                 color="primary"
@@ -79,6 +82,7 @@ export const CardForm: FC<Props> = ({
                 Cancelar
               </Button>
             </Grid>
+            {gridDelete}
           </Grid>
         </CardActions>
       </form>

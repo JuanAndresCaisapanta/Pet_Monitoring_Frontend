@@ -69,8 +69,8 @@ const AdminUsersPage = () => {
 AdminUsersPage.getLayout = function getLayout(page: ReactElement) {
   return (
     <MainLayout
-      title={"Monitoreo Mascotas"}
-      pageDescription={"Una PWA donde se puede monitorear a tu mascota"}
+      title={"Usuarios"}
+      pageDescription={"Administración de usuarios"}
     >
       {page}
     </MainLayout>
