@@ -17,5 +17,11 @@ export interface IEstablishment {
         name: string;
       };
     };
+    users: {
+      id: number;
+      email: string;
+    };
   };
 }
+
+export interface IEstablishments extends Array<IEstablishment> {}

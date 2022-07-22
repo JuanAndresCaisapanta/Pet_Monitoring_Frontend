@@ -53,3 +53,5 @@ export interface IUser {
     },
   ];
 }
+
+export interface IUsers extends Array<IUser> {}

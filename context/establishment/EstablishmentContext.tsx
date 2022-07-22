@@ -1,13 +1,16 @@
 import { createContext } from "react";
 
-import { IEstablishment, IFullNames } from "../../interfaces";
+import { IEstablishment, IEstablishments, IFullNames } from "../../interfaces";
 
 interface ContextProps {
   establishment?: IEstablishment;
+  establishments?: IEstablishments
   establishmentsFullName?: IFullNames;
   isLoaded: boolean;
 
   getEstablishment: (establishment_id: number) => void;
+
+  getEstablishments: () => void;
 
   addEstablishment: (
     name: string,
@@ -39,6 +42,8 @@ interface ContextProps {
   clearEstablishmentsFullName:() => void;
 
   clearEstablishment: () => void;
+
+  clearEstablishments: () => void;
 
   sendEmailEstablishment: (
     to_email: string,

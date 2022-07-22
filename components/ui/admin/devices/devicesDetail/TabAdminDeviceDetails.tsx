@@ -2,51 +2,46 @@ import { useContext, useState, useEffect } from "react";
 
 import { useRouter } from "next/router";
 
-import { Delete, NavigateBefore, Visibility } from "@mui/icons-material";
-import { Card, CardHeader, CircularProgress, Divider, Grid, IconButton, Typography, Button } from "@mui/material";
-import { GridValueGetterParams, DataGrid, esES, GridColDef } from "@mui/x-data-grid";
+import { NavigateBefore } from "@mui/icons-material";
+import { Card, CardHeader, CircularProgress, Divider, Grid, IconButton, Typography } from "@mui/material";
+import { DataGrid, esES, GridColDef } from "@mui/x-data-grid";
 import { CardContent, Box } from "@mui/material";
 
-import { IDevices, IUser } from "../../../../interfaces";
-import { DeviceContext, UserContext } from "../../../../context";
-import { LoadingButton } from "@mui/lab";
+import { IDeviceDetails } from "../../../../../interfaces";
+import { DeviceContext } from "../../../../../context";
 
-export const TabAdminDevices = () => {
-  const { devices, getDevices, clearDevices, deleteDevice } = useContext(DeviceContext);
-  const [listDevices, setListDevices] = useState<IDevices>([]);
-  const [isLoading, setIsLoading] = useState(false);
+export const TabAdminDeviceDetails = () => {
+  const { deviceDetails,getDeviceDetailsByDevice } = useContext(DeviceContext);
+  const [listDeviceDetails, setListDeviceDetails] = useState<IDeviceDetails>([]);
 
   const router = useRouter();
 
+  const {id: device_id} = router.query;
+
   useEffect(() => {
-    getDevices();
+    if (device_id!==undefined) {
+      getDeviceDetailsByDevice(Number(device_id));
+    }
   }, []);
 
   useEffect(() => {
-    if (devices) {
-      setListDevices(devices);
+    if (deviceDetails) {
+      setListDeviceDetails(deviceDetails);
     }
-  }, [devices]);
+  }, [deviceDetails]);
 
   const navigateTo = (url: string) => {
     router.push(url);
   };
 
-  const rows = listDevices.map((devices) => ({
-    id: devices.id,
-    code: devices.code,
-    callback_code: devices.callback_code,
-    pet: devices.pet.name,
-    user: devices.pet.users.email,
+  const rows = listDeviceDetails.map((deviceDetails) => ({
+    id: deviceDetails.id,
+    latitude: deviceDetails.latitude,
+    longitude: deviceDetails.longitude,
+    temperature: deviceDetails.temperature,
+    battery: deviceDetails.battery,
+    code: deviceDetails.device.code
   }));
-
-  const handleDeleteDevice = (device_id: number) => async () => {
-    setIsLoading(true);
-    const { isComplete } = await deleteDevice(device_id);
-    if (isComplete) {
-      setIsLoading(false);
-    }
-  };
 
   const columns: GridColDef[] = [
     {
@@ -59,87 +54,53 @@ export const TabAdminDevices = () => {
       minWidth: 100,
     },
     {
+      field: "latitude",
+      headerName: "Latitud",
+      headerClassName: "header",
+      headerAlign: "center",
+      align: "center",
+      flex: 1,
+      minWidth: 100,
+    },
+    {
+      field: "longitude",
+      headerName: "Longitud",
+      headerClassName: "header",
+      headerAlign: "center",
+      align: "center",
+      flex: 1,
+      minWidth: 100,
+    },
+    {
+      field: "temperature",
+      headerName: "Temperatura",
+      headerClassName: "header",
+      headerAlign: "center",
+      align: "center",
+      flex: 1,
+      minWidth: 100,
+    },
+    {
+      field: "battery",
+      headerName: "Bateria",
+      headerClassName: "header",
+      headerAlign: "center",
+      align: "center",
+      flex: 1,
+      minWidth: 100,
+    },
+    {
       field: "code",
-      headerName: "Código",
+      headerName: "Código de dispositivo",
       headerClassName: "header",
       headerAlign: "center",
       align: "center",
       flex: 1,
-      minWidth: 100,
-    },
-    {
-      field: "callback_code",
-      headerName: "Codigo de Callback",
-      headerClassName: "header",
-      headerAlign: "center",
-      align: "center",
-      flex: 1,
-      minWidth: 100,
-    },
-    {
-      field: "pet",
-      headerName: "Mascota",
-      headerClassName: "header",
-      headerAlign: "center",
-      align: "center",
-      flex: 1,
-      minWidth: 100,
-    },
-    {
-      field: "user",
-      headerName: "Usuario",
-      headerClassName: "header",
-      headerAlign: "center",
-      align: "center",
-      flex: 1,
-      minWidth: 100,
-    },
-    {
-      field: "actions",
-      headerName: "Acciones",
-      headerClassName: "header",
-      headerAlign: "center",
-      align: "center",
-      flex: 1,
-      minWidth: 240,
-      renderCell: ({ row }: GridValueGetterParams) => {
-        return (
-          <Grid container spacing={0}>
-            <Grid item xs={12} textAlign={"center"}>
-              <Button
-                variant="contained"
-                startIcon={<Visibility />}
-                disabled={isLoading}
-                sx={{
-                  mr: 1,
-                }}
-                onClick={() => {
-                  navigateTo(`devices/device/${row.id}`);
-                  clearDevices();
-                }}
-                disableElevation
-              >
-                Ver
-              </Button>
-              <LoadingButton
-                disableElevation
-                variant="outlined"
-                color="secondary"
-                onClick={handleDeleteDevice(row.id as number)}
-                startIcon={<Delete />}
-                loading={isLoading}
-                loadingPosition="start"
-              >
-                Eliminar
-              </LoadingButton>
-            </Grid>
-          </Grid>
-        );
-      },
+      minWidth: 210,
     },
   ];
 
-  if (devices) {
+  if (deviceDetails) {
     return (
       <Card>
         <CardHeader

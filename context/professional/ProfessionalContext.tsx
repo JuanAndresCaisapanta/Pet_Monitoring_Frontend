@@ -1,15 +1,19 @@
 import { createContext } from "react";
-import { IProfessional } from "../../interfaces";
+import { IProfessional, IProfessionals } from "../../interfaces";
 import { IFullNames } from "../../interfaces/fullName";
 
 interface ContextProps {
   professional?: IProfessional;
+
+  professionals?: IProfessionals
 
   professionalsFullName?: IFullNames;
 
   isLoaded: boolean;
 
   getProfessional: (professional_id: number) => void;
+
+  getProfessionals: () => void;
 
   addProfessional: (
     name: string,
@@ -35,6 +39,8 @@ interface ContextProps {
   deleteProfessional: (pet_id: number, professional_id: number) => Promise<{ isComplete: boolean }>;
 
   clearProfessional: () => void;
+
+  clearProfessionals: () => void;
 
   sendEmailProfessional: (
     to_email: string,

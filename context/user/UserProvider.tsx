@@ -8,10 +8,10 @@ import { petMonitoringApi } from "../../api";
 import { UserContext, userReducer } from "./";
 import { AuthContext } from "../auth/AuthContext";
 import { swalMessage } from "../../components/ui/utils/swalMessage";
-import { IUser } from "../../interfaces";
+import { IUser, IUsers } from "../../interfaces";
 
 export interface UserState {
-  users?: IUser;
+  users?: IUsers;
   user?: IUser;
 }
 
@@ -27,7 +27,7 @@ interface Props {
 export const UserProvider: FC<Props> = ({ children }) => {
   const [state, dispatch] = useReducer(userReducer, USER_INITIAL_STATE);
 
-  const { user, checkToken } = useContext(AuthContext);
+  const { checkToken } = useContext(AuthContext);
 
   const getUsers = async () => {
     if (!Cookies.get("token")) {

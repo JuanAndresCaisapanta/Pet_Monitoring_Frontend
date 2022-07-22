@@ -4,9 +4,9 @@ import { Box, Card } from "@mui/material";
 import MuiTab, { TabProps } from "@mui/material/Tab";
 import { styled } from "@mui/material/styles";
 import { TabList, TabPanel, TabContext } from "@mui/lab";
-import { AddCircleOutline, Pets, Vaccines } from "@mui/icons-material";
+import { AddCircleOutline, Store } from "@mui/icons-material";
 
-import { MainLayout } from "../../../components";
+import { MainLayout, TabAdminAddEstablishment, TabAdminEstablishments } from "../../../components";
 
 const Tab = styled(MuiTab)<TabProps>(({ theme }) => ({
   [theme.breakpoints.down("md")]: {
@@ -40,7 +40,7 @@ const AdminEstablishmentsPage = () => {
             value="establishments"
             label={
               <Box sx={{ display: "flex", alignItems: "center" }}>
-                <Vaccines />
+                <Store />
                 <TabName>Establecimientos</TabName>
               </Box>
             }
@@ -56,10 +56,10 @@ const AdminEstablishmentsPage = () => {
           />
         </TabList>
         <TabPanel sx={{ p: 0 }} value="establishments">
-          {/* <TabAdminUsers /> */}
+          <TabAdminEstablishments/>
         </TabPanel>
         <TabPanel sx={{ p: 0 }} value="add-establishments">
-          {/* <TabAdminAddUser /> */}
+         <TabAdminAddEstablishment/>
         </TabPanel>
       </TabContext>
     </Card>

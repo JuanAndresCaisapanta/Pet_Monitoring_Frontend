@@ -13,4 +13,22 @@ export interface IMedicine {
     id: number;
     name: string;
   };
+  pet: {
+    id: number;
+    name: string;
+    breed: {
+      id: number;
+      name: string;
+      species: {
+        id: number;
+        name: string;
+      };
+    };
+    users: {
+      id: number;
+      email: "juancaisapanta@hotmail.com";
+    };
+  };
 }
+
+export interface IMedicines extends Array<IMedicine> {}

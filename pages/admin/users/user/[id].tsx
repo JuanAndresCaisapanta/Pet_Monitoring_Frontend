@@ -56,7 +56,7 @@ const AdminUserPage = () => {
 
 AdminUserPage.getLayout = function getLayout(page: ReactElement) {
   return (
-    <MainLayout title={"Usuario"} pageDescription={"Administración del usuario"}>
+    <MainLayout title={"Usuario"} pageDescription={"Datos del usuario"}>
       {page}
     </MainLayout>
   );

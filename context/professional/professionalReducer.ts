@@ -1,4 +1,4 @@
-import { IProfessional, IFullNames } from "../../interfaces";
+import { IProfessional, IFullNames, IProfessionals } from "../../interfaces";
 import { ProfessionalState } from "./";
 
 type ProfessionalActionType =
@@ -7,7 +7,9 @@ type ProfessionalActionType =
       payload: IProfessional;
     }
   | { type: "[Professional] - getProfessionalsFullName"; payload: IFullNames }
+  | { type: "[Professional] - getProfessionals"; payload: IProfessionals }
   | { type: "[Professional] - clearProfessional" }
+  | { type: "[Professional] - clearProfessionals" }
   | { type: "[Professional] - clearProfessionalsFullName" };
 
 export const professionalReducer = (
@@ -21,6 +23,11 @@ export const professionalReducer = (
         professional: action.payload,
         isLoaded: true,
       };
+    case "[Professional] - getProfessionals":
+      return {
+        ...state,
+        professionals: action.payload,
+      };
     case "[Professional] - getProfessionalsFullName":
       return {
         ...state,
@@ -33,6 +40,12 @@ export const professionalReducer = (
         professional: undefined,
         isLoaded: false,
       };
+      case "[Professional] - clearProfessionals":
+        return {
+          ...state,
+          professionals: undefined,
+        };
+
     case "[Professional] - clearProfessionalsFullName":
       return {
         ...state,

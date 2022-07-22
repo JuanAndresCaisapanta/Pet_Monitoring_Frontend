@@ -11,6 +11,10 @@ interface ContextProps {
 
   getPet: (pet_id: number) => void;
 
+  getPetsByUser: (user_id:number) => void;
+
+  getPets: () => void;
+
   petChange: () => void;
 
   addPet: (

@@ -1,74 +1,122 @@
-import { useState, ChangeEvent, useContext, useEffect } from "react";
+import { ChangeEvent, useContext, useState, useEffect } from "react";
 
 import Image from "next/image";
 import { useRouter } from "next/router";
 
+import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
+import { DesktopDatePicker, LocalizationProvider } from "@mui/lab";
 import {
+  Button,
   Checkbox,
+  CircularProgress,
   FormControl,
   FormControlLabel,
   FormGroup,
+  FormHelperText,
+  Grid,
   InputLabel,
   MenuItem,
   Select,
   SelectChangeEvent,
-  Grid,
   TextField,
   Typography,
-  Button,
-  FormHelperText,
-  CircularProgress,
 } from "@mui/material";
-import { Save } from "@mui/icons-material";
-import { DesktopDatePicker, LocalizationProvider } from "@mui/lab";
-import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
-import imageCompression from "browser-image-compression";
-import { useForm } from "react-hook-form";
+import { Update } from "@mui/icons-material";
 import moment from "moment";
-import { CardForm, SelectFormId, SelectFormName } from "../../elements";
-import { colorPet, sexPet } from "../../../../data";
+import { useForm } from "react-hook-form";
+import imageCompression from "browser-image-compression";
+
+import { CardForm, SelectFormName } from "../../elements";
 import { BreedContext, PetContext, SpeciesContext, UserContext } from "../../../../context";
+import { colorPet, sexPet } from "../../../../data";
+import { ISpecies } from "../../../../interfaces";
+import { SelectFormId } from "../../elements/SelectFormId";
 
 type FormData = {
   name: string;
-  color_main: string | null;
-  color_secondary: string | null;
-  weight: number | null;
-  sex: string | null;
+  color_main: string;
+  color_secondary: string;
+  weight: number;
+  sex: string;
   sterilization: boolean;
   image: any;
   birth_date: string | null;
-  species: number | null;
-  breed: number | null;
-  users: number | null;
+  species: number;
+  breed: number;
+  users: number;
 };
 
-export const TabAdminAddPet = () => {
-  const [imgSrc, setImgSrc] = useState<string>("/images/pet/pet-profile.jpg");
-  const [birthDate, setBirthDate] = useState<Date | null>(new Date());
+export const TabAdminUpdatePet = () => {
+  const [imagePath, setImagePath] = useState<string>("/images/pet/pet-profile.jpg");
   const [listSpecies, setListSpecies] = useState<string | null>("");
-  const [listSex, setListSex] = useState<string>("");
-  const [listColorPetMain, setListColorPetMain] = useState<string>("");
-  const [listColorPetSecondary, setListColorPetSecondary] = useState<string>("");
-  const [listBreed, setListBreed] = useState<string>("");
+  const [listSex, setListSex] = useState<string | null>("");
+  const [listColorPetMain, setListColorPetMain] = useState<string | null>("");
+  const [listColorPetSecondary, setListColorPetSecondary] = useState<string | null>("");
+  const [listBreed, setListBreed] = useState<string | null>("");
   const [listUsers, setListUsers] = useState<string>("");
-  const [isLoading, setIsLoading] = useState(false);
-  const [checkSterilization, setCheckSterilization] = useState(false);
+  const [petName, setPetName] = useState<string | null>("");
+  const [checkSterilization, setCheckSterilization] = useState<boolean | null>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [birthDate, setBirthDate] = useState<Date | null>(null);
 
   const { getSpecies, species, clearSpecies } = useContext(SpeciesContext);
   const { getBreedsBySpecies, breeds, clearBreeds } = useContext(BreedContext);
-  const { users, getUsers } = useContext(UserContext);
-  const { addPet } = useContext(PetContext);
-
-  useEffect(() => {
-    getSpecies();
-    getUsers();
-    return () => {
-      clearSpecies();
-    };
-  }, []);
+  const { updatePet, pet, getPet, petChange } = useContext(PetContext);
+  const { users, getUsers, clearUsers } = useContext(UserContext);
 
   const router = useRouter();
+
+  const { id: pet_id } = router.query;
+
+  useEffect(() => {
+    if (pet_id !== undefined) {
+      getPet(Number(pet_id));
+    }
+    return () => {
+      clearBreeds();
+      clearSpecies();
+      clearUsers();
+      petChange();
+    };
+  }, [pet_id]);
+
+  useEffect(() => {
+    if (pet?.name) {
+      setPetName(pet?.name);
+    }
+  }, [pet]);
+
+  useEffect(() => {
+    if (pet?.image) {
+      setValue("name", pet?.name!);
+      setBirthDate(moment(pet?.birth_date, "DD/MM/YYYY").toDate());
+      setValue("birth_date", pet?.birth_date);
+      setListSex(pet?.sex);
+      setValue("sex", pet?.sex);
+      setListColorPetMain(pet?.color_main);
+      setValue("color_main", pet?.color_main);
+      setListColorPetSecondary(pet?.color_secondary);
+      setValue("color_secondary", pet?.color_secondary);
+      setValue("weight", pet?.weight!);
+      setImagePath(`data:image/jpeg;base64,${pet?.image}`);
+      getSpecies();
+      setListSpecies(pet?.breed.species.id.toString());
+      setValue("species", pet?.breed.species.id);
+      getBreedsBySpecies(pet?.breed.species.id);
+      setListBreed(pet?.breed.id.toString());
+      setValue("breed", pet?.breed.id);
+      setCheckSterilization(pet?.sterilization);
+      setValue("sterilization", pet?.sterilization);
+      getUsers();
+      setListUsers(pet?.users.id.toString());
+      setValue("users", pet?.users.id);
+    }
+    return () => {
+      clearSpecies();
+      clearBreeds();
+      clearUsers();
+    };
+  }, [pet]);
 
   const {
     register,
@@ -78,7 +126,7 @@ export const TabAdminAddPet = () => {
   } = useForm<FormData>();
 
   const onChangeSpecies = (event: SelectChangeEvent) => {
-    setListSpecies(event.target.value);
+    setListSpecies(event.target.value as string);
     getBreedsBySpecies(Number(event.target.value));
     setListBreed("");
   };
@@ -91,36 +139,39 @@ export const TabAdminAddPet = () => {
     const reader = new FileReader();
     const { files } = file.target as HTMLInputElement;
     if (files && files.length !== 0) {
-      reader.onload = () => setImgSrc(reader.result as string);
+      reader.onload = () => setImagePath(reader.result as string);
       reader.readAsDataURL(files[0]);
     }
   };
 
   const handleClearForm = () => {
-    setListSex("");
-    setValue("sex", null);
-    setListColorPetMain("");
-    setValue("color_main", null);
-    setListColorPetSecondary("");
-    setValue("color_secondary", null);
-    setCheckSterilization(false);
-    setValue("sterilization", false);
-    setValue("name", "");
-    setValue("weight", 1);
-    setBirthDate(new Date());
-    setValue("birth_date", null);
-    setListSpecies("");
-    setValue("species", null);
     clearBreeds();
-    setListBreed("");
-    setValue("breed", null);
-    setImgSrc("/images/pet/pet-profile.jpg");
-    setValue("image", 0);
-    setListUsers("");
-    setValue("users", null);
+    clearSpecies();
+    setValue("name", pet?.name!);
+    setBirthDate(moment(pet?.birth_date, "DD/MM/YYYY").toDate());
+    setValue("birth_date", pet?.birth_date!);
+    setListSex(pet?.sex!);
+    setValue("sex", pet?.sex!);
+    setListColorPetMain(pet?.color_main!);
+    setValue("color_main", pet?.color_main!);
+    setListColorPetSecondary(pet?.color_secondary!);
+    setValue("color_secondary", pet?.color_secondary!);
+    setValue("weight", pet?.weight!);
+    setImagePath(`data:image/jpeg;base64,${pet?.image}`);
+    getSpecies();
+    setListSpecies(pet?.breed.species.id.toString()!);
+    setValue("species", pet?.breed.species.id!);
+    getBreedsBySpecies(pet?.breed.species.id!);
+    setListBreed(pet?.breed.id.toString()!);
+    setValue("breed", pet?.breed.id!);
+    setCheckSterilization(pet?.sterilization!);
+    setValue("sterilization", pet?.sterilization!);
+    getUsers();
+    setListUsers(pet?.users.id.toString()!);
+    setValue("users", pet?.users.id!);
   };
 
-  const handleAddPet = async ({
+  const handleUpdatePet = async ({
     name,
     color_main,
     color_secondary,
@@ -130,7 +181,6 @@ export const TabAdminAddPet = () => {
     image,
     birth_date,
     breed,
-    users,
   }: FormData) => {
     setIsLoading(true);
     const options = {
@@ -139,36 +189,34 @@ export const TabAdminAddPet = () => {
       useWebWorker: true,
     };
     if (image[0] != null) {
-      const compressedImage = await imageCompression(image[0], options);
-      const { isComplete } = await addPet(
+      const compressed_image = await imageCompression(image[0], options);
+      const { isComplete } = await updatePet(
+        Number(pet_id),
         name,
-        color_main!,
-        color_secondary!,
-        weight!,
-        sex!,
+        color_main,
+        color_secondary,
+        weight,
+        sex,
         sterilization,
-        compressedImage,
+        compressed_image,
         moment(birth_date!, "DD/MM/YYYY").format("MM/DD/YYYY"),
-        breed!,
-        users!,
-        handleClearForm,
+        breed,
       );
       if (isComplete) {
         setIsLoading(false);
       }
     } else {
-      const { isComplete } = await addPet(
+      const { isComplete } = await updatePet(
+        Number(pet_id),
         name,
-        color_main!,
-        color_secondary!,
-        weight!,
-        sex!,
+        color_main,
+        color_secondary,
+        weight,
+        sex,
         sterilization,
         image[0],
         moment(birth_date!, "DD/MM/YYYY").format("MM/DD/YYYY"),
-        breed!,
-        users!,
-        handleClearForm,
+        breed,
       );
       if (isComplete) {
         setIsLoading(false);
@@ -176,28 +224,29 @@ export const TabAdminAddPet = () => {
     }
   };
 
-  if (species) {
+  if (pet && breeds && species && users) {
     return (
       <CardForm
-        title={`Ingrese la información de su mascota`}
+        title={`Información de ${petName}`}
         router={() => router.back()}
-        submit={handleSubmit(handleAddPet)}
+        submit={handleSubmit(handleUpdatePet)}
         clearForm={handleClearForm}
         encType={`multipart/form-data`}
-        textLoadingButton={"Guardar"}
-        startIcon={<Save />}
+        textLoadingButton={"Actualizar"}
+        startIcon={<Update />}
         isLoading={isLoading}
         leftContent={
           <>
             <Grid container item xs={12} sm={12} direction="column" alignItems="center">
               <Image
                 style={{ borderRadius: "15px" }}
-                src={imgSrc}
+                src={imagePath}
                 width="250rem"
                 height="175rem"
                 alt="Imagen Mascota"
                 quality={100}
               />
+
               <Button
                 component="label"
                 variant="text"
@@ -242,8 +291,8 @@ export const TabAdminAddPet = () => {
                   <Select
                     labelId="demo-simple-select-label"
                     id="demo-simple-select"
-                    disabled={isLoading}
                     value={listUsers}
+                    disabled
                     label="Usuario"
                     {...register("users", {
                       onChange: onChangeUsers,
@@ -336,11 +385,11 @@ export const TabAdminAddPet = () => {
                 <TextField
                   fullWidth
                   type="number"
-                  label="Peso Kg"
-                  placeholder="Peso Kg"
+                  label="Peso"
+                  placeholder="Peso"
                   disabled={isLoading}
                   InputProps={{
-                    inputProps: { min: 1 },
+                    inputProps: { min: 0 },
                   }}
                   onKeyPress={(event) => {
                     if (event?.key === "-" || event?.key === "+" || event?.key === "." || event?.key === "e") {
@@ -349,11 +398,10 @@ export const TabAdminAddPet = () => {
                   }}
                   {...register("weight", {
                     required: "Este campo es requerido",
-                    minLength: { value: 1, message: "Mínimo 1 caracter" },
+                    minLength: { value: 2, message: "Mínimo 2 caracteres" },
                   })}
-                  error={!!errors.weight}
-                  helperText={errors.weight?.message}
-                  defaultValue={1}
+                  error={!!errors.name}
+                  helperText={errors.name?.message}
                 />
               </Grid>
               <Grid item xs={12} sm={6} textAlign="center">
@@ -368,7 +416,7 @@ export const TabAdminAddPet = () => {
                           onChange={(e) => {
                             setCheckSterilization(e.target.checked);
                           }}
-                          checked={checkSterilization}
+                          checked={checkSterilization!}
                         />
                       }
                       label="Esterilizado/a"
@@ -395,7 +443,7 @@ export const TabAdminAddPet = () => {
                     defaultValue={listSpecies}
                     error={!!errors.species}
                   >
-                    {species?.map(({ id, name }: any, i: any) => (
+                    {(species as unknown as ISpecies[])?.map(({ id, name }: any, i: any) => (
                       <MenuItem key={i} value={id}>
                         {name}
                       </MenuItem>
@@ -405,6 +453,7 @@ export const TabAdminAddPet = () => {
                 </FormControl>
               </Grid>
               <Grid item xs={12} sm={6}>
+                {breeds ? (
                   <SelectFormId
                     label="Raza"
                     name="breed"
@@ -418,6 +467,9 @@ export const TabAdminAddPet = () => {
                     error={!!errors.breed}
                     helperText={errors.breed?.message}
                   />
+                ) : (
+                  <></>
+                )}
               </Grid>
             </Grid>
           </>

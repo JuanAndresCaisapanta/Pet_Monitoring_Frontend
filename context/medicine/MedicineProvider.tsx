@@ -6,18 +6,20 @@ import Swal from "sweetalert2";
 import { petMonitoringApi } from "../../api";
 import { AuthContext } from "../auth";
 import { MedicineContext, medicineReducer } from "./";
-import { IFullNames, IMedicine } from "../../interfaces";
+import { IFullNames, IMedicine, IMedicines } from "../../interfaces";
 import { swalMessage } from "../../components";
 import { PetContext } from "../pet/PetContext";
 
 export interface MedicineState {
   medicine?: IMedicine;
+  medicines?: IMedicines;
   medicinesFullName?: IFullNames;
   isLoaded: boolean;
 }
 
 const MEDICINE_INITIAL_STATE: MedicineState = {
   medicine: undefined,
+  medicines: undefined,
   medicinesFullName: undefined,
   isLoaded: false,
 };
@@ -47,6 +49,29 @@ export const MedicineProvider: FC<Props> = ({ children }) => {
         dispatch({
           type: "[Medicine] - getMedicine",
           payload: medicine.data,
+        });
+      } else {
+        Cookies.remove("token");
+      }
+    } catch (error) {
+      Cookies.remove("token");
+    }
+  };
+
+  const getMedicines = async () => {
+    if (!Cookies.get("token")) {
+      return;
+    }
+    try {
+      const token = Cookies.get("token") || "";
+      const { data } = await petMonitoringApi.get(`/auth/validate-token/${token}`);
+      if (data == true) {
+        const medicines = await petMonitoringApi.get(`/medicine`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        dispatch({
+          type: "[Medicine] - getMedicines",
+          payload: medicines.data,
         });
       } else {
         Cookies.remove("token");
@@ -234,15 +259,23 @@ export const MedicineProvider: FC<Props> = ({ children }) => {
     });
   }
 
+  const clearMedicines = () => {
+    dispatch({
+      type: "[Medicine] - clearMedicines",
+    });
+  }
+
   return (
     <MedicineContext.Provider
       value={{
         ...state,
         getMedicine,
+        getMedicines,
         addMedicine,
         updateMedicine,
         deleteMedicine,
         clearMedicine,
+        clearMedicines,
         getMedicinesFullName,
         clearMedicinesFullName,
       }}

@@ -6,7 +6,7 @@ import { styled } from "@mui/material/styles";
 import { TabList, TabPanel, TabContext } from "@mui/lab";
 import { AddCircleOutline, Pets } from "@mui/icons-material";
 
-import { MainLayout } from "../../../components";
+import { MainLayout, TabAdminAddProfessional, TabAdminProfessionals } from "../../../components";
 
 const Tab = styled(MuiTab)<TabProps>(({ theme }) => ({
   [theme.breakpoints.down("md")]: {
@@ -56,10 +56,10 @@ const AdminProfessionalsPage = () => {
           />
         </TabList>
         <TabPanel sx={{ p: 0 }} value="professionals">
-          {/* <TabAdminUsers /> */}
+          <TabAdminProfessionals/>
         </TabPanel>
         <TabPanel sx={{ p: 0 }} value="add-professionals">
-          {/* <TabAdminAddUser /> */}
+          <TabAdminAddProfessional/>
         </TabPanel>
       </TabContext>
     </Card>

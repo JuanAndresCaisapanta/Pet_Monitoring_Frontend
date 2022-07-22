@@ -43,8 +43,8 @@ export const SelectFormId: FC<Props> = ({
         defaultValue={""}
         error={error}
       >
-        {object
-          ?.sort((a: any, b: any) => {
+        {object.length > 0?(
+          object?.sort((a: any, b: any) => {
             if (a.name < b.name) {
               return -1;
             }
@@ -57,7 +57,9 @@ export const SelectFormId: FC<Props> = ({
             <MenuItem key={id} value={id}>
               {name}
             </MenuItem>
-          ))}
+          ))) : (
+            <MenuItem value="">No hay datos</MenuItem>
+          )}
       </Select>
       <FormHelperText error={error}>{helperText}</FormHelperText>
     </FormControl>

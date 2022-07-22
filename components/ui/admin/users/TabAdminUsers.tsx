@@ -1,55 +1,23 @@
 import { useContext, useState, useEffect } from "react";
 
-import { useForm } from "react-hook-form";
-import { NavigateBefore, Edit, Delete, Visibility } from "@mui/icons-material";
-import {
-  Card,
-  CardHeader,
-  CircularProgress,
-  Divider,
-  Grid,
-  IconButton,
-  Typography,
-  Button,
-  SelectChangeEvent,
-} from "@mui/material";
-import { GridValueGetterParams } from "@mui/x-data-grid";
-import { LoadingButton } from "@mui/lab";
-
-import { IBreed, ISpecies, IUser } from "../../../../interfaces";
-import { SelectFormId, TabAdminType } from "../../elements";
-import { BreedContext, SpeciesContext, UserContext } from "../../../../context";
-
-import { CardContent, TextField, Box } from "@mui/material";
-import SaveIcon from "@mui/icons-material/Save";
-import { DataGrid, esES, GridColDef } from "@mui/x-data-grid";
 import { useRouter } from "next/router";
-type FormData = {
-  name: string;
-  species: any;
-};
+
+import { NavigateBefore, Visibility } from "@mui/icons-material";
+import { Card, CardHeader, CircularProgress, Divider, Grid, IconButton, Typography, Button } from "@mui/material";
+import { GridValueGetterParams, DataGrid, esES, GridColDef } from "@mui/x-data-grid";
+import { CardContent, Box } from "@mui/material";
+
+import { IUser } from "../../../../interfaces";
+import { UserContext } from "../../../../context";
 
 export const TabAdminUsers = () => {
   const { users, getUsers, clearUsers } = useContext(UserContext);
-  //const { species, getSpecies } = useContext(SpeciesContext);
   const [listUsers, setListUsers] = useState<IUser[]>([]);
-  //const [listSpecies, setListSpecies] = useState<string | null>("");
-  //const [breedId, setBreedId] = useState<number>(0);
-  const [isLoading, setIsLoading] = useState(false);
 
   const router = useRouter();
 
-  const {
-    register,
-    handleSubmit,
-    setValue,
-    formState: { errors },
-  } = useForm<FormData>();
-
   useEffect(() => {
     getUsers();
-    //getBreeds();
-    //getSpecies();
   }, []);
 
   useEffect(() => {
@@ -57,58 +25,6 @@ export const TabAdminUsers = () => {
       setListUsers(users as unknown as IUser[]);
     }
   }, [users]);
-
-  // const handleAddBreed = async ({ name, species }: FormData) => {
-  //   if (breedId === 0) {
-  //     setIsLoading(true);
-  //     const { isComplete } = await addBreed(name, species);
-  //     if (isComplete) {
-  //       setIsLoading(false);
-  //       setBreedId(0);
-  //       setValue("name", "");
-  //       setValue("species", "");
-  //       setListSpecies("");
-  //     }
-  //   } else {
-  //     setIsLoading(true);
-  //     const { isComplete } = await updateBreed(breedId, name, species);
-  //     if (isComplete) {
-  //       setIsLoading(false);
-  //       setBreedId(0);
-  //       setValue("name", "");
-  //       setValue("species", "");
-  //       setListSpecies("");
-  //     }
-  //   }
-  // };
-
-  // const handleUpdateBreed = (breed_id: number, breed_name: string, species_id: number) => () => {
-  //   if (breed_id !== 0) {
-  //     setBreedId(breed_id);
-  //     setValue("name", breed_name);
-  //     setValue("species", species_id);
-  //     setListSpecies(species_id.toString());
-  //   }
-  // };
-
-  // const handleDeleteBreed = (breed_id: number) => async () => {
-  //   setIsLoading(true);
-  //   const { isComplete } = await deleteBreed(breed_id);
-  //   if (isComplete) {
-  //     setIsLoading(false);
-  //     setBreedId(0);
-  //     setValue("name", "");
-  //     setValue("species", "");
-  //     setListSpecies("");
-  //   }
-  // };
-
-  // const handleClearForm = () => {
-  //   setBreedId(0);
-  //   setValue("name", "");
-  //   setValue("species", "");
-  //   setListSpecies("");
-  // };
 
   const navigateTo = (url: string) => {
     router.push(url);
@@ -123,8 +39,6 @@ export const TabAdminUsers = () => {
     phone: users.phone,
     role: users.role[0].name,
   }));
-
-  const ALPHA_NUMERIC_DASH_REGEX = /^[a-zA-Z]+$/;
 
   const columns: GridColDef[] = [
     {

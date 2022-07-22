@@ -6,7 +6,7 @@ import { styled } from "@mui/material/styles";
 import { TabList, TabPanel, TabContext } from "@mui/lab";
 import { AddCircleOutline, OnDeviceTraining, Pets, Vaccines } from "@mui/icons-material";
 
-import { MainLayout } from "../../../components";
+import { MainLayout, TabAdminAddDevice, TabAdminDevices } from "../../../components";
 
 const Tab = styled(MuiTab)<TabProps>(({ theme }) => ({
   [theme.breakpoints.down("md")]: {
@@ -41,7 +41,7 @@ const AdminDevicesPage = () => {
             label={
               <Box sx={{ display: "flex", alignItems: "center" }}>
                 <OnDeviceTraining />
-                <TabName>Establecimientos</TabName>
+                <TabName>Dispositivos</TabName>
               </Box>
             }
           />
@@ -56,10 +56,10 @@ const AdminDevicesPage = () => {
           />
         </TabList>
         <TabPanel sx={{ p: 0 }} value="devices">
-          {/* <TabAdminUsers /> */}
+         <TabAdminDevices/>
         </TabPanel>
         <TabPanel sx={{ p: 0 }} value="add-devices">
-          {/* <TabAdminAddUser /> */}
+          <TabAdminAddDevice/>
         </TabPanel>
       </TabContext>
     </Card>

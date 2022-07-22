@@ -3,6 +3,8 @@ import { IPet, IPets } from "../../interfaces";
 
 type PetActionType =
   | { type: "[Pet] - getPet"; payload: IPet }
+  | { type: "[Pet] - getPetsByUser"; payload: IPets }
+  | { type: "[Pet] - getPets"; payload: IPets }
   | { type: "[Pet] - getPetsEstablishment"; payload: IPets }
   | { type: "[Pet] - getPetsMedicine"; payload: IPets }
   | { type: "[Pet] - getPetsProfessional"; payload: IPets }
@@ -16,6 +18,18 @@ export const petReducer = (state: PetState, action: PetActionType): PetState => 
         ...state,
         isLoaded: true,
         pet: action.payload,
+      };
+    case "[Pet] - getPetsByUser":
+      return {
+        ...state,
+        isLoaded: true,
+        pets: action.payload,
+      };
+    case "[Pet] - getPets":
+      return {
+        ...state,
+        isLoaded: true,
+        pets: action.payload,
       };
     case "[Pet] - getPetsEstablishment":
       return {

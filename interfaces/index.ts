@@ -11,3 +11,4 @@ export * from "./establishment";
 export * from "./token"
 export * from "./notification";
 export * from './fullName'
+export * from './device'

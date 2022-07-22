@@ -5,19 +5,21 @@ import Swal from "sweetalert2";
 
 import { petMonitoringApi } from "../../api";
 import { swalMessage } from "../../components";
-import { IEstablishment, IFullNames } from "../../interfaces";
+import { IEstablishment, IEstablishments, IFullNames } from "../../interfaces";
 import { AuthContext } from "../auth";
 import { PetContext } from "../pet";
 import { EstablishmentContext, establishmentReducer } from "./";
 
 export interface EstablishmentState {
   establishment?: IEstablishment;
+  establishments?: IEstablishments;
   establishmentsFullName?: IFullNames;
   isLoaded: boolean;
 }
 
 const ESTABLISHMENT_INITIAL_STATE: EstablishmentState = {
   establishment: undefined,
+  establishments: undefined,
   establishmentsFullName: undefined,
   isLoaded: false,
 };
@@ -47,6 +49,29 @@ export const EstablishmentProvider: FC<Props> = ({ children }) => {
         dispatch({
           type: "[Establishment] - getEstablishment",
           payload: establishment.data,
+        });
+      } else {
+        Cookies.remove("token");
+      }
+    } catch (error) {
+      Cookies.remove("token");
+    }
+  };
+
+  const getEstablishments = async () => {
+    if (!Cookies.get("token")) {
+      return;
+    }
+    try {
+      const token = Cookies.get("token") || "";
+      const { data } = await petMonitoringApi.get(`/auth/validate-token/${token}`);
+      if (data == true) {
+        const establishments = await petMonitoringApi.get(`/establishment`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        dispatch({
+          type: "[Establishment] - getEstablishments",
+          payload: establishments.data,
         });
       } else {
         Cookies.remove("token");
@@ -219,6 +244,12 @@ export const EstablishmentProvider: FC<Props> = ({ children }) => {
     });
   };
 
+  const clearEstablishments = () => {
+    dispatch({
+      type: "[Establishment] - clearEstablishments",
+    });
+  }
+
   const sendEmailEstablishment = async (
     to_email: string,
     from_email: string,
@@ -257,12 +288,14 @@ export const EstablishmentProvider: FC<Props> = ({ children }) => {
       value={{
         ...state,
         getEstablishment,
+        getEstablishments,
         addEstablishment,
         updateEstablishment,
         deleteEstablishment,
         getEstablishmentsFullName,
         clearEstablishmentsFullName,
         clearEstablishment,
+        clearEstablishments,
         sendEmailEstablishment,
       }}
     >

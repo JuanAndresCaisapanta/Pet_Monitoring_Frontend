@@ -5,7 +5,7 @@ import { TabList, TabPanel, TabContext } from "@mui/lab";
 import MuiTab, { TabProps } from "@mui/material/Tab";
 import { Ballot, Hail, OnDeviceTraining, Store, Vaccines } from "@mui/icons-material";
 
-import { MainLayout } from "../../../../components";
+import { MainLayout, TabAdminDeviceDetails } from "../../../../components";
 
 const Tab = styled(MuiTab)<TabProps>(({ theme }: any) => ({
   [theme.breakpoints.down("md")]: {
@@ -23,7 +23,7 @@ const TabName = styled("span")(({ theme }) => ({
 }));
 
 const AdminDevicePage = () => {
-  const [value, setValue] = useState<string>("device");
+  const [value, setValue] = useState<string>("detail");
 
   const handleChange = (event: SyntheticEvent, newValue: string) => {
     setValue(newValue);
@@ -36,15 +36,6 @@ const AdminDevicePage = () => {
           aria-label="medicine-settings tabs"
           sx={{ borderBottom: (theme) => `1px solid ${theme.palette.divider}` }}
         >
-          <Tab
-            value="device"
-            label={
-              <Box sx={{ display: "flex", alignItems: "center" }}>
-                <OnDeviceTraining />
-                <TabName>dispositivo</TabName>
-              </Box>
-            }
-          />
            <Tab
             value="detail"
             label={
@@ -55,11 +46,8 @@ const AdminDevicePage = () => {
             }
           />
         </TabList>
-        <TabPanel sx={{ p: 0 }} value="device">
-          {/* <TabAdminUpdateUser /> */}
-        </TabPanel>
         <TabPanel sx={{ p: 0 }} value="detail">
-          {/* <TabAdminUpdateUser /> */}
+          <TabAdminDeviceDetails/>
         </TabPanel>
       </TabContext>
     </Card>

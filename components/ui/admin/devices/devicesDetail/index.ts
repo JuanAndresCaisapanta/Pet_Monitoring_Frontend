@@ -1,1 +1,1 @@
-export * from './TabAdminDevicesDetail'
+export * from './TabAdminDeviceDetails'

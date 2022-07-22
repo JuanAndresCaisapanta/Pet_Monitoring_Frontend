@@ -1,8 +1,8 @@
 import { createContext } from "react";
-import { IUser } from "../../interfaces";
+import { IUser, IUsers } from "../../interfaces";
 
 interface ContextProps {
-  users?: IUser;
+  users?: IUsers;
   user?: IUser;
 
   getUsers: () => void;

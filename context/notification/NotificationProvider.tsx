@@ -32,22 +32,21 @@ export const NotificationProvider: FC<Props> = ({ children }) => {
       return { isComplete: true };
     }
     const token = Cookies.get("token") || "";
-          return await petMonitoringApi
-            .get(`/notification/user/${user_id}`, {
-              headers: { Authorization: `Bearer ${token}` },
-            })
-            .then((notifications) => {
-              dispatch({
-                type: "[Notification] - getNotifications",
-                payload: notifications.data,
-              });
-              return { isComplete: true };
-            })
-            .catch(() => {
-              Cookies.remove("token");
-              return { isComplete: true };
-            });
-     
+    return await petMonitoringApi
+      .get(`/notification/user/${user_id}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      .then((notifications) => {
+        dispatch({
+          type: "[Notification] - getNotifications",
+          payload: notifications.data,
+        });
+        return { isComplete: true };
+      })
+      .catch(() => {
+        Cookies.remove("token");
+        return { isComplete: true };
+      });
   };
 
   const deleteNotification = async (

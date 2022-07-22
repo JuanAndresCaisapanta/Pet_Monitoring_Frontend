@@ -52,8 +52,54 @@ export const PetProvider: FC<Props> = ({ children }) => {
     }
   };
 
+  const getPetsByUser = async (user_id: number) => {
+    if (!Cookies.get("token")) {
+      return;
+    }
+    if (user_id === undefined) {
+      return;
+    }
+    try {
+      const token = Cookies.get("token") || "";
+      const { data } = await petMonitoringApi.get(`/auth/validate-token/${token}`);
+      if (data == true) {
+        const pets = await petMonitoringApi.get(`/pet/users/${user_id}`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        dispatch({ type: "[Pet] - getPetsByUser", payload: pets.data });
+      } else {
+        Cookies.remove("token");
+      }
+    } catch (error) {
+      Cookies.remove("token");
+    }
+  };
+
   const petChange = () => {
     dispatch({ type: "[Pet] - petChange" });
+  };
+
+  const getPets = async () => {
+    if (!Cookies.get("token")) {
+      return;
+    }
+    try {
+      const token = Cookies.get("token") || "";
+      const { data } = await petMonitoringApi.get(`/auth/validate-token/${token}`);
+      if (data == true) {
+        const pets = await petMonitoringApi.get(`/pet`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        dispatch({
+          type: "[Pet] - getPets",
+          payload: pets.data,
+        });
+      } else {
+        Cookies.remove("token");
+      }
+    } catch (error) {
+      Cookies.remove("token");
+    }
   };
 
   const addPet = async (
@@ -301,6 +347,8 @@ export const PetProvider: FC<Props> = ({ children }) => {
         addPet,
         updatePet,
         getPet,
+        getPetsByUser,
+        getPets,
         petChange,
         deletePet,
         getPetsEstablishment,

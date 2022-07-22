@@ -1,11 +1,13 @@
-import { IFullNames, IMedicine } from "../../interfaces";
+import { IFullNames, IMedicine, IMedicines } from "../../interfaces";
 import { MedicineState } from "./";
 
 type MedicineActionType =
   | { type: "[Medicine] - getMedicine"; payload: IMedicine }
   | { type: "[Medicine] - getMedicinesFullName"; payload: IFullNames }
+  | { type: "[Medicine] - getMedicines"; payload: IMedicines }
   | { type: "[Medicine] - clearMedicinesFullName" }
-  | { type: "[Medicine] - clearMedicine" };
+  | { type: "[Medicine] - clearMedicine" }
+  | { type: "[Medicine] - clearMedicines" };
 
 export const medicineReducer = (state: MedicineState, action: MedicineActionType): MedicineState => {
   switch (action.type) {
@@ -15,13 +17,23 @@ export const medicineReducer = (state: MedicineState, action: MedicineActionType
         medicine: action.payload,
         isLoaded: true,
       };
+    case "[Medicine] - getMedicines":
+      return {
+        ...state,
+        medicines: action.payload,
+      };
     case "[Medicine] - clearMedicine":
       return {
         ...state,
         medicine: undefined,
         isLoaded: false,
       };
-      case "[Medicine] - getMedicinesFullName":
+      case "[Medicine] - clearMedicines":
+      return {
+        ...state,
+        medicines: undefined,
+      };
+    case "[Medicine] - getMedicinesFullName":
       return {
         ...state,
         medicinesFullName: action.payload,

@@ -8,19 +8,69 @@ import { DeviceContext, deviceReducer } from "./";
 import sigfoxCallbackApi from "../../api/sigfoxCallbackApi";
 import { swalMessage } from "../../components";
 import Swal from "sweetalert2";
+import { IDeviceDetails, IDevices } from "../../interfaces";
 
-export interface DeviceState {}
+export interface DeviceState {
+  devices?: IDevices;
+  deviceDetails?: IDeviceDetails;
+}
 
-const DEVICE_INITIAL_STATE: DeviceState = {};
+const DEVICE_INITIAL_STATE: DeviceState = {
+  devices: undefined,
+  deviceDetails: undefined,
+};
 
 interface Props {
   children: ReactNode;
 }
 export const DeviceProvider: FC<Props> = ({ children }) => {
   const [state, dispatch] = useReducer(deviceReducer, DEVICE_INITIAL_STATE);
-  const { user, checkToken } = useContext(AuthContext);
+  const { checkToken } = useContext(AuthContext);
 
-  const addDevice = async (code: string, pet: number): Promise<{ isComplete: boolean }> => {
+  const getDevices = async () => {
+    if (!Cookies.get("token")) {
+      return;
+    }
+    try {
+      const token = Cookies.get("token") || "";
+      const { data } = await petMonitoringApi.get(`/auth/validate-token/${token}`);
+      if (data == true) {
+        const { data } = await petMonitoringApi.get(`/device`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        dispatch({ type: "[Device] - getDevices", payload: data });
+      } else {
+        Cookies.remove("token");
+      }
+    } catch (error) {
+      Cookies.remove("token");
+    }
+  };
+
+  const getDeviceDetailsByDevice = async (device_id: number) => {
+    if (!Cookies.get("token")) {
+      return;
+    }
+    if (device_id === undefined) {
+      return;
+    }
+    try {
+      const token = Cookies.get("token") || "";
+      const { data } = await petMonitoringApi.get(`/auth/validate-token/${token}`);
+      if (data == true) {
+        const deviceDetails = await petMonitoringApi.get(`/device-detail/device/${device_id}`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        dispatch({ type: "[Device] - getDeviceDetailsByDevice", payload: deviceDetails.data });
+      } else {
+        Cookies.remove("token");
+      }
+    } catch (error) {
+      Cookies.remove("token");
+    }
+  };
+
+  const addDevice = async (code: string, user: number, pet: number): Promise<{ isComplete: boolean }> => {
     const token = Cookies.get("token") || "";
     let id: any;
     return await petMonitoringApi
@@ -28,7 +78,7 @@ export const DeviceProvider: FC<Props> = ({ children }) => {
         `/device`,
         {
           code,
-          users: { id: user?.id },
+          users: { id: user },
           pet: { id: pet },
         },
         {
@@ -54,7 +104,7 @@ export const DeviceProvider: FC<Props> = ({ children }) => {
               },
               sendSni: false,
               bodyTemplate:
-                '{\n"latitude":{customData#lat},\n"longitude":{customData#long},\n"temperature":{customData#temp},\n"battery":{customData#bat},\n"masterData":{"id":' +
+                '{\n"latitude":{customData#lat},\n"longitude":{customData#long},\n"temperature":{customData#temp},\n"battery":{customData#bat},\n"device":{"id":' +
                 device.data +
                 "}\n}",
               contentType: "application/json",
@@ -100,7 +150,7 @@ export const DeviceProvider: FC<Props> = ({ children }) => {
     return Swal.fire({
       background: "#F4F5FA",
       title: "¿Está seguro de eliminar el dispositivo?",
-      text: "No podrá revertir esta acción",
+      text: "Se borraran los datos asociados al dispositivo - No podrá revertir esta acción",
       icon: "warning",
       showCancelButton: true,
       backdrop: false,
@@ -132,6 +182,7 @@ export const DeviceProvider: FC<Props> = ({ children }) => {
                         .delete(`/device-types/${code}/callbacks/${callback}`)
                         .then(async () => {
                           swalMessage("Success", "Dispositivo eliminado", "success");
+                          getDevices();
                           checkToken();
                         })
                         .catch(async () => {
@@ -155,12 +206,19 @@ export const DeviceProvider: FC<Props> = ({ children }) => {
       });
   };
 
+  const clearDevices = () => {
+    dispatch({ type: "[Device] - clearDevices" });
+  };
+
   return (
     <DeviceContext.Provider
       value={{
         ...state,
+        getDevices,
+        getDeviceDetailsByDevice,
         addDevice,
         deleteDevice,
+        clearDevices,
       }}
     >
       {children}

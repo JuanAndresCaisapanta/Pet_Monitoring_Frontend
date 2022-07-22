@@ -6,7 +6,7 @@ import { styled } from "@mui/material/styles";
 import { TabList, TabPanel, TabContext } from "@mui/lab";
 import { AddCircleOutline, Pets } from "@mui/icons-material";
 
-import { MainLayout } from "../../../components";
+import { MainLayout, TabAdminAddPet, TabAdminPets } from "../../../components";
 
 const Tab = styled(MuiTab)<TabProps>(({ theme }) => ({
   [theme.breakpoints.down("md")]: {
@@ -41,7 +41,7 @@ const AdminPetsPage = () => {
             label={
               <Box sx={{ display: "flex", alignItems: "center" }}>
                 <Pets />
-                <TabName>Profesionales</TabName>
+                <TabName>Mascotas</TabName>
               </Box>
             }
           />
@@ -56,10 +56,10 @@ const AdminPetsPage = () => {
           />
         </TabList>
         <TabPanel sx={{ p: 0 }} value="pets">
-          {/* <TabAdminUsers /> */}
+         <TabAdminPets/>
         </TabPanel>
         <TabPanel sx={{ p: 0 }} value="add-pets">
-          {/* <TabAdminAddUser /> */}
+          <TabAdminAddPet />
         </TabPanel>
       </TabContext>
     </Card>

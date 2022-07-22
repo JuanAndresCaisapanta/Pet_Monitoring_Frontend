@@ -1,12 +1,15 @@
 import { createContext } from "react";
-import { IFullNames, IMedicine } from "../../interfaces";
+import { IFullNames, IMedicine, IMedicines } from "../../interfaces";
 
 interface ContextProps {
   medicine?: IMedicine;
+  medicines?: IMedicines;
   medicinesFullName?: IFullNames;
   isLoaded: boolean;
 
   getMedicine: (medicine_id: number) => void;
+
+  getMedicines: () => void;
 
   addMedicine: (
     name: string,
@@ -40,6 +43,8 @@ interface ContextProps {
   deleteMedicine: (pet_id: number, medicine_id: number) => Promise<{ isComplete: boolean }>;
 
   clearMedicine: () => void;
+
+  clearMedicines: () => void;
 
   getMedicinesFullName: (user_id?: number) => Promise<{ isComplete: boolean }>;
 

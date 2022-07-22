@@ -1,7 +1,7 @@
-import { IUser } from "../../interfaces";
+import { IUser, IUsers } from "../../interfaces";
 import { UserState } from "./";
 
-type UserActionType = |{ type: "[User] - getUsers"; payload: IUser  }
+type UserActionType = |{ type: "[User] - getUsers"; payload: IUsers  }
 |{ type: "[User] - getUser"; payload: IUser  }
 | { type: "[User] - clearUsers" }
 | { type: "[User] - clearUser" }

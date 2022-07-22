@@ -5,19 +5,21 @@ import Swal from "sweetalert2";
 
 import { ProfessionalContext, professionalReducer } from ".";
 import { petMonitoringApi } from "../../api";
-import { IProfessional, IFullNames } from "../../interfaces";
+import { IProfessional, IFullNames, IProfessionals } from "../../interfaces";
 import { AuthContext } from "../auth";
 import { swalMessage } from "../../components";
 import { PetContext } from "../pet";
 
 export interface ProfessionalState {
   professional?: IProfessional;
+  professionals?: IProfessionals;
   professionalsFullName?: IFullNames;
   isLoaded: boolean;
 }
 
 const PROFESSIONAL_INITIAL_STATE: ProfessionalState = {
   professional: undefined,
+  professionals: undefined,
   professionalsFullName: undefined,
   isLoaded: false,
 };
@@ -47,6 +49,29 @@ export const ProfessionalProvider: FC<Props> = ({ children }) => {
         dispatch({
           type: "[Professional] - getProfessional",
           payload: professional.data,
+        });
+      } else {
+        Cookies.remove("token");
+      }
+    } catch (error) {
+      Cookies.remove("token");
+    }
+  };
+
+  const getProfessionals = async () => {
+    if (!Cookies.get("token")) {
+      return;
+    }
+    try {
+      const token = Cookies.get("token") || "";
+      const { data } = await petMonitoringApi.get(`/auth/validate-token/${token}`);
+      if (data == true) {
+        const professionals = await petMonitoringApi.get(`/professional`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        dispatch({
+          type: "[Professional] - getProfessionals",
+          payload: professionals.data,
         });
       } else {
         Cookies.remove("token");
@@ -177,6 +202,12 @@ export const ProfessionalProvider: FC<Props> = ({ children }) => {
     });
   };
 
+  const clearProfessionals = () => {
+    dispatch({
+      type: "[Professional] - clearProfessionals",
+    });
+  }
+
   const getProfessionalsFullName = async (
     user_id?: number,
   ): Promise<{ isComplete: boolean }> => {
@@ -253,12 +284,14 @@ export const ProfessionalProvider: FC<Props> = ({ children }) => {
       value={{
         ...state,
         getProfessional,
+        getProfessionals,
         addProfessional,
         updateProfessional,
         deleteProfessional,
         clearProfessional,
         sendEmailProfessional,
         getProfessionalsFullName,
+        clearProfessionals,
         clearProfessionalsFullName
       }}
     >

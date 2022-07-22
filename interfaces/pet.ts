@@ -80,6 +80,10 @@ export interface IPet {
       ];
     },
   ];
+  users: {
+    id: number;
+    email: string;
+  };
 }
 
 export interface IPets extends Array<IPet> {}

@@ -17,5 +17,11 @@ export interface IProfessional {
         name: string;
       };
     };
+    users: {
+      id: number;
+      email: string;
+    };
   };
 }
+
+export interface IProfessionals extends Array<IProfessional> {}
