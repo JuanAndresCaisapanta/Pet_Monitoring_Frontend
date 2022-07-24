@@ -36,7 +36,7 @@ interface ContextProps {
     profession_id: number,
   ) => Promise<{ isComplete: boolean }>;
 
-  deleteProfessional: (pet_id: number, professional_id: number) => Promise<{ isComplete: boolean }>;
+  deleteProfessional: (pet_id?: number, professional_id?: number, router?:any) => Promise<{ isComplete: boolean }>;
 
   clearProfessional: () => void;
 

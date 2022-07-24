@@ -4,7 +4,7 @@ import Image from "next/image";
 import { useRouter } from "next/router";
 
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
-import { DesktopDatePicker, LocalizationProvider } from "@mui/lab";
+import { DesktopDatePicker, LoadingButton, LocalizationProvider } from "@mui/lab";
 import {
   Button,
   Checkbox,
@@ -21,7 +21,7 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { Update } from "@mui/icons-material";
+import { Delete, Update } from "@mui/icons-material";
 import moment from "moment";
 import { useForm } from "react-hook-form";
 import imageCompression from "browser-image-compression";
@@ -61,7 +61,7 @@ export const TabAdminUpdatePet = () => {
 
   const { getSpecies, species, clearSpecies } = useContext(SpeciesContext);
   const { getBreedsBySpecies, breeds, clearBreeds } = useContext(BreedContext);
-  const { updatePet, pet, getPet, petChange } = useContext(PetContext);
+  const { updatePet, pet, getPet, petChange, deletePet } = useContext(PetContext);
   const { users, getUsers, clearUsers } = useContext(UserContext);
 
   const router = useRouter();
@@ -221,6 +221,14 @@ export const TabAdminUpdatePet = () => {
       if (isComplete) {
         setIsLoading(false);
       }
+    }
+  };
+
+  const handleDeletePet = async () => {
+    setIsLoading(true);
+    const { isComplete } = await deletePet(undefined, undefined, undefined, Number(pet_id), router);
+    if (isComplete) {
+      setIsLoading(false);
     }
   };
 
@@ -473,6 +481,21 @@ export const TabAdminUpdatePet = () => {
               </Grid>
             </Grid>
           </>
+        }
+        gridDelete={
+          <Grid item xs={12} md={6} textAlign="right">
+            <LoadingButton
+              variant="outlined"
+              color="secondary"
+              disableElevation
+              onClick={handleDeletePet}
+              startIcon={<Delete />}
+              loading={isLoading}
+              loadingPosition="start"
+            >
+              Eliminar
+            </LoadingButton>
+          </Grid>
         }
       />
     );

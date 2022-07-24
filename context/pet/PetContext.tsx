@@ -49,6 +49,7 @@ interface ContextProps {
     fullName?: string,
     user_id?: number,
     pet_id?: number,
+    router?:any
   ) => Promise<{ isComplete: boolean }>;
 
   getPetsEstablishment: (

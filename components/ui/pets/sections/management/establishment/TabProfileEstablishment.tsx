@@ -20,8 +20,7 @@ type FormData = {
 };
 
 export const TabProfileEstablishment = () => {
-  const router = useRouter();
-  const { id: establishment_id } = router.query;
+ 
   const [listTypeEstablishment, setListTypeEstablishment] = useState(``);
   const [establishmentName, setEstablishmentName] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -30,6 +29,9 @@ export const TabProfileEstablishment = () => {
 
   const { establishment, getEstablishment, clearEstablishment, updateEstablishment } =
     useContext(EstablishmentContext);
+
+    const router = useRouter();
+    const { id: establishment_id } = router.query;
 
   const {
     register,

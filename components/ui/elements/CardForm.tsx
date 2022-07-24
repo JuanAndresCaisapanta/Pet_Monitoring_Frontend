@@ -30,7 +30,6 @@ export const CardForm: FC<Props> = ({
   leftContent,
   rightContent,
   gridDelete
-
 }) => {
   return (
     <Card>

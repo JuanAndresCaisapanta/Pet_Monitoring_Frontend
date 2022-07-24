@@ -33,7 +33,7 @@ interface ContextProps {
     establishmentType_id: number,
   ) => Promise<{ isComplete: boolean }>;
 
-  deleteEstablishment: (pet_id: number, establishment_id: number) => Promise<{ isComplete: boolean }>;
+  deleteEstablishment: (pet_id?: number, establishment_id?: number, router?:any) => Promise<{ isComplete: boolean }>;
 
   getEstablishmentsFullName: (
     user_id?: number,

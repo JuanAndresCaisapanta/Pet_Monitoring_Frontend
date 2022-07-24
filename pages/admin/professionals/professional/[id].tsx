@@ -5,7 +5,7 @@ import { TabList, TabPanel, TabContext } from "@mui/lab";
 import MuiTab, { TabProps } from "@mui/material/Tab";
 import { Hail } from "@mui/icons-material";
 
-import { MainLayout } from "../../../../components";
+import { MainLayout, TabAdminUpdateProfessional } from "../../../../components";
 
 const Tab = styled(MuiTab)<TabProps>(({ theme }: any) => ({
   [theme.breakpoints.down("md")]: {
@@ -47,7 +47,7 @@ const AdminProfessionalPage = () => {
           />
         </TabList>
         <TabPanel sx={{ p: 0 }} value="professional">
-          {/* <TabAdminUpdateUser /> */}
+         <TabAdminUpdateProfessional/>
         </TabPanel>
       </TabContext>
     </Card>

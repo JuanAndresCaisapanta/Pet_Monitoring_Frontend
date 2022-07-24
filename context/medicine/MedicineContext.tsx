@@ -27,7 +27,7 @@ interface ContextProps {
   ) => Promise<{ isComplete: boolean }>;
 
   updateMedicine: (
-    medicine_id: any,
+    medicine_id: number,
     name: string,
     image: any,
     manufacturer: string,
@@ -40,7 +40,7 @@ interface ContextProps {
     medicineType_id: number,
   ) => Promise<{ isComplete: boolean }>;
 
-  deleteMedicine: (pet_id: number, medicine_id: number) => Promise<{ isComplete: boolean }>;
+  deleteMedicine: (pet_id?: number, medicine_id?: number, router?:any) => Promise<{ isComplete: boolean }>;
 
   clearMedicine: () => void;
 

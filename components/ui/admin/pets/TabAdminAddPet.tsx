@@ -54,7 +54,7 @@ export const TabAdminAddPet = () => {
   const [listUsers, setListUsers] = useState<string>("");
   const [isLoading, setIsLoading] = useState(false);
   const [checkSterilization, setCheckSterilization] = useState(false);
-
+  const [isLoadingSpecies, setIsLoadingSpecies] = useState(false);
   const { getSpecies, species, clearSpecies } = useContext(SpeciesContext);
   const { getBreedsBySpecies, breeds, clearBreeds } = useContext(BreedContext);
   const { users, getUsers } = useContext(UserContext);
@@ -67,6 +67,12 @@ export const TabAdminAddPet = () => {
       clearSpecies();
     };
   }, []);
+
+  useEffect(() => {
+    if (breeds) {
+      setIsLoadingSpecies(false);
+    }
+  }, [breeds]);
 
   const router = useRouter();
 
@@ -405,6 +411,7 @@ export const TabAdminAddPet = () => {
                 </FormControl>
               </Grid>
               <Grid item xs={12} sm={6}>
+                {breeds ? (
                   <SelectFormId
                     label="Raza"
                     name="breed"
@@ -418,6 +425,19 @@ export const TabAdminAddPet = () => {
                     error={!!errors.breed}
                     helperText={errors.breed?.message}
                   />
+                ) : (
+                  <FormControl fullWidth>
+                    <InputLabel id="demo-simple-select-label">
+                      {!isLoadingSpecies ? "Seleccione una especie para ver sus razas" : "Cargando..."}
+                    </InputLabel>
+                    <Select
+                      disabled
+                      labelId="demo-simple-select-label"
+                      id="demo-simple-select"
+                      value={""}
+                    ></Select>
+                  </FormControl>
+                )}
               </Grid>
             </Grid>
           </>

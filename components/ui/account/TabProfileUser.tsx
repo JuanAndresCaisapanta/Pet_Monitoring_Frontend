@@ -88,12 +88,12 @@ export const TabProfileUser = () => {
     };
     if (image[0] != null) {
       const compressed_image = await imageCompression(image[0], options);
-      const { isComplete } = await updateUser(name, last_name, email, address, phone, compressed_image);
+      const { isComplete } = await updateUser(user?.id!, name, last_name, email, address, phone, compressed_image);
       if (isComplete) {
         setIsLoading(false);
       }
     } else {
-      const { isComplete } = await updateUser(name, last_name, email, address, phone, image[0]);
+      const { isComplete } = await updateUser(user?.id!, name, last_name, email, address, phone, image[0]);
       if (isComplete) {
         setIsLoading(false);
       }

@@ -132,7 +132,7 @@ export const MedicineProvider: FC<Props> = ({ children }) => {
   };
 
   const updateMedicine = async (
-    medicine_id: any,
+    medicine_id: number,
     name: string,
     image: any,
     manufacturer: string,
@@ -179,7 +179,7 @@ export const MedicineProvider: FC<Props> = ({ children }) => {
       });
   };
 
-  const deleteMedicine = async (pet_id: number, medicine_id: number): Promise<{ isComplete: boolean }> => {
+  const deleteMedicine = async (pet_id?: number, medicine_id?: number, router?:any): Promise<{ isComplete: boolean }> => {
     const token = Cookies.get("token") || "";
     return Swal.fire({
       background: "#F4F5FA",
@@ -200,7 +200,8 @@ export const MedicineProvider: FC<Props> = ({ children }) => {
             })
             .then(() => {
               checkToken();
-              getPet(pet_id);
+              getPet(pet_id!);
+              router.push("/admin/medicines");
               swalMessage("Listo", "Medicina Eliminada", "success");
             })
             .catch(() => {

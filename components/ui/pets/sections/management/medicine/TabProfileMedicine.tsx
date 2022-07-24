@@ -134,7 +134,7 @@ export const TabProfileMedicine = () => {
     production_date,
     expiration_date,
     application_date,
-    medicineType: typeMedicine,
+    medicineType,
   }: FormData) => {
     setIsLoading(true);
     const options = {
@@ -145,7 +145,7 @@ export const TabProfileMedicine = () => {
     if (image[0] != null) {
       const compressed_image = await imageCompression(image[0], options);
       const { isComplete } = await updateMedicine(
-        medicine_id,
+        Number(medicine_id),
         name,
         compressed_image,
         manufacturer,
@@ -155,14 +155,14 @@ export const TabProfileMedicine = () => {
         moment(production_date!, "DD/MM/YYYY").format("MM/DD/YYYY"),
         moment(expiration_date!, "DD/MM/YYYY").format("MM/DD/YYYY"),
         moment(application_date!, "DD/MM/YYYY").format("MM/DD/YYYY"),
-        typeMedicine,
+        medicineType,
       );
       if (isComplete) {
         setIsLoading(false);
       }
     } else {
       const { isComplete } = await updateMedicine(
-        medicine_id,
+        Number(medicine_id),
         name,
         image[0],
         manufacturer,
@@ -172,9 +172,8 @@ export const TabProfileMedicine = () => {
         moment(production_date!, "DD/MM/YYYY").format("MM/DD/YYYY"),
         moment(expiration_date!, "DD/MM/YYYY").format("MM/DD/YYYY"),
         moment(application_date!, "DD/MM/YYYY").format("MM/DD/YYYY"),
-        typeMedicine,
+        medicineType,
       );
-      console.log(formatDate(new Date(production_date!)));
       if (isComplete) {
         setIsLoading(false);
       }
@@ -250,8 +249,8 @@ export const TabProfileMedicine = () => {
                     minLength: { value: 2, message: "Mínimo 2 caracteres" },
                   })}
                   disabled={isLoading}
-                  error={!!errors.name}
-                  helperText={errors.name?.message}
+                  error={!!errors.manufacturer}
+                  helperText={errors.manufacturer?.message}
                 />
               </Grid>
             </Grid>
@@ -282,8 +281,8 @@ export const TabProfileMedicine = () => {
                     }
                   }}
                   disabled={isLoading}
-                  error={!!errors.name}
-                  helperText={errors.name?.message}
+                  error={!!errors.batch}
+                  helperText={errors.batch?.message}
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
@@ -297,14 +296,14 @@ export const TabProfileMedicine = () => {
                     minLength: { value: 2, message: "Mínimo 2 caracteres" },
                   })}
                   disabled={isLoading}
-                  error={!!errors.name}
-                  helperText={errors.name?.message}
+                  error={!!errors.applicator}
+                  helperText={errors.applicator?.message}
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
                 <SelectFormId
                   label="Tipo"
-                  name="typeMedicine"
+                  name="medicineType"
                   value={listMedicineType}
                   onChange={(event: SelectChangeEvent) => setListMedicineType(event.target.value)}
                   object={medicineType}
@@ -405,8 +404,8 @@ export const TabProfileMedicine = () => {
                     required: "Este campo es requerido",
                     minLength: { value: 2, message: "Mínimo 2 caracteres" },
                   })}
-                  error={!!errors.name}
-                  helperText={errors.name?.message}
+                  error={!!errors.description}
+                  helperText={errors.description?.message}
                 />
               </Grid>
             </Grid>

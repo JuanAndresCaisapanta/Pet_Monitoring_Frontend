@@ -161,7 +161,7 @@ export const ProfessionalProvider: FC<Props> = ({ children }) => {
       });
   };
 
-  const deleteProfessional = async (pet_id: number, professional_id: number): Promise<{ isComplete: boolean }> => {
+  const deleteProfessional = async (pet_id?: number, professional_id?: number, router?:any): Promise<{ isComplete: boolean }> => {
     const token = Cookies.get("token") || "";
     return Swal.fire({
       background: "#F4F5FA",
@@ -182,7 +182,8 @@ export const ProfessionalProvider: FC<Props> = ({ children }) => {
             })
             .then(() => {
               checkToken();
-              getPet(pet_id);
+              getPet(pet_id!);
+              router.push("/admin/professionals");
               swalMessage("Listo", "Profesional Eliminado", "success");
             })
             .catch(() => {

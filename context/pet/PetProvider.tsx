@@ -196,7 +196,7 @@ export const PetProvider: FC<Props> = ({ children }) => {
       });
   };
 
-  const deletePet = async (type_id?: number, fullName?: string, user_id?: number, pet_id?: number) => {
+  const deletePet = async (type_id?: number, fullName?: string, user_id?: number, pet_id?: number, router?:any) => {
     const token = Cookies.get("token") || "";
     return Swal.fire({
       background: "#F4F5FA",
@@ -218,6 +218,7 @@ export const PetProvider: FC<Props> = ({ children }) => {
             .then(() => {
               checkToken();
               getPetsEstablishment(type_id, fullName, user_id);
+              router.push("/admin/pets");
               swalMessage("Listo", "Mascota Eliminada", "success");
             })
             .catch(() => {

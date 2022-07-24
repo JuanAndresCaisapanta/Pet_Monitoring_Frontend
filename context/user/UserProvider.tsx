@@ -153,7 +153,7 @@ export const UserProvider: FC<Props> = ({ children }) => {
       });
   };
 
-  const deleteUser = async (user_id: number, getUsers: any, router: any): Promise<{ isComplete: boolean }> => {
+  const deleteUser = async (user_id: number, getUsers?: any, router?: any): Promise<{ isComplete: boolean }> => {
     const token = Cookies.get("token") || "";
     return Swal.fire({
       background: "#F4F5FA",

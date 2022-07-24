@@ -134,7 +134,7 @@ export const EstablishmentProvider: FC<Props> = ({ children }) => {
     const token = Cookies.get("token") || "";
     return await petMonitoringApi
       .put(
-        `/establishment/${establishmentType_id}`,
+        `/establishment/${establishment_id}`,
         {
           name,
           address,
@@ -162,8 +162,9 @@ export const EstablishmentProvider: FC<Props> = ({ children }) => {
   };
 
   const deleteEstablishment = async (
-    pet_id: number,
-    establishment_id: number,
+    pet_id?: number,
+    establishment_id?: number,
+    router?:any
   ): Promise<{ isComplete: boolean }> => {
     const token = Cookies.get("token") || "";
     return Swal.fire({
@@ -185,7 +186,8 @@ export const EstablishmentProvider: FC<Props> = ({ children }) => {
             })
             .then(() => {
               checkToken();
-              getPet(pet_id);
+              getPet(pet_id!);
+              router.push("/admin/establishments");
               swalMessage("Listo", "Establecimiento Eliminado", "success");
             })
             .catch(() => {
