@@ -97,15 +97,7 @@ export const TabHistoryLocation = () => {
             </Grid>
             {filteredOptions!.length > 0 ? (
               filteredOptions!
-                .sort((a: any, b: any) => {
-                  if (a.name < b.name) {
-                    return -1;
-                  }
-                  if (a.name < b.name) {
-                    return 1;
-                  }
-                  return 0;
-                })
+                .sort().reverse()
                 .map((details: any, i: any) => (
                   <Grid item xs={12} sm={4} key={details.id}>
                     <Typography>Fecha: {details.creation_date}</Typography>

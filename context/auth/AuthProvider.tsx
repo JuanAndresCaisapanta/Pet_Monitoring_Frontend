@@ -86,8 +86,8 @@ export const AuthProvider: FC<Props> = ({ children }) => {
         }
         return { isComplete: true };
       })
-      .catch((error) => {
-        swalMessage("Error", error, "error");
+      .catch(() => {
+        swalMessage("Error","Error al ingresar - verifique la información proporcionada", "error");
         return { isComplete: true };
       });
   };

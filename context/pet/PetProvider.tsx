@@ -218,11 +218,13 @@ export const PetProvider: FC<Props> = ({ children }) => {
             .then(() => {
               checkToken();
               getPetsEstablishment(type_id, fullName, user_id);
+              if(router){
               router.push("/admin/pets");
+              }
               swalMessage("Listo", "Mascota Eliminada", "success");
             })
-            .catch(() => {
-              swalMessage("Error", "No se pudo eliminar la mascota", "error");
+            .catch((error) => {
+              swalMessage("Error", error, "error");
             });
         }
         return { isComplete: true };

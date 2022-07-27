@@ -201,7 +201,9 @@ export const MedicineProvider: FC<Props> = ({ children }) => {
             .then(() => {
               checkToken();
               getPet(pet_id!);
+              if(router){
               router.push("/admin/medicines");
+              }
               swalMessage("Listo", "Medicina Eliminada", "success");
             })
             .catch(() => {

@@ -43,7 +43,7 @@ export const SelectFormId: FC<Props> = ({
         defaultValue={""}
         error={error}
       >
-        {object.length > 0?(
+        {object?.length > 0?(
           object?.sort((a: any, b: any) => {
             if (a.name < b.name) {
               return -1;

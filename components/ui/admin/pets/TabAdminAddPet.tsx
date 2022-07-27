@@ -386,7 +386,7 @@ export const TabAdminAddPet = () => {
               <Grid item xs={12} sm={6}>
                 <FormControl fullWidth>
                   <InputLabel id="demo-simple-select-label" error={!!errors.species}>
-                    Especie
+                    Especie 
                   </InputLabel>
                   <Select
                     labelId="demo-simple-select-label"

@@ -55,7 +55,7 @@ export const TabAddPet = () => {
   const [listBreed, setListBreed] = useState<string>("");
   const [isLoading, setIsLoading] = useState(false);
   const [checkSterilization, setCheckSterilization] = useState(false);
-
+  const [isLoadingSpecies, setIsLoadingSpecies] = useState(false);
   const { getSpecies, species, clearSpecies } = useContext(SpeciesContext);
   const { getBreedsBySpecies, breeds, clearBreeds } = useContext(BreedContext);
   const { addPet } = useContext(PetContext);
@@ -69,7 +69,11 @@ export const TabAddPet = () => {
   }, []);
 
   const router = useRouter();
-
+  useEffect(() => {
+    if (breeds) {
+      setIsLoadingSpecies(false);
+    }
+  }, [breeds]);
   const {
     register,
     handleSubmit,
@@ -385,9 +389,19 @@ export const TabAddPet = () => {
                     error={!!errors.breed}
                     helperText={errors.breed?.message}
                   />
-                ) : (
-                  <></>
-                )}
+                  ) : (
+                    <FormControl fullWidth>
+                      <InputLabel id="demo-simple-select-label">
+                        {!isLoadingSpecies ? "Seleccione una especie para ver sus razas" : "Cargando..."}
+                      </InputLabel>
+                      <Select
+                        disabled
+                        labelId="demo-simple-select-label"
+                        id="demo-simple-select"
+                        value={""}
+                      ></Select>
+                    </FormControl>
+                  )}
               </Grid>
             </Grid>
           </>

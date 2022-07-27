@@ -183,7 +183,9 @@ export const ProfessionalProvider: FC<Props> = ({ children }) => {
             .then(() => {
               checkToken();
               getPet(pet_id!);
+              if(router){
               router.push("/admin/professionals");
+              }
               swalMessage("Listo", "Profesional Eliminado", "success");
             })
             .catch(() => {

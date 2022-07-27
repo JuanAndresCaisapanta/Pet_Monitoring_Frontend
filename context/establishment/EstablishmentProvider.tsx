@@ -187,7 +187,9 @@ export const EstablishmentProvider: FC<Props> = ({ children }) => {
             .then(() => {
               checkToken();
               getPet(pet_id!);
+              if(router){
               router.push("/admin/establishments");
+              }
               swalMessage("Listo", "Establecimiento Eliminado", "success");
             })
             .catch(() => {

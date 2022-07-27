@@ -14,6 +14,7 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
+import CircularProgressMui from "@mui/material/CircularProgress";
 import { CircularInput, CircularProgress, CircularTrack } from "react-circular-input";
 
 import { PetContext } from "../../../../../../context";
@@ -95,15 +96,7 @@ export const TabHistoryTemperature = () => {
             </Grid>
             {filteredOptions!.length > 0 ? (
               filteredOptions!
-                .sort((a: any, b: any) => {
-                  if (a.name < b.name) {
-                    return -1;
-                  }
-                  if (a.name < b.name) {
-                    return 1;
-                  }
-                  return 0;
-                })
+                .sort().reverse()
                 .map((details: any, i: any) => (
                   <Grid item xs={12} sm={4} key={details.id} textAlign="center">
                     <Typography>Fecha: {details.creation_date}</Typography>
@@ -139,7 +132,7 @@ export const TabHistoryTemperature = () => {
         </Grid>
         <Grid item>
           <Typography color={"primary"} sx={{ mt: 1 }}>
-            <CircularProgress color="secondary" />
+            <CircularProgressMui color="secondary" />
           </Typography>
         </Grid>
       </Grid>

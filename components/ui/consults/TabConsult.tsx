@@ -10,6 +10,7 @@ import {
   SelectChangeEvent,
   Typography,
 } from "@mui/material";
+import { useRouter } from "next/router";
 import { useState, useContext, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import {
@@ -52,6 +53,8 @@ export const TabConsult = () => {
     formState: { errors },
   } = useForm<FormData>();
 
+const router = useRouter();
+
   useEffect(() => {
     clearPets();
   }, []);
@@ -82,7 +85,7 @@ export const TabConsult = () => {
       setIsLoading(false);
     }
   };
-
+if(user?.pet.length! > 0){
   return (
     <Card>
       <CardHeader
@@ -238,4 +241,27 @@ export const TabConsult = () => {
       </CardContent>
     </Card>
   );
+}else{
+  return (  <Card>
+    <CardHeader
+      sx={{ paddingTop: "4px", paddingBottom: "4px" }}
+      title={`Consultas sobre las secciones de administración`}
+      titleTypographyProps={{ variant: "body1" }}
+      action={
+        <IconButton aria-label="close" onClick={() => router.back()} style={{ color: "#9E69FD" }}>
+          <NavigateBefore />
+        </IconButton>
+      }
+    />
+    <Divider sx={{ margin: 0 }} />
+    <Grid container direction="column" alignItems={"center"}>
+      <Grid item>
+        <Typography color={"primary"} sx={{ mt: 1 }}>
+          No tiene mascotas registradas.
+        </Typography>
+      </Grid>
+    </Grid>
+  </Card>) 
+}
 };
+
