@@ -13,6 +13,8 @@ import {
   Grid,
   IconButton,
   InputAdornment,
+  Pagination,
+  Stack,
   TextField,
   Typography,
 } from "@mui/material";
@@ -21,8 +23,9 @@ import Map, { Marker } from "react-map-gl";
 import { PetContext } from "../../../../../../context";
 
 export const TabHistoryLocation = () => {
-  const { isLoaded, getPet, pet, petChange } = useContext(PetContext);
+  const {getPet, pet, petChange } = useContext(PetContext);
   const [petName, setPetName] = useState("");
+  const [page, setPage] = useState(1);
   const router = useRouter();
   const { id: pet_id } = router.query;
 
@@ -48,7 +51,6 @@ export const TabHistoryLocation = () => {
     };
   }, [pet_id]);
 
-  const [searchWord, setSearchWord] = useState("");
   const arrayDetails: any = [];
   pet?.device?.length! > 0
     ? pet?.device?.map((device: any) =>
@@ -58,11 +60,15 @@ export const TabHistoryLocation = () => {
       )
     : undefined;
 
-  const filteredOptions = arrayDetails!.filter(
-    (details: any) => details.creation_date?.toLowerCase().includes(searchWord.toLowerCase()) || !searchWord,
-  );
+  const paginate = (array: any, pageSize: any, pageNumber: any) => {
+    return array.slice((pageNumber - 1) * pageSize, pageNumber * pageSize);
+  };
 
-  if (isLoaded) {
+  const handleChangePage = (event: React.ChangeEvent<unknown>, value: number) => {
+    setPage(value);
+  };
+
+  if (pet) {
     return (
       <Card>
         <CardHeader
@@ -80,58 +86,58 @@ export const TabHistoryLocation = () => {
           <Grid container spacing={2} justifyContent={"center"}>
             <Grid container sx={{ mt: 2 }} direction="column" alignItems={"center"}>
               <Grid item>
-                <TextField
-                  size="small"
-                  sx={{ "& .MuiOutlinedInput-root": { borderRadius: 4 } }}
-                  InputProps={{
-                    startAdornment: (
-                      <InputAdornment position="start">
-                        <Search fontSize="small" />
-                      </InputAdornment>
-                    ),
-                  }}
-                  onChange={(e) => setSearchWord(e.target.value)}
-                  placeholder={"Buscar"}
-                />
+                <Stack spacing={2}>
+                  <Pagination
+                    count={Number((arrayDetails!.length / 10).toFixed())}
+                    page={page}
+                    onChange={handleChangePage}
+                  />
+                </Stack>
               </Grid>
             </Grid>
-            {filteredOptions!.length > 0 ? (
-              filteredOptions!
-                .sort().reverse()
-                .map((details: any, i: any) => (
-                  <Grid item xs={12} sm={4} key={details.id}>
-                    <Typography>Fecha: {details.creation_date}</Typography>
-                    <Map
-                      initialViewState={{
-                        longitude: details?.longitude as number,
-                        latitude: details?.latitude as number,
-                        zoom: 16.5,
-                        bearing: 0,
-                        pitch: 0,
-                      }}
-                      style={{ width: "100%", height: 250 }}
-                      mapStyle="mapbox://styles/mapbox/streets-v11"
-                      mapboxAccessToken="pk.eyJ1IjoianVhbmNhaXNhcGFudGEiLCJhIjoiY2wzczQyajB5MW45eDNpb2Vsd3FnemxxcCJ9.Goc9SFssphx808eCRVIBSg"
-                    >
-                      <Marker
-                        longitude={details?.longitude as number}
-                        latitude={details?.latitude as number}
-                        anchor="bottom"
+            {arrayDetails!.length > 0 ? (
+              paginate(
+                arrayDetails!
+                  .sort()
+                  .reverse()
+                  .map((details: any, i: any) => (
+                    <Grid item xs={12} sm={4} key={details.id}>
+                      <Typography>Fecha: {details.creation_date}</Typography>
+                      <Map
+                        key={details.id}
+                        initialViewState={{
+                          longitude: details?.longitude as number,
+                          latitude: details?.latitude as number,
+                          zoom: 16.5,
+                          bearing: 0,
+                          pitch: 0,
+                        }}
+                        style={{ width: "100%", height: 250 }}
+                        mapStyle="mapbox://styles/mapbox/streets-v11"
+                        mapboxAccessToken="pk.eyJ1IjoianVhbmNhaXNhcGFudGEiLCJhIjoiY2wzczQyajB5MW45eDNpb2Vsd3FnemxxcCJ9.Goc9SFssphx808eCRVIBSg"
                       >
-                        <Image
-                          src={`data:image/jpeg;base64,${pet?.image}`}
-                          style={{
-                            borderRadius: "50%",
-                          }}
-                          width="35px"
-                          height="35px"
-                          alt="Mascota"
-                          quality={100}
-                        />
-                      </Marker>
-                    </Map>
-                  </Grid>
-                ))
+                        <Marker
+                          longitude={details?.longitude as number}
+                          latitude={details?.latitude as number}
+                          anchor="bottom"
+                        >
+                          <Image
+                            src={`data:image/jpeg;base64,${pet?.image}`}
+                            style={{
+                              borderRadius: "50%",
+                            }}
+                            width="35px"
+                            height="35px"
+                            alt="Mascota"
+                            quality={100}
+                          />
+                        </Marker>
+                      </Map>
+                    </Grid>
+                  )),
+                10,
+                page,
+              )
             ) : (
               <Grid container direction="column" alignItems={"center"}>
                 <Grid item>

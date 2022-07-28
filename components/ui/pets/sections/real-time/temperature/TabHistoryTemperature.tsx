@@ -11,6 +11,8 @@ import {
   Grid,
   IconButton,
   InputAdornment,
+  Pagination,
+  Stack,
   TextField,
   Typography,
 } from "@mui/material";
@@ -20,9 +22,13 @@ import { CircularInput, CircularProgress, CircularTrack } from "react-circular-i
 import { PetContext } from "../../../../../../context";
 
 export const TabHistoryTemperature = () => {
-  const { getPet, pet, petChange } = useContext(PetContext);
   const [petName, setPetName] = useState("");
+  const [page, setPage] = useState(1);
+
+  const { getPet, pet, petChange } = useContext(PetContext);
+
   const router = useRouter();
+
   const { id: pet_id } = router.query;
 
   useMemo(() => {
@@ -47,7 +53,6 @@ export const TabHistoryTemperature = () => {
     };
   }, [pet_id]);
 
-  const [searchWord, setSearchWord] = useState("");
   const arrayDetails: any = [];
   pet?.device?.length! > 0
     ? pet?.device?.map((device: any) =>
@@ -57,9 +62,13 @@ export const TabHistoryTemperature = () => {
       )
     : undefined;
 
-  const filteredOptions = arrayDetails!.filter(
-    (details: any) => details.creation_date?.toLowerCase().includes(searchWord.toLowerCase()) || !searchWord,
-  );
+  const paginate = (array: any, pageSize: any, pageNumber: any) => {
+    return array.slice((pageNumber - 1) * pageSize, pageNumber * pageSize);
+  };
+
+  const handleChangePage = (event: React.ChangeEvent<unknown>, value: number) => {
+    setPage(value);
+  };
 
   if (pet) {
     return (
@@ -79,36 +88,35 @@ export const TabHistoryTemperature = () => {
           <Grid container spacing={2} justifyContent={"center"}>
             <Grid container sx={{ mt: 2 }} direction="column" alignItems={"center"}>
               <Grid item>
-                <TextField
-                  size="small"
-                  sx={{ "& .MuiOutlinedInput-root": { borderRadius: 4 } }}
-                  InputProps={{
-                    startAdornment: (
-                      <InputAdornment position="start">
-                        <Search fontSize="small" />
-                      </InputAdornment>
-                    ),
-                  }}
-                  onChange={(e) => setSearchWord(e.target.value)}
-                  placeholder={"Buscar"}
-                />
+                <Stack spacing={2}>
+                  <Pagination
+                    count={Number((arrayDetails!.length / 10).toFixed())}
+                    page={page}
+                    onChange={handleChangePage}
+                  />
+                </Stack>
               </Grid>
             </Grid>
-            {filteredOptions!.length > 0 ? (
-              filteredOptions!
-                .sort().reverse()
-                .map((details: any, i: any) => (
-                  <Grid item xs={12} sm={4} key={details.id} textAlign="center">
-                    <Typography>Fecha: {details.creation_date}</Typography>
-                    <CircularInput value={(details?.temperature! * 1) / 50} style={{ marginTop: 10 }}>
-                      <CircularTrack strokeWidth={5} stroke="#9C9FA4" />
-                      <CircularProgress stroke={`hsl(${((details?.temperature! * 1) / 50) * 100}, 100%, 50%)`} />
-                      <text x={100} y={100} textAnchor="middle" dy="0.3em" fontWeight="bold">
-                        {`${details?.temperature!}°`}
-                      </text>
-                    </CircularInput>
-                  </Grid>
-                ))
+            {arrayDetails!.length > 0 ? (
+              paginate(
+                arrayDetails!
+                  .sort()
+                  .reverse()
+                  .map((details: any, i: any) => (
+                    <Grid item xs={12} sm={4} key={details.id} textAlign="center">
+                      <Typography>Fecha: {details.creation_date}</Typography>
+                      <CircularInput value={(details?.temperature! * 1) / 50} style={{ marginTop: 10 }}>
+                        <CircularTrack strokeWidth={5} stroke="#9C9FA4" />
+                        <CircularProgress stroke={`hsl(${((details?.temperature! * 1) / 50) * 100}, 100%, 50%)`} />
+                        <text x={100} y={100} textAnchor="middle" dy="0.3em" fontWeight="bold">
+                          {`${details?.temperature!}°`}
+                        </text>
+                      </CircularInput>
+                    </Grid>
+                  )),
+                10,
+                page,
+              )
             ) : (
               <Grid container direction="column" alignItems={"center"}>
                 <Grid item>

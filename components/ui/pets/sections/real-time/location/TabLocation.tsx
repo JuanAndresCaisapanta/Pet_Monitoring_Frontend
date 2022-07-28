@@ -23,7 +23,6 @@ import { Battery } from "../Battery";
 
 export const TabLocation = () => {
   const { getPet, pet, petChange } = useContext(PetContext);
-  const [battery, setBattery] = useState(0);
   const router = useRouter();
   const { id: pet_id } = router.query;
 
@@ -40,8 +39,6 @@ export const TabLocation = () => {
     const interval = setInterval(() => {
       if (pet_id !== undefined) {
         getPet(Number(pet_id));
-        setBattery(detail?.battery);
-        console.log(detail?.battery);
       }
     }, 1000);
     return () => {
