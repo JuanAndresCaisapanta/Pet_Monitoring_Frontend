@@ -118,7 +118,7 @@ const LoginPage = () => {
             </FormHelperText>
           )}
         </FormControl>
-        <Box
+        {/* <Box
           sx={{
             mb: 2,
             display: "flex",
@@ -130,7 +130,7 @@ const LoginPage = () => {
           <Link passHref href="/">
             <LinkStyled onClick={(e) => e.preventDefault()}>Olvido su contraseña?</LinkStyled>
           </Link>
-        </Box>
+        </Box> */}
         <LoadingButton
           fullWidth
           size="large"
