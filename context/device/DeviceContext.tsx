@@ -9,7 +9,7 @@ interface ContextProps {
 
   getDeviceDetailsByDevice: (device_id: number) => void;
 
-  addDevice: (code: string, user: number, pet: number) => Promise<{ isComplete: boolean }>;
+  addDevice: (code: string, user: number, pet: number, clearForm: ()=>void) => Promise<{ isComplete: boolean }>;
 
   deleteDevice: (device_id: number) => Promise<{ isComplete: boolean }>;
 

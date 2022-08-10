@@ -70,7 +70,7 @@ export const DeviceProvider: FC<Props> = ({ children }) => {
     }
   };
 
-  const addDevice = async (code: string, user: number, pet: number): Promise<{ isComplete: boolean }> => {
+  const addDevice = async (code: string, user: number, pet: number, clearForm: ()=>void): Promise<{ isComplete: boolean }> => {
     const token = Cookies.get("token") || "";
     let id: any;
     return await petMonitoringApi
@@ -121,9 +121,13 @@ export const DeviceProvider: FC<Props> = ({ children }) => {
                       Authorization: `Bearer ${token}`,
                     },
                   },
-                );
-                checkToken();
+                ).then(async (mesage) => {
+                  if (mesage.data) {
+                  checkToken();
+                  clearForm();
                 swalMessage("Success", "Dispositivo agregado", "success");
+                  }
+                });
               }
             })
             .catch(async () => {

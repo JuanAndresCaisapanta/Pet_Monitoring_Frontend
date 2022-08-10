@@ -63,7 +63,7 @@ export const AuthProvider: FC<Props> = ({ children }) => {
       });
   };
 
-  const loginUser = async (email: string, password: string): Promise<{ isComplete: boolean }> => {
+  const login = async (email: string, password: string): Promise<{ isComplete: boolean }> => {
     return await petMonitoringApi
       .post("/auth/login", {
         email,
@@ -72,12 +72,12 @@ export const AuthProvider: FC<Props> = ({ children }) => {
       .then((response) => {
         if (response.data.authorities[0].authority === "Admin") {
           Cookies.set("token", response.data.token);
-        checkToken();
+          checkToken();
           router.replace("/admin", undefined, { shallow: true });
           swalMessage("Bienvenido", "Ingreso realizado con éxito", "success");
         } else if (response.data.authorities[0].authority === "User") {
           Cookies.set("token", response.data.token);
-        checkToken();
+          checkToken();
           router.replace("/users", undefined, { shallow: true });
           swalMessage("Bienvenido", "Ingreso realizado con éxito", "success");
         } else {
@@ -87,12 +87,12 @@ export const AuthProvider: FC<Props> = ({ children }) => {
         return { isComplete: true };
       })
       .catch(() => {
-        swalMessage("Error","Error al ingresar - verifique la información proporcionada", "error");
+        swalMessage("Error", "Error al ingresar - verifique la información proporcionada", "error");
         return { isComplete: true };
       });
   };
 
-  const registerUser = async (
+  const register = async (
     name: string,
     last_name: string,
     email: string,
@@ -124,6 +124,19 @@ export const AuthProvider: FC<Props> = ({ children }) => {
       });
   };
 
+  const forgetPassword = async (email: string): Promise<{ isComplete: boolean }> => {
+    return await petMonitoringApi
+      .get(`/auth/forget-password/${email}`)
+      .then(() => {
+        swalMessage("Listo", "Se ha enviado un correo con su nueva contraseña", "success");
+        return { isComplete: true };
+      })
+      .catch(() => {
+        swalMessage("Error", "Error al enviar el correo - verifique la información proporcionada", "error");
+        return { isComplete: true };
+      });
+  };
+
   const logout = () => {
     router.reload();
     Cookies.remove("token");
@@ -133,8 +146,9 @@ export const AuthProvider: FC<Props> = ({ children }) => {
     <AuthContext.Provider
       value={{
         ...state,
-        loginUser,
-        registerUser,
+        login,
+        register,
+        forgetPassword,
         logout,
         checkToken,
       }}

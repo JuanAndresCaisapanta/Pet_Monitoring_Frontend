@@ -13,35 +13,47 @@ import {
   CardActions,
   CardHeader,
   Divider,
+  FormHelperText,
 } from "@mui/material";
 import { Update } from "@mui/icons-material";
 import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
 import VisibilityOffOutlinedIcon from "@mui/icons-material/VisibilityOffOutlined";
-
+import { useForm } from "react-hook-form";
 import { AuthContext } from "../../../context";
+import { UserContext } from "../../../context/user/UserContext";
+import { LoadingButton } from "@mui/lab";
 
 interface State {
   newPassword: string;
-  currentPassword: string;
   showNewPassword: boolean;
   confirmNewPassword: string;
-  showCurrentPassword: boolean;
   showConfirmNewPassword: boolean;
 }
 
+type FormData = {
+  new_password: string|undefined;
+  confirm_new_password: string|undefined;
+};
+
 export const TabSecurity = () => {
   const { user } = useContext(AuthContext);
-  // ** States
+  const { updatePassword } = useContext(UserContext);
   const [userName, setUserName] = useState("");
   const [userLastName, setUserLastName] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const [values, setValues] = useState<State>({
     newPassword: "",
-    currentPassword: "",
     showNewPassword: false,
     confirmNewPassword: "",
-    showCurrentPassword: false,
     showConfirmNewPassword: false,
   });
+
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    formState: { errors },
+  } = useForm<FormData>();
 
   useEffect(() => {
     if (user?.name) {
@@ -52,21 +64,6 @@ export const TabSecurity = () => {
     }
   }, [user]);
 
-  // Handle Current Password
-  const handleCurrentPasswordChange = (prop: keyof State) => (event: ChangeEvent<HTMLInputElement>) => {
-    setValues({ ...values, [prop]: event.target.value });
-  };
-  const handleClickShowCurrentPassword = () => {
-    setValues({ ...values, showCurrentPassword: !values.showCurrentPassword });
-  };
-  const handleMouseDownCurrentPassword = (event: MouseEvent<HTMLButtonElement>) => {
-    event.preventDefault();
-  };
-
-  // Handle New Password
-  const handleNewPasswordChange = (prop: keyof State) => (event: ChangeEvent<HTMLInputElement>) => {
-    setValues({ ...values, [prop]: event.target.value });
-  };
   const handleClickShowNewPassword = () => {
     setValues({ ...values, showNewPassword: !values.showNewPassword });
   };
@@ -74,10 +71,6 @@ export const TabSecurity = () => {
     event.preventDefault();
   };
 
-  // Handle Confirm New Password
-  const handleConfirmNewPasswordChange = (prop: keyof State) => (event: ChangeEvent<HTMLInputElement>) => {
-    setValues({ ...values, [prop]: event.target.value });
-  };
   const handleClickShowConfirmNewPassword = () => {
     setValues({
       ...values,
@@ -86,6 +79,20 @@ export const TabSecurity = () => {
   };
   const handleMouseDownConfirmNewPassword = (event: MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
+  };
+
+  const handleUpdatePassword = async ({ new_password, confirm_new_password }: FormData) => {
+    setIsLoading(true);
+
+    const { isComplete } = await updatePassword(user?.id!, new_password!, confirm_new_password!,handleClearForm);
+    if (isComplete) {
+      setIsLoading(false);
+    }
+  };
+
+  const handleClearForm = () => {
+    setValue("new_password", undefined);
+    setValue("confirm_new_password", undefined);
   };
 
   return (
@@ -99,7 +106,7 @@ export const TabSecurity = () => {
         noValidate
         autoComplete="off"
         encType="multipart/form-data"
-        //onSubmit={handleSubmit(onUpdateForm)}
+        onSubmit={handleSubmit(handleUpdatePassword)}
       >
         <CardContent>
           <Grid container spacing={2}>
@@ -107,46 +114,17 @@ export const TabSecurity = () => {
               <Grid container spacing={2}>
                 <Grid item xs={12}>
                   <FormControl fullWidth>
-                    <InputLabel htmlFor="account-settings-current-password">Contraseña Actual</InputLabel>
-                    <OutlinedInput
-                      label="Contraseña Actual"
-                      value={values.currentPassword}
-                      id="account-settings-current-password"
-                      type={values.showCurrentPassword ? "text" : "password"}
-                      onChange={handleCurrentPasswordChange("currentPassword")}
-                      endAdornment={
-                        <InputAdornment position="end">
-                          <IconButton
-                            edge="end"
-                            aria-label="toggle password visibility"
-                            onClick={handleClickShowCurrentPassword}
-                            onMouseDown={handleMouseDownCurrentPassword}
-                          >
-                            {values.showCurrentPassword ? (
-                              <VisibilityOutlinedIcon />
-                            ) : (
-                              <VisibilityOffOutlinedIcon />
-                            )}
-                          </IconButton>
-                        </InputAdornment>
-                      }
-                    />
-                  </FormControl>
-                </Grid>
-              </Grid>
-            </Grid>
-
-            <Grid item xs={12} sm={6}>
-              <Grid container spacing={2}>
-                <Grid item xs={12}>
-                  <FormControl fullWidth>
                     <InputLabel htmlFor="account-settings-new-password">Contraseña Nueva</InputLabel>
                     <OutlinedInput
                       label="Contraseña Nueva"
-                      value={values.newPassword}
                       id="account-settings-new-password"
-                      onChange={handleNewPasswordChange("newPassword")}
                       type={values.showNewPassword ? "text" : "password"}
+                      {...register("new_password", {
+                        required: "Este campo es requerido",
+                        minLength: { value: 6, message: "Mínimo 6 caracteres" },
+                      })}
+                      error={!!errors.new_password}
+                      disabled={isLoading}
                       endAdornment={
                         <InputAdornment position="end">
                           <IconButton
@@ -160,9 +138,17 @@ export const TabSecurity = () => {
                         </InputAdornment>
                       }
                     />
+                    {!!errors.confirm_new_password && (
+                      <FormHelperText error id="accountId-error">
+                        {errors.new_password?.message}
+                      </FormHelperText>
+                    )}
                   </FormControl>
                 </Grid>
-
+              </Grid>
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <Grid container spacing={2}>
                 <Grid item xs={12}>
                   <FormControl fullWidth>
                     <InputLabel htmlFor="account-settings-confirm-new-password">
@@ -170,10 +156,14 @@ export const TabSecurity = () => {
                     </InputLabel>
                     <OutlinedInput
                       label="Confirmar Nueva Contraseña"
-                      value={values.confirmNewPassword}
                       id="account-settings-confirm-new-password"
                       type={values.showConfirmNewPassword ? "text" : "password"}
-                      onChange={handleConfirmNewPasswordChange("confirmNewPassword")}
+                      {...register("confirm_new_password", {
+                        required: "Este campo es requerido",
+                        minLength: { value: 6, message: "Mínimo 6 caracteres" },
+                      })}
+                      error={!!errors.confirm_new_password}
+                      disabled={isLoading}
                       endAdornment={
                         <InputAdornment position="end">
                           <IconButton
@@ -191,6 +181,9 @@ export const TabSecurity = () => {
                         </InputAdornment>
                       }
                     />
+                    <FormHelperText error id="accountId-error">
+                      {errors.confirm_new_password?.message}
+                    </FormHelperText>
                   </FormControl>
                 </Grid>
               </Grid>
@@ -201,16 +194,25 @@ export const TabSecurity = () => {
         <CardActions sx={{ padding: "16px" }}>
           <Grid container spacing={2}>
             <Grid item xs={12} md={12}>
-              <Button
-                disableElevation
+            <LoadingButton
                 variant="contained"
+                color="primary"
                 sx={{ marginRight: 2 }}
+                disableElevation
                 type="submit"
                 startIcon={<Update />}
+                loading={isLoading}
+                loadingPosition="start"
               >
                 Actualizar
-              </Button>
-              <Button disableElevation variant="outlined" color="secondary">
+              </LoadingButton>
+              <Button
+                disableElevation
+                variant="outlined"
+                color="secondary"
+                onClick={handleClearForm}
+                disabled={isLoading}
+              >
                 Cancelar
               </Button>
             </Grid>

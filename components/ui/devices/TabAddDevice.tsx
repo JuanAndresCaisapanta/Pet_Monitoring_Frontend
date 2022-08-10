@@ -37,7 +37,7 @@ export const TabAddDevice = () => {
 
   const handleAddDevice = async ({ code, pet }: FormData) => {
     setIsLoading(true);
-    const { isComplete } = await addDevice(code, pet!, user?.id!);
+    const { isComplete } = await addDevice(code,user?.id!, pet!,handleClearForm);
     if (isComplete) {
       setIsLoading(false);
     }

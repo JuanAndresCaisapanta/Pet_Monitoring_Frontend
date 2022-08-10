@@ -59,7 +59,7 @@ const RegisterPage = () => {
     showPassword: false,
   });
 
-  const { registerUser } = useContext(AuthContext);
+  const { register:registerUser } = useContext(AuthContext);
 
   const router = useRouter();
 
@@ -186,7 +186,7 @@ const RegisterPage = () => {
             type={values.showPassword ? "text" : "password"}
             {...register("password", {
               required: "Este campo es requerido",
-              minLength: { value: 3, message: "Mínimo 6 caracteres" },
+              minLength: { value: 6, message: "Mínimo 6 caracteres" },
             })}
             error={!!errors.password}
             disabled={isLoading}

@@ -153,6 +153,42 @@ export const UserProvider: FC<Props> = ({ children }) => {
       });
   };
 
+  const updatePassword = async (
+    user_id: number,
+    new_password: string,
+    confirm_new_password: string,
+    clearForm: () => void,
+  ): Promise<{ isComplete: boolean }> => {
+    const token = Cookies.get("token") || "";
+    if (new_password !== confirm_new_password) {
+      swalMessage("Error", "Las contraseñas no coinciden", "error");
+      return { isComplete: true };
+    } else {
+      return await petMonitoringApi
+        .put(
+          `/user/new-password/${user_id}`,
+          {
+            new_password,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          },
+        )
+        .then(() => {
+          checkToken();
+          swalMessage("Listo", "Contraseña Actualizada", "success");
+          clearForm();
+          return { isComplete: true };
+        })
+        .catch(() => {
+          swalMessage("Error", "No se pudo actualizar la contraseña", "error");
+          return { isComplete: true };
+        });
+    }
+  };
+
   const deleteUser = async (user_id: number, getUsers?: any, router?: any): Promise<{ isComplete: boolean }> => {
     const token = Cookies.get("token") || "";
     return Swal.fire({
@@ -207,6 +243,7 @@ export const UserProvider: FC<Props> = ({ children }) => {
         getUser,
         addUser,
         updateUser,
+        updatePassword,
         deleteUser,
         clearUsers,
         clearUser,

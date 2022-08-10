@@ -41,7 +41,7 @@ type FormData = {
 
 const LoginPage = () => {
   const [isLoading, setIsLoading] = useState(false);
-  const { loginUser } = useContext(AuthContext);
+  const { login } = useContext(AuthContext);
   const {
     register,
     handleSubmit,
@@ -55,7 +55,7 @@ const LoginPage = () => {
 
   const handleLoginUser = async ({ email, password }: FormData) => {
     setIsLoading(true);
-    const { isComplete } = await loginUser(email, password);
+    const { isComplete } = await login(email, password);
     if (isComplete) {
       setIsLoading(false);
     }
@@ -95,7 +95,7 @@ const LoginPage = () => {
             type={values.showPassword ? "text" : "password"}
             {...register("password", {
               required: "Este campo es requerido",
-              minLength: { value: 3, message: "Mínimo 6 caracteres" },
+              minLength: { value: 6, message: "Mínimo 6 caracteres" },
             })}
             error={!!errors.password}
             disabled={isLoading}
@@ -118,7 +118,7 @@ const LoginPage = () => {
             </FormHelperText>
           )}
         </FormControl>
-        {/* <Box
+        <Box
           sx={{
             mb: 2,
             display: "flex",
@@ -127,10 +127,10 @@ const LoginPage = () => {
             justifyContent: "space-between",
           }}
         >
-          <Link passHref href="/">
-            <LinkStyled onClick={(e) => e.preventDefault()}>Olvido su contraseña?</LinkStyled>
+          <Link passHref href="/auth/forget-password">
+            <LinkStyled>Olvido su contraseña?</LinkStyled>
           </Link>
-        </Box> */}
+        </Box>
         <LoadingButton
           fullWidth
           size="large"

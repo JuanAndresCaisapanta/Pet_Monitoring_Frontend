@@ -32,6 +32,13 @@ interface ContextProps {
 
   deleteUser: (user_id: number, getUsers: any, router: any) => Promise<{ isComplete: boolean }>;
 
+  updatePassword: (
+    user_id: number,
+    new_password: string,
+    confirm_new_password: string,
+    clearForm: () => void,
+  ) => Promise<{ isComplete: boolean }>;
+
   clearUsers: () => void;
 
   clearUser: () => void;
