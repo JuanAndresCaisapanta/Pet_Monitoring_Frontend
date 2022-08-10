@@ -57,7 +57,7 @@ export const DrawerList: FC<Props> = ({ toggleSideMenu }) => {
                 <ListItemText primary={"Usuarios"} />
               </ListItem>
               <ListItem button onClick={() => navigateTo("/admin/pets")}>
-                <ListItemIcon>
+                <ListItemIcon> 
                   <Pets />
                 </ListItemIcon>
                 <ListItemText primary={"Mascotas"} />
@@ -67,6 +67,12 @@ export const DrawerList: FC<Props> = ({ toggleSideMenu }) => {
                   <OnDeviceTraining />
                 </ListItemIcon>
                 <ListItemText primary={"Dispositivos"} />
+              </ListItem>
+              <ListItem button onClick={() => navigateTo("/admin/establishments")}>
+                <ListItemIcon>
+                  <Store />
+                </ListItemIcon>
+                <ListItemText primary={"Establecimientos"} />
               </ListItem>
               <ListItem button onClick={() => navigateTo("/admin/medicines")}>
                 <ListItemIcon>
@@ -79,12 +85,6 @@ export const DrawerList: FC<Props> = ({ toggleSideMenu }) => {
                   <Hail />
                 </ListItemIcon>
                 <ListItemText primary={"Profesionales"} />
-              </ListItem>
-              <ListItem button onClick={() => navigateTo("/admin/establishments")}>
-                <ListItemIcon>
-                  <Store />
-                </ListItemIcon>
-                <ListItemText primary={"Establecimientos"} />
               </ListItem>
               <Divider textAlign="left" sx={{ fontSize: 14 }}>
                 Tipos

@@ -3,6 +3,8 @@ import { ReactElement } from "react";
 import { Grid } from "@mui/material";
 
 import {
+  AdminCard,
+  AdminTypeCard,
   ContactCard,
   HomeCard,
   HomeTable,
@@ -13,19 +15,12 @@ import {
 const AdminHomePage = () => {
   return (
     <Grid container spacing={2}>
-      <Grid item xs={12} sm={6}>
-        Holas
-        {/* <HomeCard /> */}
-      </Grid>
-      {/* <Grid item xs={12} sm={3}>
-        <ManualCard />
-      </Grid>
-      <Grid item xs={12} sm={3}>
-        <ContactCard />
+      <Grid item xs={12} sm={12}>
+        <AdminCard />
       </Grid>
       <Grid item xs={12} sm={12}>
-        <HomeTable />
-      </Grid> */}
+        <AdminTypeCard />
+      </Grid>
     </Grid>
   );
 };

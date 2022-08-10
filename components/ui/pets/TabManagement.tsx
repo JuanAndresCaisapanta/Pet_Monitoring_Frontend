@@ -49,6 +49,15 @@ export const TabManagement = () => {
           <Grid container spacing={2}>
             <Grid item xs={12} sm={4}>
               <CardSection
+                section="Establecimientos"
+                description="Administre los establecimientos de su mascota."
+                image="/images/pet/establishment.jpg"
+                link={`data/establishment/${id}`}
+                button="Administrar"
+              />
+            </Grid>
+            <Grid item xs={12} sm={4}>
+              <CardSection
                 section="Medicamentos"
                 description="Administre las medicamentos de su mascota."
                 image="/images/pet/medicine.jpg"
@@ -62,15 +71,6 @@ export const TabManagement = () => {
                 description="Administre los profesionales de su mascota."
                 image="/images/pet/professional.jpg"
                 link={`data/professional/${id}`}
-                button="Administrar"
-              />
-            </Grid>
-            <Grid item xs={12} sm={4}>
-              <CardSection
-                section="Establecimientos"
-                description="Administre los establecimientos de su mascota."
-                image="/images/pet/establishment.jpg"
-                link={`data/establishment/${id}`}
                 button="Administrar"
               />
             </Grid>
