@@ -61,7 +61,7 @@ const ForgetPasswordPage = () => {
 
   const handleLoginUser = async ({ email }: FormData) => {
     setIsLoading(true);
-    const { isComplete } = await forgetPassword(email);
+    const { isComplete } = await forgetPassword(email,router);
     if (isComplete) {
       setIsLoading(false);
     }

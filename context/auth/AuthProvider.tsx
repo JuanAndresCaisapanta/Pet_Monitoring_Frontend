@@ -124,11 +124,12 @@ export const AuthProvider: FC<Props> = ({ children }) => {
       });
   };
 
-  const forgetPassword = async (email: string): Promise<{ isComplete: boolean }> => {
+  const forgetPassword = async (email: string, router:any): Promise<{ isComplete: boolean }> => {
     return await petMonitoringApi
       .get(`/auth/forget-password/${email}`)
       .then(() => {
         swalMessage("Listo", "Se ha enviado un correo con su nueva contraseña", "success");
+        router.replace("/auth/login");
         return { isComplete: true };
       })
       .catch(() => {
