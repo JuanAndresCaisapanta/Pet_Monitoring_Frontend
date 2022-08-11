@@ -190,8 +190,8 @@ export const TabAddPet = () => {
               <Image
                 style={{ borderRadius: "15px" }}
                 src={imgSrc}
-                width="250rem"
-                height="175rem"
+                width="190px"
+                height="180px"
                 alt="Imagen Mascota"
                 quality={100}
               />
@@ -389,19 +389,19 @@ export const TabAddPet = () => {
                     error={!!errors.breed}
                     helperText={errors.breed?.message}
                   />
-                  ) : (
-                    <FormControl fullWidth>
-                      <InputLabel id="demo-simple-select-label">
-                        {!isLoadingSpecies ? "Seleccione una especie para ver sus razas" : "Cargando..."}
-                      </InputLabel>
-                      <Select
-                        disabled
-                        labelId="demo-simple-select-label"
-                        id="demo-simple-select"
-                        value={""}
-                      ></Select>
-                    </FormControl>
-                  )}
+                ) : (
+                  <FormControl fullWidth>
+                    <InputLabel id="demo-simple-select-label">
+                      {!isLoadingSpecies ? "Seleccione una especie para ver sus razas" : "Cargando..."}
+                    </InputLabel>
+                    <Select
+                      disabled
+                      labelId="demo-simple-select-label"
+                      id="demo-simple-select"
+                      value={""}
+                    ></Select>
+                  </FormControl>
+                )}
               </Grid>
             </Grid>
           </>

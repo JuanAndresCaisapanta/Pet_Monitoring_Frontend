@@ -226,8 +226,8 @@ export const TabProfilePet = () => {
               <Image
                 style={{ borderRadius: "15px" }}
                 src={imagePath}
-                width="250rem"
-                height="175rem"
+                width="190px"
+                height="180px"
                 alt="Imagen Mascota"
                 quality={100}
               />
