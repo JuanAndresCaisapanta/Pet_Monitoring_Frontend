@@ -51,8 +51,8 @@ export const TabProfileMedicine = () => {
   } = useForm<FormData>();
 
   useEffect(() => {
-    if(medicine_id!==undefined){
-    getMedicine(Number(medicine_id));
+    if (medicine_id !== undefined) {
+      getMedicine(Number(medicine_id));
     }
     return () => {
       clearMedicine();
@@ -68,8 +68,6 @@ export const TabProfileMedicine = () => {
       setMedicineName(medicine?.name);
     }
   }, [medicine]);
-
-  
 
   function padTo2Digits(num: any) {
     return num?.toString().padStart(2, "0");
@@ -198,8 +196,8 @@ export const TabProfileMedicine = () => {
                 <Image
                   style={{ borderRadius: "15px" }}
                   src={imagePath}
-                  width="250rem"
-                  height="175rem"
+                  width="187px"
+                  height="177px"
                   alt="Imagen Mascota"
                 />
               </Grid>

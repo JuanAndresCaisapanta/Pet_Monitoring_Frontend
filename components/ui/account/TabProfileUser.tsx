@@ -117,8 +117,8 @@ export const TabProfileUser = () => {
               <Image
                 style={{ borderRadius: "15px" }}
                 src={imgSrc}
-                width="250rem"
-                height="175rem"
+                width="187px"
+                height="177px"
                 alt="Imagen Perfil"
                 quality={100}
               />

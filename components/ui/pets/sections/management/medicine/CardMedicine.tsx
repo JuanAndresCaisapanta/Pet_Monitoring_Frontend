@@ -59,8 +59,8 @@ export const CardMedicine: FC<Props> = ({
           borderBottom={{ xs: 1, md: 0, color: "rgba(0, 0, 0, 0.12)" }}
         >
           <Image
-            width="250rem"
-            height="175rem"
+            width="187px"
+            height="177px"
             alt="Mascota"
             src={`data:image/jpeg;base64,${image}`}
             style={{ borderRadius: "15px" }}

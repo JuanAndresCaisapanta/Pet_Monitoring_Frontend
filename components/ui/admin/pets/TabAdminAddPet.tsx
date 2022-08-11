@@ -199,8 +199,8 @@ export const TabAdminAddPet = () => {
               <Image
                 style={{ borderRadius: "15px" }}
                 src={imgSrc}
-                width="250rem"
-                height="175rem"
+                width="187px"
+                height="177px"
                 alt="Imagen Mascota"
                 quality={100}
               />
@@ -386,7 +386,7 @@ export const TabAdminAddPet = () => {
               <Grid item xs={12} sm={6}>
                 <FormControl fullWidth>
                   <InputLabel id="demo-simple-select-label" error={!!errors.species}>
-                    Especie 
+                    Especie
                   </InputLabel>
                   <Select
                     labelId="demo-simple-select-label"

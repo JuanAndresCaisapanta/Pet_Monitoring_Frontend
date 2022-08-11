@@ -26,7 +26,7 @@ export const TabAdminAddUser = () => {
   const [imgSrc, setImgSrc] = useState<string>("/images/profile/user.png");
   const [isLoading, setIsLoading] = useState(false);
 
-  const { addUser,getUsers } = useContext(UserContext);
+  const { addUser, getUsers } = useContext(UserContext);
 
   const router = useRouter();
 
@@ -54,7 +54,6 @@ export const TabAdminAddUser = () => {
     setValue("password", "");
     setValue("address", "");
     setValue("phone", "");
-
   };
   const handleAddUser = async ({ name, last_name, email, password, address, phone, image }: FormData) => {
     setIsLoading(true);
@@ -65,13 +64,31 @@ export const TabAdminAddUser = () => {
     };
     if (image[0] != null) {
       const compressed_image = await imageCompression(image[0], options);
-      const { isComplete } = await addUser(name, last_name, email, password, address, phone, compressed_image,handleClearForm);
+      const { isComplete } = await addUser(
+        name,
+        last_name,
+        email,
+        password,
+        address,
+        phone,
+        compressed_image,
+        handleClearForm,
+      );
       if (isComplete) {
         setIsLoading(false);
         getUsers();
       }
     } else {
-      const { isComplete } = await addUser(name, last_name, email, password, address, phone, image[0],handleClearForm);
+      const { isComplete } = await addUser(
+        name,
+        last_name,
+        email,
+        password,
+        address,
+        phone,
+        image[0],
+        handleClearForm,
+      );
       if (isComplete) {
         setIsLoading(false);
         getUsers();
@@ -95,8 +112,8 @@ export const TabAdminAddUser = () => {
             <Image
               style={{ borderRadius: "15px" }}
               src={imgSrc}
-              width="220rem"
-              height="175rem"
+              width="187px"
+              height="177px"
               alt="Imagen Perfil"
               quality={100}
             />
