@@ -52,8 +52,8 @@ export const CardPet: FC<Props> = ({ id, name, species, sex, race, image, full_n
           borderBottom={{ xs: 1, md: 0, color: "rgba(0, 0, 0, 0.12)" }}
         >
           <Image
-            width="190px"
-            height="180px"
+            width="187px"
+            height="177px"
             alt="Mascota"
             src={`data:image/jpeg;base64,${image}`}
             style={{ borderRadius: "15px" }}

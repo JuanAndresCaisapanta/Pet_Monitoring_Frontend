@@ -190,8 +190,8 @@ export const TabAddPet = () => {
               <Image
                 style={{ borderRadius: "15px" }}
                 src={imgSrc}
-                width="190px"
-                height="180px"
+                width="187px"
+                height="177px"
                 alt="Imagen Mascota"
                 quality={100}
               />
