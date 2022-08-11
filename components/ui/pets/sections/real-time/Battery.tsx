@@ -13,7 +13,7 @@ interface Props {
 }
 
 export const Battery: FC<Props> = ({ value }) => {
-  return value > 3300 ? (
+  return value > 3000 ? (
     <Grid container direction="row" alignItems="center">
       <Grid item>
         <BatteryFullRounded color="success" />
@@ -22,7 +22,7 @@ export const Battery: FC<Props> = ({ value }) => {
         <Typography variant="body2">100%</Typography>
       </Grid>
     </Grid>
-  ) : value > 2500 && value <= 3300 ? (
+  ) : value > 2800 && value <= 3000 ? (
     <Grid container direction="row" alignItems="center">
       <Grid item>
         <Battery60Rounded color="warning" />
@@ -31,7 +31,7 @@ export const Battery: FC<Props> = ({ value }) => {
         <Typography variant="body2">60%</Typography>
       </Grid>
     </Grid>
-  ) : value > 1500 && value <= 2500 ? (
+  ) : value > 2700 && value <= 2800 ? (
     <Grid container direction="row" alignItems="center">
       <Grid item>
         <Battery30Rounded color="warning" />
@@ -40,7 +40,7 @@ export const Battery: FC<Props> = ({ value }) => {
         <Typography variant="body2">30%</Typography>
       </Grid>
     </Grid>
-  ) : value >= 0 && value <= 1500 ? (
+  ) : value >= 2650 && value <= 2700 ? (
     <Grid container direction="row" alignItems="center">
       <Grid item>
         <Battery0BarRounded color="error" />
