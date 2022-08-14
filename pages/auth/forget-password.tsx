@@ -61,7 +61,7 @@ const ForgetPasswordPage = () => {
 
   const handleLoginUser = async ({ email }: FormData) => {
     setIsLoading(true);
-    const { isComplete } = await forgetPassword(email,router);
+    const { isComplete } = await forgetPassword(email, router);
     if (isComplete) {
       setIsLoading(false);
     }
@@ -141,7 +141,7 @@ const ForgetPasswordPage = () => {
 
 ForgetPasswordPage.getLayout = function getLayout(page: ReactElement) {
   return (
-    <AuthLayout title="Olvido Contraseña" detail="Ingrese su Correo Electrónico">
+    <AuthLayout title="Olvido Contraseña" detail="Ingrese su correo electrónico para obtener su contraseña">
       {page}
     </AuthLayout>
   );
