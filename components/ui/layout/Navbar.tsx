@@ -45,7 +45,7 @@ export const Navbar: FC<Props> = ({ toggleSideMenu }) => {
           </Typography>
         </Box>
         {user?.role.map((role,i:any) => {
-        if (role.name === "ROLE_USER") {
+        if (role.name === "User") {
           return <div key={i}><Notifications /></div>
         }})}
         <Tooltip title={user?.name || ""}>

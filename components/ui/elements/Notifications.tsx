@@ -15,10 +15,9 @@ export const Notifications = () => {
       if (user) {
         getNotificationsByUser(user.id); 
       }
-    }, 5000);
+    }, 10000);
     return () => {
       clearInterval(interval);
-      //petChange();
     };
   }, [getNotificationsByUser]);
 
