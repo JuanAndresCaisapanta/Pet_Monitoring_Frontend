@@ -46,7 +46,7 @@ export const TabHistoryTemperature = () => {
       if (pet_id !== undefined) {
         getPet(Number(pet_id));
       }
-    }, 5000);
+    }, 10000);
     return () => {
       clearInterval(interval);
       petChange();

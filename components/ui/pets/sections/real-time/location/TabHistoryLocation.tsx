@@ -44,7 +44,7 @@ export const TabHistoryLocation = () => {
       if (pet_id !== undefined) {
         getPet(Number(pet_id));
       }
-    }, 30000);
+    }, 10000);
     return () => {
       clearInterval(interval);
       petChange();

@@ -40,7 +40,7 @@ export const TabLocation = () => {
       if (pet_id !== undefined) {
         getPet(Number(pet_id));
       }
-    }, 1000);
+    }, 10000);
     return () => {
       clearInterval(interval);
       petChange();
