@@ -15,7 +15,7 @@ export const Notifications = () => {
     if (user) {
       getNotificationsByUser(user.id);
     }
-  }, [user_notifications]);
+  }, []);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -26,7 +26,7 @@ export const Notifications = () => {
     return () => {
       clearInterval(interval);
     };
-  }, [user_notifications]);
+  }, []);
 
   const newNotifications = `Tiene ${user_notifications?.length} notificaciones`;
   const noNotifications = "No tiene notificaciones";
