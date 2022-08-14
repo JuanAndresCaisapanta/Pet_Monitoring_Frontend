@@ -169,7 +169,7 @@ const LoginPage = () => {
 
 LoginPage.getLayout = function getLayout(page: ReactElement) {
   return (
-    <AuthLayout title="Ingresar" detail="Por favor ingrese con su correo y contraseña">
+    <AuthLayout title="Ingresar" detail="Por favor ingrese con su correo electrónico y contraseña">
       {page}
     </AuthLayout>
   );
