@@ -1,7 +1,7 @@
 import { Battery0Bar, Delete, NotificationsActive, NotificationsNone, Thermostat } from "@mui/icons-material";
 import { LoadingButton } from "@mui/lab";
 import { Badge, Grid, IconButton, Menu, MenuItem, Tooltip, Typography } from "@mui/material";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useMemo, useState } from "react";
 import { AuthContext, NotificationContext } from "../../../context";
 
 export const Notifications = () => {
@@ -10,6 +10,13 @@ export const Notifications = () => {
   const { user } = useContext(AuthContext);
   const { user_notifications, getNotificationsByUser, deleteNotification } = useContext(NotificationContext);
   const [isLoading, setIsLoading] = useState(false);
+
+  useMemo(() => {
+    if (user) {
+      getNotificationsByUser(user.id);
+    }
+  }, [user_notifications]);
+
   useEffect(() => {
     const interval = setInterval(() => {
       if (user) {
@@ -19,7 +26,7 @@ export const Notifications = () => {
     return () => {
       clearInterval(interval);
     };
-  }, [getNotificationsByUser]);
+  }, [user_notifications]);
 
   const newNotifications = `Tiene ${user_notifications?.length} notificaciones`;
   const noNotifications = "No tiene notificaciones";
