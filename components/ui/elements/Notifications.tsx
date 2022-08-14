@@ -13,7 +13,7 @@ export const Notifications = () => {
   useEffect(() => {
     const interval = setInterval(() => {
       if (user) {
-        getNotificationsByUser(user.id); 
+        getNotificationsByUser(user.id);
       }
     }, 10000);
     return () => {
@@ -71,11 +71,11 @@ export const Notifications = () => {
               <Grid item container xs={12}>
                 {item.subject === "Temperatura" ? (
                   <>
-                    <Thermostat color={"error"} /> Temperatura
+                    <Thermostat color={"error"} /> Temperatura: {item.creation_date}
                   </>
                 ) : (
                   <>
-                    <Battery0Bar color={"error"} /> Batería
+                    <Battery0Bar color={"error"} /> Batería: {item.creation_date}
                   </>
                 )}
               </Grid>
@@ -86,7 +86,10 @@ export const Notifications = () => {
                     color="primary"
                     sx={{ pl: "0px", pr: "0px" }}
                     disableElevation
-                    onClick={() => {handleDeleteNotification(user?.id!, item.id); handleClose()}}
+                    onClick={() => {
+                      handleDeleteNotification(user?.id!, item.id);
+                      handleClose();
+                    }}
                     startIcon={<Delete sx={{ p: "0px", width: "32px" }} />}
                     loading={isLoading}
                     loadingPosition="start"
