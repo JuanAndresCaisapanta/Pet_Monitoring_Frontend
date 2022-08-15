@@ -65,7 +65,7 @@ export const TabAdminDevices = () => {
       headerAlign: "center",
       align: "center",
       flex: 1,
-      minWidth: 100,
+      minWidth: 240,
     },
     {
       field: "callback_code",
@@ -74,7 +74,7 @@ export const TabAdminDevices = () => {
       headerAlign: "center",
       align: "center",
       flex: 1,
-      minWidth: 100,
+      minWidth: 240,
     },
     {
       field: "pet",
@@ -92,7 +92,7 @@ export const TabAdminDevices = () => {
       headerAlign: "center",
       align: "center",
       flex: 1,
-      minWidth: 100,
+      minWidth: 220,
     },
     {
       field: "actions",
