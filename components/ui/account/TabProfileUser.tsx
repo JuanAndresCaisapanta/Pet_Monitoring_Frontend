@@ -100,6 +100,8 @@ export const TabProfileUser = () => {
     }
   };
 
+  const ALPHA_NUMERIC_DASH_REGEX = /^[a-zA-Z]+$/;
+
   if (user) {
     return (
       <CardForm
@@ -186,18 +188,35 @@ export const TabProfileUser = () => {
               />
             </Grid>
             <Grid item xs={12} sm={12}>
-              <TextField
-                fullWidth
-                type="tel"
-                inputProps={{ inputMode: "numeric", pattern: "[0-9]*" }}
-                label="Teléfono"
-                {...register("phone", {
-                  minLength: { value: 2, message: "Mínimo 2 caracteres" },
-                })}
-                error={!!errors.phone}
-                helperText={errors.phone?.message}
-                disabled={isLoading}
-              />
+            <TextField
+              fullWidth
+              type="tel"
+              inputProps={{ maxLength: 10 }}
+              label="Celular"
+              {...register("phone", {
+                required: "Este campo es requerido",
+                minLength: { value: 2, message: "Mínimo 2 caracteres" },
+                pattern: {
+                  value: /^[0-9]+$/,
+                  message: "Solo se permiten numeros",
+                },
+              })}
+              onKeyPress={(event) => {
+                if (
+                  event?.key === "-" ||
+                  event?.key === "+" ||
+                  event?.key === "." ||
+                  event?.key === "e" ||
+                  event?.key === "," ||
+                  ALPHA_NUMERIC_DASH_REGEX.test(event.key)
+                ) {
+                  event.preventDefault();
+                }
+              }}
+              error={!!errors.phone}
+              helperText={errors.phone?.message}
+              disabled={isLoading}
+            />
             </Grid>
             <Grid item xs={12} sm={12}>
               <TextField

@@ -115,14 +115,16 @@ export const TabAdminUpdateEstablishment = () => {
       setIsLoading(false);
     }
   };
-  
+
   const handleDeleteEstablishment = async () => {
     setIsLoading(true);
-    const { isComplete } = await deleteEstablishment(undefined, Number(establishment_id),router);
+    const { isComplete } = await deleteEstablishment(undefined, Number(establishment_id), router);
     if (isComplete) {
       setIsLoading(false);
     }
   };
+
+  const ALPHA_NUMERIC_DASH_REGEX = /^[a-zA-Z]+$/;
 
   if (establishmentType && establishment) {
     return (
@@ -180,29 +182,34 @@ export const TabAdminUpdateEstablishment = () => {
               />
             </Grid>
             <Grid item xs={12} sm={6}>
-              <Controller
-                name="cell_phone"
-                control={control}
-                defaultValue=""
-                rules={{
+              <TextField
+                fullWidth
+                type="tel"
+                inputProps={{ maxLength: 10 }}
+                label="Celular"
+                {...register("cell_phone", {
                   required: "Este campo es requerido",
                   minLength: { value: 2, message: "Mínimo 2 caracteres" },
+                  pattern: {
+                    value: /^[0-9]+$/,
+                    message: "Solo se permiten numeros",
+                  },
+                })}
+                onKeyPress={(event) => {
+                  if (
+                    event?.key === "-" ||
+                    event?.key === "+" ||
+                    event?.key === "." ||
+                    event?.key === "e" ||
+                    event?.key === "," ||
+                    ALPHA_NUMERIC_DASH_REGEX.test(event.key)
+                  ) {
+                    event.preventDefault();
+                  }
                 }}
-                render={({ field: { onChange, value }, fieldState: { error } }) => (
-                  <MuiPhoneNumber
-                    label="Celular"
-                    placeholder="Celular"
-                    fullWidth
-                    countryCodeEditable={false}
-                    variant="outlined"
-                    defaultCountry={"ec"}
-                    value={value}
-                    onChange={onChange}
-                    error={!!error}
-                    helperText={error?.message}
-                    disabled={isLoading}
-                  />
-                )}
+                error={!!errors.cell_phone}
+                helperText={errors.cell_phone?.message}
+                disabled={isLoading}
               />
             </Grid>
             <Grid item xs={12} sm={12}>

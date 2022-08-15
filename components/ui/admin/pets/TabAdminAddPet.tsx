@@ -18,6 +18,7 @@ import {
   Button,
   FormHelperText,
   CircularProgress,
+  InputAdornment,
 } from "@mui/material";
 import { Save } from "@mui/icons-material";
 import { DesktopDatePicker, LocalizationProvider } from "@mui/lab";
@@ -342,11 +343,11 @@ export const TabAdminAddPet = () => {
                 <TextField
                   fullWidth
                   type="number"
-                  label="Peso Kg"
-                  placeholder="Peso Kg"
+                  label="Peso"
+                  placeholder="Peso"
                   disabled={isLoading}
                   InputProps={{
-                    inputProps: { min: 1 },
+                    startAdornment: <InputAdornment position="start">Kg</InputAdornment>,
                   }}
                   onKeyPress={(event) => {
                     if (event?.key === "-" || event?.key === "+" || event?.key === "." || event?.key === "e") {

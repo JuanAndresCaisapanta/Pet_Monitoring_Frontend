@@ -95,6 +95,7 @@ export const TabAdminAddUser = () => {
       }
     }
   };
+  const ALPHA_NUMERIC_DASH_REGEX = /^[a-zA-Z]+$/;
 
   return (
     <CardForm
@@ -198,11 +199,28 @@ export const TabAdminAddUser = () => {
             <TextField
               fullWidth
               type="tel"
-              inputProps={{ inputMode: "numeric", pattern: "[0-9]*" }}
-              label="Teléfono"
+              inputProps={{ maxLength: 10 }}
+              label="Celular"
               {...register("phone", {
+                required: "Este campo es requerido",
                 minLength: { value: 2, message: "Mínimo 2 caracteres" },
+                pattern: {
+                  value: /^[0-9]+$/,
+                  message: "Solo se permiten numeros",
+                },
               })}
+              onKeyPress={(event) => {
+                if (
+                  event?.key === "-" ||
+                  event?.key === "+" ||
+                  event?.key === "." ||
+                  event?.key === "e" ||
+                  event?.key === "," ||
+                  ALPHA_NUMERIC_DASH_REGEX.test(event.key)
+                ) {
+                  event.preventDefault();
+                }
+              }}
               error={!!errors.phone}
               helperText={errors.phone?.message}
               disabled={isLoading}

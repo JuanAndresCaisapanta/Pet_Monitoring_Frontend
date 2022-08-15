@@ -32,7 +32,8 @@ export const TabAdminUpdateProfessional = () => {
 
   const { professions, getProfessions, clearProfessions } = useContext(ProfessionContext);
 
-  const { professional, getProfessional, clearProfessional, updateProfessional, deleteProfessional } = useContext(ProfessionalContext);
+  const { professional, getProfessional, clearProfessional, updateProfessional, deleteProfessional } =
+    useContext(ProfessionalContext);
 
   const {
     register,
@@ -116,13 +117,15 @@ export const TabAdminUpdateProfessional = () => {
     }
   };
 
-  const handleDeleteProfessional= async () => {
+  const handleDeleteProfessional = async () => {
     setIsLoading(true);
-    const { isComplete } = await deleteProfessional(undefined, Number(professional_id),router);
+    const { isComplete } = await deleteProfessional(undefined, Number(professional_id), router);
     if (isComplete) {
       setIsLoading(false);
     }
   };
+
+  const ALPHA_NUMERIC_DASH_REGEX = /^[a-zA-Z]+$/;
 
   if (professions && professional) {
     return (
@@ -180,27 +183,34 @@ export const TabAdminUpdateProfessional = () => {
               />
             </Grid>
             <Grid item xs={12} sm={6}>
-              <Controller
-                name="cell_phone"
-                control={control}
-                defaultValue=""
-                rules={{
+              <TextField
+                fullWidth
+                type="tel"
+                inputProps={{ maxLength: 10 }}
+                label="Celular"
+                {...register("cell_phone", {
                   required: "Este campo es requerido",
                   minLength: { value: 2, message: "Mínimo 2 caracteres" },
+                  pattern: {
+                    value: /^[0-9]+$/,
+                    message: "Solo se permiten numeros",
+                  },
+                })}
+                onKeyPress={(event) => {
+                  if (
+                    event?.key === "-" ||
+                    event?.key === "+" ||
+                    event?.key === "." ||
+                    event?.key === "e" ||
+                    event?.key === "," ||
+                    ALPHA_NUMERIC_DASH_REGEX.test(event.key)
+                  ) {
+                    event.preventDefault();
+                  }
                 }}
-                render={({ field: { onChange, value }, fieldState: { error } }) => (
-                  <MuiPhoneNumber
-                    fullWidth
-                    countryCodeEditable={false}
-                    variant="outlined"
-                    defaultCountry={"ec"}
-                    value={value}
-                    onChange={onChange}
-                    error={!!error}
-                    helperText={error?.message}
-                    disabled={isLoading}
-                  />
-                )}
+                error={!!errors.cell_phone}
+                helperText={errors.cell_phone?.message}
+                disabled={isLoading}
               />
             </Grid>
             <Grid item xs={12} sm={12}>

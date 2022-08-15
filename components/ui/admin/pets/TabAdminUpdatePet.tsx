@@ -14,6 +14,7 @@ import {
   FormGroup,
   FormHelperText,
   Grid,
+  InputAdornment,
   InputLabel,
   MenuItem,
   Select,
@@ -397,7 +398,7 @@ export const TabAdminUpdatePet = () => {
                   placeholder="Peso"
                   disabled={isLoading}
                   InputProps={{
-                    inputProps: { min: 0 },
+                    startAdornment: <InputAdornment position="start">Kg</InputAdornment>,
                   }}
                   onKeyPress={(event) => {
                     if (event?.key === "-" || event?.key === "+" || event?.key === "." || event?.key === "e") {
@@ -406,7 +407,7 @@ export const TabAdminUpdatePet = () => {
                   }}
                   {...register("weight", {
                     required: "Este campo es requerido",
-                    minLength: { value: 2, message: "Mínimo 2 caracteres" },
+                    minLength: { value: 1, message: "Mínimo 1 caracteres" },
                   })}
                   error={!!errors.name}
                   helperText={errors.name?.message}
