@@ -96,7 +96,7 @@ export const CardPet: FC<Props> = ({ id, name, species, sex, race, image, full_n
                   navigateTo(`pets/sections/${id}`);
                 }}
               >
-                Monitorear
+                Monitoreo
               </Button>
             </Grid>
             <Grid item xs={12} md={12} textAlign="center">
