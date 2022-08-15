@@ -30,9 +30,6 @@ export const TabAdminDeviceDetails = () => {
     }
   }, [deviceDetails]);
 
-  const navigateTo = (url: string) => {
-    router.push(url);
-  };
 
   const rows = listDeviceDetails.map((deviceDetails) => ({
     id: deviceDetails.id,
@@ -108,7 +105,7 @@ export const TabAdminDeviceDetails = () => {
           title={"Mantenimiento"}
           titleTypographyProps={{ variant: "body1" }}
           action={
-            <IconButton aria-label="close" style={{ color: "#9E69FD" }}>
+            <IconButton aria-label="close" onClick={() => router.back()} style={{ color: "#9E69FD" }}>
               <NavigateBefore />
             </IconButton>
           }

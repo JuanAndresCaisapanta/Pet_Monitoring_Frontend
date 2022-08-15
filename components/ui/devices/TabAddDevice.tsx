@@ -65,6 +65,7 @@ export const TabAddDevice = () => {
                 fullWidth
                 label="Código Dispositivo"
                 defaultValue=""
+                inputProps={{ maxLength: 24 }}
                 {...register("code", {
                   required: "Este campo es requerido",
                   minLength: { value: 2, message: "Mínimo 2 caracteres" },
