@@ -121,7 +121,7 @@ export const AuthProvider: FC<Props> = ({ children }) => {
         return { isComplete: true };
       })
       .catch(() => {
-        swalMessage("Error", "Error al registrar - verifique la información proporcionada", "error");
+        swalMessage("Error", "Error al registrarse - verifique la información proporcionada", "error");
         return { isComplete: true };
       });
   };
