@@ -22,7 +22,7 @@ export const ManualCard = () => {
             </Avatar>
             <Box sx={{ display: "flex", flexDirection: "column" }}>
               <Button onClick={()=>{window.open("/manual/parque.pdf")}} variant="contained" disableElevation>
-                Descargar
+                Ver
               </Button>
             </Box>
           </Box>
