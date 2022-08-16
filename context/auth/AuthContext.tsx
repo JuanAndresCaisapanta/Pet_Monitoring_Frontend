@@ -10,10 +10,11 @@ interface ContextProps {
     name: string,
     last_name: string,
     email: string,
+    phone: string,
     password: string,
     image: any,
   ) => Promise<{ isComplete: boolean }>;
-  forgetPassword: (email: string, router:any) => Promise<{ isComplete: boolean }>;
+  forgetPassword: (email: string, router: any) => Promise<{ isComplete: boolean }>;
   logout: () => void;
   checkToken: () => void;
 }

@@ -3,7 +3,7 @@ import { SyntheticEvent, useState, ReactElement } from "react";
 import { Box, Card, styled } from "@mui/material";
 import { TabList, TabPanel, TabContext } from "@mui/lab";
 import MuiTab, { TabProps } from "@mui/material/Tab";
-import { Hail } from "@mui/icons-material";
+import { Hail, Pets } from "@mui/icons-material";
 
 import { MainLayout, TabAdminUpdatePet } from "../../../../components";
 
@@ -40,7 +40,7 @@ const AdminPetPage = () => {
             value="pet"
             label={
               <Box sx={{ display: "flex", alignItems: "center" }}>
-                <Hail />
+                <Pets />
                 <TabName>Mascota</TabName>
               </Box>
             }

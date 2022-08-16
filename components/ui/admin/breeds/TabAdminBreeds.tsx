@@ -113,7 +113,7 @@ export const TabAdminBreeds = () => {
     species_name: breeds.species.name,
   }));
 
-  const ALPHA_NUMERIC_DASH_REGEX = /^[a-zA-Z]+$/;
+  const ALPHA_NUMERIC_DASH_REGEX = /^[a-zA-Z\sÁÉÍÓÚáéíóúÑñ]+$/;
 
   const columns: GridColDef[] = [
     {

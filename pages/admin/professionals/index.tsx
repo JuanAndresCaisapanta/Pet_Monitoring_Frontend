@@ -4,7 +4,7 @@ import { Box, Card } from "@mui/material";
 import MuiTab, { TabProps } from "@mui/material/Tab";
 import { styled } from "@mui/material/styles";
 import { TabList, TabPanel, TabContext } from "@mui/lab";
-import { AddCircleOutline, Pets } from "@mui/icons-material";
+import { AddCircleOutline, Hail, Pets } from "@mui/icons-material";
 
 import { MainLayout, TabAdminAddProfessional, TabAdminProfessionals } from "../../../components";
 
@@ -40,7 +40,7 @@ const AdminProfessionalsPage = () => {
             value="professionals"
             label={
               <Box sx={{ display: "flex", alignItems: "center" }}>
-                <Pets />
+                <Hail />
                 <TabName>Profesionales</TabName>
               </Box>
             }

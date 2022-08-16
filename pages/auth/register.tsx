@@ -47,6 +47,7 @@ type FormData = {
   name: string;
   last_name: string;
   email: string;
+  phone: string;
   password: string;
   image: any;
 };
@@ -59,7 +60,7 @@ const RegisterPage = () => {
     showPassword: false,
   });
 
-  const { register:registerUser } = useContext(AuthContext);
+  const { register: registerUser } = useContext(AuthContext);
 
   const router = useRouter();
 
@@ -69,7 +70,7 @@ const RegisterPage = () => {
     formState: { errors },
   } = useForm<FormData>();
 
-  const handleRegisterUser = async ({ name, last_name, email, password, image }: FormData) => {
+  const handleRegisterUser = async ({ name, last_name, email, phone, password, image }: FormData) => {
     setIsLoading(true);
     const options = {
       maxSizeMB: 1,
@@ -78,13 +79,13 @@ const RegisterPage = () => {
     };
     if (image[0] != null) {
       const compressedImage = await imageCompression(image[0], options);
-      const { isComplete } = await registerUser(name, last_name, email, password, compressedImage);
+      const { isComplete } = await registerUser(name, last_name, email, phone, password, compressedImage);
       if (isComplete) {
         router.replace("/auth/login");
         setIsLoading(false);
       }
     } else {
-      const { isComplete } = await registerUser(name, last_name, email, password, image[0]);
+      const { isComplete } = await registerUser(name, last_name, email, phone, password, image[0]);
       if (isComplete) {
         router.replace("/auth/login");
         setIsLoading(false);
@@ -112,6 +113,8 @@ const RegisterPage = () => {
   const onCancel = () => {
     router.replace("/auth/login");
   };
+
+  const ALPHA_NUMERIC_DASH_REGEX = /^[a-zA-Z]+$/;
 
   return (
     <>
@@ -165,6 +168,36 @@ const RegisterPage = () => {
           })}
           error={!!errors.name}
           helperText={errors.name?.message}
+          disabled={isLoading}
+        />
+        <TextField
+          fullWidth
+          type="tel"
+          sx={{ marginBottom: 1 }}
+          inputProps={{ maxLength: 10 }}
+          label="Celular"
+          {...register("phone", {
+            required: "Este campo es requerido",
+            minLength: { value: 2, message: "Mínimo 2 caracteres" },
+            pattern: {
+              value: /^[0-9]+$/,
+              message: "Solo se permiten numeros",
+            },
+          })}
+          onKeyPress={(event) => {
+            if (
+              event?.key === "-" ||
+              event?.key === "+" ||
+              event?.key === "." ||
+              event?.key === "e" ||
+              event?.key === "," ||
+              ALPHA_NUMERIC_DASH_REGEX.test(event.key)
+            ) {
+              event.preventDefault();
+            }
+          }}
+          error={!!errors.phone}
+          helperText={errors.phone?.message}
           disabled={isLoading}
         />
         <TextField

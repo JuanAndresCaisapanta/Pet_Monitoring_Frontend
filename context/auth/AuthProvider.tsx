@@ -96,6 +96,7 @@ export const AuthProvider: FC<Props> = ({ children }) => {
     name: string,
     last_name: string,
     email: string,
+    phone: string,
     password: string,
     image: any,
   ): Promise<{ isComplete: boolean }> => {
@@ -103,11 +104,12 @@ export const AuthProvider: FC<Props> = ({ children }) => {
       .post(
         "/auth/register",
         {
-          name,
-          last_name,
-          email,
-          password,
-          image,
+          name: name,
+          last_name: last_name,
+          email: email,
+          phone: phone,
+          password: password,
+          image: image,
         },
         { headers: { "Content-Type": "multipart/form-data" } },
       )
@@ -124,7 +126,7 @@ export const AuthProvider: FC<Props> = ({ children }) => {
       });
   };
 
-  const forgetPassword = async (email: string, router:any): Promise<{ isComplete: boolean }> => {
+  const forgetPassword = async (email: string, router: any): Promise<{ isComplete: boolean }> => {
     return await petMonitoringApi
       .get(`/auth/forget-password/${email}`)
       .then(() => {

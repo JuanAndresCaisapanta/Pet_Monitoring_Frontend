@@ -5,6 +5,7 @@ import { useRouter } from "next/router";
 
 import { NavigateBefore, Search } from "@mui/icons-material";
 import {
+  Button,
   Card,
   CardContent,
   CardHeader,
@@ -23,7 +24,7 @@ import Map, { Marker } from "react-map-gl";
 import { PetContext } from "../../../../../../context";
 
 export const TabHistoryLocation = () => {
-  const {getPet, pet, petChange } = useContext(PetContext);
+  const { getPet, pet, petChange } = useContext(PetContext);
   const [petName, setPetName] = useState("");
   const [page, setPage] = useState(1);
   const router = useRouter();
@@ -133,6 +134,20 @@ export const TabHistoryLocation = () => {
                           />
                         </Marker>
                       </Map>
+                      <Grid item xs={12} sm={12}>
+                        <Button
+                          disableElevation
+                          fullWidth
+                          variant="contained"
+                          onClick={() => {
+                            window.open(
+                              `https://www.google.com/maps/search/?api=1&query=${details?.latitude},${details?.longitude}`,
+                            );
+                          }}
+                        >
+                          Ubicar en Mapa
+                        </Button>
+                      </Grid>
                     </Grid>
                   )),
                 10,

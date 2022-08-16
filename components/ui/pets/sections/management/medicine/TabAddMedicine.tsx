@@ -29,9 +29,11 @@ type FormData = {
 };
 
 export const TabAddMedicine = () => {
+  const date_production = new Date();
+  date_production.setDate(date_production.getDate() - 1)
   const [imagePath, setImagePath] = useState<string>("/images/medicine/medicine-profile.png");
   const [medicinesType, setMedicinesType] = useState<string | null>("");
-  const [productionDate, setProductionDate] = useState<Date | null>(new Date());
+  const [productionDate, setProductionDate] = useState<Date | null>(date_production);
   const [applicationDate, setApplicationDate] = useState<Date | null>(new Date());
   const [expirationDate, setExpirationDate] = useState<Date | null>(new Date());
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -42,6 +44,8 @@ export const TabAddMedicine = () => {
   const router = useRouter();
 
   const { id: user_id } = router.query;
+
+  
 
   const {
     register,
@@ -74,7 +78,7 @@ export const TabAddMedicine = () => {
     setValue("medicineType", null);
     setApplicationDate(new Date());
     setValue("application_date", null);
-    setProductionDate(new Date());
+    setProductionDate(date_production);
     setValue("production_date", null);
     setExpirationDate(new Date());
     setValue("expiration_date", null);
@@ -138,6 +142,7 @@ export const TabAddMedicine = () => {
       }
     }
   };
+
   if (medicineType) {
     return (
       <CardForm
@@ -308,7 +313,7 @@ export const TabAddMedicine = () => {
                       setProductionDate(newValue);
                       setValue("production_date", moment(newValue, "DD/MM/YYYY").format("DD/MM/YYYY"));
                     }}
-                    maxDate={new Date()}
+                    maxDate={date_production}
                     renderInput={(params) => (
                       <TextField
                         fullWidth

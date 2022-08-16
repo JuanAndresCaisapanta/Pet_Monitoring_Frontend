@@ -90,7 +90,7 @@ export const TabAdminEstablishmentTypes = () => {
     name: establishmentTypes.name,
   }));
 
-  const ALPHA_NUMERIC_DASH_REGEX = /^[a-zA-Z]+$/;
+  const ALPHA_NUMERIC_DASH_REGEX = /^[a-zA-Z\sÁÉÍÓÚáéíóúÑñ]+$/;
 
   if (establishmentTypes) {
     return (

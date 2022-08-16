@@ -85,7 +85,7 @@ export const TabAdminProfessions = () => {
     name: professions.name,
   }));
 
-  const ALPHA_NUMERIC_DASH_REGEX = /^[a-zA-Z/]+$/;
+  const ALPHA_NUMERIC_DASH_REGEX = /^[a-zA-Z\sÁÉÍÓÚáéíóúÑñ]+$/;
 
   if (professions) {
     return (

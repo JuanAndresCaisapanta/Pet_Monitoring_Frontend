@@ -90,7 +90,7 @@ export const TabAdminMedicineTypes = () => {
     name: medicineTypes.name,
   }));
 
-  const ALPHA_NUMERIC_DASH_REGEX = /^[a-zA-Z]+$/;
+  const ALPHA_NUMERIC_DASH_REGEX = /^[a-zA-Z\sÁÉÍÓÚáéíóúÑñ]+$/;
 
   if (medicineTypes) {
     return (

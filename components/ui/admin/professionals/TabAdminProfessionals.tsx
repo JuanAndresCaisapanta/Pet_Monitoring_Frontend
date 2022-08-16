@@ -35,8 +35,8 @@ export const TabAdminProfessionals = () => {
     name: professionals.name,
     last_name: professionals.last_name,
     email: professionals.email,
+    profession: professionals.profession.name,
     pet: professionals.pet.name,
-    pet_breed: professionals.pet.breed.name,
     pet_species: professionals.pet.breed.species.name,
     user: professionals.pet.users.email
   }));
@@ -79,8 +79,8 @@ export const TabAdminProfessionals = () => {
       minWidth: 100,
     },
     {
-      field: "pet",
-      headerName: "Mascota",
+      field: "profession",
+      headerName: "Profesión",
       headerClassName: "header",
       headerAlign: "center",
       align: "center",
@@ -88,8 +88,8 @@ export const TabAdminProfessionals = () => {
       minWidth: 100,
     },
     {
-      field: "pet_breed",
-      headerName: "Raza",
+      field: "pet",
+      headerName: "Mascota",
       headerClassName: "header",
       headerAlign: "center",
       align: "center",
