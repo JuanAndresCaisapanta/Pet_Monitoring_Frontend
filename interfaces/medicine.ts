@@ -26,7 +26,7 @@ export interface IMedicine {
     };
     users: {
       id: number;
-      email: "juancaisapanta@hotmail.com";
+      email: string;
     };
   };
 }
