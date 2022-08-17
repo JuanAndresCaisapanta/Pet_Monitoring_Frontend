@@ -1,7 +1,7 @@
 import { useContext, useEffect } from "react";
 
 import { Avatar, Box, Card, CardContent, CardHeader, CircularProgress, Grid, Typography } from "@mui/material";
-import { Group, Hail, Pets, Store, Vaccines } from "@mui/icons-material";
+import { Group, Hail, OnDeviceTraining, Pets, Store, Vaccines } from "@mui/icons-material";
 
 import {
   DeviceContext,
@@ -11,6 +11,7 @@ import {
   ProfessionalContext,
   UserContext,
 } from "../../../context";
+import { BoxAdminCard } from "../elements";
 
 export const AdminCard = () => {
   const { users, getUsers } = useContext(UserContext);
@@ -35,7 +36,7 @@ export const AdminCard = () => {
   const establishmentsNumber = establishments?.length;
   const medicinesNumber = medicines?.length;
   const professionalsNumber = professionals?.length;
-  
+
   if (users) {
     return (
       <Card>
@@ -43,124 +44,46 @@ export const AdminCard = () => {
         <CardContent sx={{ pt: (theme) => `${theme.spacing(1)} !important` }}>
           <Grid container spacing={1}>
             <Grid item xs={4} sm={4}>
-              <Box sx={{ display: "flex", alignItems: "center" }}>
-                <Avatar
-                  variant="rounded"
-                  sx={{
-                    mr: 3,
-                    width: 44,
-                    height: 44,
-                    color: "common.white",
-                    backgroundColor: `${"primary"}.main`,
-                  }}
-                >
-                  <Group sx={{ fontSize: "1.75rem" }} />
-                </Avatar>
-                <Box sx={{ display: "flex", flexDirection: "column" }}>
-                  <Typography variant="caption">Usuarios</Typography>
-                  <Typography variant="h6">{usersNumber}</Typography>
-                </Box>
-              </Box>
+              <BoxAdminCard
+                avatar={<Group sx={{ fontSize: "1.75rem" }} />}
+                title={"Usuarios"}
+                number={usersNumber}
+              />
             </Grid>
             <Grid item xs={4} sm={4}>
-              <Box sx={{ display: "flex", alignItems: "center" }}>
-                <Avatar
-                  variant="rounded"
-                  sx={{
-                    mr: 3,
-                    width: 44,
-                    height: 44,
-                    color: "common.white",
-                    backgroundColor: `${"primary"}.main`,
-                  }}
-                >
-                  <Pets sx={{ fontSize: "1.75rem" }} />
-                </Avatar>
-                <Box sx={{ display: "flex", flexDirection: "column" }}>
-                  <Typography variant="caption">Mascotas</Typography>
-                  <Typography variant="h6">{petsNumber}</Typography>
-                </Box>
-              </Box>
+              <BoxAdminCard
+                avatar={<Pets sx={{ fontSize: "1.75rem" }} />}
+                title={"Mascotas"}
+                number={petsNumber}
+              />
             </Grid>
             <Grid item xs={4} sm={4}>
-              <Box sx={{ display: "flex", alignItems: "center" }}>
-                <Avatar
-                  variant="rounded"
-                  sx={{
-                    mr: 3,
-                    width: 44,
-                    height: 44,
-                    color: "common.white",
-                    backgroundColor: `${"primary"}.main`,
-                  }}
-                >
-                  <Pets sx={{ fontSize: "1.75rem" }} />
-                </Avatar>
-                <Box sx={{ display: "flex", flexDirection: "column" }}>
-                  <Typography variant="caption">Dispositivos</Typography>
-                  <Typography variant="h6">{devicesNumber}</Typography>
-                </Box>
-              </Box>
+              <BoxAdminCard
+                avatar={<OnDeviceTraining sx={{ fontSize: "1.75rem" }} />}
+                title={"Dispositivos"}
+                number={devicesNumber}
+              />
             </Grid>
             <Grid item xs={4} sm={4}>
-              <Box sx={{ display: "flex", alignItems: "center" }}>
-                <Avatar
-                  variant="rounded"
-                  sx={{
-                    mr: 3,
-                    width: 44,
-                    height: 44,
-                    color: "common.white",
-                    backgroundColor: `${"primary"}.main`,
-                  }}
-                >
-                  <Store sx={{ fontSize: "1.75rem" }} />
-                </Avatar>
-                <Box sx={{ display: "flex", flexDirection: "column" }}>
-                  <Typography variant="caption">Establecimientos</Typography>
-                  <Typography variant="h6">{establishmentsNumber}</Typography>
-                </Box>
-              </Box>
+              <BoxAdminCard
+                avatar={<Store sx={{ fontSize: "1.75rem" }} />}
+                title={"Establecimientos"}
+                number={establishmentsNumber}
+              />
             </Grid>
             <Grid item xs={4} sm={4}>
-              <Box sx={{ display: "flex", alignItems: "center" }}>
-                <Avatar
-                  variant="rounded"
-                  sx={{
-                    mr: 3,
-                    width: 44,
-                    height: 44,
-                    color: "common.white",
-                    backgroundColor: `${"primary"}.main`,
-                  }}
-                >
-                  <Vaccines sx={{ fontSize: "1.75rem" }} />
-                </Avatar>
-                <Box sx={{ display: "flex", flexDirection: "column" }}>
-                  <Typography variant="caption">Medicinas</Typography>
-                  <Typography variant="h6">{medicinesNumber}</Typography>
-                </Box>
-              </Box>
+              <BoxAdminCard
+                avatar={<Vaccines sx={{ fontSize: "1.75rem" }} />}
+                title={"Medicinas"}
+                number={medicinesNumber}
+              />
             </Grid>
             <Grid item xs={4} sm={4}>
-              <Box sx={{ display: "flex", alignItems: "center" }}>
-                <Avatar
-                  variant="rounded"
-                  sx={{
-                    mr: 3,
-                    width: 44,
-                    height: 44,
-                    color: "common.white",
-                    backgroundColor: `${"primary"}.main`,
-                  }}
-                >
-                  <Hail sx={{ fontSize: "1.75rem" }} />
-                </Avatar>
-                <Box sx={{ display: "flex", flexDirection: "column" }}>
-                  <Typography variant="caption">Profesionales</Typography>
-                  <Typography variant="h6">{professionalsNumber}</Typography>
-                </Box>
-              </Box>
+              <BoxAdminCard
+                avatar={<Hail sx={{ fontSize: "1.75rem" }} />}
+                title={"Profesionales"}
+                number={professionalsNumber}
+              />
             </Grid>
           </Grid>
         </CardContent>

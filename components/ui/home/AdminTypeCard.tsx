@@ -12,6 +12,7 @@ import {
 } from "../../../context";
 
 import { IBreed, IEstablishmentType, IMedicineType, IProfession } from "../../../interfaces";
+import { BoxAdminCard, BoxAdminTypeCard } from "../elements";
 
 export const AdminTypeCard = () => {
   const { species, getSpecies } = useContext(SpeciesContext);
@@ -41,112 +42,45 @@ export const AdminTypeCard = () => {
         <CardContent sx={{ pt: (theme) => `${theme.spacing(1)} !important` }}>
           <Grid container spacing={1}>
             <Grid item xs={4} sm={4}>
-              <Box sx={{ display: "flex", alignItems: "center" }}>
-                <Avatar
-                  variant="rounded"
-                  sx={{
-                    mr: 3,
-                    width: 44,
-                    height: 44,
-                    color: "common.white",
-                    backgroundColor: `${"info"}.main`,
-                  }}
-                >
-                  <Ballot sx={{ fontSize: "1.75rem" }} />
-                </Avatar>
-                <Box sx={{ display: "flex", flexDirection: "column" }}>
-                  <Typography variant="caption">Especies</Typography>
-                  <Typography variant="h6">{speciesNumber}</Typography>
-                </Box>
-              </Box>
+              <BoxAdminTypeCard
+                avatar={<Ballot sx={{ fontSize: "1.75rem" }} />}
+                title={"Especies"}
+                number={speciesNumber}
+              />
             </Grid>
             <Grid item xs={4} sm={4}>
-              <Box sx={{ display: "flex", alignItems: "center" }}>
-                <Avatar
-                  variant="rounded"
-                  sx={{
-                    mr: 3,
-                    width: 44,
-                    height: 44,
-                    color: "common.white",
-                    backgroundColor: `${"info"}.main`,
-                  }}
-                >
-                  <Ballot sx={{ fontSize: "1.75rem" }} />
-                </Avatar>
-                <Box sx={{ display: "flex", flexDirection: "column" }}>
-                  <Typography variant="caption">Razas</Typography>
-                  <Typography variant="h6">{breedsNumber}</Typography>
-                </Box>
-              </Box>
+              <BoxAdminTypeCard
+                avatar={<Ballot sx={{ fontSize: "1.75rem" }} />}
+                title={"Razas"}
+                number={breedsNumber}
+              />
             </Grid>
             <Grid item xs={4} sm={4}>
-              <Box sx={{ display: "flex", alignItems: "center" }}>
-                <Avatar
-                  variant="rounded"
-                  sx={{
-                    mr: 3,
-                    width: 44,
-                    height: 44,
-                    color: "common.white",
-                    backgroundColor: `${"info"}.main`,
-                  }}
-                >
-                  <Ballot sx={{ fontSize: "1.75rem" }} />
-                </Avatar>
-                <Box sx={{ display: "flex", flexDirection: "column" }}>
-                  <Typography variant="caption">Establecimiento</Typography>
-                  <Typography variant="h6">{establishmentTypesNumber}</Typography>
-                </Box>
-              </Box>
+              <BoxAdminTypeCard
+                avatar={<Ballot sx={{ fontSize: "1.75rem" }} />}
+                title={"Establecimiento"}
+                number={establishmentTypesNumber}
+              />
             </Grid>
             <Grid item xs={4} sm={4}>
-              <Box sx={{ display: "flex", alignItems: "center" }}>
-                <Avatar
-                  variant="rounded"
-                  sx={{
-                    mr: 3,
-                    width: 44,
-                    height: 44,
-                    color: "common.white",
-                    backgroundColor: `${"info"}.main`,
-                  }}
-                >
-                  <Ballot sx={{ fontSize: "1.75rem" }} />
-                </Avatar>
-                <Box sx={{ display: "flex", flexDirection: "column" }}>
-                  <Typography variant="caption">Medicinas</Typography>
-                  <Typography variant="h6">{medicineTypesNumber}</Typography>
-                </Box>
-              </Box>
+              <BoxAdminTypeCard
+                avatar={<Ballot sx={{ fontSize: "1.75rem" }} />}
+                title={"Medicinas"}
+                number={medicineTypesNumber}
+              />
             </Grid>
             <Grid item xs={4} sm={4}>
-              <Box sx={{ display: "flex", alignItems: "center" }}>
-                <Avatar
-                  variant="rounded"
-                  sx={{
-                    mr: 3,
-                    width: 44,
-                    height: 44,
-                    color: "common.white",
-                    backgroundColor: `${"info"}.main`,
-                  }}
-                >
-                  <Ballot sx={{ fontSize: "1.75rem" }} />
-                </Avatar>
-                <Box sx={{ display: "flex", flexDirection: "column" }}>
-                  <Typography variant="caption">Profesiones</Typography>
-                  <Typography variant="h6">{professionsNumber}</Typography>
-                </Box>
-              </Box>
+              <BoxAdminTypeCard
+                avatar={<Ballot sx={{ fontSize: "1.75rem" }} />}
+                title={"Profesiones"}
+                number={professionsNumber}
+              />
             </Grid>
           </Grid>
         </CardContent>
       </Card>
     );
   } else {
-    return (
-      <></>
-    );
+    return <></>;
   }
 };
