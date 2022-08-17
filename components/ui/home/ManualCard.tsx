@@ -21,7 +21,7 @@ export const ManualCard = () => {
               <ArticleIcon />
             </Avatar>
             <Box sx={{ display: "flex", flexDirection: "column" }}>
-              <Button onClick={()=>{window.open("/manual/parque.pdf")}} variant="contained" disableElevation>
+              <Button onClick={()=>{window.open("/manual/manual-usuario.pdf")}} variant="contained" disableElevation>
                 Ver
               </Button>
             </Box>
