@@ -6,7 +6,6 @@ interface ContextProps {
   lastSpecies?: ISpecies;
   isLoaded?: boolean;
   getSpecies: () => void;
-  getLastSpecies: () => void;
   addSpecies: (name: string) => Promise<{ isComplete: boolean }>;
   updateSpecies: (species_id: number, name: string) => Promise<{ isComplete: boolean }>;
   deleteSpecies: (species_id: number) => Promise<{ isComplete: boolean }>;

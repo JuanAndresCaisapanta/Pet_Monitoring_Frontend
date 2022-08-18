@@ -23,7 +23,7 @@ interface Props {
 export const MedicineTypeProvider: FC<Props> = ({ children }) => {
   const [state, dispatch] = useReducer(medicineTypeReducer, MEDICINE_TYPE_INITIAL_STATE);
   const { checkToken } = useContext(AuthContext);
-  
+
   const getMedicineType = async () => {
     if (!Cookies.get("token")) {
       return;
@@ -73,10 +73,7 @@ export const MedicineTypeProvider: FC<Props> = ({ children }) => {
       });
   };
 
-  const updateMedicineType = async (
-    medicineType_id: any,
-    name: string,
-  ): Promise<{ isComplete: boolean }> => {
+  const updateMedicineType = async (medicineType_id: any, name: string): Promise<{ isComplete: boolean }> => {
     const token = Cookies.get("token") || "";
     return await petMonitoringApi
       .put(
@@ -136,7 +133,6 @@ export const MedicineTypeProvider: FC<Props> = ({ children }) => {
         return { isComplete: true };
       });
   };
-
 
   return (
     <MedicineTypeContext.Provider

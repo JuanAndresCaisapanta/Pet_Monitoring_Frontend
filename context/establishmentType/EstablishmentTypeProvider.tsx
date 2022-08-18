@@ -129,7 +129,11 @@ export const EstablishmentTypeProvider: FC<Props> = ({ children }) => {
               swalMessage("Listo", "Tipo de establecimiento eliminado", "success");
             })
             .catch(() => {
-              swalMessage("Error", "Otros datos dependen de este tipo de establecimiento - Eliminelos Primero", "error");
+              swalMessage(
+                "Error",
+                "Otros datos dependen de este tipo de establecimiento - Eliminelos Primero",
+                "error",
+              );
             });
         }
         return { isComplete: true };

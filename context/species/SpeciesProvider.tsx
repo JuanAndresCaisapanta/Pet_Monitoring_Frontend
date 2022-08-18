@@ -27,15 +27,14 @@ interface Props {
 export const SpeciesProvider: FC<Props> = ({ children }) => {
   const [state, dispatch] = useReducer(speciesReducer, SPECIES_INITIAL_STATE);
   const { checkToken } = useContext(AuthContext);
+
   const getSpecies = async () => {
     if (!Cookies.get("token")) {
       return;
     }
     try {
       const token = Cookies.get("token") || "";
-      const { data } = await petMonitoringApi.get(
-        `/auth/validate-token/${token}`,
-      );
+      const { data } = await petMonitoringApi.get(`/auth/validate-token/${token}`);
       if (data == true) {
         const { data } = await petMonitoringApi.get(`/species`, {
           headers: { Authorization: `Bearer ${token}` },
@@ -49,31 +48,7 @@ export const SpeciesProvider: FC<Props> = ({ children }) => {
     }
   };
 
-  const getLastSpecies = async () => {
-    if (!Cookies.get("token")) {
-      return;
-    }
-    try {
-      const token = Cookies.get("token") || "";
-      const { data } = await petMonitoringApi.get(
-        `/auth/validate-token/${token}`,
-      );
-      if (data == true) {
-        const { data } = await petMonitoringApi.get(`/species/last_id`, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-        dispatch({ type: "[Species] - getLastSpecies", payload: data });
-      } else {
-        Cookies.remove("token");
-      }
-    } catch (error) {
-      Cookies.remove("token");
-    }
-  }
-
-  const addSpecies = async (
-    name: string,
-  ): Promise<{ isComplete: boolean }> => {
+  const addSpecies = async (name: string): Promise<{ isComplete: boolean }> => {
     const token = Cookies.get("token") || "";
     return await petMonitoringApi
       .post(
@@ -99,10 +74,7 @@ export const SpeciesProvider: FC<Props> = ({ children }) => {
       });
   };
 
-  const updateSpecies = async (
-    species_id: any,
-    name: string,
-  ): Promise<{ isComplete: boolean }> => {
+  const updateSpecies = async (species_id: any, name: string): Promise<{ isComplete: boolean }> => {
     const token = Cookies.get("token") || "";
     return await petMonitoringApi
       .put(
@@ -128,7 +100,7 @@ export const SpeciesProvider: FC<Props> = ({ children }) => {
       });
   };
 
-  const deleteSpecies = async (species_id:number): Promise<{ isComplete: boolean }> => {
+  const deleteSpecies = async (species_id: number): Promise<{ isComplete: boolean }> => {
     const token = Cookies.get("token") || "";
     return Swal.fire({
       background: "#F4F5FA",
@@ -172,7 +144,6 @@ export const SpeciesProvider: FC<Props> = ({ children }) => {
       value={{
         ...state,
         getSpecies,
-        getLastSpecies,
         addSpecies,
         updateSpecies,
         deleteSpecies,

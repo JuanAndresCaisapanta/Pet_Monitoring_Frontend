@@ -3,24 +3,14 @@ import { SpeciesState } from ".";
 
 type SpeciesActionType =
   | { type: "[Species] - getSpecies"; payload: ISpecies }
-  |{type:"[Species] - getLastSpecies", payload:ISpecies}
   | { type: "[Species] - clearSpecies" };
 
-export const speciesReducer = (
-  state: SpeciesState,
-  action: SpeciesActionType,
-): SpeciesState => {
+export const speciesReducer = (state: SpeciesState, action: SpeciesActionType): SpeciesState => {
   switch (action.type) {
     case "[Species] - getSpecies":
       return {
         ...state,
         species: action.payload,
-        isLoaded: true,
-      };
-      case "[Species] - getLastSpecies":
-      return {
-        ...state,
-        lastSpecies: action.payload,
         isLoaded: true,
       };
     case "[Species] - clearSpecies":

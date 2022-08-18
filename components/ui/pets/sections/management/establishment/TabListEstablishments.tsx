@@ -21,7 +21,6 @@ export const TabListEstablishments = () => {
     if(pet_id!==undefined) {
       getPet(Number(pet_id));
     }
-   
     return () => {
       petChange();
     };

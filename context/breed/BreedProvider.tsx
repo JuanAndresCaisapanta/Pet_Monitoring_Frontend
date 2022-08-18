@@ -26,6 +26,7 @@ interface Props {
 export const BreedProvider: FC<Props> = ({ children }) => {
   const [state, dispatch] = useReducer(breedReducer, BREED_INITIAL_STATE);
   const { checkToken } = useContext(AuthContext);
+  
   const getBreedsBySpecies = async (species_id: number) => {
     if (!Cookies.get("token")) {
       return;
@@ -93,7 +94,7 @@ export const BreedProvider: FC<Props> = ({ children }) => {
       });
   };
 
-  const updateBreed = async (breed_id: any,name: string, species_id: any): Promise<{ isComplete: boolean }> => {
+  const updateBreed = async (breed_id: any, name: string, species_id: any): Promise<{ isComplete: boolean }> => {
     const token = Cookies.get("token") || "";
     return await petMonitoringApi
       .put(

@@ -31,8 +31,8 @@ interface State {
 }
 
 type FormData = {
-  new_password: string|undefined;
-  confirm_new_password: string|undefined;
+  new_password: string | undefined;
+  confirm_new_password: string | undefined;
 };
 
 export const TabSecurity = () => {
@@ -83,8 +83,7 @@ export const TabSecurity = () => {
 
   const handleUpdatePassword = async ({ new_password, confirm_new_password }: FormData) => {
     setIsLoading(true);
-
-    const { isComplete } = await updatePassword(user?.id!, new_password!, confirm_new_password!,handleClearForm);
+    const { isComplete } = await updatePassword(user?.id!, new_password!, confirm_new_password!, handleClearForm);
     if (isComplete) {
       setIsLoading(false);
     }
@@ -194,7 +193,7 @@ export const TabSecurity = () => {
         <CardActions sx={{ padding: "16px" }}>
           <Grid container spacing={2}>
             <Grid item xs={12} md={12}>
-            <LoadingButton
+              <LoadingButton
                 variant="contained"
                 color="primary"
                 sx={{ marginRight: 2 }}
