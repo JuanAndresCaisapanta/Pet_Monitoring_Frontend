@@ -58,8 +58,8 @@ export const TabManagement = () => {
             </Grid>
             <Grid item xs={12} sm={4}>
               <CardSection
-                section="Medicamentos"
-                description="Administre las medicamentos de su mascota."
+                section="Medicinas"
+                description="Administre las medicinas de su mascota."
                 image="/images/pet/medicine.jpg"
                 link={`data/medicine/${id}`}
                 button="Administrar"
