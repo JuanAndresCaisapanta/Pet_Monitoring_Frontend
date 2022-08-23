@@ -1,7 +1,11 @@
 import { Avatar, Box, CardContent, CardHeader, Card, Grid, Typography } from "@mui/material";
 import ContactPhoneIcon from "@mui/icons-material/ContactPhone";
+import { EmailIcon, EmailShareButton, WhatsappIcon, WhatsappShareButton } from "react-share";
+import { useContext } from "react";
+import { AuthContext } from "../../../context";
 
 export const ContactCard = () => {
+  const { user } = useContext(AuthContext);
   return (
     <Card>
       <CardHeader title="Servicio Técnico" titleTypographyProps={{ color: "primary" }} />
@@ -21,8 +25,21 @@ export const ContactCard = () => {
               <ContactPhoneIcon />
             </Avatar>
             <Box sx={{ display: "flex", flexDirection: "column" }}>
-              <Typography variant="caption">0999288791</Typography>
-              <Typography variant="caption">juancaisapanta@hotmail.com</Typography>
+              <Grid container spacing={2}>
+              <Grid item xs={6} sm={6} textAlign="center">
+                <WhatsappShareButton url={`Saludos soy ${user?.name} ${user?.last_name} necesito ayuda.`}>
+                  <WhatsappIcon size={32} round={true} />
+                </WhatsappShareButton>
+              </Grid>
+              <Grid item xs={6} sm={6} textAlign="center">
+                <EmailShareButton
+                  url={`Saludos soy ${user?.name} ${user?.last_name} necesito ayuda.`}
+                  subject={`Servicio Técnico`}
+                >
+                  <EmailIcon size={32} round={true} />
+                </EmailShareButton>
+              </Grid>
+              </Grid>
             </Box>
           </Box>
         </Grid>

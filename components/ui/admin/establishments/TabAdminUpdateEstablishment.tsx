@@ -27,7 +27,7 @@ export const TabAdminUpdateEstablishment = () => {
   const [establishmentName, setEstablishmentName] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
-  const { establishmentType, getEstablishmentType, clearEstablishmentType } = useContext(EstablishmentTypeContext);
+  const { establishmentType, getEstablishmentTypes: getEstablishmentType, clearEstablishmentType } = useContext(EstablishmentTypeContext);
 
   const { establishment, getEstablishment, clearEstablishment, updateEstablishment, deleteEstablishment } =
     useContext(EstablishmentContext);

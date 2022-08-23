@@ -24,7 +24,7 @@ export const MedicineTypeProvider: FC<Props> = ({ children }) => {
   const [state, dispatch] = useReducer(medicineTypeReducer, MEDICINE_TYPE_INITIAL_STATE);
   const { checkToken } = useContext(AuthContext);
 
-  const getMedicineType = async () => {
+  const getMedicineTypes = async () => {
     if (!Cookies.get("token")) {
       return;
     }
@@ -63,7 +63,7 @@ export const MedicineTypeProvider: FC<Props> = ({ children }) => {
       )
       .then(() => {
         checkToken();
-        getMedicineType();
+        getMedicineTypes();
         swalMessage("Listo", "Tipo de medicina agregado", "success");
         return { isComplete: true };
       })
@@ -89,7 +89,7 @@ export const MedicineTypeProvider: FC<Props> = ({ children }) => {
       )
       .then(() => {
         checkToken();
-        getMedicineType();
+        getMedicineTypes();
         swalMessage("Listo", "Tipo de medicina actualizado", "success");
         return { isComplete: true };
       })
@@ -120,7 +120,7 @@ export const MedicineTypeProvider: FC<Props> = ({ children }) => {
             })
             .then(() => {
               checkToken();
-              getMedicineType();
+              getMedicineTypes();
               swalMessage("Listo", "Tipo de medicina eliminado", "success");
             })
             .catch(() => {
@@ -138,7 +138,7 @@ export const MedicineTypeProvider: FC<Props> = ({ children }) => {
     <MedicineTypeContext.Provider
       value={{
         ...state,
-        getMedicineType,
+        getMedicineTypes: getMedicineTypes,
         addMedicineType,
         updateMedicineType,
         deleteMedicineType,

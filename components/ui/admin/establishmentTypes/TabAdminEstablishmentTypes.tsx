@@ -17,7 +17,7 @@ type FormData = {
 export const TabAdminEstablishmentTypes = () => {
   const {
     establishmentType: establishmentTypes,
-    getEstablishmentType,
+    getEstablishmentTypes: getEstablishmentType,
     addEstablishmentType,
     updateEstablishmentType,
     deleteEstablishmentType,

@@ -50,7 +50,7 @@ export const TabAdminUpdateMedicine = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [medicineName, setMedicineName] = useState<string | null>("");
 
-  const { medicineType, getMedicineType } = useContext(MedicineTypeContext);
+  const { medicineType, getMedicineTypes: getMedicineType } = useContext(MedicineTypeContext);
   const { updateMedicine, getMedicine, medicine, clearMedicine, deleteMedicine } = useContext(MedicineContext);
 
   const router = useRouter();

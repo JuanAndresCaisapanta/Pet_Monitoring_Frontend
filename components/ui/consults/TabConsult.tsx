@@ -40,8 +40,8 @@ export const TabConsult = () => {
   const [isLoading, setIsLoading] = useState(false);
   const { user } = useContext(AuthContext);
   const { professions, getProfessions } = useContext(ProfessionContext);
-  const { establishmentType, getEstablishmentType } = useContext(EstablishmentTypeContext);
-  const { medicineType, getMedicineType } = useContext(MedicineTypeContext);
+  const { establishmentType, getEstablishmentTypes: getEstablishmentType } = useContext(EstablishmentTypeContext);
+  const { medicineType, getMedicineTypes: getMedicineType } = useContext(MedicineTypeContext);
   const { pets, getPetsEstablishment, getPetsProfessional, getPetsMedicine, clearPets } = useContext(PetContext);
   const { professionalsFullName, getProfessionalsFullName } = useContext(ProfessionalContext);
   const { establishmentsFullName, getEstablishmentsFullName } = useContext(EstablishmentContext);

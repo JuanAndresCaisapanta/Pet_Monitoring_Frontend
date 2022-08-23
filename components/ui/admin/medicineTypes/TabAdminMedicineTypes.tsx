@@ -17,7 +17,7 @@ type FormData = {
 export const TabAdminMedicineTypes = () => {
   const {
     medicineType: medicineTypes,
-    getMedicineType,
+    getMedicineTypes: getMedicineType,
     addMedicineType,
     updateMedicineType,
     deleteMedicineType,

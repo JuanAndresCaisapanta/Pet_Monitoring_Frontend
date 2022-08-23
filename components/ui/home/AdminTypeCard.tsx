@@ -17,8 +17,8 @@ import { BoxAdminCard, BoxAdminTypeCard } from "../elements";
 export const AdminTypeCard = () => {
   const { species, getSpecies } = useContext(SpeciesContext);
   const { breeds, getBreeds } = useContext(BreedContext);
-  const { establishmentType: establishmentTypes, getEstablishmentType } = useContext(EstablishmentTypeContext);
-  const { medicineType: medicineTypes, getMedicineType } = useContext(MedicineTypeContext);
+  const { establishmentType: establishmentTypes, getEstablishmentTypes: getEstablishmentType } = useContext(EstablishmentTypeContext);
+  const { medicineType: medicineTypes, getMedicineTypes: getMedicineType } = useContext(MedicineTypeContext);
   const { professions, getProfessions } = useContext(ProfessionContext);
 
   useEffect(() => {

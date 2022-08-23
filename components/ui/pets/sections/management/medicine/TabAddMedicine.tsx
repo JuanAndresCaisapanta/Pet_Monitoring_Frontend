@@ -38,7 +38,7 @@ export const TabAddMedicine = () => {
   const [expirationDate, setExpirationDate] = useState<Date | null>(new Date());
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const { medicineType, getMedicineType } = useContext(MedicineTypeContext);
+  const { medicineType, getMedicineTypes: getMedicineType } = useContext(MedicineTypeContext);
   const { addMedicine } = useContext(MedicineContext);
 
   const router = useRouter();

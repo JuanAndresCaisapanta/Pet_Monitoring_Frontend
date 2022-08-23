@@ -54,7 +54,7 @@ export const TabAdminAddMedicine = () => {
 
   const { users, getUsers } = useContext(UserContext);
   const { pets, getPetsByUser, clearPets } = useContext(PetContext);
-  const { medicineType, getMedicineType } = useContext(MedicineTypeContext);
+  const { medicineType, getMedicineTypes: getMedicineType } = useContext(MedicineTypeContext);
   const { addMedicine } = useContext(MedicineContext);
 
   const router = useRouter();

@@ -41,7 +41,7 @@ export const TabAdminAddEstablishment = () => {
 
   const { users, getUsers } = useContext(UserContext);
   const { pets, getPetsByUser, clearPets } = useContext(PetContext);
-  const { establishmentType, getEstablishmentType, clearEstablishmentType } = useContext(EstablishmentTypeContext);
+  const { establishmentType, getEstablishmentTypes: getEstablishmentType, clearEstablishmentType } = useContext(EstablishmentTypeContext);
   const { addEstablishment } = useContext(EstablishmentContext);
 
   const {

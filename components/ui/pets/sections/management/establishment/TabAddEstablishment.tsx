@@ -23,7 +23,7 @@ export const TabAddEstablishment = () => {
   const [listTypeEstablishment, setListTypeEstablishment] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
-  const { establishmentType, getEstablishmentType, clearEstablishmentType } = useContext(EstablishmentTypeContext);
+  const { establishmentType, getEstablishmentTypes: getEstablishmentType, clearEstablishmentType } = useContext(EstablishmentTypeContext);
   const { addEstablishment } = useContext(EstablishmentContext);
 
   const {

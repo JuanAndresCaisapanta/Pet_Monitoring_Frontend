@@ -26,7 +26,7 @@ export const EstablishmentTypeProvider: FC<Props> = ({ children }) => {
   const [state, dispatch] = useReducer(establishmentTypeReducer, ESTABLISHMENT_TYPE_INITIAL_STATE);
   const { checkToken } = useContext(AuthContext);
 
-  const getEstablishmentType = async () => {
+  const getEstablishmentTypes = async () => {
     if (!Cookies.get("token")) {
       return;
     }
@@ -65,7 +65,7 @@ export const EstablishmentTypeProvider: FC<Props> = ({ children }) => {
       )
       .then(() => {
         checkToken();
-        getEstablishmentType();
+        getEstablishmentTypes();
         swalMessage("Listo", "Tipo de establecimiento agregado", "success");
         return { isComplete: true };
       })
@@ -94,7 +94,7 @@ export const EstablishmentTypeProvider: FC<Props> = ({ children }) => {
       )
       .then(() => {
         checkToken();
-        getEstablishmentType();
+        getEstablishmentTypes();
         swalMessage("Listo", "Tipo de establecimiento actualizado", "success");
         return { isComplete: true };
       })
@@ -125,7 +125,7 @@ export const EstablishmentTypeProvider: FC<Props> = ({ children }) => {
             })
             .then(() => {
               checkToken();
-              getEstablishmentType();
+              getEstablishmentTypes();
               swalMessage("Listo", "Tipo de establecimiento eliminado", "success");
             })
             .catch(() => {
@@ -153,7 +153,7 @@ export const EstablishmentTypeProvider: FC<Props> = ({ children }) => {
     <EstablishmentTypeContext.Provider
       value={{
         ...state,
-        getEstablishmentType,
+        getEstablishmentTypes: getEstablishmentTypes,
         addEstablishmentType,
         updateEstablishmentType,
         deleteEstablishmentType,
