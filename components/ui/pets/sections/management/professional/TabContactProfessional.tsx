@@ -78,7 +78,7 @@ export const TabContactProfessional = () => {
   };
 
   const handleSendWhatsapp = async ({ message }: FormData) => {
-    window.open(`https://wa.me/${professional?.cell_phone}/?text=${message}`);
+    window.open(`https://wa.me/+593${professional?.cell_phone}/?text=${message}`);
   };
 
   const handleClearForm = () => {

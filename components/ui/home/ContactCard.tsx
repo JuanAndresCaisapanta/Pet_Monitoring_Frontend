@@ -9,7 +9,7 @@ export const ContactCard = () => {
   const { user } = useContext(AuthContext);
   const message = `Saludos soy ${user?.name} ${user?.last_name} necesito ayuda.`;
   const handleSendWhatsapp = () => {
-    window.open(`https://wa.me/0999288791/?text=${message}`);
+    window.open(`https://wa.me/+5930999288791/?text=${message}`);
   };
   return (
     <Card>
