@@ -339,7 +339,7 @@ export const TabAddMedicine = () => {
                       setExpirationDate(newValue);
                       setValue("expiration_date", moment(newValue, "DD/MM/YYYY").format("DD/MM/YYYY"));
                     }}
-                    maxDate={new Date()}
+                    minDate={new Date()}
                     renderInput={(params) => (
                       <TextField
                         fullWidth
